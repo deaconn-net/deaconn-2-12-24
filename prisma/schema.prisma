@@ -36,6 +36,8 @@ model Service {
   name  String
   price Float  @default(5.00)
   desc  String // @db.Text
+  install String? // @db.Text
+  features String? // @db.Text
 
   views     Int @default(0)
   purchases Int @default(0)
@@ -100,13 +102,16 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  credit Float @default (0)
+
   aboutMe String // @db.Text
+  showEmail Boolean @default(false)
 
   experiences Experience[]
   skills      Skill[]
 
   permissions Permission[]
-  
+
   Article     Article[]
   Request     Request[]
 }
