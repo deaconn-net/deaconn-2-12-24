@@ -193,6 +193,18 @@ model Project {
 
   startDate DateTime?
   endDate   DateTime?
+
+  projectSources ProjectSource[]
+}
+
+model ProjectSource {
+  projectId Int
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  title String @default("Source")
+  url   String
+
+  @@id([projectId, url])
 }
 
 model Permission {
