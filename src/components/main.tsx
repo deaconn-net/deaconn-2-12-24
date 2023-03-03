@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 
-type headArgs = {
+export type headArgs = {
     title?: string
     desc?: string
     image?: string
@@ -9,7 +9,7 @@ type headArgs = {
     webType?: string
 }
 
-export const Deaconn: React.FC<{ headArgs: headArgs, content: JSX.Element }> = ({ headArgs={ title: "Deaconn", desc: "Creating nextgen services and products under technology.", robots: "index, follow" }, content }) => {
+export const Deaconn: React.FC<{ headArgs?: headArgs, content: JSX.Element }> = ({ headArgs={ title: "Deaconn", desc: "Creating nextgen services and products under technology.", robots: "index, follow", webType: "website" }, content }) => {
     // Retrieve URLs.
     let base_url;
     let full_url;
@@ -78,9 +78,7 @@ export const Deaconn: React.FC<{ headArgs: headArgs, content: JSX.Element }> = (
             </Head>
             <main>
                 <Header />
-                <div className="container">
-                    {content}
-                </div>
+                {content}
             </main>
         </>
 
