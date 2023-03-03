@@ -1,10 +1,10 @@
-import { NextPage } from "next";
-import { Deaconn } from '../../../components/main';
+import { type NextPage } from "next";
+import { Deaconn } from '../components/main';
 
 const Content: React.FC = () => {
   return (
     <div className="content">
-      <p className="text-white">Blog View</p>
+      <p className="text-white">About</p>
     </div>
   )
 }

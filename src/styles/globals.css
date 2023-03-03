@@ -36,3 +36,9 @@
     @apply text-lg;
     @apply font-bold;
 }
+
+.content {
+    @apply  container;
+    @apply mx-auto;
+    @apply py-16;
+}

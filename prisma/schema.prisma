@@ -147,6 +147,7 @@ model User {
 
   experiences Experience[]
   skills      Skill[]
+  projects    Project[]
 
   permissions Permission[]
 
@@ -177,6 +178,19 @@ model Skill {
 
   title String
   desc  String
+}
+
+model Project {
+  id Int @id @default(autoincrement())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name String
+  desc String
+
+  startDate DateTime?
+  endDate   DateTime?
 }
 
 model Permission {

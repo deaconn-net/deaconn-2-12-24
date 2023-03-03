@@ -1,10 +1,9 @@
 import { type NextPage } from "next";
-
 import { Deaconn } from '../components/main';
 
 const Content: React.FC = () => {
   return (
-    <div className="container mx-auto py-16">
+    <div className="content">
       <p className="text-white">Main Index</p>
     </div>
   )
