@@ -2,7 +2,15 @@ import { type NextPage } from "next";
 
 import { Deaconn } from '../components/main';
 
-const Home: NextPage = () => {
+const Content: React.FC = () => {
+  return (
+    <div className="container mx-auto py-16">
+      <p className="text-white">Main Index</p>
+    </div>
+  )
+}
+
+const Page: NextPage = () => {
   return (
     <Deaconn 
       content={<Content />}
@@ -10,12 +18,4 @@ const Home: NextPage = () => {
   );
 };
 
-const Content: React.FC = () => {
-  return (
-    <div className="container">
-      <p>Hello!</p>
-    </div>
-  )
-}
-
-export default Home;
+export default Page;

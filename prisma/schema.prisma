@@ -51,7 +51,7 @@ model Service {
   updatedAt DateTime @updatedAt
 
   name     String
-  price    Float   @default(5.00)
+  price    Float   @default(0)
   desc     String // @db.Text
   install  String? // @db.Text
   features String? // @db.Text
