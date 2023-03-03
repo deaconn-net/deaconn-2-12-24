@@ -24,8 +24,8 @@ model Article {
   desc    String?
   content String // @db.Text
 
-  views          Int              @default(0)
-  ArticleComment ArticleComment[]
+  views           Int              @default(0)
+  articleComments ArticleComment[]
 }
 
 model ArticleComment {
@@ -64,12 +64,16 @@ model Service {
   banner String?
 
   gitLink    String?
-  openSource Boolean   @default(true)
-  Request    Request[]
+  openSource Boolean @default(true)
+
+  requests Request[]
 }
 
 model Request {
   id Int @id @default(autoincrement())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -77,11 +81,12 @@ model Request {
   serviceId Int?
   service   Service? @relation(fields: [serviceId], references: [id], onDelete: NoAction)
 
-  timeframe      Int
-  request        String // @db.Text
-  startDate      DateTime?
-  price          Float
-  RequestComment RequestComment[]
+  timeframe Int
+  content   String // @db.Text
+  startDate DateTime?
+  price     Float
+
+  requestComments RequestComment[]
 }
 
 model RequestComment {

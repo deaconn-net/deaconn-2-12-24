@@ -1,9 +1,9 @@
-import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { modProcedure, createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 export const blogRouter = createTRPCRouter({
-    getArticle: publicProcedure
+    get: publicProcedure
         .input(z.object({
             id: z.number().nullable(),
             url: z.string().nullable(),
@@ -15,36 +15,24 @@ export const blogRouter = createTRPCRouter({
             selTitle: z.boolean().default(true),
             selDesc: z.boolean().default(true),
             selContent: z.boolean().default(true),
-            selViews: z.boolean().default(true)
+            selViews: z.boolean().default(true),
+
+            incComments: z.boolean().default(false)
         }))
         .query(({ ctx, input }) => {
             return ctx.prisma.article.findFirst({
                 select: {
-                    ...(input.selId && {
-                        id: true
-                    }),
-                    ...(input.selUrl && {
-                        url: true
-                    }),
-                    ...(input.selDates && {
-                        createdAt: true,
-                        updatedAt: true
-                    }),
-                    ...(input.selUser && {
-                        user: true
-                    }),
-                    ...(input.selTitle && {
-                        title: true
-                    }),
-                    ...(input.selDesc && {
-                        desc: true
-                    }),
-                    ...(input.selContent && {
-                        content: true
-                    }),
-                    ...(input.selViews && {
-                        views: true
-                    })
+                    id: input.selId,
+                    url: input.selUrl,
+                    createdAt: input.selDates,
+                    updatedAt: input.selDates,
+                    user: input.selUser,
+                    title: input.selTitle,
+                    desc: input.selDesc,
+                    content: input.selContent,
+                    views: input.selViews,
+                    
+                    articleComments: input.incComments
                 },
                 where: {
                     ...(input.id && {
@@ -56,7 +44,7 @@ export const blogRouter = createTRPCRouter({
                 }
             });
         }),
-    addArticle: modProcedure
+    add: modProcedure
         .input(z.object({
             id: z.number().nullable(),
             url: z.string(),
