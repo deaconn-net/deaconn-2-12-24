@@ -24,20 +24,21 @@ model Article {
   desc    String?
   content String // @db.Text
 
-  views Int @default(0)
+  views          Int              @default(0)
+  ArticleComment ArticleComment[]
 }
 
 model ArticleComment {
   id Int @id @default(autoincrement())
-  
+
   articleId Int
-  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   content String // @db.Text
 }
@@ -76,23 +77,24 @@ model Request {
   serviceId Int?
   service   Service? @relation(fields: [serviceId], references: [id], onDelete: NoAction)
 
-  timeframe Int
-  request   String // @db.Text
-  startDate DateTime?
-  price     Float
+  timeframe      Int
+  request        String // @db.Text
+  startDate      DateTime?
+  price          Float
+  RequestComment RequestComment[]
 }
 
 model RequestComment {
   id Int @id @default(autoincrement())
-  
+
   requestId Int
-  request Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  request   Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   userId String
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   content String // @db.Text
 }
@@ -143,8 +145,10 @@ model User {
 
   permissions Permission[]
 
-  Article Article[]
-  Request Request[]
+  Article        Article[]
+  Request        Request[]
+  ArticleComment ArticleComment[]
+  RequestComment RequestComment[]
 }
 
 model Experience {
