@@ -27,6 +27,21 @@ model Article {
   views Int @default(0)
 }
 
+model ArticleComment {
+  id Int @id @default(autoincrement())
+  
+  articleId Int
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content String // @db.Text
+}
+
 model Service {
   id  Int    @id @default(autoincrement())
   url String
@@ -65,6 +80,21 @@ model Request {
   request   String // @db.Text
   startDate DateTime?
   price     Float
+}
+
+model RequestComment {
+  id Int @id @default(autoincrement())
+  
+  requestId Int
+  request Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content String // @db.Text
 }
 
 // Necessary for Next auth
