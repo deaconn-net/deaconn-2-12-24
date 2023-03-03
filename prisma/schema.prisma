@@ -24,6 +24,8 @@ model Article {
   desc    String?
   content String // @db.Text
 
+  banner String?
+
   views           Int              @default(0)
   articleComments ArticleComment[]
 }
