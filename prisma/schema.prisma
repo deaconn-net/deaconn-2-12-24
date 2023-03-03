@@ -12,7 +12,7 @@ datasource db {
 
 model Article {
   id  Int    @id @default(autoincrement())
-  url String
+  url String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -20,6 +20,7 @@ model Article {
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  title   String
   desc    String?
   content String // @db.Text
 
@@ -33,10 +34,10 @@ model Service {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name  String
-  price Float  @default(5.00)
-  desc  String // @db.Text
-  install String? // @db.Text
+  name     String
+  price    Float   @default(5.00)
+  desc     String // @db.Text
+  install  String? // @db.Text
   features String? // @db.Text
 
   views     Int @default(0)
@@ -102,9 +103,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  credit Float @default (0)
+  credit Float @default(0)
 
-  aboutMe String // @db.Text
+  aboutMe   String // @db.Text
   showEmail Boolean @default(false)
 
   experiences Experience[]
@@ -112,8 +113,8 @@ model User {
 
   permissions Permission[]
 
-  Article     Article[]
-  Request     Request[]
+  Article Article[]
+  Request Request[]
 }
 
 model Experience {

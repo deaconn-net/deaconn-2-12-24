@@ -20,6 +20,8 @@ import { type Session } from "next-auth";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
 
+import { Permission } from "@prisma/client";
+
 type CreateContextOptions = {
   session: Session | null;
 };
@@ -118,3 +120,37 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+const isMod = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user)
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+
+  // Retrieve user.
+  const user = await ctx.prisma.user.findFirst({
+    select: {
+      permissions: true
+    },
+    where: {
+      id: ctx.session.user.id
+    }
+  });
+
+  // Construct permission we need to find.
+  const toFind: Permission = {
+    userId: ctx.session.user.id,
+    name: "mod"
+  };
+
+  // Check.
+  if (!user || user.permissions.length < 1 || !user.permissions.includes(toFind))
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+
+  // Continue!
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session.user }
+    }
+  });
+})
+
+export const modProcedure = t.procedure.use(isMod);
