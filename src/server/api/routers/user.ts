@@ -39,8 +39,14 @@ export const userRouter = createTRPCRouter({
     .input(z.object({
       id: z.string(),
 
-      isTeam: z.boolean().nullable(),
+      credit: z.number().nullable(),
+
+      name: z.string().nullable(),
+      title: z.string().nullable(),
       aboutMe: z.string().nullable(),
+      birthday: z.date().nullable(),
+      showEmail: z.boolean().nullable(),
+      isTeam: z.boolean().nullable(),
 
       experiences: z.array(expSchema).nullable(),
       skills: z.array(skillSchema).nullable(),
@@ -49,13 +55,26 @@ export const userRouter = createTRPCRouter({
       permissions: z.string().nullable()
     }))
     .mutation(async ({ ctx, input }) => {
+      // Update user itself first.
       const res = await ctx.prisma.user.update({
         where: {
           id: input.id
         },
         data: {
+          ...(input.credit && {
+            credit: input.credit
+          }),
+          ...(input.title && {
+            title: input.title
+          }),
           ...(input.aboutMe && {
             aboutMe: input.aboutMe
+          }),
+          ...(input.birthday && {
+            birthday: input.birthday
+          }),
+          ...(input.showEmail && {
+            showEmail: input.showEmail
           }),
           ...(input.isTeam && {
             isTeam: input.isTeam
