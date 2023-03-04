@@ -83,7 +83,6 @@ export const Deaconn: React.FC<{ headArgs?: headArgs, content: JSX.Element }> = 
                 <Footer />
             </main>
         </>
-
     );
 }
 

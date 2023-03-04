@@ -53,3 +53,23 @@
     @apply w-full;
     @apply sm:w-1/3;
 }
+
+.form-div {
+    @apply p-6;
+}
+
+.form-input {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply text-gray-300;
+    @apply ring-cyan-800;
+    @apply rounded;
+    @apply w-full;
+}
+
+.form-label {
+    @apply block;
+    @apply text-lg;
+    @apply font-bold;
+    @apply text-white;
+}
