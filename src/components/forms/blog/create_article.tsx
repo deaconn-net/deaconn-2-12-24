@@ -1,7 +1,9 @@
 import { Field, useFormik } from 'formik';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { api } from '../../../utils/api';
 import { FormMain } from '../main';
+
+import ReactMarkdown from 'react-markdown';
 
 export const CreateArticle: React.FC<{ lookupId?: number, lookupUrl?: string }> = ({ lookupId, lookupUrl }) => {
     // Retrieve article if any.
@@ -32,6 +34,9 @@ export const CreateArticle: React.FC<{ lookupId?: number, lookupUrl?: string }> 
     // Setup banner image.
     const [banner, setBanner] = useState<File | null>(null);
 
+    // Setup preview.
+    const [preview, setPreview] = useState(false);
+
     // Setup form.
     const form = useFormik({
         initialValues: {
@@ -56,13 +61,18 @@ export const CreateArticle: React.FC<{ lookupId?: number, lookupUrl?: string }> 
             form={form}
             content={<Fields 
                 setBanner={setBanner}
+                form={form}
+                preview={preview}
             />}
-            submitBtn={<Button />}
+            submitBtn={<Button
+                preview={preview}
+                setPreview={setPreview}
+            />}
         />
     );
 }
 
-const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | null>> }> = ({ setBanner }) => {
+const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | null>>, preview: boolean, form: any }> = ({ setBanner, preview, form }) => {
     return (
         <>
             <div className="form-div">
@@ -75,28 +85,53 @@ const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | n
             </div>
             <div className="form-div">
                 <label className="form-label">URL</label>
-                <Field name="url" className="form-input" />
+                {preview ? (
+                    <p className="text-white italic">{form.values.url}</p>
+                ) : (
+                    <Field name="url" className="form-input" />
+                )}
+                
             </div>
             <div className="form-div">
                 <label className="form-label">Title</label>
-                <Field name="title" className="form-input" />
+                {preview ? (
+                    <p className="text-white italic">{form.values.title}</p>
+                ) : (
+                    <Field name="title" className="form-input" />
+                )}
             </div>
             <div className="form-div">
                 <label className="form-label">Description</label>
-                <Field as="textarea" rows="8" cols="32" name="desc" className="form-input" />
+                {preview ? (
+                    <p className="text-white">{form.values.desc}</p>
+                ) : (
+                    <Field as="textarea" rows="8" cols="32" name="desc" className="form-input" />
+                )}
             </div>
             <div className="form-div">
                 <label className="form-label">Content</label>
-                <Field as="textarea" rows="16" cols="32" name="content" className="form-input" />
+                {preview ? (
+                    <ReactMarkdown className="markdown text-white">{form.values.content}</ReactMarkdown>
+                ) : (
+                    <Field as="textarea" rows="16" cols="32" name="content" className="form-input" />
+                )}
             </div>
         </>
     )
 }
 
-const Button: React.FC<{ isEdit?: boolean }> = ({ isEdit=false }) => {
+const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit=false, preview, setPreview }) => {
     return (
         <div className="text-center">
             <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{isEdit ? "Edit Article" : "Add Article"}</button>
+            <button onClick={(e) => {
+                e.preventDefault();
+
+                if (preview)
+                    setPreview(false);
+                else
+                    setPreview(true);
+            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
         </div>
     )
 }
