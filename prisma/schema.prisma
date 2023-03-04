@@ -144,11 +144,11 @@ model User {
 
   credit Float @default(0)
 
-  title String?
+  title     String?
   aboutMe   String // @db.Text
-  birthday      DateTime?
-  showEmail Boolean @default(false)
-  isTeam        Boolean @default(false)
+  birthday  DateTime?
+  showEmail Boolean   @default(false)
+  isTeam    Boolean   @default(false)
 
   experiences Experience[]
   skills      Skill[]
