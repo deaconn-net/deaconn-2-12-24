@@ -64,6 +64,9 @@ export const userRouter = createTRPCRouter({
           ...(input.credit && {
             credit: input.credit
           }),
+          ...(input.name && {
+            name: input.name
+          }),
           ...(input.title && {
             title: input.title
           }),
