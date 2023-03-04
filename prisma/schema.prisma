@@ -144,6 +144,7 @@ model User {
 
   credit Float @default(0)
 
+  title String?
   aboutMe   String // @db.Text
   birthday      DateTime?
   showEmail Boolean @default(false)
