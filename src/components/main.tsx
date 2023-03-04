@@ -124,7 +124,7 @@ export const Header: React.FC = () => {
 
 export const Footer: React.FC = () => {
     return (
-        <footer className="p-18 bg-gradient-to-r from-slate-800 to-slate-900">
+        <footer className="p-18 bg-slate-800">
             <div className="container mx-auto flex flex-wrap text-center">
                 <div className="footer-section">
                     <div>
