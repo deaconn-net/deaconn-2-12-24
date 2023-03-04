@@ -29,6 +29,7 @@
 .footer-link {
     @apply text-gray-200;
     @apply py-2;
+    @apply text-sm;
 }
 
 .footer-title {
