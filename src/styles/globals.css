@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .nav-link {
-    @apply p-6;
+    @apply p-2;
     @apply min-w-[10em];
     @apply text-base;
     @apply hover:bg-cyan-800;
@@ -38,7 +38,17 @@
 }
 
 .content {
-    @apply  container;
+    @apply container;
     @apply mx-auto;
     @apply py-16;
+}
+
+.content-col-large {
+    @apply w-full;
+    @apply sm:w-2/3;
+}
+
+.content-col-small {
+    @apply w-full;
+    @apply sm:w-1/3;
 }
