@@ -190,11 +190,11 @@ model Project {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  name String
-  desc String
-
   startDate DateTime?
   endDate   DateTime?
+
+  name String
+  desc String
 
   projectSources ProjectSource[]
 }
