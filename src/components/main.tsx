@@ -89,7 +89,7 @@ export const Deaconn: React.FC<{ headArgs?: headArgs, content: JSX.Element }> = 
 
 export const Header: React.FC = () => {
     return (
-        <div className="bg-slate-900">
+        <div className="bg-slate-800">
             <nav className="container mx-auto">
                 <ul className="flex flex-wrap justify-center list-none text-gray-100 text-center">
                     <Link className="nav-link" href="/">
