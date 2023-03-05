@@ -1,3 +1,4 @@
+import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
@@ -87,10 +88,12 @@ export const Deaconn: React.FC<{ headArgs?: headArgs, content: JSX.Element }> = 
 }
 
 export const Header: React.FC = () => {
+    const { data: session } = useSession();
+
     return (
         <div className="bg-slate-800">
-            <nav className="container mx-auto">
-                <ul className="flex flex-wrap justify-center list-none text-gray-100 text-center">
+            <nav className="flex justify-between text-center container mx-auto">
+                <ul className="flex justify-center list-none text-gray-100">
                     <Link className="nav-link" href="/">
                         <li className="nav-item">
                             <span><svg className="w-10 h-10 fill-white stroke-gray-700" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path opacity="0.1" d="M17.7218 8.08382L14.7218 5.29811C13.4309 4.09937 12.7854 3.5 12 3.5C11.2146 3.5 10.5691 4.09937 9.2782 5.29811L6.2782 8.08382C5.64836 8.66867 5.33345 8.96109 5.16672 9.34342C5 9.72575 5 10.1555 5 11.015V16.9999C5 18.8856 5 19.8284 5.58579 20.4142C6.17157 20.9999 7.11438 20.9999 9 20.9999H9.75V16.9999C9.75 15.7573 10.7574 14.7499 12 14.7499C13.2426 14.7499 14.25 15.7573 14.25 16.9999V20.9999H15C16.8856 20.9999 17.8284 20.9999 18.4142 20.4142C19 19.8284 19 18.8856 19 16.9999L19 11.015C19 10.1555 19 9.72575 18.8333 9.34342C18.6666 8.96109 18.3516 8.66866 17.7218 8.08382Z" /><path d="M19 9L19 17C19 18.8856 19 19.8284 18.4142 20.4142C17.8284 21 16.8856 21 15 21L14 21L10 21L9 21C7.11438 21 6.17157 21 5.58579 20.4142C5 19.8284 5 18.8856 5 17L5 9" strokeWidth="2" strokeLinejoin="round"/><path d="M3 11L7.5 7L10.6713 4.18109C11.429 3.50752 12.571 3.50752 13.3287 4.18109L16.5 7L21 11" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 21V17C10 15.8954 10.8954 15 12 15V15C13.1046 15 14 15.8954 14 17V21" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
@@ -116,6 +119,29 @@ export const Header: React.FC = () => {
                             <span className="nav-text">About Us</span>
                         </li>
                     </Link>
+                </ul>
+                <ul className="flex justify-center text-gray-100">
+                    {session ? (
+                        <Link className="nav-link" href="#" onClick={(e) => {
+                            e.preventDefault();
+                        }}>
+                            <li className="nav-link">
+                                <span><svg className="w-10 h-10 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.6,3.32a3.86,3.86,0,1,0,3.86,3.85A3.85,3.85,0,0,0,9.6,3.32M16.35,11a.26.26,0,0,0-.25.21l-.18,1.27a4.63,4.63,0,0,0-.82.45l-1.2-.48a.3.3,0,0,0-.3.13l-1,1.66a.24.24,0,0,0,.06.31l1,.79a3.94,3.94,0,0,0,0,1l-1,.79a.23.23,0,0,0-.06.3l1,1.67c.06.13.19.13.3.13l1.2-.49a3.85,3.85,0,0,0,.82.46l.18,1.27a.24.24,0,0,0,.25.2h1.93a.24.24,0,0,0,.23-.2l.18-1.27a5,5,0,0,0,.81-.46l1.19.49c.12,0,.25,0,.32-.13l1-1.67a.23.23,0,0,0-.06-.3l-1-.79a4,4,0,0,0,0-.49,2.67,2.67,0,0,0,0-.48l1-.79a.25.25,0,0,0,.06-.31l-1-1.66c-.06-.13-.19-.13-.31-.13L19.5,13a4.07,4.07,0,0,0-.82-.45l-.18-1.27a.23.23,0,0,0-.22-.21H16.46M9.71,13C5.45,13,2,14.7,2,16.83v1.92h9.33a6.65,6.65,0,0,1,0-5.69A13.56,13.56,0,0,0,9.71,13m7.6,1.43a1.45,1.45,0,1,1,0,2.89,1.45,1.45,0,0,1,0-2.89Z"/></svg></span>
+                                <span className="nav-text">Account</span>
+                            </li>
+                        </Link>
+                    ) : (
+                        <Link className="nav-link" href="#" onClick={(e) => {
+                            e.preventDefault();
+
+                            signIn("discord");
+                        }}>
+                            <li className="nav-item">
+                                <span><svg className="w-10 h-10 fill-none stroke-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 20H19C20.1046 20 21 19.1046 21 18V6C21 4.89543 20.1046 4 19 4H11M3 12H14M14 12L11 15M14 12L11 9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                                <span className="nav-text">Sign In</span>
+                            </li>
+                        </Link>
+                    )}
                 </ul>
             </nav>
         </div>
