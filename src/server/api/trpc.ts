@@ -135,14 +135,8 @@ const isMod = t.middleware(async ({ ctx, next }) => {
     }
   });
 
-  // Construct permission we need to find.
-  const toFind: Permission = {
-    userId: ctx.session.user.id,
-    name: "mod"
-  };
-
   // Check.
-  if (!user || user.permissions.length < 1 || !user.permissions.includes(toFind))
+  if (!user || user.permissions.length < 1 || !user.permissions.includes({userId: ctx.session.user.id, name: "mod"}))
     throw new TRPCError({ code: "UNAUTHORIZED" });
 
   // Continue!
