@@ -44,6 +44,14 @@
     @apply py-16;
 }
 
+.content-title {
+    @apply text-white;
+    @apply text-3xl;
+    @apply font-bold;
+    @apply italic;
+    @apply pb-4;
+}
+
 .content-col-large {
     @apply w-full;
     @apply sm:w-2/3;
@@ -114,3 +122,37 @@
     @apply list-disc;
 }
 
+.grid-view {
+    @apply grid;
+    @apply grid-cols-[repeat(auto-fill,minmax(theme(width.full),1fr))];
+    @apply gap-8;
+}
+
+.grid-view-sm {
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
+}
+
+.grid-view-lg {
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(32rem,1fr))];
+}
+
+.grid-view-center {
+    @apply justify-items-center;
+}
+
+.article-row {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply w-full;
+    @apply rounded;
+    @apply flex;
+    @apply flex-col;
+}
+
+.article-row-sm {
+    @apply sm:w-[24rem];
+}
+
+.article-row-lg {
+    @apply sm:w-[32rem];
+}
