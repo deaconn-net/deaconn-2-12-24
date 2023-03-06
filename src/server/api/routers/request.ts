@@ -79,5 +79,28 @@ export const requestRouter = createTRPCRouter({
 
             if (!res)
                 throw new TRPCError({ code: "BAD_REQUEST" });
+        }),
+    addComment: protectedProcedure
+        .input(z.object({
+            id: z.number().nullable(),
+
+            requestId: z.number(),
+            content: z.string()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            // Make sure we either own the request or are 
+            const res = await ctx.prisma.requestComment.upsert({
+                where: {
+                    id: input.id ?? 0
+                },
+                create: {
+                    requestId: input.requestId,
+                    userId: ctx.session.user.id,
+                    content: input.content
+                },
+                update: {
+                    content: input.content
+                }
+            });
         })
 });

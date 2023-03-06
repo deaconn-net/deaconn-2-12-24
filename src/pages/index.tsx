@@ -14,7 +14,6 @@ const Content: React.FC = () => {
           </div>
           <div className="w-full">
             <h3 className="text-white text-3xl font-bold italic">Have A Request?</h3>
-
           </div>
           <div className="w-full">
             <h3 className="text-white text-3xl font-bold italic">Latest Articles</h3>

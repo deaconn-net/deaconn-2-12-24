@@ -1,6 +1,9 @@
-import { modProcedure, createTRPCRouter, publicProcedure } from "../trpc";
+import { modProcedure, createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
+
 import { TRPCError } from "@trpc/server";
+import FileType from "~/utils/base64";
+import fs from 'fs';
 
 export const blogRouter = createTRPCRouter({
     get: publicProcedure
@@ -20,6 +23,9 @@ export const blogRouter = createTRPCRouter({
             incComments: z.boolean().default(false)
         }))
         .query(({ ctx, input }) => {
+            if (!input.id && !input.url)
+                return null;
+            
             return ctx.prisma.article.findFirst({
                 select: {
                     id: input.selId,
@@ -44,22 +50,55 @@ export const blogRouter = createTRPCRouter({
                 }
             });
         }),
-    add: modProcedure
+    getAll: publicProcedure
         .input(z.object({
-            id: z.number().nullable(),
+            sort: z.string().default("createdAt"),
+            sortDir: z.string().default("desc"),
+
+            skip: z.number().default(0),
+            limit: z.number().default(10),
+            cursor: z.number().nullish()
+        }))
+        .query (async ({ ctx, input }) => {
+            const items = await ctx.prisma.article.findMany({
+                skip: input.skip,
+                take: input.limit + 1,
+                cursor: (input.cursor) ? { id: input.cursor } : undefined,
+                orderBy: {
+                    [input.sort]: input.sortDir
+                }
+            });
+
+            let nextCur: typeof input.cursor | undefined = undefined;
+
+            if (items.length > input.limit) {
+                const nextItem = items.pop();
+                nextCur = nextItem?.id;
+            }
+
+            return {
+                items,
+                nextCur
+            };
+        }),
+    add: protectedProcedure
+        .input(z.object({
+            id: z.number().nullable().default(null),
             url: z.string(),
 
-            createdAt: z.date().nullable(),
-            updatedAt: z.date().nullable(),
+            createdAt: z.date().nullable().default(null),
+            updatedAt: z.date().nullable().default(null),
 
             hasUser: z.boolean().default(true),
 
             title: z.string(),
-            desc: z.string().nullable(),
-            content: z.string()
+            desc: z.string().nullable().default(null),
+            content: z.string(),
+            banner: z.string().nullable().default(null),
+            bannerRemove: z.boolean().default(false)
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.article.upsert({
+            const article = await ctx.prisma.article.upsert({
                 where: {
                     id: input.id ?? 0
                 },
@@ -78,7 +117,10 @@ export const blogRouter = createTRPCRouter({
                     ...(input.desc && {
                         desc: input.desc
                     }),
-                    content: input.content
+                    content: input.content,
+                    ...(input.bannerRemove && {
+                        banner: null
+                    })
                 },
                 update: {
                     url: input.url,
@@ -95,12 +137,63 @@ export const blogRouter = createTRPCRouter({
                     ...(input.desc && {
                         desc: input.desc
                     }),
-                    content: input.content 
+                    content: input.content,
+                    ...(input.bannerRemove && {
+                        banner: null
+                    })
                 }
             });
 
-            if (!res)
+            if (!article)
                 throw new TRPCError({ code: "BAD_REQUEST" });
+
+            // Check for banner.
+            if (input.banner && !input.bannerRemove) {
+                const fileType = FileType(input.banner);
+
+                // Make sure we have a valid image file.
+                if (fileType == "unknown") {
+                    throw new TRPCError({
+                        code: "PARSE_ERROR",
+                        message: "Article banner not a valid image file (ID #" + article.id + ")."
+                    });
+                }
+
+                // Compile file name.
+                const fileName = "/blog/articles/" + article.id + "." + fileType;
+
+                // Convert Base64 content.
+                const buffer = Buffer.from(input.banner, 'base64');
+
+                // Attempt to upload file.
+                try {
+                    fs.writeFileSync((process.env.UPLOADS_DIR ?? "/uploads") + fileName, buffer);
+                } catch (error) {
+                    console.error(error);
+
+                    throw new TRPCError({
+                        code: "NOT_FOUND",
+                        message: "Article banner failed to upload (ID #" + article.id + ")."
+                    });
+                }
+
+                // Now reupdate.
+                const update = await ctx.prisma.article.update({
+                    where: {
+                        id: article.id
+                    },
+                    data: {
+                        banner: fileName
+                    }
+                });
+
+                if (update.id < 1) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: "Failed to update article with banner information."
+                    });
+                }
+            }
         })
 
 });

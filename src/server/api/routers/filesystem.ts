@@ -8,11 +8,11 @@ export const filesystemRouter = createTRPCRouter({
     write: protectedProcedure
         .input(z.object({
             fileName: z.string(),
-            file: z.instanceof(File)
+            data: z.string()
         }))
         .mutation(async ({ input }) => {
             try {
-                fs.writeFileSync(input.fileName, input.file.toString());
+                fs.writeFileSync(input.fileName, input.data);
             } catch (error) {
                 console.error(error);
 

@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -35,12 +35,61 @@ const projectSchema = z.object({
 });
 
 export const userRouter = createTRPCRouter({
-  updateProfile: protectedProcedure
+  get: publicProcedure
+    .input(z.object({
+      id: z.string(),
+
+      selId: z.boolean().default(true),
+      selEmail: z.boolean().default(true),
+      selCredit: z.boolean().default(true),
+      selImage: z.boolean().default(true),
+      selName: z.boolean().default(true),
+      selTitle: z.boolean().default(true),
+      selAboutMe: z.boolean().default(true),
+      selBirthday: z.boolean().default(true),
+      selShowEmail: z.boolean().default(true),
+      selIsTeam: z.boolean().default(true),
+
+      incExperiences: z.boolean().default(false),
+      incSkills: z.boolean().default(false),
+      incProjects: z.boolean().default(false),
+      incPermissions: z.boolean().default(false),
+      incArticles: z.boolean().default(false),
+      incRequests: z.boolean().default(false)
+    }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findFirst({
+        select: {
+          id: input.selId,
+          email: input.selEmail,
+          credit: input.selCredit,
+          image: input.selImage,
+          name: input.selName,
+          title: input.selTitle,
+          aboutMe: input.selAboutMe,
+          birthday: input.selBirthday,
+          showEmail: input.selShowEmail,
+          isTeam: input.selIsTeam,
+
+          experiences: input.incExperiences,
+          skills: input.incSkills,
+          projects: input.incProjects,
+
+          Article: input.incArticles,
+          Request: input.incRequests
+        },
+        where: {
+          id: input.id
+        }
+      });
+    }),
+  update: protectedProcedure
     .input(z.object({
       id: z.string(),
 
       credit: z.number().nullable(),
 
+      image: z.string().nullable(),
       name: z.string().nullable(),
       title: z.string().nullable(),
       aboutMe: z.string().nullable(),
@@ -63,6 +112,9 @@ export const userRouter = createTRPCRouter({
         data: {
           ...(input.credit && {
             credit: input.credit
+          }),
+          ...(input.image && {
+            image: input.image
           }),
           ...(input.name && {
             name: input.name
