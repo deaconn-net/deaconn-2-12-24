@@ -8,7 +8,7 @@ import { getContents } from '~/utils/file_upload';
 import { ErrorBox } from '~/components/utils/error';
 import { SuccessBox } from '~/components/utils/success';
 
-export const CreateArticle: React.FC<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
+export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
     // Success and error messages.
     const [errTitle, setErrTitle] = useState<string | null>(null);
     const [errMsg, setErrMsg] = useState<string | null>(null);

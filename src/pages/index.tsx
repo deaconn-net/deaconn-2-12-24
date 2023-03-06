@@ -2,7 +2,9 @@ import { Article, Service, User } from "@prisma/client";
 import { GetServerSidePropsContext, type NextPage } from "next";
 import { prisma } from "~/server/db";
 import { Deaconn } from '../components/main';
-import { ArticleRow } from "./blog";
+import { ArticleRow } from "~/components/article/row";
+import { UserRow } from "~/components/user/row";
+import Link from "next/link";
 
 const Content: React.FC<{ cdn: string, articles: Article[], team: User[], services: Service[]}> = ({ cdn, articles, team, services }) => {
   return (
@@ -17,6 +19,11 @@ const Content: React.FC<{ cdn: string, articles: Article[], team: User[], servic
           </div>
           <div className="content-item">
             <h1 className="content-title">Have A Request?</h1>
+            <p className="text-white">We are a freelancing business and accept requests.</p>
+            <p className="text-white"><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
+            <div className="flex py-6">
+              <Link href="/request/new" className="button">New Request</Link>
+            </div>
           </div>
           <div className="content-item">
             <h1 className="content-title">Latest Articles</h1>
@@ -37,6 +44,14 @@ const Content: React.FC<{ cdn: string, articles: Article[], team: User[], servic
         <div className="content-col-small">
           <div className="content-item">
             <h1 className="content-title">Our Team</h1>
+            {team.map((user) => {
+              return (
+                <UserRow 
+                  key={"team-" + user.id}
+                  user={user} 
+                />
+              );
+            })}
           </div>
         </div>
       </div>
@@ -74,7 +89,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const team = await prisma.user.findMany({
     take: 10,
     where: {
-      isTeam: true
+      //isTeam: true
     }
   });
 

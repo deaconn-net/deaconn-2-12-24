@@ -1,13 +1,13 @@
 import { GetServerSidePropsContext, NextPage } from "next";
 import { Deaconn } from '../../components/main';
 
-import { CreateArticle } from '../../components/forms/blog/create_article';
+import { ArticleForm } from '../../components/forms/article/new';
 
 const Content: React.FC<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
   return (
     <div className="content">
       <h1 className="text-3xl text-white font-bold italic">Create Article</h1>
-      <CreateArticle
+      <ArticleForm
         lookupId={lookupId}
         lookupUrl={lookupUrl}
       />
