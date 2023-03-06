@@ -44,6 +44,11 @@
     @apply py-16;
 }
 
+.content-item {
+    @apply w-full;
+    @apply p-4;
+}
+
 .content-title {
     @apply text-white;
     @apply text-3xl;

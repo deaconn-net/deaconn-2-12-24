@@ -9,16 +9,16 @@ const Content: React.FC<{ cdn: string, articles: Article[], team: User[], servic
     <div className="content">
       <div className="flex flex-wrap">
         <div className="content-col-large">
-          <div className="w-full">
+          <div className="content-item">
             <h1 className="content-title">Popular Services</h1>
             <div>
               <p>Our services!</p>
             </div>
           </div>
-          <div className="w-full">
+          <div className="content-item">
             <h1 className="content-title">Have A Request?</h1>
           </div>
-          <div className="w-full">
+          <div className="content-item">
             <h1 className="content-title">Latest Articles</h1>
             <div className="grid-view grid-view-sm">
               {articles.map((article) => {
@@ -35,7 +35,7 @@ const Content: React.FC<{ cdn: string, articles: Article[], team: User[], servic
           </div>
         </div>
         <div className="content-col-small">
-          <div className="w-full">
+          <div className="content-item">
             <h1 className="content-title">Our Team</h1>
           </div>
         </div>
