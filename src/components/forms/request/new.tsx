@@ -11,8 +11,6 @@ import DatePicker from 'react-datepicker';
 
 import "react-datepicker/dist/react-datepicker.css";
 
-import * as Yup from 'yup';
-
 export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }) => {
     // Success and error messages.
     const [errTitle, setErrTitle] = useState<string | null>(null);
@@ -109,11 +107,6 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
             setErrTitle(null);
             setSucTitle(null);
 
-            console.log("Submitting");
-            console.log(values);
-
-            // Create request.
-            /*
             requestMut.mutate({
                 id: request?.id ?? null,
                 userId: null,
@@ -123,7 +116,6 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
                 price: values.price,
                 content: values.content            
             });
-            */
         }
     });
 
@@ -188,7 +180,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
             <div className="form-div">
                 <label className="form-label">Start Date</label>
                 {preview ? (
-                    <p className="text-white italic">{form.values.startDate.toString()}</p>
+                    <p className="text-white italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
                 ) : (
                     <DatePicker
                         className="form-input"
@@ -212,7 +204,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
             <div className="form-div">
                 <label className="form-label">Price</label>
                 {preview ? (
-                    <p className="text-white">{form.values.price.toString()}</p>
+                    <p className="text-white">{form.values.price}</p>
                 ) : (
                     <Field name="price" className="form-input" />
                 )}
