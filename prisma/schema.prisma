@@ -149,6 +149,7 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
+  isBanned      Boolean   @default(false)
   email         String?   @unique
   emailVerified DateTime?
   accounts      Account[]
@@ -163,6 +164,7 @@ model User {
   birthday  DateTime?
   showEmail Boolean   @default(false)
   isTeam    Boolean   @default(false)
+  isRoot    Boolean   @default(false)
 
   experiences Experience[]
   skills      Skill[]

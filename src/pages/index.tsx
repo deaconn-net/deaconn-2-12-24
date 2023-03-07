@@ -5,6 +5,7 @@ import { Deaconn } from '../components/main';
 import { ArticleRow } from "~/components/article/row";
 import { UserRow } from "~/components/user/row";
 import Link from "next/link";
+import { ServiceRow } from "~/components/service/row";
 
 const Content: React.FC<{ cdn: string, articles: Article[], team: User[], services: Service[]}> = ({ cdn, articles, team, services }) => {
   return (
@@ -13,8 +14,17 @@ const Content: React.FC<{ cdn: string, articles: Article[], team: User[], servic
         <div className="content-col-large">
           <div className="content-item">
             <h1 className="content-title">Popular Services</h1>
-            <div>
-              <p>Our services!</p>
+            <div className="grid-view grid-view-sm">
+              {services.map((service) => {
+                return (
+                  <ServiceRow
+                    small={true}
+                    key={"service-" + service.id}
+                    cdn={cdn}
+                    service={service}
+                  />
+                )
+              })}
             </div>
           </div>
           <div className="content-item">

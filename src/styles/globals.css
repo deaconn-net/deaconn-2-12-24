@@ -169,6 +169,26 @@
     @apply sm:w-[24rem];
 }
 
+.service-row {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply w-full;
+    @apply rounded;
+    @apply border-gray-800;
+    @apply border-2;
+    @apply border-solid;
+    @apply flex;
+    @apply flex-col;
+}
+
+.service-row-sm {
+    @apply sm:w-[18rem];
+}
+
+.service-row-lg {
+    @apply sm:w-[24rem];
+}
+
 .user-row {
     @apply p-4;
     @apply bg-cyan-900;
