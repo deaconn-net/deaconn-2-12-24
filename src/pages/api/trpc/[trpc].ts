@@ -4,6 +4,15 @@ import { env } from "~/env.mjs";
 import { createTRPCContext } from "~/server/api/trpc";
 import { appRouter } from "~/server/api/root";
 
+export const config = {
+  api: {
+    responseLimit: '8mb',
+    bodyParser: { 
+      sizeLimit: '8mb' 
+    }
+  },
+}
+
 // export API handler
 export default createNextApiHandler({
   router: appRouter,
