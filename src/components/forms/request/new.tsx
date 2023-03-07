@@ -163,7 +163,6 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                         as="select"
                         name="service"
                         className="form-input"
-                        dateFormat="yyyy/MM/dd"
                     >
                         <>
                             <option value="0">None</option>
@@ -186,7 +185,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                         className="form-input"
                         name="startDate"
                         selected={form.values.startDate}
-                        onChange={(date) => form.setFieldValue('startDate', date)}
+                        onChange={(date: Date) => form.setFieldValue('startDate', date)}
                         dateFormat="yyyy/MM/dd"
                     />
                 )}
