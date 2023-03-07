@@ -48,16 +48,17 @@ model ArticleComment {
 
 model Service {
   id  Int    @id @default(autoincrement())
-  url String
+  url String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name     String
   price    Float   @default(0)
-  desc     String // @db.Text
+  desc     String?
   install  String? // @db.Text
   features String? // @db.Text
+  content  String // @db.Text
 
   views     Int @default(0)
   purchases Int @default(0)
