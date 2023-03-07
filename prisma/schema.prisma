@@ -70,6 +70,7 @@ model Service {
   openSource Boolean @default(true)
 
   requests Request[]
+  Purchase Purchase[]
 }
 
 model Request {
@@ -89,6 +90,9 @@ model Request {
   startDate DateTime?
   price     Float
 
+  accepted Boolean @default(false)
+  closed   Boolean @default(false)
+
   requestComments RequestComment[]
 }
 
@@ -105,6 +109,14 @@ model RequestComment {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   content String // @db.Text
+}
+
+model Partner {
+  id Int @id @default(autoincrement())
+
+  name   String
+  url    String
+  banner String?
 }
 
 // Necessary for Next auth
@@ -161,6 +173,7 @@ model User {
   Request        Request[]
   ArticleComment ArticleComment[]
   RequestComment RequestComment[]
+  Purchase       Purchase[]
 }
 
 model Experience {
@@ -223,4 +236,19 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Purchase {
+  id Int @id @default(autoincrement())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  serviceId Int
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: NoAction)
+
+  transactionId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
