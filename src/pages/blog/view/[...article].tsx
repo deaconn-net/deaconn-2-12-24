@@ -57,7 +57,7 @@ const Content: React.FC<{ article: ArticleType | null, cdn: string }> = ({ artic
               
             </div>
             <ReactMarkdown
-              className="text-gray-100"
+              className="text-gray-100 markdown"
             >{article.content}</ReactMarkdown>
           </div>
         </>

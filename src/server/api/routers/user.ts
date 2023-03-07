@@ -87,21 +87,21 @@ export const userRouter = createTRPCRouter({
     .input(z.object({
       id: z.string(),
 
-      credit: z.number().nullable(),
+      credit: z.number().nullable().default(null),
 
-      image: z.string().nullable(),
-      name: z.string().nullable(),
-      title: z.string().nullable(),
-      aboutMe: z.string().nullable(),
-      birthday: z.date().nullable(),
-      showEmail: z.boolean().nullable(),
-      isTeam: z.boolean().nullable(),
+      image: z.string().nullable().default(null),
+      name: z.string().nullable().default(null),
+      title: z.string().nullable().default(null),
+      aboutMe: z.string().nullable().default(null),
+      birthday: z.date().nullable().default(null),
+      showEmail: z.boolean().nullable().default(null),
+      isTeam: z.boolean().nullable().default(null),
 
-      experiences: z.array(expSchema).nullable(),
-      skills: z.array(skillSchema).nullable(),
-      projects: z.array(projectSchema).nullable(),
+      experiences: z.array(expSchema).nullable().default(null),
+      skills: z.array(skillSchema).nullable().default(null),
+      projects: z.array(projectSchema).nullable().default(null),
 
-      permissions: z.string().nullable()
+      permissions: z.string().nullable().default(null)
     }))
     .mutation(async ({ ctx, input }) => {
       // Update user itself first.

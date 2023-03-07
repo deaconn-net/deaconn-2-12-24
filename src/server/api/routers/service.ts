@@ -1,4 +1,4 @@
-import { createTRPCRouter, modProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, modProcedure, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -55,6 +55,37 @@ export const serviceRouter = createTRPCRouter({
                     })
                 }
             });
+        }),
+    getAll: publicProcedure
+        .input(z.object({
+            sort: z.string().default("purchases"),
+            sortDir: z.string().default("desc"),
+
+            skip: z.number().default(0),
+            limit: z.number().default(10),
+            cursor: z.number().nullish()
+        }))
+        .query (async ({ ctx, input }) => {
+            const items = await ctx.prisma.service.findMany({
+                skip: input.skip,
+                take: input.limit + 1,
+                cursor: (input.cursor) ? { id: input.cursor } : undefined,
+                orderBy: {
+                    [input.sort]: input.sortDir
+                }
+            });
+
+            let nextCur: typeof input.cursor | undefined = undefined;
+
+            if (items.length > input.limit) {
+                const nextItem = items.pop();
+                nextCur = nextItem?.id;
+            }
+
+            return {
+                items,
+                nextCur
+            };
         }),
     add: modProcedure
         .input(z.object({

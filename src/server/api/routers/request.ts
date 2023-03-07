@@ -1,11 +1,11 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 export const requestRouter = createTRPCRouter({
     get: protectedProcedure
         .input(z.object({
-            id: z.number(),
+            id: z.number().nullable(),
 
             selId: z.boolean().default(true),
             selDates: z.boolean().default(true),
@@ -19,6 +19,9 @@ export const requestRouter = createTRPCRouter({
             incComments: z.boolean().default(false)
         }))
         .query(({ ctx, input }) => {
+            if (!input.id)
+                return null;
+                
             return ctx.prisma.request.findFirst({
                 select: {
                     id: input.selId,
