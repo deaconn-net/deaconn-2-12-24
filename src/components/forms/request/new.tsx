@@ -21,9 +21,7 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
 
     // Retrieve request if any.
     const query = api.request.get.useQuery({
-        id: lookupId ?? null,
-
-        selId: false
+        id: lookupId ?? null
     });
     const request = query.data;
 
@@ -150,7 +148,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
         limit: 1000
     });
 
-    const services = query.data;
+    const services = query?.data?.items;
 
     return (
         <>
@@ -166,7 +164,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                     >
                         <>
                             <option value="0">None</option>
-                            {services?.items.map((service) => {
+                            {services?.map((service) => {
                                 return (
                                     <option value={service.id}>{service.name}</option>
                                 )

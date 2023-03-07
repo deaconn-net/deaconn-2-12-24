@@ -166,7 +166,7 @@ const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | n
                     const val = (e?.currentTarget?.files) ? e.currentTarget.files[0] : null;
 
                     setBanner(val ?? null);
-                }} className="text-gray-300" />
+                }} className="form-input" />
             </div>
             <div className="form-div">
                 <label className="form-label">URL</label>
