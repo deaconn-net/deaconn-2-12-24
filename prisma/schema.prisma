@@ -189,7 +189,7 @@ model UserExperience {
   endDate   DateTime?
 
   title String
-  desc  String
+  desc  String?
 }
 
 model UserSkill {
@@ -199,7 +199,7 @@ model UserSkill {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   title String
-  desc  String
+  desc  String?
 }
 
 model UserProject {
@@ -212,7 +212,7 @@ model UserProject {
   endDate   DateTime?
 
   name String
-  desc String
+  desc String?
 
   projectSources ProjectSource[]
 }
