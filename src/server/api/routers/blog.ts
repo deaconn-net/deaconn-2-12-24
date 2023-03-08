@@ -194,6 +194,23 @@ export const blogRouter = createTRPCRouter({
                     });
                 }
             }
-        })
+        }),
+    delete: protectedProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            const res = await ctx.prisma.article.delete({
+                where: {
+                    id: input.id
+                }
+            });
 
+            if (!res) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Unable to delete article. Article ID #" + input.id + " likely not found."
+                });
+            }
+        })
 });

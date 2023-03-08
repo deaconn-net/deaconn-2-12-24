@@ -115,7 +115,9 @@ export const ServiceForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             features: features,
             content: content,
             gitLink: gitLink,
-            openSource: openSource
+            openSource: openSource,
+            bannerRemove: false,
+            iconRemove: false
         },
         enableReinitialize: true,
 
@@ -141,6 +143,7 @@ export const ServiceForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             }
 
             serviceMut.mutate({
+                id: service?.id ?? null,
                 url: values.url,
                 name: values.name,
                 price: values.price,
@@ -151,7 +154,9 @@ export const ServiceForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
                 banner: bannerB64?.toString() ?? null,
                 icon: iconB64?.toString() ?? null,
                 gitLink: values.gitLink,
-                openSource: values.openSource
+                openSource: values.openSource,
+                bannerRemove: values.bannerRemove,
+                iconRemove: values.iconRemove
             })
         }
     });
@@ -185,12 +190,6 @@ export const ServiceForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
 }
 
 const Fields: React.FC<{ preview: boolean, form: any, setBanner: React.Dispatch<React.SetStateAction<File | null>>, setIcon: React.Dispatch<React.SetStateAction<File | null>> }> = ({ preview, form, setBanner, setIcon }) => {
-    const query = api.service.getAll.useQuery({
-        limit: 1000
-    });
-
-    const services = query?.data?.items;
-
     return (
         <>
             <div className="form-div">
@@ -200,6 +199,19 @@ const Fields: React.FC<{ preview: boolean, form: any, setBanner: React.Dispatch<
 
                     setBanner(val ?? null);
                 }} className="form-input" />
+                {preview ? (
+                    <>
+                        <h2 className="text-white font-bold">Remove Banner</h2>
+                        <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                    </>
+                ) : (
+                    <>
+                        <Field
+                            name="bannerRemove"
+                            type="checkbox"
+                        /> <span className="text-white">Remove Banner</span>
+                    </>
+                )}
             </div>
             <div className="form-div">
                 <label className="form-label">Icon</label>
@@ -208,6 +220,19 @@ const Fields: React.FC<{ preview: boolean, form: any, setBanner: React.Dispatch<
 
                     setIcon(val ?? null);
                 }} className="form-input" />
+                {preview ? (
+                    <>
+                        <h2 className="text-white font-bold">Remove Icon</h2>
+                        <p className="text-white italic">{form.values.iconRemove ? "Yes" : "No"}</p>
+                    </>
+                ) : (
+                    <>
+                        <Field
+                            name="iconRemove"
+                            type="checkbox"
+                        /> <span className="text-white">Remove Icon</span>
+                    </>
+                )}
             </div>
             <div className="form-div">
                 <label className="form-label">URL</label>

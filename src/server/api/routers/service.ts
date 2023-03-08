@@ -257,5 +257,23 @@ export const serviceRouter = createTRPCRouter({
                     });
                 }
             }
+        }),
+    delete: protectedProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            const res = await ctx.prisma.service.delete({
+                where: {
+                    id: input.id
+                }
+            });
+
+            if (!res) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Unable to delete service. Service ID #" + input.id + " likely not found."
+                });
+            }
         })
 });

@@ -101,7 +101,8 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             url: url,
             title: title,
             desc: desc,
-            content: content
+            content: content,
+            bannerRemove: false
         },
         enableReinitialize: true,
 
@@ -125,7 +126,8 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
                 title: values.title,
                 desc: values.desc,
                 content: values.content,
-                banner: bannerData?.toString()
+                banner: bannerData?.toString(),
+                bannerRemove: values.bannerRemove
             });
         }
     });
@@ -167,6 +169,19 @@ const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | n
 
                     setBanner(val ?? null);
                 }} className="form-input" />
+                {preview ? (
+                    <>
+                        <h2 className="text-white font-bold">Remove Banner</h2>
+                        <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                    </>
+                ) : (
+                    <>
+                        <Field
+                            name="bannerRemove"
+                            type="checkbox"
+                        /> <span className="text-white">Remove Banner</span>
+                    </>
+                )}
             </div>
             <div className="form-div">
                 <label className="form-label">URL</label>
