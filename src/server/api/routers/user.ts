@@ -141,7 +141,7 @@ export const userRouter = createTRPCRouter({
 
       if (input.experiences && input.experiences.length > 0) {
         const promises = input.experiences.map(async (exp) => {
-          const expQuery = await ctx.prisma.experience.upsert({
+          const expQuery = await ctx.prisma.userExperience.upsert({
             where: {
               id: exp.id ?? 0
             },
@@ -178,7 +178,7 @@ export const userRouter = createTRPCRouter({
         await Promise.all(promises);
 
         // Delete existing experiences that weren't created or updated.
-        await ctx.prisma.experience.deleteMany({
+        await ctx.prisma.userExperience.deleteMany({
           where: {
             id: {
               notIn: expIds
@@ -191,7 +191,7 @@ export const userRouter = createTRPCRouter({
 
       if (input.skills && input.skills.length > 0) {
         const promises = input.skills.map(async (skill) => {
-          const skillQuery = await ctx.prisma.skill.upsert({
+          const skillQuery = await ctx.prisma.userSkill.upsert({
             where: {
               id: skill.id ?? 0
             },
@@ -214,7 +214,7 @@ export const userRouter = createTRPCRouter({
         await Promise.all(promises);
 
         // Delete existing skills that we haven't created or update.
-        await ctx.prisma.skill.deleteMany({
+        await ctx.prisma.userSkill.deleteMany({
           where: {
             id: {
               notIn: skillIds
@@ -227,7 +227,7 @@ export const userRouter = createTRPCRouter({
 
       if (input.projects && input.projects.length > 0) {
         const promises = input.projects.map(async (pro) => {
-          const proQuery = await ctx.prisma.project.upsert({
+          const proQuery = await ctx.prisma.userProject.upsert({
             where: {
               id: pro.id ?? 0
             },
@@ -302,7 +302,7 @@ export const userRouter = createTRPCRouter({
         await Promise.all(promises);
 
         // Delete all projects we haven't created or updated.
-        await ctx.prisma.project.deleteMany({
+        await ctx.prisma.userProject.deleteMany({
           where: {
             id: {
               notIn: projectIds
@@ -313,5 +313,355 @@ export const userRouter = createTRPCRouter({
 
       if (!res)
         throw new TRPCError({ code: "BAD_REQUEST" });
-    })
+    }),
+  getAllExperiences: protectedProcedure
+    .input(z.object({
+        sort: z.string().default("id"),
+        sortDir: z.string().default("desc"),
+
+        userId: z.string().nullable().default(null),
+
+        skip: z.number().default(0),
+        limit: z.number().default(10),
+        cursor: z.number().nullish()
+    }))
+    .query (async ({ ctx, input }) => {
+        const items = await ctx.prisma.userExperience.findMany({
+            skip: input.skip,
+            take: input.limit + 1,
+            cursor: (input.cursor) ? { id: input.cursor } : undefined,
+            orderBy: {
+                [input.sort]: input.sortDir
+            },
+            where: {
+              ...(input.userId && {
+                userId: input.userId
+              })
+            }
+        });
+
+        let nextCur: typeof input.cursor | undefined = undefined;
+
+        if (items.length > input.limit) {
+            const nextItem = items.pop();
+            nextCur = nextItem?.id;
+        }
+
+        return {
+            items,
+            nextCur
+        };
+    }),
+  getAllSkills: protectedProcedure
+    .input(z.object({
+        sort: z.string().default("id"),
+        sortDir: z.string().default("desc"),
+
+        userId: z.string().nullable().default(null),
+
+        skip: z.number().default(0),
+        limit: z.number().default(10),
+        cursor: z.number().nullish()
+    }))
+    .query (async ({ ctx, input }) => {
+        const items = await ctx.prisma.userSkill.findMany({
+            skip: input.skip,
+            take: input.limit + 1,
+            cursor: (input.cursor) ? { id: input.cursor } : undefined,
+            orderBy: {
+                [input.sort]: input.sortDir
+            },
+            where: {
+              ...(input.userId && {
+                userId: input.userId
+              })
+            }
+        });
+
+        let nextCur: typeof input.cursor | undefined = undefined;
+
+        if (items.length > input.limit) {
+            const nextItem = items.pop();
+            nextCur = nextItem?.id;
+        }
+
+        return {
+            items,
+            nextCur
+        };
+    }),
+  getAllProjects: publicProcedure
+    .input(z.object({
+        sort: z.string().default("id"),
+        sortDir: z.string().default("desc"),
+
+        userId: z.string().nullable().default(null),
+
+        skip: z.number().default(0),
+        limit: z.number().default(10),
+        cursor: z.number().nullish()
+    }))
+    .query (async ({ ctx, input }) => {
+        const items = await ctx.prisma.userProject.findMany({
+            skip: input.skip,
+            take: input.limit + 1,
+            cursor: (input.cursor) ? { id: input.cursor } : undefined,
+            orderBy: {
+                [input.sort]: input.sortDir
+            },
+            where: {
+              ...(input.userId && {
+                userId: input.userId
+              })
+            }
+        });
+
+        let nextCur: typeof input.cursor | undefined = undefined;
+
+        if (items.length > input.limit) {
+            const nextItem = items.pop();
+            nextCur = nextItem?.id;
+        }
+
+        return {
+            items,
+            nextCur
+        };
+    }),
+  deleteExperience: protectedProcedure
+    .input(z.object({
+      id: z.number()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const res = await ctx.prisma.userExperience.delete({
+        where: {
+          id: input.id
+        }
+      });
+
+      if (!res.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Unable to delete experience #" + input.id
+        });
+      }
+    }),
+  deleteSkill: protectedProcedure
+    .input(z.object({
+      id: z.number()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const res = await ctx.prisma.userSkill.delete({
+        where: {
+          id: input.id
+        }
+      });
+
+      if (!res.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Unable to delete skill #" + input.id
+        });
+      }
+    }),
+  deleteProject: protectedProcedure
+    .input(z.object({
+      id: z.number()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const res = await ctx.prisma.userProject.delete({
+        where: {
+          id: input.id
+        }
+      });
+
+      if (!res.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Unable to delete project #" + input.id
+        });
+      }
+    }),
+  getExperience: protectedProcedure
+    .input(z.object({
+      id: z.number()
+    }))
+    .query(({ ctx, input }) => {
+      if (input.id < 1)
+        return null;
+
+      return ctx.prisma.userExperience.findFirst({
+        where: {
+          id: input.id
+        }
+      });
+    }),
+  getSkill: protectedProcedure
+    .input(z.object({
+      id: z.number()
+    }))
+    .query(({ ctx, input }) => {
+      if (input.id < 1)
+        return null;
+      return ctx.prisma.userSkill.findFirst({
+        where: {
+          id: input.id
+        }
+      });
+    }),
+  getProject: protectedProcedure
+    .input(z.object({
+      id: z.number()
+    }))
+    .query(({ ctx, input }) => {
+      if (input.id < 1)
+        return null;
+
+      return ctx.prisma.userProject.findFirst({
+        where: {
+          id: input.id
+        }
+      });
+    }),
+  addExperience: protectedProcedure
+    .input(z.object({
+      id: z.number().nullable().default(null),
+
+      userId: z.string().nullable().default(null),
+
+      startDate: z.date().nullable().default(null),
+      endDate: z.date().nullable().default(null),
+
+      title: z.string(),
+      desc: z.string().nullable().default(null)
+    }))
+    .mutation(async ({ ctx, input}) => {
+      const res = await ctx.prisma.userExperience.upsert({
+        where: {
+          id: input.id ?? 0
+        },
+        create: {
+          userId: (input.userId) ? input.userId : ctx.session.user.id,
+          ...(input.startDate && {
+            startDate: input.startDate
+          }),
+          ...(input.endDate && {
+            endDate: input.endDate
+          }),
+          title: input.title,
+          ...(input.desc && {
+            desc: input.desc
+          })
+        },
+        update: {
+          userId: (input.userId) ? input.userId : ctx.session.user.id,
+          ...(input.startDate && {
+            startDate: input.startDate
+          }),
+          ...(input.endDate && {
+            endDate: input.endDate
+          }),
+          title: input.title,
+          ...(input.desc && {
+            desc: input.desc
+          })
+        }
+      });
+
+      if (!res.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Unable to create experience."
+        });
+      }
+    }),
+  addSkill: protectedProcedure
+    .input(z.object({
+      id: z.number().nullable().default(null),
+
+      userId: z.string().nullable().default(null),
+
+      title: z.string(),
+      desc: z.string().nullable().default(null)
+    }))
+    .mutation(async ({ ctx, input}) => {
+      const res = await ctx.prisma.userSkill.upsert({
+        where: {
+          id: input.id ?? 0
+        },
+        create: {
+          userId: (input.userId) ? input.userId : ctx.session.user.id,
+          title: input.title,
+          ...(input.desc && {
+            desc: input.desc
+          })
+        },
+        update: {
+          userId: (input.userId) ? input.userId : ctx.session.user.id,
+          title: input.title,
+          ...(input.desc && {
+            desc: input.desc
+          })
+        }
+      });
+
+      if (!res.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Unable to create skill."
+        });
+      }
+    }),
+  addProject: protectedProcedure
+    .input(z.object({
+      id: z.number().nullable().default(null),
+
+      userId: z.string().nullable().default(null),
+
+      startDate: z.date().nullable().default(null),
+      endDate: z.date().nullable().default(null),
+
+      name: z.string(),
+      desc: z.string().nullable().default(null)
+    }))
+    .mutation(async ({ ctx, input}) => {
+      const res = await ctx.prisma.userProject.upsert({
+        where: {
+          id: input.id ?? 0
+        },
+        create: {
+          userId: (input.userId) ? input.userId : ctx.session.user.id,
+          ...(input.startDate && {
+            startDate: input.startDate
+          }),
+          ...(input.endDate && {
+            endDate: input.endDate
+          }),
+          name: input.name,
+          ...(input.desc && {
+            desc: input.desc
+          })
+        },
+        update: {
+          userId: (input.userId) ? input.userId : ctx.session.user.id,
+          ...(input.startDate && {
+            startDate: input.startDate
+          }),
+          ...(input.endDate && {
+            endDate: input.endDate
+          }),
+          name: input.name,
+          ...(input.desc && {
+            desc: input.desc
+          })
+        }
+      });
+
+      if (!res.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Unable to create experience."
+        });
+      }
+    }),
 });

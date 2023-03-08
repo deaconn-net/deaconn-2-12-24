@@ -11,11 +11,7 @@ import DatePicker from 'react-datepicker';
 
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useSession } from 'next-auth/react';
-
-export const UserGeneralForm: React.FC = () => {
-    const { data: session } = useSession();
-
+export const UserProjectForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => {
     // Success and error messages.
     const [errTitle, setErrTitle] = useState<string | null>(null);
     const [errMsg, setErrMsg] = useState<string | null>(null);
@@ -23,22 +19,27 @@ export const UserGeneralForm: React.FC = () => {
     const [sucTitle, setSucTitle] = useState<string | null>(null);
     const [sucMsg, setSucMsg] = useState<string | null>(null);
 
-    // Retrieve request if any.
-    const query = api.user.get.useQuery({
-        id: session?.user.id ?? "INVALID"
+    // Retrieve project if any.
+    const query = api.user.getProject.useQuery({
+        id: lookupId ?? 0
     });
-    const user = query.data;
+    const project = query.data;
+
+    let isEdit = false;
+
+    if (project)
+        isEdit = true;
 
     // Request mutations.
-    const userMut = api.user.update.useMutation();
+    const projectMut = api.user.addProject.useMutation();
 
     // Check for errors or successes.
-    if (userMut.isSuccess && !sucTitle) {
+    if (projectMut.isSuccess && !sucTitle) {
         if (errTitle)
             setErrTitle(null);
 
-        setSucTitle("Profile Saved!");
-        setSucMsg("Your profile information was save successfully!");
+        setSucTitle("Project Added!");
+        setSucMsg("Your project was added or saved successfully!");
         
         // Scroll to top.
         if (typeof window !== undefined) {
@@ -50,14 +51,14 @@ export const UserGeneralForm: React.FC = () => {
         }
     }
 
-    if (userMut.isError && !errTitle) {
+    if (projectMut.isError && !errTitle) {
         if (sucTitle)
             setSucTitle(null);
 
-        setErrTitle("Error Saving Profile");
-        setErrMsg("Error creating or editing request. Read developer console for more information.");
+        setErrTitle("Error Adding Or Saving Project");
+        setErrMsg("Error adding or editing project. Read developer console for more information.");
 
-        console.error(userMut.error.message);
+        console.error(projectMut.error.message);
 
         // Scroll to top.
         if (typeof window !== undefined) {
@@ -71,22 +72,19 @@ export const UserGeneralForm: React.FC = () => {
 
     // Default values.
     const [retrievedVals, setRetrievedVals] = useState(false);
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
     const [name, setName] = useState("");
-    const [aboutMe, setAboutMe] = useState("");
-    const [birthday, setBirthday] = useState<Date | null>(null);
-    const [showEmail, setShowEmail] = useState(false);
+    const [desc, setDesc] = useState("");
 
-    if (user && !retrievedVals) {
-        if (user.name)
-            setName(user.name);
-
-        if (user.aboutMe)
-            setAboutMe(user.aboutMe);
-        
-        if (user.birthday)
-            setBirthday(user.birthday);
-        
-        setShowEmail(user.showEmail);
+    if (project && !retrievedVals) {
+        if (project.startDate)
+            setStartDate(project.startDate);
+        if (project.endDate)
+            setEndDate(project.endDate);
+        setName(project.name)
+        if (project.desc)
+            setDesc(project.desc);
 
         setRetrievedVals(true);
     }
@@ -97,10 +95,10 @@ export const UserGeneralForm: React.FC = () => {
     // Setup form.
     const form = useFormik({
         initialValues: {
+            startDate: startDate,
+            endDate: endDate,
             name: name,
-            aboutMe: aboutMe,
-            birthday: birthday,
-            showEmail: showEmail,
+            desc: desc,
         },
         enableReinitialize: true,
 
@@ -109,13 +107,12 @@ export const UserGeneralForm: React.FC = () => {
             setErrTitle(null);
             setSucTitle(null);
 
-            userMut.mutate({
-                id: session?.user.id ?? "INVALID",
-    
+            projectMut.mutate({
+                id: project?.id ?? null,
+                startDate: values.startDate,
+                endDate: values.endDate,
                 name: values.name,
-                aboutMe: values.aboutMe,
-                birthday: values.birthday,
-                showEmail: values.showEmail          
+                desc: values.desc   
             });
         }
     });
@@ -137,6 +134,7 @@ export const UserGeneralForm: React.FC = () => {
                     preview={preview}
                 />}
                 submitBtn={<Button
+                    isEdit={isEdit}
                     preview={preview}
                     setPreview={setPreview}
                 />}
@@ -146,14 +144,36 @@ export const UserGeneralForm: React.FC = () => {
 }
 
 const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) => {
-    const query = api.service.getAll.useQuery({
-        limit: 1000
-    });
-
-    const services = query.data;
-
     return (
         <>
+            <div className="form-div">
+                <label className="form-label">Start Date</label>
+                {preview ? (
+                    <p className="text-white italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
+                ) : (
+                    <DatePicker
+                        className="form-input"
+                        name="startDate"
+                        selected={form.values.startDate}
+                        onChange={(date: Date) => form.setFieldValue('startDate', date)}
+                        dateFormat="yyyy/MM/dd"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">End Date</label>
+                {preview ? (
+                    <p className="text-white italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
+                ) : (
+                    <DatePicker
+                        className="form-input"
+                        name="endDate"
+                        selected={form.values.endDate}
+                        onChange={(date: Date) => form.setFieldValue('endDate', date)}
+                        dateFormat="yyyy/MM/dd"
+                    />
+                )}
+            </div>
             <div className="form-div">
                 <label className="form-label">Name</label>
                 {preview ? (
@@ -163,49 +183,21 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                 )}
             </div>
             <div className="form-div">
-                <label className="form-label">About Me</label>
+                <label className="form-label">Details</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown text-white">{form.values.aboutMe}</ReactMarkdown>
+                    <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
                 ) : (
-                    <Field as="textarea" rows="16" cols="32" name="aboutMe" className="form-input" />
+                    <Field as="textarea" rows="16" cols="32" name="desc" className="form-input" />
                 )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Birthday</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
-                ) : (
-                    <DatePicker
-                        className="form-input"
-                        name="birthday"
-                        selected={form.values.birthday}
-                        onChange={(date: Date) => form.setFieldValue('birthday', date)}
-                        dateFormat="yyyy/MM/dd"
-                    />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Show Email</label>
-                {preview ? (
-                    <p className="italic">{form.values.showEmail ? "Yes" : "No"}</p>
-                ) : (
-                    <>
-                        <Field
-                            name="showEmail"
-                            type="checkbox"
-                        /> <span className="text-white">Yes</span>
-                    </>
-                )}
-
             </div>
         </>
     )
 }
 
-const Button: React.FC<{ preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ preview, setPreview }) => {
+const Button: React.FC<{ preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>>, isEdit: boolean }> = ({ preview, setPreview, isEdit }) => {
     return (
         <div className="text-center">
-            <button type="submit" className="button">Save Profile</button>
+            <button type="submit" className="button">{isEdit ? "Save" : "Add"} Project</button>
             <button onClick={(e) => {
                 e.preventDefault();
 

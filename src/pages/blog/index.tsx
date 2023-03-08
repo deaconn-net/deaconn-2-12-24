@@ -39,7 +39,7 @@ const Content: React.FC<{ limit?: number, cdn: string }> = ({ limit=10, cdn }) =
     getNextPageParam: (lastPage) => lastPage.nextCur,
   });
 
-  const loadMore = (page: number) => {
+  const loadMore = () => {
     fetchNextPage();
   }
 
