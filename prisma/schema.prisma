@@ -170,7 +170,7 @@ model User {
   skills      Skill[]
   projects    Project[]
 
-  permissions Permission[]
+  roles UserRole[]
 
   Article        Article[]
   Request        Request[]
@@ -227,10 +227,21 @@ model ProjectSource {
   @@id([projectId, url])
 }
 
-model Permission {
-  name   String  @id
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+model Role {
+  id       String     @id
+  title    String
+  desc     String?
+  UserRole UserRole[]
+}
+
+model UserRole {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
 }
 
 model VerificationToken {
