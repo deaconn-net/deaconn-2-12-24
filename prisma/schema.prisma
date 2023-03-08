@@ -166,9 +166,9 @@ model User {
   isTeam    Boolean   @default(false)
   isRoot    Boolean   @default(false)
 
-  experiences Experience[]
-  skills      Skill[]
-  projects    Project[]
+  experiences UserExperience[]
+  skills      UserSkill[]
+  projects    UserProject[]
 
   roles UserRole[]
 
@@ -179,7 +179,7 @@ model User {
   Purchase       Purchase[]
 }
 
-model Experience {
+model UserExperience {
   id Int @id @default(autoincrement())
 
   userId String
@@ -192,7 +192,7 @@ model Experience {
   desc  String
 }
 
-model Skill {
+model UserSkill {
   id Int @id @default(autoincrement())
 
   userId String
@@ -202,7 +202,7 @@ model Skill {
   desc  String
 }
 
-model Project {
+model UserProject {
   id Int @id @default(autoincrement())
 
   userId String
@@ -219,7 +219,7 @@ model Project {
 
 model ProjectSource {
   projectId Int
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project   UserProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   title String @default("Source")
   url   String
