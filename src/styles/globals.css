@@ -192,11 +192,23 @@
 .user-row {
     @apply p-4;
     @apply bg-cyan-900;
+    @apply hover:bg-cyan-800;
     @apply border-gray-800;
     @apply border-2;
     @apply border-solid;
     @apply flex;
     @apply items-center;
+}
+
+.partner-row {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply hover:bg-cyan-800;
+    @apply border-gray-800;
+    @apply border-2;
+    @apply border-solid;
+    @apply flex;
+    @apply items-center;  
 }
 
 .button {

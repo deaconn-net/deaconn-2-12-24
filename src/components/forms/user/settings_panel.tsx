@@ -11,7 +11,7 @@ export const UserSettingsPanel: React.FC<{ current?: string }> = ({ current="gen
                 <div className="flex flex-wrap">
                     <div className="w-full sm:w-1/12">
                         <ul className="list-none">
-                            <Link href="/user/profile/general">
+                            <Link href="/user/profile">
                                 <li className={"profile-item" + ((current == "general") ? " !bg-cyan-800" : "")}>General</li>
                             </Link>
                             <Link href="/user/profile/experiences">
