@@ -175,7 +175,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                 ) : (
                     <Field name="url" className="form-input" />
                 )}
-                <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/profile/view/<span className="font-bold">URL</span></p>
+                <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span></p>
             </div>
             <div className="form-div">
                 <label className="form-label">About Me</label>
