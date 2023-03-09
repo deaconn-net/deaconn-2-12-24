@@ -149,7 +149,7 @@ export const userRouter = createTRPCRouter({
           ...(input.birthday && {
             birthday: input.birthday
           }),
-          ...(input.showEmail && {
+          ...(input.showEmail != null && {
             showEmail: input.showEmail
           }),
           ...(input.isTeam && {

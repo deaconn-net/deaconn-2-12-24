@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply text-gray-100;
+}
+
 .nav-link {
     @apply p-2;
     @apply min-w-[10em];
@@ -78,7 +82,6 @@
 .form-input {
     @apply p-4;
     @apply bg-cyan-900;
-    @apply text-gray-300;
     @apply ring-cyan-800;
     @apply rounded;
     @apply w-full;
@@ -107,7 +110,6 @@
 }
 
 .markdown p {
-    @apply text-gray-300;
     @apply py-2;
 }
 
