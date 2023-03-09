@@ -72,6 +72,7 @@ export const UserGeneralForm: React.FC = () => {
     // Default values.
     const [retrievedVals, setRetrievedVals] = useState(false);
     const [name, setName] = useState("");
+    const [url, setUrl] = useState("");
     const [aboutMe, setAboutMe] = useState("");
     const [birthday, setBirthday] = useState<Date | null>(null);
     const [showEmail, setShowEmail] = useState(false);
@@ -79,6 +80,9 @@ export const UserGeneralForm: React.FC = () => {
     if (user && !retrievedVals) {
         if (user.name)
             setName(user.name);
+
+        if (user.url)
+            setUrl(user.url);
 
         if (user.aboutMe)
             setAboutMe(user.aboutMe);
@@ -98,9 +102,10 @@ export const UserGeneralForm: React.FC = () => {
     const form = useFormik({
         initialValues: {
             name: name,
+            url: url,
             aboutMe: aboutMe,
             birthday: birthday,
-            showEmail: showEmail,
+            showEmail: showEmail
         },
         enableReinitialize: true,
 
@@ -113,6 +118,7 @@ export const UserGeneralForm: React.FC = () => {
                 id: session?.user.id ?? "INVALID",
     
                 name: values.name,
+                url: values.url,
                 aboutMe: values.aboutMe,
                 birthday: values.birthday,
                 showEmail: values.showEmail          
@@ -161,6 +167,15 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                 ) : (
                     <Field name="name" className="form-input" />
                 )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">URL</label>
+                {preview ? (
+                    <p className="text-white italic">{form.values.url}</p>
+                ) : (
+                    <Field name="url" className="form-input" />
+                )}
+                <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/profile/view/<span className="font-bold">URL</span></p>
             </div>
             <div className="form-div">
                 <label className="form-label">About Me</label>

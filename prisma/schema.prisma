@@ -158,6 +158,7 @@ model User {
   credit Float @default(0)
 
   image     String?
+  url       String?   @unique
   name      String?
   title     String?
   aboutMe   String? // @db.Text

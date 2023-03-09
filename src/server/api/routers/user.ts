@@ -37,13 +37,15 @@ const projectSchema = z.object({
 export const userRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({
-      id: z.string(),
+      id: z.string().nullable().default(null),
+      url: z.string().nullable().default(null),
 
       selId: z.boolean().default(true),
       selEmail: z.boolean().default(true),
       selCredit: z.boolean().default(true),
       selImage: z.boolean().default(true),
       selName: z.boolean().default(true),
+      selUrl: z.boolean().default(true),
       selTitle: z.boolean().default(true),
       selAboutMe: z.boolean().default(true),
       selBirthday: z.boolean().default(true),
@@ -58,6 +60,9 @@ export const userRouter = createTRPCRouter({
       incRequests: z.boolean().default(false)
     }))
     .query(({ ctx, input }) => {
+      if (!input.id && !input.url)
+        return null;
+
       return ctx.prisma.user.findFirst({
         select: {
           id: input.selId,
@@ -65,6 +70,7 @@ export const userRouter = createTRPCRouter({
           credit: input.selCredit,
           image: input.selImage,
           name: input.selName,
+          url: input.selUrl,
           title: input.selTitle,
           aboutMe: input.selAboutMe,
           birthday: input.selBirthday,
@@ -79,7 +85,18 @@ export const userRouter = createTRPCRouter({
           Request: input.incRequests
         },
         where: {
-          id: input.id
+          OR: [
+            {
+              ...(input.id && {
+                id: input.id
+              })
+            },
+            {
+              ...(input.url && {
+                url: input.url
+              })
+            }
+          ]
         }
       });
     }),
@@ -91,6 +108,7 @@ export const userRouter = createTRPCRouter({
 
       image: z.string().nullable().default(null),
       name: z.string().nullable().default(null),
+      url: z.string().nullable().default(null),
       title: z.string().nullable().default(null),
       aboutMe: z.string().nullable().default(null),
       birthday: z.date().nullable().default(null),
@@ -118,6 +136,9 @@ export const userRouter = createTRPCRouter({
           }),
           ...(input.name && {
             name: input.name
+          }),
+          ...(input.url && {
+            url: input.url
           }),
           ...(input.title && {
             title: input.title

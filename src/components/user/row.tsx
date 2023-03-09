@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 export const UserRow: React.FC<{ user: User }> = ({ user }) => {
     const avatar = (user.image) ? user.image : "/images/user/default.png";
 
-    const link = "/user/view/" + user.id;
+    const link = "/user/view/" + ((user.url) ? user.url : user.id);
 
     return (
         <a href={link} className="user-row">
