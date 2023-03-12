@@ -8,17 +8,32 @@ export const filesystemRouter = createTRPCRouter({
     write: protectedProcedure
         .input(z.object({
             fileName: z.string(),
-            data: z.string()
+            data: z.string().nullable().default(null),
+            data64: z.string().nullable().default(null)
         }))
         .mutation(async ({ input }) => {
+            let data: Buffer | string | null = null;
+
+            if (input.data64)
+                data = Buffer.from(input.data64, "base64");
+            else if (input.data)
+                data = input.data;
+
+            if (!data) {
+                throw new TRPCError({
+                    message: "Invalid data for file (" + input.fileName + ").",
+                    code: "CONFLICT"
+                });
+            }
+
             try {
-                fs.writeFileSync(input.fileName, input.data);
+                fs.writeFileSync(input.fileName, data?.toString());
             } catch (error) {
                 console.error(error);
 
-                throw new TRPCError({ 
-                    message: "Could not write file to disk (" + input.fileName + ").", 
-                    code: "BAD_REQUEST" 
+                throw new TRPCError({
+                    message: "Could not write file to disk (" + input.fileName + ").",
+                    code: "BAD_REQUEST"
                 });
             }
         }),

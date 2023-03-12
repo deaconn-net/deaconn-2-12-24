@@ -38,13 +38,13 @@ export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => 
 
         setSucTitle("Skill Added!");
         setSucMsg("Your skill was added or saved successfully!");
-        
+
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -60,10 +60,10 @@ export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => 
 
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -100,7 +100,7 @@ export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => 
             skillMut.mutate({
                 id: skill?.id ?? null,
                 title: values.title,
-                desc: values.desc   
+                desc: values.desc
             });
         }
     });
@@ -117,7 +117,7 @@ export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => 
             />
             <FormMain
                 form={form}
-                content={<Fields 
+                content={<Fields
                     form={form}
                     preview={preview}
                 />}

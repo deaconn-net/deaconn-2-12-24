@@ -36,13 +36,13 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
 
         setSucTitle("Successfully " + (Boolean(request?.id) ? "Saved" : "Created") + "!");
         setSucMsg("Request successfully " + (Boolean(request?.id) ? "saved" : "created") + "!");
-        
+
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -55,16 +55,16 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
 
         console.error(requestMut.error.message);
         if (requestMut.error.data?.code == "UNAUTHORIZED")
-            setErrMsg("You are not signed in or have permissions to create requests.") 
+            setErrMsg("You are not signed in or have permissions to create requests.")
         else
             setErrMsg("Error creating or editing request.");
 
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -119,7 +119,7 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
                 startDate: values.startDate,
                 timeframe: Number(values.timeframe),
                 price: Number(values.price),
-                content: values.content            
+                content: values.content
             });
         }
     });
@@ -136,7 +136,7 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
             />
             <FormMain
                 form={form}
-                content={<Fields 
+                content={<Fields
                     form={form}
                     preview={preview}
                 />}
@@ -183,11 +183,11 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                                 return (
                                     <option value={service.id} key={"service-" + service.id}>{service.name}</option>
                                 )
-                            })}     
+                            })}
                         </>
                     </Field>
                 )}
-                
+
             </div>
             <div className="form-div">
                 <label className="form-label">Start Date</label>
@@ -202,7 +202,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                         dateFormat="yyyy/MM/dd"
                     />
                 )}
-                
+
             </div>
             <div className="form-div">
                 <label className="form-label">Timeframe</label>
@@ -233,7 +233,7 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
     )
 }
 
-const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit=false, preview, setPreview }) => {
+const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit = false, preview, setPreview }) => {
     return (
         <div className="text-center">
             <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{isEdit ? "Save Request" : "Add Request"}</button>

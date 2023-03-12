@@ -6,18 +6,17 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { Loader } from "~/components/utils/loader";
 import { ExperienceRow } from "./row";
 
-export const ExperienceBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: string, limit?: number }> = ({ sort, sortDir, userId, limit=10 }) => {
+export const ExperienceBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: string, limit?: number }> = ({ sort, sortDir, userId, limit = 10 }) => {
     const [requireItems, setRequireItems] = useState(true);
 
     const { data, fetchNextPage } = api.user.getAllExperiences.useInfiniteQuery({
         limit: limit,
 
         userId: userId ?? null,
-    
+
         sort: sort,
         sortDir: sortDir
-    },
-    {
+    }, {
         getNextPageParam: (lastPage) => lastPage.nextCur,
     });
 
@@ -49,10 +48,10 @@ export const ExperienceBrowser: React.FC<{ sort?: string, sortDir?: string, user
                     <>
                         {items.map((experience: UserExperience) => {
                             return (
-                            <ExperienceRow
-                                key={"experience-" + experience.id}
-                                experience={experience}
-                            />
+                                <ExperienceRow
+                                    key={"experience-" + experience.id}
+                                    experience={experience}
+                                />
                             )
                         })}
                     </>

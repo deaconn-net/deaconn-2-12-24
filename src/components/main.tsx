@@ -11,12 +11,12 @@ export const Deaconn: React.FC<{ meta?: Meta, content: JSX.Element }> = ({ meta,
 
     if (typeof window !== "undefined") {
         base_url = window.location.protocol + "//" + window.location.host;
-        full_url = base_url +  window.location.pathname;
+        full_url = base_url + window.location.pathname;
     }
 
     return (
         <>
-            <MetaInfo   
+            <MetaInfo
                 meta={meta}
                 full_url={full_url}
                 base_url={base_url}

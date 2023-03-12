@@ -8,7 +8,7 @@ import { UserGeneralForm } from "./general";
 import { UserProjectForm } from "./project";
 import { UserSkillForm } from "./skill";
 
-export const UserSettingsPanel: React.FC<{ current?: string, lookupId?: number }> = ({ current="general", lookupId }) => {
+export const UserSettingsPanel: React.FC<{ current?: string, lookupId?: number }> = ({ current = "general", lookupId }) => {
     const { data: session } = useSession();
 
     return (
@@ -40,7 +40,7 @@ export const UserSettingsPanel: React.FC<{ current?: string, lookupId?: number }
                             <>
                                 {!lookupId && (
                                     <ExperienceBrowser
-                                        userId={session.user.id ?? null}                       
+                                        userId={session.user.id ?? null}
                                     />
                                 )}
 
@@ -53,7 +53,7 @@ export const UserSettingsPanel: React.FC<{ current?: string, lookupId?: number }
                             <>
                                 {!lookupId && (
                                     <SkillBrowser
-                                        userId={session.user.id ?? null}                       
+                                        userId={session.user.id ?? null}
                                     />
                                 )}
 
@@ -66,7 +66,7 @@ export const UserSettingsPanel: React.FC<{ current?: string, lookupId?: number }
                             <>
                                 {!lookupId && (
                                     <ProjectBrowser
-                                        userId={session.user.id ?? null}                       
+                                        userId={session.user.id ?? null}
                                     />
                                 )}
 

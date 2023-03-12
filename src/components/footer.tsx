@@ -39,12 +39,12 @@ export const Footer: React.FC = () => {
                                         const viewLink = "/service/view/" + service.url;
 
                                         return (
-                                            <li key={"footer-service-" + service} className="footer-link"><Link href={viewLink}>{service.name}</Link></li> 
-                                        );   
+                                            <li key={"footer-service-" + service} className="footer-link"><Link href={viewLink}>{service.name}</Link></li>
+                                        );
                                     })}
-      
+
                                 </>
-      
+
                             )}
                         </ul>
                     </div>
@@ -62,7 +62,7 @@ export const Footer: React.FC = () => {
                                     })}
                                 </>
                             )}
-            
+
                         </ul>
                     </div>
                 </div>

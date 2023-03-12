@@ -34,13 +34,13 @@ export const ServiceForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
 
         setSucTitle("Successfully " + (Boolean(service?.id) ? "Saved" : "Created") + "!");
         setSucMsg("Service successfully " + (Boolean(service?.id) ? "saved" : "created") + "!");
-        
+
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -53,16 +53,16 @@ export const ServiceForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
 
         console.error(serviceMut.error.message);
         if (serviceMut.error.data?.code == "UNAUTHORIZED")
-            setErrMsg("You are not signed in or have permissions to create services.") 
+            setErrMsg("You are not signed in or have permissions to create services.")
         else
             setErrMsg("Error creating or editing service.");
 
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -173,7 +173,7 @@ export const ServiceForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             />
             <FormMain
                 form={form}
-                content={<Fields 
+                content={<Fields
                     form={form}
                     preview={preview}
                     setBanner={setBanner}
@@ -315,7 +315,7 @@ const Fields: React.FC<{ preview: boolean, form: any, setBanner: React.Dispatch<
     )
 }
 
-const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit=false, preview, setPreview }) => {
+const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit = false, preview, setPreview }) => {
     return (
         <div className="text-center">
             <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{isEdit ? "Save Service" : "Add Service"}</button>

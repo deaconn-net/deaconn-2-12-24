@@ -40,13 +40,13 @@ export const UserProjectForm: React.FC<{ lookupId?: number }> = ({ lookupId }) =
 
         setSucTitle("Project Added!");
         setSucMsg("Your project was added or saved successfully!");
-        
+
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -62,10 +62,10 @@ export const UserProjectForm: React.FC<{ lookupId?: number }> = ({ lookupId }) =
 
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -112,7 +112,7 @@ export const UserProjectForm: React.FC<{ lookupId?: number }> = ({ lookupId }) =
                 startDate: values.startDate,
                 endDate: values.endDate,
                 name: values.name,
-                desc: values.desc   
+                desc: values.desc
             });
         }
     });
@@ -129,7 +129,7 @@ export const UserProjectForm: React.FC<{ lookupId?: number }> = ({ lookupId }) =
             />
             <FormMain
                 form={form}
-                content={<Fields 
+                content={<Fields
                     form={form}
                     preview={preview}
                 />}

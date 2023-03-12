@@ -7,7 +7,7 @@ import { UserSettingsPanel } from "~/components/forms/user/settings_panel";
 
 const Content: React.FC<{ lookupId: number | null }> = ({ lookupId }) => {
     const { data: session } = useSession();
-    
+
     const router = useRouter();
 
     const { view } = router.query;
@@ -18,29 +18,29 @@ const Content: React.FC<{ lookupId: number | null }> = ({ lookupId }) => {
         realView = "general";
 
     return (
-      <div className="content">
-        <UserSettingsPanel
-          lookupId={lookupId ?? 0}
-          current={realView}
-        />
-      </div>
+        <div className="content">
+            <UserSettingsPanel
+                lookupId={lookupId ?? 0}
+                current={realView}
+            />
+        </div>
     )
 }
 
 const Page: NextPage<{ lookupId: number }> = ({ lookupId }) => {
-  return (
-    <Deaconn 
-      content={<Content 
-        lookupId={lookupId}
-      />}
-    />
-  );
+    return (
+        <Deaconn
+            content={<Content
+                lookupId={lookupId}
+            />}
+        />
+    );
 };
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const lookupId = (ctx.query.id) ? Number(ctx.query.id) : null;
+    const lookupId = (ctx.query.id) ? Number(ctx.query.id) : null;
 
-  return { props: { lookupId: lookupId } };
+    return { props: { lookupId: lookupId } };
 }
 
 export default Page;

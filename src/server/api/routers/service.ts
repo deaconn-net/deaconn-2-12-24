@@ -27,13 +27,13 @@ export const serviceRouter = createTRPCRouter({
             selBanner: z.boolean().default(true),
             selGitLink: z.boolean().default(true),
             selOpenSource: z.boolean().default(true),
-            
+
             incRequests: z.boolean().default(false)
         }))
         .query(({ ctx, input }) => {
             if (!input.id && !input.url)
                 return null;
-            
+
             return ctx.prisma.service.findFirst({
                 select: {
                     id: input.selId,
@@ -75,7 +75,7 @@ export const serviceRouter = createTRPCRouter({
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
-        .query (async ({ ctx, input }) => {
+        .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.service.findMany({
                 skip: input.skip,
                 take: input.limit + 1,
@@ -100,7 +100,7 @@ export const serviceRouter = createTRPCRouter({
     add: protectedProcedure
         .input(z.object({
             id: z.number().nullable().default(null),
-            
+
             url: z.string(),
             name: z.string(),
             price: z.number().default(0),

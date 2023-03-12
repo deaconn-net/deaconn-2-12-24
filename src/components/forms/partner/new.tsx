@@ -32,13 +32,13 @@ export const PartnerForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
 
         setSucTitle("Successfully " + (Boolean(partner?.id) ? "Saved" : "Created") + "!");
         setSucMsg("Partner successfully " + (Boolean(partner?.id) ? "saved" : "created") + "!");
-        
+
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -51,16 +51,16 @@ export const PartnerForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
 
         console.error(partnerMut.error.message);
         if (partnerMut.error.data?.code == "UNAUTHORIZED")
-            setErrMsg("You are not signed in or have permissions to create partners.")  
+            setErrMsg("You are not signed in or have permissions to create partners.")
         else
             setErrMsg("Error creating or editing partner.");
 
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -128,7 +128,7 @@ export const PartnerForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             />
             <FormMain
                 form={form}
-                content={<Fields 
+                content={<Fields
                     setBanner={setBanner}
                     form={form}
                     preview={preview}
@@ -182,13 +182,13 @@ const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | n
                 ) : (
                     <Field name="url" className="form-input" />
                 )}
-                
+
             </div>
         </>
     )
 }
 
-const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit=false, preview, setPreview }) => {
+const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit = false, preview, setPreview }) => {
     return (
         <div className="text-center">
             <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{isEdit ? "Save Partner" : "Add Partner"}</button>

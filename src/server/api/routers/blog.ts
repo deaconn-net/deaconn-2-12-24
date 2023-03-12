@@ -25,7 +25,7 @@ export const blogRouter = createTRPCRouter({
         .query(({ ctx, input }) => {
             if (!input.id && !input.url)
                 return null;
-            
+
             return ctx.prisma.article.findFirst({
                 select: {
                     id: input.selId,
@@ -37,7 +37,7 @@ export const blogRouter = createTRPCRouter({
                     desc: input.selDesc,
                     content: input.selContent,
                     views: input.selViews,
-                    
+
                     articleComments: input.incComments
                 },
                 where: {
@@ -59,7 +59,7 @@ export const blogRouter = createTRPCRouter({
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
-        .query (async ({ ctx, input }) => {
+        .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.article.findMany({
                 skip: input.skip,
                 take: input.limit + 1,

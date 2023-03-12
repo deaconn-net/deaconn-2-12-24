@@ -19,7 +19,7 @@ export const partnerRouter = createTRPCRouter({
         .query(({ ctx, input }) => {
             if (!input.id && !input.url)
                 return null;
-            
+
             return ctx.prisma.partner.findFirst({
                 select: {
                     id: input.selId,
@@ -43,7 +43,7 @@ export const partnerRouter = createTRPCRouter({
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
-        .query (async ({ ctx, input }) => {
+        .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.partner.findMany({
                 skip: input.skip,
                 take: input.limit + 1,

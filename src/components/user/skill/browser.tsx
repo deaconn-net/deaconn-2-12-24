@@ -6,18 +6,17 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { Loader } from "~/components/utils/loader";
 import { SkillRow } from "./row";
 
-export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: string, limit?: number }> = ({ sort, sortDir, userId, limit=10 }) => {
+export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: string, limit?: number }> = ({ sort, sortDir, userId, limit = 10 }) => {
     const [requireItems, setRequireItems] = useState(true);
 
     const { data, fetchNextPage } = api.user.getAllSkills.useInfiniteQuery({
         limit: limit,
 
         userId: userId ?? null,
-    
+
         sort: sort,
         sortDir: sortDir
-    },
-    {
+    }, {
         getNextPageParam: (lastPage) => lastPage.nextCur,
     });
 
@@ -49,10 +48,10 @@ export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: 
                     <>
                         {items.map((skill: UserSkill) => {
                             return (
-                            <SkillRow
-                                key={"skill-" + skill.id}
-                                skill={skill}
-                            />
+                                <SkillRow
+                                    key={"skill-" + skill.id}
+                                    skill={skill}
+                                />
                             )
                         })}
                     </>

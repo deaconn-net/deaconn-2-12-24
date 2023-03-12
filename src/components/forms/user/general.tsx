@@ -39,13 +39,13 @@ export const UserGeneralForm: React.FC = () => {
 
         setSucTitle("Profile Saved!");
         setSucMsg("Your profile information was save successfully!");
-        
+
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -61,10 +61,10 @@ export const UserGeneralForm: React.FC = () => {
 
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -86,10 +86,10 @@ export const UserGeneralForm: React.FC = () => {
 
         if (user.aboutMe)
             setAboutMe(user.aboutMe);
-        
+
         if (user.birthday)
             setBirthday(user.birthday);
-        
+
         setShowEmail(user.showEmail);
 
         setRetrievedVals(true);
@@ -116,12 +116,12 @@ export const UserGeneralForm: React.FC = () => {
 
             userMut.mutate({
                 id: session?.user.id ?? "INVALID",
-    
+
                 name: values.name,
                 url: values.url,
                 aboutMe: values.aboutMe,
                 birthday: values.birthday,
-                showEmail: values.showEmail          
+                showEmail: values.showEmail
             });
         }
     });
@@ -138,7 +138,7 @@ export const UserGeneralForm: React.FC = () => {
             />
             <FormMain
                 form={form}
-                content={<Fields 
+                content={<Fields
                     form={form}
                     preview={preview}
                 />}

@@ -12,11 +12,11 @@ const Content: React.FC = () => {
 }
 
 const Page: NextPage = () => {
-  return (
-    <Deaconn 
-      content={<Content />}
-    />
-  );
+    return (
+        <Deaconn
+            content={<Content />}
+        />
+    );
 };
 
 export default Page;

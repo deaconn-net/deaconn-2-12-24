@@ -12,7 +12,7 @@ export const RequestRow: React.FC<{ request: Request }> = ({ request }) => {
 
     const createdAt = dateFormat(request.createdAt, dateFormatOne);
     const updatedAt = dateFormat(request.updatedAt, dateFormatOne);
-  
+
     return (
         <tr className="request-row">
             <td className="request-cData">
@@ -38,4 +38,4 @@ export const RequestRow: React.FC<{ request: Request }> = ({ request }) => {
             </td>
         </tr>
     );
-  }
+}

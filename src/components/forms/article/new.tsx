@@ -35,13 +35,13 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
 
         setSucTitle("Successfully " + (Boolean(article?.id) ? "Saved" : "Created") + "!");
         setSucMsg("Article successfully " + (Boolean(article?.id) ? "saved" : "created") + "!");
-        
+
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -56,16 +56,16 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
         if (articleMut.error.data?.code == "UNAUTHORIZED")
             setErrMsg("You are not signed in or have permissions to create articles on our blog.")
         else if (articleMut.error.message.includes("constraint"))
-            setErrMsg("URL is already in use. Please choose a different URL or modify the existing article properly.")    
+            setErrMsg("URL is already in use. Please choose a different URL or modify the existing article properly.")
         else
             setErrMsg("Error creating or editing article.");
 
         // Scroll to top.
         if (typeof window !== undefined) {
-            window.scroll({ 
-                top: 0, 
-                left: 0, 
-                behavior: 'smooth' 
+            window.scroll({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
             });
         }
     }
@@ -144,7 +144,7 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             />
             <FormMain
                 form={form}
-                content={<Fields 
+                content={<Fields
                     setBanner={setBanner}
                     form={form}
                     preview={preview}
@@ -190,7 +190,7 @@ const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | n
                 ) : (
                     <Field name="url" className="form-input" />
                 )}
-                
+
             </div>
             <div className="form-div">
                 <label className="form-label">Title</label>
@@ -220,7 +220,7 @@ const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | n
     )
 }
 
-const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit=false, preview, setPreview }) => {
+const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit = false, preview, setPreview }) => {
     return (
         <div className="text-center">
             <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{isEdit ? "Save Article" : "Add Article"}</button>
