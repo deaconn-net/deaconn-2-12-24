@@ -16,10 +16,24 @@ export const RequestRow: React.FC<{ request: Request }> = ({ request }) => {
                 )}
             </td>
             <td className="request-cData">
-                {request.createdAt.toString()}
+                {request.createdAt.toLocaleDateString("en-US", { 
+                    year: "2-digit", 
+                    month: "2-digit", 
+                    day: "2-digit", 
+                    hour: "2-digit", 
+                    minute: "2-digit",
+                    timeZoneName: "short"
+                })}
             </td>
             <td className="request-cData">
-                {request.updatedAt.toString()}
+                {request.updatedAt.toLocaleDateString("en-US", { 
+                    year: "2-digit", 
+                    month: "2-digit", 
+                    day: "2-digit", 
+                    hour: "2-digit", 
+                    minute: "2-digit",
+                    timeZoneName: "short" 
+                })}
             </td>
             <td className="request-cData">
                 {request.closed ? "Closed" : "Open"}

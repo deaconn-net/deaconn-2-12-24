@@ -16,19 +16,26 @@ const Content: React.FC<{ article: ArticleType | null, cdn: string }> = ({ artic
   let updatedAt: string | null = null;
 
   if (article) {
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short'
-    });
+    // Make sure our dates are actual dates.
+    // Note - For some reason Prisma DB has dates parsed as a string at times.
+    if (typeof article.createdAt === "string")
+      article.createdAt = new Date(article.createdAt);
+    
+    if (typeof article.updatedAt === "string")
+      article.updatedAt = new Date(article.updatedAt);
+
+    const opts: Intl.DateTimeFormatOptions = {
+      year: "2-digit", 
+      month: "2-digit", 
+      day: "2-digit", 
+      hour: "2-digit", 
+      minute: "2-digit",
+      timeZoneName: "short" 
+    };
 
     try {
-      createdAt = formatter.format(article.createdAt);
-      updatedAt = formatter.format(article.updatedAt);
+      createdAt = article.createdAt.toLocaleDateString("en-US", opts);
+      updatedAt = article.updatedAt.toLocaleDateString("en-US", opts);
     } catch (error) {
       console.log("Error parsing dates");
       console.log(error);
@@ -44,15 +51,15 @@ const Content: React.FC<{ article: ArticleType | null, cdn: string }> = ({ artic
           </div>
           <h1 className="content-title">{article.title}</h1>
           <div className="w-full bg-cyan-900 p-6 rounded-sm">
-            <div className="text-white text-sm pb-4">
+            <div className="text-white text-sm italic pb-4">
               {article.user && (
-                <span>Created By <span className="font-bold"><UserLink user={article.user} /></span></span>
+                <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
               )}
               {createdAt && (
-                <span>Created On <span className="font-bold">{createdAt}</span></span>
+                <p>Created On <span className="font-bold">{createdAt}</span></p>
               )}
               {updatedAt && (
-                <span>Updated On <span className="font-bold">{updatedAt}</span></span>
+                <p>Updated On <span className="font-bold">{updatedAt}</span></p>
               )}
               
             </div>
