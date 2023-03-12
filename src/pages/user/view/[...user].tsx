@@ -9,11 +9,15 @@ import { prisma } from "~/server/db";
 
 import { Deaconn } from '../../../components/main';
 
+import { dateFormat, dateFormatTwo } from "~/utils/date";
+
 const Content: React.FC<{ user: User, current?: string }> = ({ user, current="general" }) => {
   const baseUrl = "/user/view/" + ((user.url) ? user.url : user.id);
 
   if (!current)
     current = "general";
+
+  const birthday = (user.birthday) ? dateFormat(user.birthday, dateFormatTwo) : null;
 
   return (
     <div className="content">
@@ -64,10 +68,10 @@ const Content: React.FC<{ user: User, current?: string }> = ({ user, current="ge
                           <p className="italic">{user.email}</p>
                         </div>
                       )}
-                      {user.birthday && (
+                      {birthday && (
                         <div className="p-6">
                           <h3 className="content-title">Birthday</h3>
-                          <p className="italic">{user.birthday.toString() ?? "Not Set"}</p>
+                          <p className="italic">{birthday}</p>
                         </div>
                       )}
                     </>
