@@ -8,6 +8,8 @@ import Link from "next/link";
 import { ServiceRow } from "~/components/service/row";
 import { PartnerRow } from "~/components/partner/row";
 
+import { globalProps } from "~/utils/global_props";
+
 const Content: React.FC<{ cdn: string, articles: Article[], team: User[], services: Service[], partners: Partner[]}> = ({ cdn, articles, team, services, partners }) => {
   return (
     <div className="content">
@@ -128,15 +130,21 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     }
   });
 
-  const partners = await prisma.partner.findMany();
-
-  return { props: { 
+  // Assign props.
+  let props = {};
+  const global = await globalProps();
+  
+  props = {
+    ...global,
     cdn: cdn,
     articles: JSON.parse(JSON.stringify(articles)),
     team: JSON.parse(JSON.stringify(team)),
-    services: JSON.parse(JSON.stringify(services)),
-    partners: JSON.parse(JSON.stringify(partners))
-  } };
+    services: JSON.parse(JSON.stringify(services))
+  };
+
+  return { 
+    props: props
+  };
 }
 
 export default Page;
