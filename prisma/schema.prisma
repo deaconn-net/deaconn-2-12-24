@@ -86,6 +86,7 @@ model Request {
   serviceId Int?
   service   Service? @relation(fields: [serviceId], references: [id], onDelete: NoAction)
 
+  title     String?
   timeframe Int
   content   String // @db.Text
   startDate DateTime?

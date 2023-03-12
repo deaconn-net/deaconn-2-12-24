@@ -202,6 +202,19 @@ body {
     @apply items-center;
 }
 
+.request-row {
+    @apply w-full;
+    @apply bg-cyan-900;
+    @apply hover:bg-cyan-800;
+    @apply border-gray-800;
+    @apply border-2;
+    @apply border-solid;
+}
+
+.request-cData {
+    @apply p-6;
+}
+
 .partner-row {
     @apply p-4;
     @apply bg-cyan-900;

@@ -10,6 +10,7 @@ export const requestRouter = createTRPCRouter({
             selId: z.boolean().default(true),
             selDates: z.boolean().default(true),
             selUser: z.boolean().default(true),
+            selTitle: z.boolean().default(true),
             selService: z.boolean().default(true),
             selTimeframe: z.boolean().default(true),
             selContent: z.boolean().default(true),
@@ -28,6 +29,7 @@ export const requestRouter = createTRPCRouter({
                     createdAt: input.selDates,
                     updatedAt: input.selDates,
                     user: input.selUser,
+                    title: input.selTitle,
                     service: input.selService,
                     timeframe: input.selTimeframe,
                     content: input.selContent,
@@ -41,16 +43,55 @@ export const requestRouter = createTRPCRouter({
                 }
             });
         }),
+    getAll: protectedProcedure
+        .input(z.object({
+            userId: z.string().nullable().default(null),
+
+            sort: z.string().default("updatedAt"),
+            sortDir: z.string().default("desc"),
+
+            skip: z.number().default(0),
+            limit: z.number().default(10),
+            cursor: z.number().nullish()
+        }))
+        .query(async ({ ctx, input }) => {
+            const items = await ctx.prisma.request.findMany({
+                skip: input.skip,
+                take: input.limit + 1,
+                cursor: (input.cursor) ? { id: input.cursor } : undefined,
+                orderBy: {
+                    [input.sort]: input.sortDir
+                },
+                where: {
+                    ...(input.userId && {
+                        userId: input.userId
+                    })
+                }
+            });
+
+            let nextCur: typeof input.cursor | undefined = undefined;
+
+            if (items.length > input.limit) {
+                const nextItem = items.pop();
+                nextCur = nextItem?.id;
+            }
+
+            return {
+                items,
+                nextCur
+            };
+        }),
     add: protectedProcedure
         .input(z.object({
-            id: z.number().nullable(),
+            id: z.number().nullable().default(null),
 
-            userId: z.string().nullable(),
-            serviceId: z.number().nullable(),
+            userId: z.string().nullable().default(null),
+            serviceId: z.number().nullable().default(null),
 
+            title: z.string().nullable().default(null),
             timeframe: z.number(),
             content: z.string(),
-            startDate: z.date().nullable(),
+            startDate: z.date().nullable().default(null),
             price: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
@@ -63,6 +104,9 @@ export const requestRouter = createTRPCRouter({
                     ...(input.serviceId && {
                         serviceId: input.serviceId
                     }),
+                    ...(input.title && {
+                        title: input.title
+                    }),
                     timeframe: input.timeframe,
                     content: input.content,
                     startDate: input.startDate,
@@ -72,6 +116,9 @@ export const requestRouter = createTRPCRouter({
                     userId: input.userId ?? ctx.session.user.id,
                     ...(input.serviceId && {
                         serviceId: input.serviceId
+                    }),
+                    ...(input.title && {
+                        title: input.title
                     }),
                     timeframe: input.timeframe,
                     content: input.content,
@@ -105,5 +152,26 @@ export const requestRouter = createTRPCRouter({
                     content: input.content
                 }
             });
+        }),
+    close: protectedProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input}) => {
+            const res = await ctx.prisma.request.update({
+                data: {
+                    closed: true
+                },
+                where: {
+                    id: input.id
+                }
+            });
+
+            if (!res.id) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Unable to close request #" + input.id
+                })
+            }
         })
 });

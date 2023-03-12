@@ -54,7 +54,7 @@ export const ServiceRow: React.FC<{ service: Service, cdn: string, small?: boole
             <div className="p-6 flex flex-wrap gap-2 justify-center">
               <Link className="w-full button" href={viewUrl}>View</Link>
               {service.openSource && service.gitLink && (
-                <a className="w-full button button-secondary" target="_blank" href={service.gitLink}>Source Code</a>
+                <a className="w-full button" target="_blank" href={service.gitLink}>Source Code</a>
               )}
             </div>
             <div className="p-6 flex flex-wrap gap-2 justify-center">

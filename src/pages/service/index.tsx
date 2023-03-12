@@ -24,7 +24,10 @@ const Content: React.FC<{ limit?: number, cdn: string }> = ({ limit=10, cdn }) =
   const [requireItems, setRequireItems] = useState(true);
 
   const { data, fetchNextPage } = api.service.getAll.useInfiniteQuery({
-    limit: limit
+    limit: limit,
+
+    sort: sort,
+    sortDir: sortDir
   },
   {
     getNextPageParam: (lastPage) => lastPage.nextCur,

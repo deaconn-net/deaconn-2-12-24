@@ -10,6 +10,7 @@ import { SuccessBox } from '~/components/utils/success';
 import DatePicker from 'react-datepicker';
 
 import "react-datepicker/dist/react-datepicker.css";
+import { Service } from '@prisma/client';
 
 export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }) => {
     // Success and error messages.
@@ -71,6 +72,7 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
     // Default values.
     const [retrievedVals, setRetrievedVals] = useState(false);
     const [service, setService] = useState(0);
+    const [title, setTitle] = useState("");
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [timeframe, setTimeframe] = useState<number>(0);
     const [price, setPrice] = useState(50.00);
@@ -78,7 +80,10 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
 
     if (request && !retrievedVals) {
         setService(request?.service?.id ?? 0);
-        setStartDate(request.startDate);
+        if (request.title)
+            setTitle(request.title);
+        if (request.startDate)
+            setStartDate(request.startDate);
         setTimeframe(request.timeframe);
         setPrice(request.price);
         setContent(request.content);
@@ -93,6 +98,7 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
     const form = useFormik({
         initialValues: {
             service: service,
+            title: title,
             startDate: startDate,
             timeframe: timeframe,
             price: price,
@@ -108,10 +114,11 @@ export const RequestForm: React.FC<{ lookupId?: number | null }> = ({ lookupId }
             requestMut.mutate({
                 id: request?.id ?? null,
                 userId: null,
-                serviceId: values.service,
+                serviceId: Number(values.service),
+                title: values.title,
                 startDate: values.startDate,
-                timeframe: values.timeframe,
-                price: values.price,
+                timeframe: Number(values.timeframe),
+                price: Number(values.price),
                 content: values.content            
             });
         }
@@ -153,6 +160,14 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
     return (
         <>
             <div className="form-div">
+                <label className="form-label">Title</label>
+                {preview ? (
+                    <p className="text-white italic">{form.values.title}</p>
+                ) : (
+                    <Field name="title" className="form-input" />
+                )}
+            </div>
+            <div className="form-div">
                 <label className="form-label">Service</label>
                 {preview ? (
                     <p className="text-white italic">{form.values.service}</p>
@@ -164,9 +179,9 @@ const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) =>
                     >
                         <>
                             <option value="0">None</option>
-                            {services?.map((service) => {
+                            {services?.map((service: Service) => {
                                 return (
-                                    <option value={service.id}>{service.name}</option>
+                                    <option value={service.id} key={"service-" + service.id}>{service.name}</option>
                                 )
                             })}     
                         </>
