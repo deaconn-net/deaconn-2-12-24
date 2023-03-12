@@ -5,8 +5,7 @@ import { Deaconn } from '../../../components/main';
 import ReactMarkdown from 'react-markdown';
 import { UserLink } from "~/components/user/link";
 
-import { formatOne } from "~/utils/date_format";
-import { dateFormat } from "~/utils/date";
+import { dateFormat, dateFormatOne } from "~/utils/date";
 
 type ArticleType = Article & {
   user: User | null;
@@ -19,8 +18,8 @@ const Content: React.FC<{ article: ArticleType | null, cdn: string }> = ({ artic
   let updatedAt: string | null = null;
 
   if (article) {
-      createdAt = dateFormat(article.createdAt, formatOne);
-      updatedAt = dateFormat(article.updatedAt, formatOne);
+      createdAt = dateFormat(article.createdAt, dateFormatOne);
+      updatedAt = dateFormat(article.updatedAt, dateFormatOne);
   }
 
   return (

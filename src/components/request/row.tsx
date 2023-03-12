@@ -2,8 +2,7 @@ import { Request } from "@prisma/client";
 import Link from "next/link";
 import { api } from "~/utils/api";
 
-import { formatOne } from "~/utils/date_format";
-import { dateFormat } from "~/utils/date";
+import { dateFormat, dateFormatOne } from "~/utils/date";
 
 export const RequestRow: React.FC<{ request: Request }> = ({ request }) => {
     const viewUrl = "/request/view/" + request.id;
@@ -11,8 +10,8 @@ export const RequestRow: React.FC<{ request: Request }> = ({ request }) => {
 
     const closeMut = api.request.close.useMutation();
 
-    const createdAt = dateFormat(request.createdAt, formatOne);
-    const updatedAt = dateFormat(request.updatedAt, formatOne);
+    const createdAt = dateFormat(request.createdAt, dateFormatOne);
+    const updatedAt = dateFormat(request.updatedAt, dateFormatOne);
   
     return (
         <tr className="request-row">
