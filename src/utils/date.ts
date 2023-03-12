@@ -14,6 +14,8 @@ export const dateFormatTwo: Intl.DateTimeFormatOptions = {
 };
 
 export const dateFormat = (date: Date | string, format: Intl.DateTimeFormatOptions) => {
+    // For some strange reason, Prisma DB returns dates as strings at times.
+    // Therefore, check if it is a string and if so, parse as a date.
     if (typeof date === "string")
         date = new Date(date);
     
