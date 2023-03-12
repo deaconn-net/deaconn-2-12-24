@@ -1,3 +1,3 @@
-export const isOwner = <T extends { itemId: string, userId: string }>(itemId: T['itemId'], userId: T['userId']) => {
+export const isOwner = (itemId: string, userId: string) => {
     return itemId == userId;
 }
