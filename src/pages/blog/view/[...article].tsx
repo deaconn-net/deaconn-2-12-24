@@ -5,6 +5,9 @@ import { Deaconn } from '../../../components/main';
 import ReactMarkdown from 'react-markdown';
 import { UserLink } from "~/components/user/link";
 
+import { formatOne } from "~/utils/date_format";
+import { dateFormat } from "~/utils/date";
+
 type ArticleType = Article & {
   user: User | null;
 };
@@ -16,30 +19,8 @@ const Content: React.FC<{ article: ArticleType | null, cdn: string }> = ({ artic
   let updatedAt: string | null = null;
 
   if (article) {
-    // Make sure our dates are actual dates.
-    // Note - For some reason Prisma DB has dates parsed as a string at times.
-    if (typeof article.createdAt === "string")
-      article.createdAt = new Date(article.createdAt);
-    
-    if (typeof article.updatedAt === "string")
-      article.updatedAt = new Date(article.updatedAt);
-
-    const opts: Intl.DateTimeFormatOptions = {
-      year: "2-digit", 
-      month: "2-digit", 
-      day: "2-digit", 
-      hour: "2-digit", 
-      minute: "2-digit",
-      timeZoneName: "short" 
-    };
-
-    try {
-      createdAt = article.createdAt.toLocaleDateString("en-US", opts);
-      updatedAt = article.updatedAt.toLocaleDateString("en-US", opts);
-    } catch (error) {
-      console.log("Error parsing dates");
-      console.log(error);
-    }
+      createdAt = dateFormat(article.createdAt, formatOne);
+      updatedAt = dateFormat(article.updatedAt, formatOne);
   }
 
   return (

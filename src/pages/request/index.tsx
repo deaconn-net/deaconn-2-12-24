@@ -30,7 +30,9 @@ const Content: React.FC<{ limit?: number }> = ({ limit=10 }) => {
 
     sort: sort,
     sortDir: sortDir,
-    userId: session?.user.id ?? "INVALID"
+    userId: session?.user.id ?? "INVALID",
+
+    incService: true
   },
   {
     getNextPageParam: (lastPage) => lastPage.nextCur,
@@ -82,10 +84,11 @@ const Content: React.FC<{ limit?: number }> = ({ limit=10 }) => {
       >
         <>
           {data && (
-            <table className="table-auto border-spacing-2 border-collapse">
+            <table className="w-full table-auto border-spacing-2 border-collapse">
               <thead>
                 <tr>
                   <th>Title</th>
+                  <th>Service</th>
                   <th>Created</th>
                   <th>Last Updated</th>
                   <th>Status</th>

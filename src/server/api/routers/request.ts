@@ -52,13 +52,18 @@ export const requestRouter = createTRPCRouter({
 
             skip: z.number().default(0),
             limit: z.number().default(10),
-            cursor: z.number().nullish()
+            cursor: z.number().nullish(),
+
+            incService: z.boolean().default(false)
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.request.findMany({
                 skip: input.skip,
                 take: input.limit + 1,
                 cursor: (input.cursor) ? { id: input.cursor } : undefined,
+                include: {
+                    service: true
+                },
                 orderBy: {
                     [input.sort]: input.sortDir
                 },
