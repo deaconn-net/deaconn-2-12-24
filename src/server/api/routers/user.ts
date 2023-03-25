@@ -335,7 +335,7 @@ export const userRouter = createTRPCRouter({
             if (!res)
                 throw new TRPCError({ code: "BAD_REQUEST" });
         }),
-    getAllExperiences: protectedProcedure
+    getAllExperiences: publicProcedure
         .input(z.object({
             sort: z.string().default("id"),
             sortDir: z.string().default("desc"),
@@ -373,7 +373,7 @@ export const userRouter = createTRPCRouter({
                 nextCur
             };
         }),
-    getAllSkills: protectedProcedure
+    getAllSkills: publicProcedure
         .input(z.object({
             sort: z.string().default("id"),
             sortDir: z.string().default("desc"),
@@ -524,6 +524,7 @@ export const userRouter = createTRPCRouter({
         .query(({ ctx, input }) => {
             if (input.id < 1)
                 return null;
+
             return ctx.prisma.userSkill.findFirst({
                 where: {
                     id: input.id

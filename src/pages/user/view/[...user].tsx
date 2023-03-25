@@ -88,7 +88,7 @@ const Content: React.FC<{ user: User, current?: string }> = ({ user, current = "
                             <div className="p-6">
                                 <h1 className="content-title">Skills</h1>
                                 <SkillBrowser
-                                    userId={user.id ?? null}
+                                    userId={user.id}
                                 />
                             </div>
                         )}
@@ -96,7 +96,7 @@ const Content: React.FC<{ user: User, current?: string }> = ({ user, current = "
                             <div className="p-6">
                                 <h1 className="content-title">Projects</h1>
                                 <ProjectBrowser
-                                    userId={user.id ?? null}
+                                    userId={user.id}
                                 />
                             </div>
                         )}
