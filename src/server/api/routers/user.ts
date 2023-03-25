@@ -503,7 +503,7 @@ export const userRouter = createTRPCRouter({
                 });
             }
         }),
-    getExperience: protectedProcedure
+    getExperience: publicProcedure
         .input(z.object({
             id: z.number()
         }))
@@ -517,7 +517,7 @@ export const userRouter = createTRPCRouter({
                 }
             });
         }),
-    getSkill: protectedProcedure
+    getSkill: publicProcedure
         .input(z.object({
             id: z.number()
         }))
@@ -530,7 +530,7 @@ export const userRouter = createTRPCRouter({
                 }
             });
         }),
-    getProject: protectedProcedure
+    getProject: publicProcedure
         .input(z.object({
             id: z.number()
         }))
