@@ -30,7 +30,7 @@ export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: 
         data.pages.forEach((pg) => {
             items.push(...pg.items);
 
-            if (pg.items.length < limit && requireItems)
+            if (!pg.nextCur && requireItems)
                 setRequireItems(false);
         });
     }
