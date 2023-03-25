@@ -44,7 +44,6 @@ export const Footer: React.FC = () => {
                                     })}
 
                                 </>
-
                             )}
                         </ul>
                     </div>
@@ -62,7 +61,6 @@ export const Footer: React.FC = () => {
                                     })}
                                 </>
                             )}
-
                         </ul>
                     </div>
                 </div>
