@@ -49,7 +49,7 @@ const Content: React.FC<{ limit?: number, cdn: string }> = ({ limit = 10, cdn })
         data.pages.forEach((pg) => {
             items.push(...pg.items);
 
-            if (pg.items.length < limit && requireItems)
+            if (!pg.nextCur && requireItems)
                 setRequireItems(false);
         });
     }
