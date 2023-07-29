@@ -6,12 +6,13 @@ const Row: React.FC<{
     partner
 }) => {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const banner = (partner.banner) ? cdn + partner.banner : null;
+    const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
+    const banner = cdn + upload_url + partner?.banner;
 
     return (
         <a href={partner.url} target="_blank">
             <div className="partner-row">
-                {banner ? (
+                {partner.banner ? (
                     <img src={banner} className="w-full h-18" alt={partner.name} />
                 ) : (
                     <span className="text-lg text-white">{partner.name}</span>

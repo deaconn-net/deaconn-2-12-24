@@ -101,7 +101,7 @@ const Form: React.FC<{
                 id: service?.id,
                 url: values.url,
                 name: values.name,
-                price: values.price,
+                price: Number(values.price),
                 desc: values.desc,
                 install: values.install,
                 features: values.features,

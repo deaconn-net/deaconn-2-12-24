@@ -15,11 +15,12 @@ const Row: React.FC<{
     small = false
 }) => {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
+    const upload_dir = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
 
     const viewUrl = "/blog/view/" + article.url;
     const editUrl = "/blog/new?id=" + article.id;
 
-    const banner = (article.banner) ? cdn + article.banner : "/images/blog/default.jpg";
+    const banner = (article.banner) ? cdn + upload_dir + article.banner : "/images/blog/default.jpg";
 
     const deleteMut = api.blog.delete.useMutation();
 
