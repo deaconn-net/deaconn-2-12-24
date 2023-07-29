@@ -26,6 +26,9 @@ export const upload_file = (
     no_append_file_type?: boolean,
     no_prepend_upload_url?: boolean
 ): [boolean, string | null, string | null] => {
+    // Split by comma if there is any.
+    contents = contents.split(",")?.[1] ?? contents;
+
     const file_type = FileType(contents);
 
     // Make sure we recongize file type.
@@ -48,19 +51,20 @@ export const upload_file = (
 
     // Attempt to upload file.
     try {
-        fs.writeFileSync(process.env.UPLOADS_DIR ?? "" + path, buffer);
+        fs.writeFileSync((process.env.UPLOADS_DIR ?? "") + path, buffer);
     } catch (error) {
         console.error(`Full Upload File Path => ${process.env.UPLOADS_DIR ?? ""}${path}`);
         console.error(error);
 
-        return [false, "Failed to upload file. Check console for errors!", process.env.UPLOADS_DIR ?? "" + path];
+        return [false, "Failed to upload file. Check console for errors!", (process.env.UPLOADS_DIR ?? "") + path];
     }
 
+    // Compile full path to return.
     let full_path = path;
 
     // Check if we need to prepend upload URL.
     if (!no_prepend_upload_url)
-        full_path = process.env.UPLOADS_PRE_URL ?? "" + path;
+        full_path = (process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "") + path;
 
     return [true, null, full_path];
 }
