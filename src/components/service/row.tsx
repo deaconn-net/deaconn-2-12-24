@@ -18,11 +18,12 @@ const Row: React.FC<{
     small = false
 }) => {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
+    const upload_url = process.env.NEXT_PUBLIC_UPLOAD_PRE_URL ?? "";
     
     const viewUrl = "/service/view/" + service.url;
     const editUrl = "/service/new?id=" + service.id;
 
-    const banner = (service.banner) ? cdn + service.banner : "/images/service/default.jpg";
+    const banner = (service.banner) ? cdn + upload_url + service.banner : "/images/service/default.jpg";
 
     const deleteMut = api.service.delete.useMutation();
 
