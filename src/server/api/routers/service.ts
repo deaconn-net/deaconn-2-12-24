@@ -5,31 +5,6 @@ import { TRPCError } from "@trpc/server";
 import { upload_file } from "@utils/file_upload";
 
 export const serviceRouter = createTRPCRouter({
-    get: protectedProcedure
-        .input(z.object({
-            id: z.number().optional(),
-            url: z.string().optional(),
-
-            incRequests: z.boolean().default(false)
-        }))
-        .query(({ ctx, input }) => {
-            if (!input.id && !input.url)
-                return null;
-
-            return ctx.prisma.service.findFirst({
-                include: {
-                    requests: input.incRequests
-                },
-                where: {
-                    ...(input.id && {
-                        id: input.id
-                    }),
-                    ...(input.url && {
-                        url: input.url
-                    })
-                }
-            });
-        }),
     getAll: publicProcedure
         .input(z.object({
             sort: z.string().default("purchases"),
@@ -84,7 +59,7 @@ export const serviceRouter = createTRPCRouter({
         .mutation(async ({ ctx, input }) => {
             const service = await ctx.prisma.service.upsert({
                 where: {
-                    id: input.id ?? 0
+                    id: input.id ?? 0,
                 },
                 create: {
                     url: input.url,
@@ -159,7 +134,7 @@ export const serviceRouter = createTRPCRouter({
 
                 if (input.icon) {
                     // We only need to compile path name without file type.
-                    const path = `/uploads/services/${service.id}_icon`;
+                    const path = `/services/${service.id}_icon`;
 
                     // Upload file and retrieve full path.
                     const [success, err, full_path] = upload_file(path, input.icon);
