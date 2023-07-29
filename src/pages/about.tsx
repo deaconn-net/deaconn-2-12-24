@@ -1,20 +1,13 @@
+import Wrapper from "@components/wrapper";
 import { type NextPage } from "next";
-import { Deaconn } from '../components/main';
-
-const Content: React.FC = () => {
-    return (
-        <div className="content">
-            <p className="text-white">About</p>
-        </div>
-    )
-}
 
 const Page: NextPage = () => {
     return (
-        <Deaconn
-            content={<Content />}
-        />
+        <Wrapper>
+            <div className="content">
+                <p className="text-white">About</p>
+            </div>
+        </Wrapper>
     );
-};
-
+}
 export default Page;

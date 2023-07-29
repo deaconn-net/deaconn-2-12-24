@@ -1,38 +1,52 @@
 import { GetServerSidePropsContext, NextPage } from "next";
-import { Deaconn } from '../../components/main';
 
-import { ServiceForm } from '../../components/forms/service/new';
+import { type Service } from "@prisma/client";
 
-const Content: React.FC<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
+import Form from '@components/forms/service/new';
+import Wrapper from "@components/wrapper";
+import { prisma } from "@server/db";
+
+const Page: NextPage<{
+    service: Service | null
+}> = ({
+    service
+}) => {
     return (
-        <div className="content">
-            <h1 className="text-3xl text-white font-bold italic">Create Service</h1>
-            <ServiceForm
-                lookupId={lookupId}
-                lookupUrl={lookupUrl}
-            />
-        </div>
-    )
+        <Wrapper>
+            <div className="content">
+                <h1 className="text-3xl text-white font-bold italic">Create Service</h1>
+                <Form
+                    service={service}
+                />
+            </div>
+        </Wrapper>
+    );
 }
 
-const Page: NextPage<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
-    return (
-        <Deaconn
-            content={
-                <Content
-                    lookupId={lookupId}
-                    lookupUrl={lookupUrl}
-                />
-            }
-        />
-    );
-};
-
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    const lookupId = (ctx.query.id) ? Number(ctx.query.id) : null;
-    const lookupUrl = (ctx.query.url) ? ctx.query.url : null;
+    const lookup_id = ctx.query?.id;
+    const lookup_url = ctx.query?.url;
 
-    return { props: { lookupId: lookupId, lookupUrl: lookupUrl } };
+    let service: Service | null = null;
+
+    if (lookup_id || lookup_url) {
+        service = await prisma.service.findFirst({
+            where: {
+                ...(lookup_id && {
+                    id: Number(lookup_id.toString())
+                }),
+                ...(lookup_url && {
+                    url: lookup_url.toString()
+                })
+            }
+        });
+    }
+
+    return {
+        props: {
+            service: JSON.parse(JSON.stringify(service, (_, v) => typeof v === "bigint" ? v.toString() : v))
+        }
+    };
 }
 
 export default Page;

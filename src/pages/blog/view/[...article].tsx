@@ -1,18 +1,28 @@
-import { Article, User } from "@prisma/client";
 import { GetServerSidePropsContext, NextPage } from "next";
-import { prisma } from "~/server/db";
-import { Deaconn } from '../../../components/main';
-import ReactMarkdown from 'react-markdown';
-import { UserLink } from "~/components/user/link";
 
-import { dateFormat, dateFormatOne } from "~/utils/date";
+import { type Article, type User } from "@prisma/client";
+
+import { prisma } from "@server/db";
+
+import { UserLink } from "@components/user/link";
+import Wrapper from "@components/wrapper";
+import NotFound from "@components/errors/not_found";
+
+import { dateFormat, dateFormatOne } from "@utils/date";
+
+import ReactMarkdown from "react-markdown";
 
 type ArticleType = Article & {
     user: User | null;
 };
 
-const Content: React.FC<{ article: ArticleType | null, cdn: string }> = ({ article, cdn }) => {
-    const image = (article && article.banner) ? cdn + article.banner : "/images/blog/default.jpg";
+const Page: NextPage<{
+    article: ArticleType | null
+}> = ({
+    article
+}) => {
+    const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
+    const image = cdn + article?.banner + "/images/blog/default.jpg";
 
     let createdAt: string | null = null;
     let updatedAt: string | null = null;
@@ -23,48 +33,39 @@ const Content: React.FC<{ article: ArticleType | null, cdn: string }> = ({ artic
     }
 
     return (
-        <div className="content">
-            {article ? (
-                <>
-                    <div className="w-full flex justify-center">
-                        <img src={image} className="w-[67.5rem] h-[33.75rem] max-h-full border-2 border-solid border-cyan-900 rounded-t" alt="Banner" />
-                    </div>
-                    <h1 className="content-title">{article.title}</h1>
-                    <div className="w-full bg-cyan-900 p-6 rounded-sm">
-                        <div className="text-white text-sm italic pb-4">
-                            {article.user && (
-                                <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
-                            )}
-                            {createdAt && (
-                                <p>Created On <span className="font-bold">{createdAt}</span></p>
-                            )}
-                            {updatedAt && (
-                                <p>Updated On <span className="font-bold">{updatedAt}</span></p>
-                            )}
-
+        <Wrapper>
+            <div className="content">
+                {article ? (
+                    <>
+                        <div className="w-full flex justify-center">
+                            <img src={image} className="w-[67.5rem] h-[33.75rem] max-h-full border-2 border-solid border-cyan-900 rounded-t" alt="Banner" />
                         </div>
-                        <ReactMarkdown
-                            className="text-gray-100 markdown"
-                        >{article.content}</ReactMarkdown>
-                    </div>
-                </>
-            ) : (
-                <p className="text-white">Article not found.</p>
-            )}
-        </div>
-    )
-}
+                        <h1 className="content-title">{article.title}</h1>
+                        <div className="w-full bg-cyan-900 p-6 rounded-sm">
+                            <div className="text-white text-sm italic pb-4">
+                                {article.user && (
+                                    <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
+                                )}
+                                {createdAt && (
+                                    <p>Created On <span className="font-bold">{createdAt}</span></p>
+                                )}
+                                {updatedAt && (
+                                    <p>Updated On <span className="font-bold">{updatedAt}</span></p>
+                                )}
 
-const Page: NextPage<{ article: ArticleType | null, cdn: string }> = ({ article, cdn }) => {
-    return (
-        <Deaconn
-            content={<Content
-                cdn={cdn}
-                article={article}
-            />}
-        />
+                            </div>
+                            <ReactMarkdown
+                                className="text-gray-100 markdown"
+                            >{article.content}</ReactMarkdown>
+                        </div>
+                    </>
+                ) : (
+                    <NotFound item="Article" />
+                )}
+            </div>
+        </Wrapper>
     );
-};
+}
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     let article: ArticleType | null = null;
@@ -82,7 +83,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
-    return { props: { article: (article) ? JSON.parse(JSON.stringify(article)) : null, cdn: process.env.CDN_URL ?? "" } };
+    return { 
+        props: { 
+            article: JSON.parse(JSON.stringify(article))
+        }
+    };
 }
 
 export default Page;
