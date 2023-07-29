@@ -1,10 +1,19 @@
-import { UserProject } from "@prisma/client";
 import Link from "next/link";
-import ReactMarkdown from 'react-markdown';
-import { api } from "~/utils/api";
-import { SuccessBox } from "../../utils/success";
 
-export const ProjectRow: React.FC<{ project: UserProject, small?: boolean }> = ({ project, small = false }) => {
+import { type UserProject } from "@prisma/client";
+
+import { api } from "@utils/api";
+import SuccessBox from "@utils/success";
+
+import ReactMarkdown from "react-markdown";
+
+const Row: React.FC<{
+    project: UserProject,
+    small?: boolean
+}> = ({
+    project,
+    small = false
+}) => {
     const editUrl = "/user/profile/projects?id=" + project.id;
 
     const deleteMut = api.user.deleteProject.useMutation();
@@ -47,3 +56,5 @@ export const ProjectRow: React.FC<{ project: UserProject, small?: boolean }> = (
         </>
     );
 }
+
+export default Row;

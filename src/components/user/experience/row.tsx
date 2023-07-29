@@ -1,10 +1,19 @@
-import { Service, UserExperience } from "@prisma/client";
 import Link from "next/link";
-import ReactMarkdown from 'react-markdown';
-import { api } from "~/utils/api";
-import { SuccessBox } from "../../utils/success";
 
-export const ExperienceRow: React.FC<{ experience: UserExperience, small?: boolean }> = ({ experience, small = false }) => {
+import { type Service, type UserExperience } from "@prisma/client";
+
+import { api } from "@utils/api";
+import SuccessBox from "@utils/success";
+
+import ReactMarkdown from "react-markdown";
+
+const Row: React.FC<{
+    experience: UserExperience,
+    small?: boolean
+}> = ({
+    experience,
+    small = false
+}) => {
     const editUrl = "/user/profile/experiences?id=" + experience.id;
 
     const deleteMut = api.user.deleteExperience.useMutation();
@@ -47,3 +56,5 @@ export const ExperienceRow: React.FC<{ experience: UserExperience, small?: boole
         </>
     );
 }
+
+export default Row;

@@ -1,12 +1,24 @@
-import { UserExperience } from "@prisma/client";
 import { useState } from "react";
-import { api } from "~/utils/api";
 
-import InfiniteScroll from 'react-infinite-scroller';
-import { Loader } from "~/components/utils/loader";
-import { ExperienceRow } from "./row";
+import { UserExperience } from "@prisma/client";
 
-export const ExperienceBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: string, limit?: number }> = ({ sort, sortDir, userId, limit = 10 }) => {
+import { api } from "@utils/api";
+import Loader from "@utils/loader";
+import Row from "@components/user/experience/row";
+
+import InfiniteScroll from "react-infinite-scroller";
+
+const Browser: React.FC<{
+    sort?: string,
+    sortDir?: string,
+    userId?: string,
+    limit?: number
+}> = ({
+    sort,
+    sortDir,
+    userId,
+    limit = 10
+}) => {
     const [requireItems, setRequireItems] = useState(true);
 
     const { data, fetchNextPage } = api.user.getAllExperiences.useInfiniteQuery({
@@ -48,7 +60,7 @@ export const ExperienceBrowser: React.FC<{ sort?: string, sortDir?: string, user
                     <>
                         {items.map((experience: UserExperience) => {
                             return (
-                                <ExperienceRow
+                                <Row
                                     key={"experience-" + experience.id}
                                     experience={experience}
                                 />
@@ -60,3 +72,5 @@ export const ExperienceBrowser: React.FC<{ sort?: string, sortDir?: string, user
         </InfiniteScroll>
     );
 }
+
+export default Browser;

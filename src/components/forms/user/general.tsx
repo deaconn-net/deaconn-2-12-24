@@ -1,33 +1,32 @@
-import { Field, useFormik } from 'formik';
-import React, { useState } from 'react';
-import { api } from '../../../utils/api';
-import { FormMain } from '../main';
+import React, { useState } from "react";
 
-import ReactMarkdown from 'react-markdown';
-import { ErrorBox } from '~/components/utils/error';
-import { SuccessBox } from '~/components/utils/success';
+import { Field, useFormik } from "formik";
 
-import DatePicker from 'react-datepicker';
+import FormMain from "@components/forms/main";
+
+import { api } from "@utils/api";
+import ErrorBox from "@utils/error";
+import SuccessBox from "@utils/success";
+import { ScrollToTop } from "@utils/scroll";
+
+import ReactMarkdown from "react-markdown";
+import DatePicker from "react-datepicker";
+
+import { User } from "@prisma/client";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useSession } from 'next-auth/react';
-
-export const UserGeneralForm: React.FC = () => {
-    const { data: session } = useSession();
-
+const Form: React.FC<{
+    user?: User
+}> = ({
+    user
+}) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | null>(null);
-    const [errMsg, setErrMsg] = useState<string | null>(null);
+    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
+    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
 
-    const [sucTitle, setSucTitle] = useState<string | null>(null);
-    const [sucMsg, setSucMsg] = useState<string | null>(null);
-
-    // Retrieve request if any.
-    const query = api.user.get.useQuery({
-        id: session?.user.id ?? "INVALID"
-    });
-    const user = query.data;
+    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
+    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
 
     // Request mutations.
     const userMut = api.user.update.useMutation();
@@ -35,24 +34,18 @@ export const UserGeneralForm: React.FC = () => {
     // Check for errors or successes.
     if (userMut.isSuccess && !sucTitle) {
         if (errTitle)
-            setErrTitle(null);
+            setErrTitle(undefined);
 
         setSucTitle("Profile Saved!");
         setSucMsg("Your profile information was save successfully!");
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
+        ScrollToTop();
     }
 
     if (userMut.isError && !errTitle) {
         if (sucTitle)
-            setSucTitle(null);
+            setSucTitle(undefined);
 
         setErrTitle("Error Saving Profile");
         setErrMsg("Error creating or editing request. Read developer console for more information.");
@@ -60,62 +53,51 @@ export const UserGeneralForm: React.FC = () => {
         console.error(userMut.error.message);
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    // Default values.
-    const [retrievedVals, setRetrievedVals] = useState(false);
-    const [name, setName] = useState("");
-    const [url, setUrl] = useState("");
-    const [aboutMe, setAboutMe] = useState("");
-    const [birthday, setBirthday] = useState<Date | null>(null);
-    const [showEmail, setShowEmail] = useState(false);
-
-    if (user && !retrievedVals) {
-        if (user.name)
-            setName(user.name);
-
-        if (user.url)
-            setUrl(user.url);
-
-        if (user.aboutMe)
-            setAboutMe(user.aboutMe);
-
-        if (user.birthday)
-            setBirthday(user.birthday);
-
-        setShowEmail(user.showEmail);
-
-        setRetrievedVals(true);
+        ScrollToTop();
     }
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
 
+    // Submit button.
+    const submit_btn =
+        <div className="text-center">
+            <button type="submit" className="button">Save Profile</button>
+            <button onClick={(e) => {
+                e.preventDefault();
+
+                if (preview)
+                    setPreview(false);
+                else
+                    setPreview(true);
+            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
+        </div>;
+
     // Setup form.
     const form = useFormik({
         initialValues: {
-            name: name,
-            url: url,
-            aboutMe: aboutMe,
-            birthday: birthday,
-            showEmail: showEmail
+            name: user?.name ?? "",
+            url: user?.url ?? "",
+            aboutMe: user?.aboutMe ?? "",
+            birthday: new Date(user?.birthday ?? Date.now()),
+            showEmail: user?.showEmail ?? false
         },
         enableReinitialize: true,
 
         onSubmit: async (values) => {
             // Reset error and success.
-            setErrTitle(null);
-            setSucTitle(null);
+            setErrTitle(undefined);
+            setSucTitle(undefined);
+
+            if (!user?.id) {
+                setErrTitle("User Not Found!");
+                setErrMsg("User not found when saving profile information.");
+
+                return;
+            }
 
             userMut.mutate({
-                id: session?.user.id ?? "INVALID",
+                id: user.id,
 
                 name: values.name,
                 url: values.url,
@@ -138,97 +120,63 @@ export const UserGeneralForm: React.FC = () => {
             />
             <FormMain
                 form={form}
-                content={<Fields
-                    form={form}
-                    preview={preview}
-                />}
-                submitBtn={<Button
-                    preview={preview}
-                    setPreview={setPreview}
-                />}
-            />
+                submitBtn={submit_btn}
+            >
+                <div className="form-div">
+                    <label className="form-label">Name</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.name}</p>
+                    ) : (
+                        <Field name="name" className="form-input" />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">URL</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.url}</p>
+                    ) : (
+                        <Field name="url" className="form-input" />
+                    )}
+                    <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
+                </div>
+                <div className="form-div">
+                    <label className="form-label">About Me</label>
+                    {preview ? (
+                        <ReactMarkdown className="markdown text-white">{form.values.aboutMe}</ReactMarkdown>
+                    ) : (
+                        <Field as="textarea" rows="16" cols="32" name="aboutMe" className="form-input" />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Birthday</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
+                    ) : (
+                        <DatePicker
+                            className="form-input"
+                            name="birthday"
+                            selected={form.values.birthday}
+                            onChange={(date: Date) => form.setFieldValue('birthday', date)}
+                            dateFormat="yyyy/MM/dd"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Show Email</label>
+                    {preview ? (
+                        <p className="italic">{form.values.showEmail ? "Yes" : "No"}</p>
+                    ) : (
+                        <>
+                            <Field
+                                name="showEmail"
+                                type="checkbox"
+                            /> <span className="text-white">Yes</span>
+                        </>
+                    )}
+                </div>
+            </FormMain>
         </>
     );
 }
 
-const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) => {
-    const query = api.service.getAll.useQuery({
-        limit: 1000
-    });
-
-    const services = query.data;
-
-    return (
-        <>
-            <div className="form-div">
-                <label className="form-label">Name</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.name}</p>
-                ) : (
-                    <Field name="name" className="form-input" />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">URL</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.url}</p>
-                ) : (
-                    <Field name="url" className="form-input" />
-                )}
-                <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
-            </div>
-            <div className="form-div">
-                <label className="form-label">About Me</label>
-                {preview ? (
-                    <ReactMarkdown className="markdown text-white">{form.values.aboutMe}</ReactMarkdown>
-                ) : (
-                    <Field as="textarea" rows="16" cols="32" name="aboutMe" className="form-input" />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Birthday</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
-                ) : (
-                    <DatePicker
-                        className="form-input"
-                        name="birthday"
-                        selected={form.values.birthday}
-                        onChange={(date: Date) => form.setFieldValue('birthday', date)}
-                        dateFormat="yyyy/MM/dd"
-                    />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Show Email</label>
-                {preview ? (
-                    <p className="italic">{form.values.showEmail ? "Yes" : "No"}</p>
-                ) : (
-                    <>
-                        <Field
-                            name="showEmail"
-                            type="checkbox"
-                        /> <span className="text-white">Yes</span>
-                    </>
-                )}
-
-            </div>
-        </>
-    )
-}
-
-const Button: React.FC<{ preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ preview, setPreview }) => {
-    return (
-        <div className="text-center">
-            <button type="submit" className="button">Save Profile</button>
-            <button onClick={(e) => {
-                e.preventDefault();
-
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
-        </div>
-    )
-}
+export default Form;

@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
-export const Header: React.FC = () => {
+const Header: React.FC = () => {
     const { data: session } = useSession();
 
     return (
@@ -71,3 +71,5 @@ export const Header: React.FC = () => {
         </div>
     );
 }
+
+export default Header;

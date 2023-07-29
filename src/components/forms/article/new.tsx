@@ -1,29 +1,28 @@
 import { Field, useFormik } from 'formik';
 import React, { useState } from 'react';
-import { api } from '../../../utils/api';
-import { FormMain } from '../main';
+
+import { type Article } from '@prisma/client';
+
+import FormMain from "@components/forms/main";
+
+import { api } from "@utils/api";
+import ErrorBox from "@utils/error";
+import SuccessBox from "@utils/success";
+import { ScrollToTop } from '@utils/scroll';
 
 import ReactMarkdown from 'react-markdown';
-import { getContents } from '~/utils/file_upload';
-import { ErrorBox } from '~/components/utils/error';
-import { SuccessBox } from '~/components/utils/success';
 
-export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
+const Form: React.FC<{
+    article?: Article | null
+}> = ({
+    article
+}) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | null>(null);
-    const [errMsg, setErrMsg] = useState<string | null>(null);
+    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
+    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
 
-    const [sucTitle, setSucTitle] = useState<string | null>(null);
-    const [sucMsg, setSucMsg] = useState<string | null>(null);
-
-    // Retrieve article if any.
-    const query = api.blog.get.useQuery({
-        id: lookupId ?? null,
-        url: lookupUrl ?? null,
-
-        selViews: false
-    });
-    const article = query.data;
+    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
+    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
 
     // Article mutations.
     const articleMut = api.blog.add.useMutation();
@@ -31,24 +30,18 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
     // Check for errors or successes.
     if (articleMut.isSuccess && !sucTitle) {
         if (errTitle)
-            setErrTitle(null);
+            setErrTitle(undefined);
 
         setSucTitle("Successfully " + (Boolean(article?.id) ? "Saved" : "Created") + "!");
         setSucMsg("Article successfully " + (Boolean(article?.id) ? "saved" : "created") + "!");
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
+        ScrollToTop();
     }
 
     if (articleMut.isError && !errTitle) {
         if (sucTitle)
-            setSucTitle(null);
+            setSucTitle(undefined);
 
         setErrTitle("Error Creating Or Editing Article");
 
@@ -61,72 +54,59 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             setErrMsg("Error creating or editing article.");
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    // Default values.
-    const [retrievedVals, setRetrievedVals] = useState(false);
-    const [url, setUrl] = useState("");
-    const [title, setTitle] = useState("");
-    const [desc, setDesc] = useState("");
-    const [content, setContent] = useState("");
-
-    if (article && !retrievedVals) {
-        setUrl(article.url);
-        setTitle(article.title);
-
-        if (article.desc)
-            setDesc(article.desc);
-
-        setContent(article.content);
-
-        setRetrievedVals(true);
+        ScrollToTop();
     }
 
     // Setup banner image.
-    const [banner, setBanner] = useState<File | null>(null);
+    const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
 
+    // Submit button.
+    const submit_btn =
+        <div className="text-center">
+            <button 
+                type="submit"
+                className="p-6 text-white text-center bg-cyan-900 rounded"
+            >{article ? "Save Article" : "Add Article"}</button>
+            <button
+                className="ml-4 p-6 text-white text-center bg-cyan-800 rounded"
+                onClick={(e) => {
+                    e.preventDefault();
+
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
+        </div>;
+
     // Setup form.
     const form = useFormik({
         initialValues: {
-            url: url,
-            title: title,
-            desc: desc,
-            content: content,
+            url: article?.url ?? "",
+            title: article?.title ?? "",
+            desc: article?.desc ?? "",
+            content: article?.content ?? "",
             bannerRemove: false
         },
         enableReinitialize: true,
 
         onSubmit: async (values) => {
             // Reset error and success.
-            setErrTitle(null);
-            setSucTitle(null);
-
-            let bannerData: string | ArrayBuffer | null = null;
-
-            // Handle banner upload if any.
-            if (banner) {
-                bannerData = await getContents(banner);
-                bannerData = (bannerData) ? bannerData.toString().split(',')[1] ?? null : null;
-            }
+            setErrTitle(undefined);
+            setSucTitle(undefined);
 
             // Create article.
             articleMut.mutate({
-                id: article?.id ?? null,
+                id: article?.id,
                 url: values.url,
                 title: values.title,
                 desc: values.desc,
                 content: values.content,
-                banner: bannerData?.toString(),
+                banner: banner?.toString(),
                 bannerRemove: values.bannerRemove
             });
         }
@@ -144,94 +124,100 @@ export const ArticleForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             />
             <FormMain
                 form={form}
-                content={<Fields
-                    setBanner={setBanner}
-                    form={form}
-                    preview={preview}
-                />}
-                submitBtn={<Button
-                    preview={preview}
-                    setPreview={setPreview}
-                    isEdit={Boolean(article?.id)}
-                />}
-            />
+                submitBtn={submit_btn}
+            >
+                <div className="form-div">
+                    <label 
+                        className="form-label"
+                    >Banner</label>
+                    <input
+                        className="form-input"
+                        type="file"
+                        name="banner"
+                        onChange={(e) => {
+                            const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
+
+                            if (file) {
+                                const reader = new FileReader();
+
+                                reader.onloadend = () => {
+                                    setBanner(reader.result);
+                                };
+                                
+                                reader.readAsDataURL(file);
+                            }
+                        }}
+                    />
+                    {preview ? (
+                        <>
+                            <h2 className="text-white font-bold">Remove Banner</h2>
+                            <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                        </>
+                    ) : (
+                        <>
+                            <Field
+                                name="bannerRemove"
+                                type="checkbox"
+                            /> <span className="text-white">Remove Banner</span>
+                        </>
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">URL</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.url}</p>
+                    ) : (
+                        <Field 
+                            name="url" 
+                            className="form-input"
+                        />
+                    )}
+
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Title</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.title}</p>
+                    ) : (
+                        <Field
+                            name="title"
+                            className="form-input"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Description</label>
+                    {preview ? (
+                        <p className="text-white">{form.values.desc}</p>
+                    ) : (
+                        <Field
+                            as="textarea"
+                            name="desc"
+                            className="form-input"
+                            rows="8"
+                            cols="32"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Content</label>
+                    {preview ? (
+                        <ReactMarkdown
+                            className="markdown text-white"
+                        >{form.values.content}</ReactMarkdown>
+                    ) : (
+                        <Field
+                            as="textarea"
+                            name="content"
+                            className="form-input"
+                            rows="16"
+                            cols="32"
+                        />
+                    )}
+                </div>
+            </FormMain>
         </>
     );
 }
 
-const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | null>>, preview: boolean, form: any }> = ({ setBanner, preview, form }) => {
-    return (
-        <>
-            <div className="form-div">
-                <label className="form-label">Banner</label>
-                <input type="file" name="banner" onChange={(e) => {
-                    const val = (e?.currentTarget?.files) ? e.currentTarget.files[0] : null;
-
-                    setBanner(val ?? null);
-                }} className="form-input" />
-                {preview ? (
-                    <>
-                        <h2 className="text-white font-bold">Remove Banner</h2>
-                        <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                    </>
-                ) : (
-                    <>
-                        <Field
-                            name="bannerRemove"
-                            type="checkbox"
-                        /> <span className="text-white">Remove Banner</span>
-                    </>
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">URL</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.url}</p>
-                ) : (
-                    <Field name="url" className="form-input" />
-                )}
-
-            </div>
-            <div className="form-div">
-                <label className="form-label">Title</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.title}</p>
-                ) : (
-                    <Field name="title" className="form-input" />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Description</label>
-                {preview ? (
-                    <p className="text-white">{form.values.desc}</p>
-                ) : (
-                    <Field as="textarea" rows="8" cols="32" name="desc" className="form-input" />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Content</label>
-                {preview ? (
-                    <ReactMarkdown className="markdown text-white">{form.values.content}</ReactMarkdown>
-                ) : (
-                    <Field as="textarea" rows="16" cols="32" name="content" className="form-input" />
-                )}
-            </div>
-        </>
-    )
-}
-
-const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit = false, preview, setPreview }) => {
-    return (
-        <div className="text-center">
-            <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{isEdit ? "Save Article" : "Add Article"}</button>
-            <button onClick={(e) => {
-                e.preventDefault();
-
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
-        </div>
-    )
-}
+export default Form;
