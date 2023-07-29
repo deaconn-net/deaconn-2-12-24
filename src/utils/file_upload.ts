@@ -1,3 +1,6 @@
+import fs from "fs";
+import FileType from "@utils/base64";
+
 export const getContents = (file: File) => {
     const reader = new FileReader();
 
@@ -11,6 +14,53 @@ export const getContents = (file: File) => {
         reader.onload = () => {
             resolve(reader.result);
         };
+        
         reader.readAsDataURL(file);
     });
 };
+
+export const upload_file = (
+    path: string,
+    contents: string,
+    allowed_types?: string | string[],
+    no_append_file_type?: boolean,
+    no_prepend_upload_url?: boolean
+): [boolean, string | null, string | null] => {
+    const file_type = FileType(contents);
+
+    // Make sure we recongize file type.
+    if (file_type == "unknown") {
+        return [false, "File type is unknown.", null];
+    }
+
+    // Check if we only want to allow specific file types.
+    if (allowed_types) {
+        if (!allowed_types.includes(file_type))
+            return [false, `File type '${file_type}' not allowed!`, null];
+    }
+
+    // See if we need to append file type.
+    if (!no_append_file_type)
+        path += `.${file_type}`;
+
+    // Convert Base64 content.
+    const buffer = Buffer.from(contents, 'base64');
+
+    // Attempt to upload file.
+    try {
+        fs.writeFileSync(process.env.UPLOADS_DIR ?? "" + path, buffer);
+    } catch (error) {
+        console.error(`Full Upload File Path => ${process.env.UPLOADS_DIR ?? ""}${path}`);
+        console.error(error);
+
+        return [false, "Failed to upload file. Check console for errors!", process.env.UPLOADS_DIR ?? "" + path];
+    }
+
+    let full_path = path;
+
+    // Check if we need to prepend upload URL.
+    if (!no_prepend_upload_url)
+        full_path = process.env.UPLOADS_PRE_URL ?? "" + path;
+
+    return [true, null, full_path];
+}

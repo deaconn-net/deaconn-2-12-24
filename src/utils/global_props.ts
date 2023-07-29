@@ -1,7 +1,11 @@
 import { prisma } from "~/server/db"
 
-export const globalProps = async () => {
+const GlobalProps = async () => {
     const partners = await prisma.partner.findMany();
 
-    return { partners: partners }
+    return { 
+        partners: partners
+    };
 }
+
+export default GlobalProps;
