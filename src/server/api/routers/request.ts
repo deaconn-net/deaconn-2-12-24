@@ -7,35 +7,14 @@ export const requestRouter = createTRPCRouter({
         .input(z.object({
             id: z.number().nullable(),
 
-            selId: z.boolean().default(true),
-            selDates: z.boolean().default(true),
-            selUser: z.boolean().default(true),
-            selTitle: z.boolean().default(true),
-            selService: z.boolean().default(true),
-            selTimeframe: z.boolean().default(true),
-            selContent: z.boolean().default(true),
-            selstartDate: z.boolean().default(true),
-            selPrice: z.boolean().default(true),
-
             incComments: z.boolean().default(false)
         }))
         .query(({ ctx, input }) => {
             if (!input.id)
                 return null;
-                
-            return ctx.prisma.request.findFirst({
-                select: {
-                    id: input.selId,
-                    createdAt: input.selDates,
-                    updatedAt: input.selDates,
-                    user: input.selUser,
-                    title: input.selTitle,
-                    service: input.selService,
-                    timeframe: input.selTimeframe,
-                    content: input.selContent,
-                    startDate: input.selstartDate,
-                    price: input.selPrice,
 
+            return ctx.prisma.request.findFirst({
+                include: {
                     requestComments: input.incComments
                 },
                 where: {
@@ -50,28 +29,25 @@ export const requestRouter = createTRPCRouter({
             sort: z.string().default("updatedAt"),
             sortDir: z.string().default("desc"),
 
-            skip: z.number().default(0),
             limit: z.number().default(10),
-            cursor: z.number().nullish(),
-
-            incService: z.boolean().default(false)
+            cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.request.findMany({
-                skip: input.skip,
-                take: input.limit + 1,
-                cursor: (input.cursor) ? { id: input.cursor } : undefined,
                 include: {
                     service: true
-                },
-                orderBy: {
-                    [input.sort]: input.sortDir
                 },
                 where: {
                     ...(input.userId && {
                         userId: input.userId
                     })
-                }
+                },
+                orderBy: {
+                    [input.sort]: input.sortDir
+                },
+
+                take: input.limit + 1,
+                cursor: (input.cursor) ? { id: input.cursor } : undefined,
             });
 
             let nextCur: typeof input.cursor | undefined = undefined;
@@ -88,15 +64,15 @@ export const requestRouter = createTRPCRouter({
         }),
     add: protectedProcedure
         .input(z.object({
-            id: z.number().nullable().default(null),
+            id: z.number().optional(),
 
-            userId: z.string().nullable().default(null),
-            serviceId: z.number().nullable().default(null),
+            userId: z.string().optional(),
+            serviceId: z.number().optional(),
 
-            title: z.string().nullable().default(null),
+            title: z.string().optional(),
             timeframe: z.number(),
             content: z.string(),
-            startDate: z.date().nullable().default(null),
+            startDate: z.date().optional(),
             price: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
@@ -162,7 +138,7 @@ export const requestRouter = createTRPCRouter({
         .input(z.object({
             id: z.number()
         }))
-        .mutation(async ({ ctx, input}) => {
+        .mutation(async ({ ctx, input }) => {
             const res = await ctx.prisma.request.update({
                 data: {
                     closed: true
