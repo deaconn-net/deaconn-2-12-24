@@ -22,7 +22,7 @@ const server = z.object({
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
   UPLOADS_DIR: z.string().default("/uploads"),
-  UPLOADS_PRE_URL: z.string().default(""),
+  NEXT_PUBLIC_UPLOADS_PRE_URL: z.string().default(""),
   NEXT_PUBLIC_CDN_URL: z.string().default(""),
   ROOT_API: z.string().optional()
 });
@@ -49,7 +49,7 @@ const processEnv = {
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   UPLOADS_DIR: process.env.UPLOADS_DIR,
-  UPLOADS_PRE_URL: process.env.UPLOADS_PRE_URL,
+  NEXT_PUBLIC_UPLOADS_PRE_URL: process.env.NEXT_PUBLIC_UPLOADS_PRE_URL,
   NEXT_PUBLIC_CDN_URL: process.env.CDN_URL,
   ROOT_API: process.env.ROOT_API
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
