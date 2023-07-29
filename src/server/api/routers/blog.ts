@@ -1,24 +1,15 @@
-import { modProcedure, createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
-import FileType from "~/utils/base64";
-import fs from 'fs';
+
+import { upload_file } from "@utils/file_upload";
 
 export const blogRouter = createTRPCRouter({
     get: publicProcedure
         .input(z.object({
-            id: z.number().nullable(),
-            url: z.string().nullable(),
-
-            selId: z.boolean().default(true),
-            selUrl: z.boolean().default(true),
-            selDates: z.boolean().default(true),
-            selUser: z.boolean().default(true),
-            selTitle: z.boolean().default(true),
-            selDesc: z.boolean().default(true),
-            selContent: z.boolean().default(true),
-            selViews: z.boolean().default(true),
+            id: z.number().optional(),
+            url: z.string().optional(),
 
             incComments: z.boolean().default(false)
         }))
@@ -27,17 +18,7 @@ export const blogRouter = createTRPCRouter({
                 return null;
 
             return ctx.prisma.article.findFirst({
-                select: {
-                    id: input.selId,
-                    url: input.selUrl,
-                    createdAt: input.selDates,
-                    updatedAt: input.selDates,
-                    user: input.selUser,
-                    title: input.selTitle,
-                    desc: input.selDesc,
-                    content: input.selContent,
-                    views: input.selViews,
-
+                include: {
                     articleComments: input.incComments
                 },
                 where: {
@@ -55,18 +36,17 @@ export const blogRouter = createTRPCRouter({
             sort: z.string().default("createdAt"),
             sortDir: z.string().default("desc"),
 
-            skip: z.number().default(0),
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.article.findMany({
-                skip: input.skip,
-                take: input.limit + 1,
-                cursor: (input.cursor) ? { id: input.cursor } : undefined,
                 orderBy: {
                     [input.sort]: input.sortDir
-                }
+                },
+
+                take: input.limit + 1,
+                cursor: (input.cursor) ? { id: input.cursor } : undefined
             });
 
             let nextCur: typeof input.cursor | undefined = undefined;
@@ -83,18 +63,18 @@ export const blogRouter = createTRPCRouter({
         }),
     add: protectedProcedure
         .input(z.object({
-            id: z.number().nullable().default(null),
-            url: z.string(),
+            id: z.number().optional(),
 
-            createdAt: z.date().nullable().default(null),
-            updatedAt: z.date().nullable().default(null),
+            createdAt: z.date().optional(),
+            updatedAt: z.date().optional(),
 
             hasUser: z.boolean().default(true),
 
+            url: z.string(),
             title: z.string(),
-            desc: z.string().nullable().default(null),
+            desc: z.string().optional(),
             content: z.string(),
-            banner: z.string().nullable().default(null),
+            banner: z.string().optional(),
             bannerRemove: z.boolean().default(false)
         }))
         .mutation(async ({ ctx, input }) => {
@@ -149,31 +129,16 @@ export const blogRouter = createTRPCRouter({
 
             // Check for banner.
             if (input.banner && !input.bannerRemove) {
-                const fileType = FileType(input.banner);
+                // We only need to compile path name without file type.
+                const path = `/blog/articles/${article.id}`;
 
-                // Make sure we have a valid image file.
-                if (fileType == "unknown") {
+                // Upload file and retrieve full path.
+                const [success, err, full_path] = upload_file(path, input.banner);
+
+               if (!success || !full_path) {
                     throw new TRPCError({
                         code: "PARSE_ERROR",
-                        message: "Article banner not a valid image file (ID #" + article.id + ")."
-                    });
-                }
-
-                // Compile file name.
-                const fileName = "/blog/articles/" + article.id + "." + fileType;
-
-                // Convert Base64 content.
-                const buffer = Buffer.from(input.banner, 'base64');
-
-                // Attempt to upload file.
-                try {
-                    fs.writeFileSync((process.env.UPLOADS_DIR ?? "/uploads") + fileName, buffer);
-                } catch (error) {
-                    console.error(error);
-
-                    throw new TRPCError({
-                        code: "NOT_FOUND",
-                        message: "Article banner failed to upload (ID #" + article.id + ")."
+                        message: `Failed to upload banner for article #${article.id}. Error => ${err}.`
                     });
                 }
 
@@ -183,7 +148,7 @@ export const blogRouter = createTRPCRouter({
                         id: article.id
                     },
                     data: {
-                        banner: fileName
+                        banner: full_path
                     }
                 });
 

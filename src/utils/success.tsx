@@ -1,4 +1,10 @@
-export const SuccessBox: React.FC<{ title: string | null, msg: string | null }> = ({ title, msg }) => {
+const SuccessBox: React.FC<{
+    title?: string,
+    msg?: string
+}> = ({
+    title,
+    msg
+}) => {
     return (
         <>
             {title && msg && (
@@ -10,3 +16,5 @@ export const SuccessBox: React.FC<{ title: string | null, msg: string | null }> 
         </>
     );
 }
+
+export default SuccessBox;

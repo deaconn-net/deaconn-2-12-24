@@ -1,10 +1,19 @@
-import { UserSkill } from "@prisma/client";
 import Link from "next/link";
-import ReactMarkdown from 'react-markdown';
-import { api } from "~/utils/api";
-import { SuccessBox } from "../../utils/success";
 
-export const SkillRow: React.FC<{ skill: UserSkill, small?: boolean }> = ({ skill, small = false }) => {
+import { type UserSkill } from "@prisma/client";
+
+import { api } from "@utils/api";
+import SuccessBox from "@utils/success";
+
+import ReactMarkdown from "react-markdown";
+
+const Row: React.FC<{
+    skill: UserSkill,
+    small?: boolean
+}> = ({
+    skill,
+    small = false
+}) => {
     const editUrl = "/user/profile/skills?id=" + skill.id;
 
     const deleteMut = api.user.deleteSkill.useMutation();
@@ -47,3 +56,5 @@ export const SkillRow: React.FC<{ skill: UserSkill, small?: boolean }> = ({ skil
         </>
     );
 }
+
+export default Row;

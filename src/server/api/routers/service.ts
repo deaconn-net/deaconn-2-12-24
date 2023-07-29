@@ -1,32 +1,14 @@
-import { createTRPCRouter, modProcedure, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import FileType from "~/utils/base64";
 
-import fs from 'fs';
+import { upload_file } from "@utils/file_upload";
 
 export const serviceRouter = createTRPCRouter({
     get: protectedProcedure
         .input(z.object({
-            id: z.number().nullable(),
-            url: z.string().nullable(),
-
-            selId: z.boolean().default(true),
-            selUrl: z.boolean().default(true),
-            selDates: z.boolean().default(true),
-            selName: z.boolean().default(true),
-            selPrice: z.boolean().default(true),
-            selDesc: z.boolean().default(true),
-            selInstall: z.boolean().default(true),
-            selFeatures: z.boolean().default(true),
-            selContent: z.boolean().default(true),
-            selViews: z.boolean().default(true),
-            selPurchases: z.boolean().default(true),
-            selDownloads: z.boolean().default(true),
-            selIcon: z.boolean().default(true),
-            selBanner: z.boolean().default(true),
-            selGitLink: z.boolean().default(true),
-            selOpenSource: z.boolean().default(true),
+            id: z.number().optional(),
+            url: z.string().optional(),
 
             incRequests: z.boolean().default(false)
         }))
@@ -35,25 +17,7 @@ export const serviceRouter = createTRPCRouter({
                 return null;
 
             return ctx.prisma.service.findFirst({
-                select: {
-                    id: input.selId,
-                    createdAt: input.selDates,
-                    updatedAt: input.selDates,
-                    url: input.selUrl,
-                    name: input.selName,
-                    price: input.selPrice,
-                    desc: input.selDesc,
-                    install: input.selInstall,
-                    features: input.selFeatures,
-                    content: input.selContent,
-                    views: input.selViews,
-                    purchases: input.selPurchases,
-                    downloads: input.selDownloads,
-                    icon: input.selIcon,
-                    banner: input.selBanner,
-                    gitLink: input.selGitLink,
-                    openSource: input.selOpenSource,
-
+                include: {
                     requests: input.incRequests
                 },
                 where: {
@@ -71,18 +35,17 @@ export const serviceRouter = createTRPCRouter({
             sort: z.string().default("purchases"),
             sortDir: z.string().default("desc"),
 
-            skip: z.number().default(0),
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.service.findMany({
-                skip: input.skip,
-                take: input.limit + 1,
-                cursor: (input.cursor) ? { id: input.cursor } : undefined,
                 orderBy: {
                     [input.sort]: input.sortDir
-                }
+                },
+
+                take: input.limit + 1,
+                cursor: (input.cursor) ? { id: input.cursor } : undefined
             });
 
             let nextCur: typeof input.cursor | undefined = undefined;
@@ -99,19 +62,21 @@ export const serviceRouter = createTRPCRouter({
         }),
     add: protectedProcedure
         .input(z.object({
-            id: z.number().nullable().default(null),
+            id: z.number().optional(),
 
             url: z.string(),
             name: z.string(),
             price: z.number().default(0),
-            desc: z.string().nullable().default(null),
-            install: z.string().nullable().default(null),
-            features: z.string().nullable().default(null),
+            desc: z.string().optional(),
+            install: z.string().optional(),
+            features: z.string().optional(),
             content: z.string(),
-            icon: z.string().nullable().default(null),
-            banner: z.string().nullable().default(null),
-            gitLink: z.string().nullable().default(null),
+
+            gitLink: z.string().optional(),
             openSource: z.boolean().default(true),
+
+            icon: z.string().optional(),
+            banner: z.string().optional(),
 
             bannerRemove: z.boolean().default(false),
             iconRemove: z.boolean().default(false)
@@ -172,67 +137,41 @@ export const serviceRouter = createTRPCRouter({
 
             // Check for banner or icon.
             if ((input.banner && !input.bannerRemove) || (input.icon && !input.iconRemove)) {
-                let bannerPath: string | null = null;
-                let iconPath: string | null = null;
+                let banner_path: string | null = null;
+                let icon_path: string | null = null;
 
                 if (input.banner) {
-                    const fileType = FileType(input.banner);
+                    // We only need to compile path name without file type.
+                    const path = `/services/${service.id}_banner`;
 
-                    // Make sure we have a valid image file.
-                    if (fileType == "unknown") {
+                    // Upload file and retrieve full path.
+                    const [success, err, full_path] = upload_file(path, input.banner);
+
+                    if (!success || !full_path) {
                         throw new TRPCError({
                             code: "PARSE_ERROR",
-                            message: "Service banner not a valid image file (ID #" + service.id + ")."
+                            message: `Failed to upload banner for service #${service.id}. Error => ${err}.`
                         });
                     }
 
-                    // Compile file name.
-                    bannerPath = "/services/" + service.id + "_banner." + fileType;
-
-                    // Convert Base64 content.
-                    const buffer = Buffer.from(input.banner, 'base64');
-
-                    // Attempt to upload file.
-                    try {
-                        fs.writeFileSync((process.env.UPLOADS_DIR ?? "/uploads") + bannerPath, buffer);
-                    } catch (error) {
-                        console.error(error);
-
-                        throw new TRPCError({
-                            code: "NOT_FOUND",
-                            message: "Service banner failed to upload (ID #" + service.id + ")."
-                        });
-                    }
+                    banner_path = full_path;
                 }
 
                 if (input.icon) {
-                    const fileType = FileType(input.icon);
+                    // We only need to compile path name without file type.
+                    const path = `/uploads/services/${service.id}_icon`;
 
-                    // Make sure we have a valid image file.
-                    if (fileType == "unknown") {
+                    // Upload file and retrieve full path.
+                    const [success, err, full_path] = upload_file(path, input.icon);
+
+                    if (!success || !full_path) {
                         throw new TRPCError({
                             code: "PARSE_ERROR",
-                            message: "Service icon not a valid image file (ID #" + service.id + ")."
+                            message: `Failed to upload banner for service #${service.id}. Error => ${err}.`
                         });
                     }
 
-                    // Compile file name.
-                    iconPath = "/services/" + service.id + "_icon." + fileType;
-
-                    // Convert Base64 content.
-                    const buffer = Buffer.from(input.icon, 'base64');
-
-                    // Attempt to upload file.
-                    try {
-                        fs.writeFileSync((process.env.UPLOADS_DIR ?? "/uploads") + iconPath, buffer);
-                    } catch (error) {
-                        console.error(error);
-
-                        throw new TRPCError({
-                            code: "NOT_FOUND",
-                            message: "Service icon failed to upload (ID #" + service.id + ")."
-                        });
-                    }
+                    icon_path = full_path;
                 }
 
                 // Now reupdate.
@@ -241,11 +180,11 @@ export const serviceRouter = createTRPCRouter({
                         id: service.id
                     },
                     data: {
-                        ...(bannerPath && {
-                            banner: bannerPath
+                        ...(banner_path && {
+                            banner: banner_path
                         }),
-                        ...(iconPath && {
-                            icon: iconPath
+                        ...(icon_path && {
+                            icon: icon_path
                         })
                     }
                 });
@@ -253,7 +192,7 @@ export const serviceRouter = createTRPCRouter({
                 if (update.id < 1) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
-                        message: "Failed to update article with banner and icon information."
+                        message: "Failed to update service with banner and icon information."
                     });
                 }
             }

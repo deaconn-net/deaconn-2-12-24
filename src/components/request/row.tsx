@@ -1,10 +1,13 @@
-import { Request } from "@prisma/client";
 import Link from "next/link";
-import { api } from "~/utils/api";
 
-import { dateFormat, dateFormatOne } from "~/utils/date";
+import { type RequestWithService } from "~/types/request";
 
-export const RequestRow: React.FC<{ request: Request }> = ({ request }) => {
+import { api } from "@utils/api";
+import { dateFormat, dateFormatOne } from "@utils/date";
+
+const Row: React.FC<{
+    request: RequestWithService
+}> = ({ request }) => {
     const viewUrl = "/request/view/" + request.id;
     const editUrl = "/request/new?id=" + request.id;
 
@@ -39,3 +42,5 @@ export const RequestRow: React.FC<{ request: Request }> = ({ request }) => {
         </tr>
     );
 }
+
+export default Row;

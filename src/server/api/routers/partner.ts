@@ -1,32 +1,21 @@
-import { modProcedure, createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
-import FileType from "~/utils/base64";
-import fs from 'fs';
+
+import { upload_file } from "@utils/file_upload";
 
 export const partnerRouter = createTRPCRouter({
     get: publicProcedure
         .input(z.object({
-            id: z.number().nullable(),
-            url: z.string().nullable(),
-
-            selId: z.boolean().default(true),
-            selUrl: z.boolean().default(true),
-            selName: z.boolean().default(true),
-            selBanner: z.boolean().default(true)
+            id: z.number().optional(),
+            url: z.string().optional(),
         }))
         .query(({ ctx, input }) => {
             if (!input.id && !input.url)
                 return null;
 
             return ctx.prisma.partner.findFirst({
-                select: {
-                    id: input.selId,
-                    url: input.selUrl,
-                    name: input.selName,
-                    banner: input.selBanner
-                },
                 where: {
                     ...(input.id && {
                         id: input.id
@@ -39,13 +28,11 @@ export const partnerRouter = createTRPCRouter({
         }),
     getAll: publicProcedure
         .input(z.object({
-            skip: z.number().default(0),
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.partner.findMany({
-                skip: input.skip,
                 take: input.limit + 1,
                 cursor: (input.cursor) ? { id: input.cursor } : undefined
             });
@@ -64,12 +51,12 @@ export const partnerRouter = createTRPCRouter({
         }),
     add: protectedProcedure
         .input(z.object({
-            id: z.number().nullable().default(null),
+            id: z.number().optional(),
+
             url: z.string(),
-
             name: z.string(),
-            banner: z.string().nullable().default(null),
 
+            banner: z.string().optional(),
             bannerRemove: z.boolean().default(false)
         }))
         .mutation(async ({ ctx, input }) => {
@@ -95,31 +82,16 @@ export const partnerRouter = createTRPCRouter({
 
             // Check for banner.
             if (input.banner && !input.bannerRemove) {
-                const fileType = FileType(input.banner);
+                // We only need to compile path name without file type.
+                const path = `${process.env.UPLOADS_PRE_URL ?? ""}/partners/${partner.id}`;
 
-                // Make sure we have a valid image file.
-                if (fileType == "unknown") {
+                // Upload file and retrieve full path.
+                const [success, err, full_path] = upload_file(path, input.banner);
+
+               if (!success || !full_path) {
                     throw new TRPCError({
                         code: "PARSE_ERROR",
-                        message: "Parner banner not a valid image file (ID #" + partner.id + ")."
-                    });
-                }
-
-                // Compile file name.
-                const fileName = "/partners/" + partner.id + "." + fileType;
-
-                // Convert Base64 content.
-                const buffer = Buffer.from(input.banner, 'base64');
-
-                // Attempt to upload file.
-                try {
-                    fs.writeFileSync((process.env.UPLOADS_DIR ?? "/uploads") + fileName, buffer);
-                } catch (error) {
-                    console.error(error);
-
-                    throw new TRPCError({
-                        code: "NOT_FOUND",
-                        message: "Partner banner failed to upload (ID #" + partner.id + ")."
+                        message: `Failed to upload banner for partner #${partner.id}. Error => ${err}.`
                     });
                 }
 
@@ -129,7 +101,7 @@ export const partnerRouter = createTRPCRouter({
                         id: partner.id
                     },
                     data: {
-                        banner: fileName
+                        banner: full_path
                     }
                 });
 

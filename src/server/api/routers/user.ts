@@ -40,18 +40,6 @@ export const userRouter = createTRPCRouter({
             id: z.string().nullable().default(null),
             url: z.string().nullable().default(null),
 
-            selId: z.boolean().default(true),
-            selEmail: z.boolean().default(true),
-            selCredit: z.boolean().default(true),
-            selImage: z.boolean().default(true),
-            selName: z.boolean().default(true),
-            selUrl: z.boolean().default(true),
-            selTitle: z.boolean().default(true),
-            selAboutMe: z.boolean().default(true),
-            selBirthday: z.boolean().default(true),
-            selShowEmail: z.boolean().default(true),
-            selIsTeam: z.boolean().default(true),
-
             incExperiences: z.boolean().default(false),
             incSkills: z.boolean().default(false),
             incProjects: z.boolean().default(false),
@@ -64,19 +52,7 @@ export const userRouter = createTRPCRouter({
                 return null;
 
             return ctx.prisma.user.findFirst({
-                select: {
-                    id: input.selId,
-                    email: input.selEmail,
-                    credit: input.selCredit,
-                    image: input.selImage,
-                    name: input.selName,
-                    url: input.selUrl,
-                    title: input.selTitle,
-                    aboutMe: input.selAboutMe,
-                    birthday: input.selBirthday,
-                    showEmail: input.selShowEmail,
-                    isTeam: input.selIsTeam,
-
+                include: {
                     experiences: input.incExperiences,
                     skills: input.incSkills,
                     projects: input.incProjects,
@@ -104,24 +80,25 @@ export const userRouter = createTRPCRouter({
         .input(z.object({
             id: z.string(),
 
-            credit: z.number().nullable().default(null),
+            credit: z.number().optional(),
 
-            image: z.string().nullable().default(null),
-            name: z.string().nullable().default(null),
-            url: z.string().nullable().default(null),
-            title: z.string().nullable().default(null),
-            aboutMe: z.string().nullable().default(null),
-            birthday: z.date().nullable().default(null),
-            showEmail: z.boolean().nullable().default(null),
-            isTeam: z.boolean().nullable().default(null),
+            image: z.string().optional(),
+            name: z.string().optional(),
+            url: z.string().optional(),
+            title: z.string().optional(),
+            aboutMe: z.string().optional(),
+            birthday: z.date().optional(),
+            showEmail: z.boolean().optional(),
+            isTeam: z.boolean().optional(),
 
-            experiences: z.array(expSchema).nullable().default(null),
-            skills: z.array(skillSchema).nullable().default(null),
-            projects: z.array(projectSchema).nullable().default(null),
+            experiences: z.array(expSchema).optional(),
+            skills: z.array(skillSchema).optional(),
+            projects: z.array(projectSchema).optional(),
 
-            permissions: z.string().nullable().default(null)
+            permissions: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
+            
             // Update user itself first.
             const res = await ctx.prisma.user.update({
                 where: {
@@ -340,15 +317,13 @@ export const userRouter = createTRPCRouter({
             sort: z.string().default("id"),
             sortDir: z.string().default("desc"),
 
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
 
-            skip: z.number().default(0),
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.userExperience.findMany({
-                skip: input.skip,
                 take: input.limit + 1,
                 cursor: (input.cursor) ? { id: input.cursor } : undefined,
                 orderBy: {
@@ -378,15 +353,13 @@ export const userRouter = createTRPCRouter({
             sort: z.string().default("id"),
             sortDir: z.string().default("desc"),
 
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
 
-            skip: z.number().default(0),
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.userSkill.findMany({
-                skip: input.skip,
                 take: input.limit + 1,
                 cursor: (input.cursor) ? { id: input.cursor } : undefined,
                 orderBy: {
@@ -416,15 +389,13 @@ export const userRouter = createTRPCRouter({
             sort: z.string().default("id"),
             sortDir: z.string().default("desc"),
 
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
 
-            skip: z.number().default(0),
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.userProject.findMany({
-                skip: input.skip,
                 take: input.limit + 1,
                 cursor: (input.cursor) ? { id: input.cursor } : undefined,
                 orderBy: {
@@ -547,15 +518,15 @@ export const userRouter = createTRPCRouter({
         }),
     addExperience: protectedProcedure
         .input(z.object({
-            id: z.number().nullable().default(null),
+            id: z.number().optional(),
 
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
 
-            startDate: z.date().nullable().default(null),
-            endDate: z.date().nullable().default(null),
+            startDate: z.date().optional(),
+            endDate: z.date().optional(),
 
             title: z.string(),
-            desc: z.string().nullable().default(null)
+            desc: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
             const res = await ctx.prisma.userExperience.upsert({
@@ -599,12 +570,12 @@ export const userRouter = createTRPCRouter({
         }),
     addSkill: protectedProcedure
         .input(z.object({
-            id: z.number().nullable().default(null),
+            id: z.number().optional(),
 
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
 
             title: z.string(),
-            desc: z.string().nullable().default(null)
+            desc: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
             const res = await ctx.prisma.userSkill.upsert({
@@ -636,15 +607,15 @@ export const userRouter = createTRPCRouter({
         }),
     addProject: protectedProcedure
         .input(z.object({
-            id: z.number().nullable().default(null),
+            id: z.number().optional(),
 
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
 
-            startDate: z.date().nullable().default(null),
-            endDate: z.date().nullable().default(null),
+            startDate: z.date().optional(),
+            endDate: z.date().optional(),
 
             name: z.string(),
-            desc: z.string().nullable().default(null)
+            desc: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
             const res = await ctx.prisma.userProject.upsert({

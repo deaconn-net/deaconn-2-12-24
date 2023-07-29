@@ -1,32 +1,29 @@
-import { Field, useFormik } from 'formik';
-import React, { useState } from 'react';
-import { api } from '../../../utils/api';
-import { FormMain } from '../main';
+import React, { useState } from "react";
+import { Field, useFormik } from "formik";
 
-import ReactMarkdown from 'react-markdown';
-import { ErrorBox } from '~/components/utils/error';
-import { SuccessBox } from '~/components/utils/success';
+import { type UserSkill } from "@prisma/client";
 
+import { api } from "@utils/api";
+import FormMain from "@components/forms/main";
+
+import ErrorBox from "@utils/error";
+import SuccessBox from "@utils/success";
+import { ScrollToTop } from "@utils/scroll";
+
+import ReactMarkdown from "react-markdown";
 import "react-datepicker/dist/react-datepicker.css";
 
-export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => {
+const Form: React.FC<{
+    skill?: UserSkill
+}> = ({
+    skill
+}) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | null>(null);
-    const [errMsg, setErrMsg] = useState<string | null>(null);
+    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
+    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
 
-    const [sucTitle, setSucTitle] = useState<string | null>(null);
-    const [sucMsg, setSucMsg] = useState<string | null>(null);
-
-    // Retrieve skill if any.
-    const query = api.user.getSkill.useQuery({
-        id: lookupId ?? 0
-    });
-    const skill = query.data;
-
-    let isEdit = false;
-
-    if (skill)
-        isEdit = true;
+    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
+    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
 
     // Request mutations.
     const skillMut = api.user.addSkill.useMutation();
@@ -34,24 +31,18 @@ export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => 
     // Check for errors or successes.
     if (skillMut.isSuccess && !sucTitle) {
         if (errTitle)
-            setErrTitle(null);
+            setErrTitle(undefined);
 
         setSucTitle("Skill Added!");
         setSucMsg("Your skill was added or saved successfully!");
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
+        ScrollToTop();
     }
 
     if (skillMut.isError && !errTitle) {
         if (sucTitle)
-            setSucTitle(null);
+            setSucTitle(undefined);
 
         setErrTitle("Error Adding Or Saving Skill");
         setErrMsg("Error adding or editing skill. Read developer console for more information.");
@@ -59,46 +50,41 @@ export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => 
         console.error(skillMut.error.message);
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    // Default values.
-    const [retrievedVals, setRetrievedVals] = useState(false);
-    const [title, setTitle] = useState("");
-    const [desc, setDesc] = useState("");
-
-    if (skill && !retrievedVals) {
-        setTitle(skill.title)
-        if (skill.desc)
-            setDesc(skill.desc);
-
-        setRetrievedVals(true);
+        ScrollToTop();
     }
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
 
+    // Submit button.
+    const submit_btn =
+        <div className="text-center">
+            <button type="submit" className="button">{skill ? "Save" : "Add"} Skill</button>
+            <button onClick={(e) => {
+                e.preventDefault();
+
+                if (preview)
+                    setPreview(false);
+                else
+                    setPreview(true);
+            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
+        </div>;
+
     // Setup form.
     const form = useFormik({
         initialValues: {
-            title: title,
-            desc: desc,
+            title: skill?.title ?? "",
+            desc: skill?.desc ?? "",
         },
         enableReinitialize: true,
 
         onSubmit: async (values) => {
             // Reset error and success.
-            setErrTitle(null);
-            setSucTitle(null);
+            setErrTitle(undefined);
+            setSucTitle(undefined);
 
             skillMut.mutate({
-                id: skill?.id ?? null,
+                id: skill?.id,
                 title: values.title,
                 desc: values.desc
             });
@@ -117,55 +103,27 @@ export const UserSkillForm: React.FC<{ lookupId?: number }> = ({ lookupId }) => 
             />
             <FormMain
                 form={form}
-                content={<Fields
-                    form={form}
-                    preview={preview}
-                />}
-                submitBtn={<Button
-                    isEdit={isEdit}
-                    preview={preview}
-                    setPreview={setPreview}
-                />}
-            />
+                submitBtn={submit_btn}
+            >
+                <div className="form-div">
+                    <label className="form-label">Title</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.title}</p>
+                    ) : (
+                        <Field name="title" className="form-input" />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Details</label>
+                    {preview ? (
+                        <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
+                    ) : (
+                        <Field as="textarea" rows="16" cols="32" name="desc" className="form-input" />
+                    )}
+                </div>
+            </FormMain>
         </>
     );
 }
 
-const Fields: React.FC<{ preview: boolean, form: any }> = ({ preview, form }) => {
-    return (
-        <>
-            <div className="form-div">
-                <label className="form-label">Title</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.title}</p>
-                ) : (
-                    <Field name="title" className="form-input" />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Details</label>
-                {preview ? (
-                    <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
-                ) : (
-                    <Field as="textarea" rows="16" cols="32" name="desc" className="form-input" />
-                )}
-            </div>
-        </>
-    )
-}
-
-const Button: React.FC<{ preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>>, isEdit: boolean }> = ({ preview, setPreview, isEdit }) => {
-    return (
-        <div className="text-center">
-            <button type="submit" className="button">{isEdit ? "Save" : "Add"} Skill</button>
-            <button onClick={(e) => {
-                e.preventDefault();
-
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
-        </div>
-    )
-}
+export default Form;

@@ -1,8 +1,10 @@
-import { Partner, Service } from "@prisma/client";
 import Link from "next/link";
-import { api } from "~/utils/api";
 
-export const Footer: React.FC = () => {
+import { type Partner, type Service } from "@prisma/client";
+
+import { api } from "@utils/api";
+
+const Footer: React.FC = () => {
     const partnerQuery = api.partner.getAll.useQuery({
         limit: 10
     });
@@ -68,3 +70,5 @@ export const Footer: React.FC = () => {
         </footer>
     );
 }
+
+export default Footer;

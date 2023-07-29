@@ -1,35 +1,47 @@
 import { GetServerSidePropsContext, NextPage } from "next";
-import { Deaconn } from '../../components/main';
 
-import { RequestForm } from '../../components/forms/request/new';
+import { type Request } from "@prisma/client";
 
-const Content: React.FC<{ lookupId?: number | null }> = ({ lookupId }) => {
+import Form from '@components/forms/request/new';
+import Wrapper from "@components/wrapper";
+
+import { prisma } from "@server/db";
+
+const Page: NextPage<{
+    request: Request | null
+}> = ({
+    request
+}) => {
     return (
-        <div className="content">
-            <h1 className="text-3xl text-white font-bold italic">Create Request</h1>
-            <RequestForm
-                lookupId={lookupId}
-            />
-        </div>
-    )
+        <Wrapper>
+            <div className="content">
+                <h1 className="text-3xl text-white font-bold italic">Create Request</h1>
+                <Form
+                    request={request}
+                />
+            </div>
+        </Wrapper>
+    );
 }
 
-const Page: NextPage<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
-    return (
-        <Deaconn
-            content={
-                <Content
-                    lookupId={lookupId}
-                />
-            }
-        />
-    );
-};
-
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    const lookupId = (ctx.query.id) ? Number(ctx.query.id) : null;
+    const lookup_id = ctx.query?.id;
 
-    return { props: { lookupId: lookupId } };
+    let request: Request | null = null;
+
+    if (lookup_id) {
+        request = await prisma.request.findFirst({
+            where: {
+                id: Number(lookup_id.toString())
+            }
+        });
+    }
+
+    return {
+        props: {
+            request: request
+        }
+    };
 }
 
 export default Page;

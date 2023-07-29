@@ -1,26 +1,26 @@
-import { Field, useFormik } from 'formik';
-import React, { useState } from 'react';
-import { api } from '../../../utils/api';
-import { FormMain } from '../main';
+import { Field, useFormik } from "formik";
+import React, { useState } from "react";
 
-import { getContents } from '~/utils/file_upload';
-import { ErrorBox } from '~/components/utils/error';
-import { SuccessBox } from '~/components/utils/success';
+import FormMain from "@components/forms/main";
 
-export const PartnerForm: React.FC<{ lookupId?: number | null, lookupUrl?: string | null }> = ({ lookupId, lookupUrl }) => {
+import { api } from "@utils/api";
+import ErrorBox from "@utils/error";
+import SuccessBox from "@utils/success";
+import { ScrollToTop } from '@utils/scroll';
+
+import { Partner } from "@prisma/client";
+
+const Form: React.FC<{
+    partner?: Partner | null
+}> = ({
+    partner
+}) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | null>(null);
-    const [errMsg, setErrMsg] = useState<string | null>(null);
+    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
+    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
 
-    const [sucTitle, setSucTitle] = useState<string | null>(null);
-    const [sucMsg, setSucMsg] = useState<string | null>(null);
-
-    // Retrieve partner if any.
-    const query = api.partner.get.useQuery({
-        id: lookupId ?? null,
-        url: lookupUrl ?? null
-    });
-    const partner = query.data;
+    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
+    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
 
     // Partner mutations.
     const partnerMut = api.partner.add.useMutation();
@@ -28,24 +28,18 @@ export const PartnerForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
     // Check for errors or successes.
     if (partnerMut.isSuccess && !sucTitle) {
         if (errTitle)
-            setErrTitle(null);
+            setErrTitle(undefined);
 
         setSucTitle("Successfully " + (Boolean(partner?.id) ? "Saved" : "Created") + "!");
         setSucMsg("Partner successfully " + (Boolean(partner?.id) ? "saved" : "created") + "!");
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
+        ScrollToTop();
     }
 
     if (partnerMut.isError && !errTitle) {
         if (sucTitle)
-            setSucTitle(null);
+            setSucTitle(undefined);
 
         setErrTitle("Error Creating Or Editing Article");
 
@@ -56,61 +50,55 @@ export const PartnerForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             setErrMsg("Error creating or editing partner.");
 
         // Scroll to top.
-        if (typeof window !== undefined) {
-            window.scroll({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    // Default values.
-    const [retrievedVals, setRetrievedVals] = useState(false);
-    const [name, setName] = useState("");
-    const [url, setUrl] = useState("");
-
-    if (partner && !retrievedVals) {
-        setName(partner.name);
-        setUrl(partner.url);
-
-        setRetrievedVals(true);
+        ScrollToTop();
     }
 
     // Setup banner image.
-    const [banner, setBanner] = useState<File | null>(null);
+    const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
 
+    // Submit button.
+    const submit_btn =
+        <div className="text-center">
+            <button
+                type="submit"
+                className="p-6 text-white text-center bg-cyan-900 rounded"
+            >{partner ? "Save Partner" : "Add Partner"}</button>
+            <button
+                className="ml-4 p-6 text-white text-center bg-cyan-800 rounded"
+                onClick={(e) => {
+                    e.preventDefault();
+
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
+        </div>;
+
     // Setup form.
     const form = useFormik({
         initialValues: {
-            name: name,
-            url: url,
+            name: partner?.name ?? "",
+            url: partner?.url ?? "",
             bannerRemove: false
         },
         enableReinitialize: true,
 
         onSubmit: async (values) => {
             // Reset error and success.
-            setErrTitle(null);
-            setSucTitle(null);
-
-            let bannerData: string | ArrayBuffer | null = null;
-
-            // Handle banner upload if any.
-            if (banner) {
-                bannerData = await getContents(banner);
-                bannerData = (bannerData) ? bannerData.toString().split(',')[1] ?? null : null;
-            }
+            setErrTitle(undefined);
+            setSucTitle(undefined);
 
             // Create article.
             partnerMut.mutate({
-                id: partner?.id ?? null,
+                id: partner?.id,
                 name: values.name,
                 url: values.url,
-                banner: bannerData?.toString(),
+                banner: banner?.toString(),
                 bannerRemove: values.bannerRemove
             });
         }
@@ -128,78 +116,67 @@ export const PartnerForm: React.FC<{ lookupId?: number | null, lookupUrl?: strin
             />
             <FormMain
                 form={form}
-                content={<Fields
-                    setBanner={setBanner}
-                    form={form}
-                    preview={preview}
-                />}
-                submitBtn={<Button
-                    preview={preview}
-                    setPreview={setPreview}
-                    isEdit={Boolean(partner?.id)}
-                />}
-            />
+                submitBtn={submit_btn}
+            >
+                <div className="form-div">
+                    <label className="form-label">Banner</label>
+                    <input
+                        type="file"
+                        name="banner"
+                        className="form-input"
+                        onChange={(e) => {
+                            const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
+
+                            if (file) {
+                                const reader = new FileReader();
+
+                                reader.onloadend = () => {
+                                    setBanner(reader.result);
+                                };
+                                
+                                reader.readAsDataURL(file);
+                            }
+                        }}
+                    />
+                    {preview ? (
+                        <>
+                            <h2 className="text-white font-bold">Remove Banner</h2>
+                            <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                        </>
+                    ) : (
+                        <>
+                            <Field
+                                name="bannerRemove"
+                                type="checkbox"
+                            /> <span className="text-white">Remove Banner</span>
+                        </>
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Name</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.name}</p>
+                    ) : (
+                        <Field
+                            name="name"
+                            className="form-input"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">URL</label>
+                    {preview ? (
+                        <p className="text-white italic">{form.values.url}</p>
+                    ) : (
+                        <Field
+                            name="url"
+                            className="form-input"
+                        />
+                    )}
+                </div>
+            </FormMain>
         </>
     );
 }
 
-const Fields: React.FC<{ setBanner: React.Dispatch<React.SetStateAction<File | null>>, preview: boolean, form: any }> = ({ setBanner, preview, form }) => {
-    return (
-        <>
-            <div className="form-div">
-                <label className="form-label">Banner</label>
-                <input type="file" name="banner" onChange={(e) => {
-                    const val = (e?.currentTarget?.files) ? e.currentTarget.files[0] : null;
-
-                    setBanner(val ?? null);
-                }} className="form-input" />
-                {preview ? (
-                    <>
-                        <h2 className="text-white font-bold">Remove Banner</h2>
-                        <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                    </>
-                ) : (
-                    <>
-                        <Field
-                            name="bannerRemove"
-                            type="checkbox"
-                        /> <span className="text-white">Remove Banner</span>
-                    </>
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">Name</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.name}</p>
-                ) : (
-                    <Field name="name" className="form-input" />
-                )}
-            </div>
-            <div className="form-div">
-                <label className="form-label">URL</label>
-                {preview ? (
-                    <p className="text-white italic">{form.values.url}</p>
-                ) : (
-                    <Field name="url" className="form-input" />
-                )}
-
-            </div>
-        </>
-    )
-}
-
-const Button: React.FC<{ isEdit?: boolean, preview: boolean, setPreview: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isEdit = false, preview, setPreview }) => {
-    return (
-        <div className="text-center">
-            <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{isEdit ? "Save Partner" : "Add Partner"}</button>
-            <button onClick={(e) => {
-                e.preventDefault();
-
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
-        </div>
-    )
-}
+export default Form;

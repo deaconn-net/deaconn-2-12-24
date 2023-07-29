@@ -1,12 +1,25 @@
-import { UserProject } from "@prisma/client";
 import { useState } from "react";
-import { api } from "~/utils/api";
 
-import InfiniteScroll from 'react-infinite-scroller';
-import { Loader } from "~/components/utils/loader";
-import { ProjectRow } from "./row";
+import { type UserProject } from "@prisma/client";
 
-export const ProjectBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: string, limit?: number }> = ({ sort, sortDir, userId, limit = 10 }) => {
+import { api } from "@utils/api";
+import Loader from "@utils/loader";
+
+import Row from "@components/user/project/row";
+
+import InfiniteScroll from "react-infinite-scroller";
+
+const Browser: React.FC<{
+    sort?: string,
+    sortDir?: string,
+    userId?: string,
+    limit?: number
+}> = ({
+    sort,
+    sortDir,
+    userId,
+    limit = 10
+}) => {
     const [requireItems, setRequireItems] = useState(true);
 
     const { data, fetchNextPage } = api.user.getAllProjects.useInfiniteQuery({
@@ -30,7 +43,7 @@ export const ProjectBrowser: React.FC<{ sort?: string, sortDir?: string, userId?
         data.pages.forEach((pg) => {
             items.push(...pg.items);
 
-            if (pg.items.length < limit && requireItems)
+            if (!pg.nextCur && requireItems)
                 setRequireItems(false);
         });
     }
@@ -48,7 +61,7 @@ export const ProjectBrowser: React.FC<{ sort?: string, sortDir?: string, userId?
                     <>
                         {items.map((project: UserProject) => {
                             return (
-                                <ProjectRow
+                                <Row
                                     key={"project-" + project.id}
                                     project={project}
                                 />
@@ -60,3 +73,5 @@ export const ProjectBrowser: React.FC<{ sort?: string, sortDir?: string, userId?
         </InfiniteScroll>
     );
 }
+
+export default Browser;

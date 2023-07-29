@@ -1,8 +1,13 @@
-import { User, UserRole } from "@prisma/client"
+import { Session } from "next-auth";
 
-export const hasRole = (user: User & { userRoles: UserRole[] }, role: string) => {
-    return user.userRoles.includes({
-        userId: user.id,
-        roleId: role
-    });
+export const has_role = (
+    session: Session,
+    role: string
+) => {
+    const roles = session.user?.roles;
+
+    if (!roles)
+        return false;
+    
+    return roles.includes(role);
 }

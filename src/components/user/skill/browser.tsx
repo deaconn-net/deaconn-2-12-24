@@ -1,12 +1,25 @@
-import { UserSkill } from "@prisma/client";
 import { useState } from "react";
-import { api } from "~/utils/api";
 
-import InfiniteScroll from 'react-infinite-scroller';
-import { Loader } from "~/components/utils/loader";
-import { SkillRow } from "./row";
+import { type UserSkill } from "@prisma/client";
 
-export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: string, limit?: number }> = ({ sort, sortDir, userId, limit = 10 }) => {
+import { api } from "@utils/api";
+import Loader from "@utils/loader";
+
+import Row from "@components/user/skill/row";
+
+import InfiniteScroll from "react-infinite-scroller";
+
+const Browser: React.FC<{
+    sort?: string,
+    sortDir?: string,
+    userId?: string,
+    limit?: number
+}> = ({
+    sort,
+    sortDir,
+    userId,
+    limit = 10
+}) => {
     const [requireItems, setRequireItems] = useState(true);
 
     const { data, fetchNextPage } = api.user.getAllSkills.useInfiniteQuery({
@@ -30,7 +43,7 @@ export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: 
         data.pages.forEach((pg) => {
             items.push(...pg.items);
 
-            if (pg.items.length < limit && requireItems)
+            if (!pg.nextCur && requireItems)
                 setRequireItems(false);
         });
     }
@@ -48,7 +61,7 @@ export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: 
                     <>
                         {items.map((skill: UserSkill) => {
                             return (
-                                <SkillRow
+                                <Row
                                     key={"skill-" + skill.id}
                                     skill={skill}
                                 />
@@ -60,3 +73,5 @@ export const SkillBrowser: React.FC<{ sort?: string, sortDir?: string, userId?: 
         </InfiniteScroll>
     );
 }
+
+export default Browser;

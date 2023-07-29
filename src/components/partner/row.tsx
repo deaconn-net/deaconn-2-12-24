@@ -1,6 +1,11 @@
-import { Partner } from "@prisma/client";
+import { type Partner } from "@prisma/client";
 
-export const PartnerRow: React.FC<{ partner: Partner, cdn: string }> = ({ partner, cdn }) => {
+const Row: React.FC<{
+    partner: Partner
+}> = ({
+    partner
+}) => {
+    const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const banner = (partner.banner) ? cdn + partner.banner : null;
 
     return (
@@ -15,3 +20,5 @@ export const PartnerRow: React.FC<{ partner: Partner, cdn: string }> = ({ partne
         </a>
     );
 }
+
+export default Row;

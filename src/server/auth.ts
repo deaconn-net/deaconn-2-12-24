@@ -8,6 +8,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import { UserRole } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -15,6 +16,7 @@ import { prisma } from "~/server/db";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
+/*
 declare module "next-auth" {
     interface Session extends DefaultSession {
         user: {
@@ -32,6 +34,7 @@ declare module "next-auth" {
         roles: string[];
     }
 }
+*/
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -40,12 +43,25 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
     callbacks: {
-        session({ session, user }) {
+        async session({ session, user }) {
             if (session.user) {
                 session.user.id = user.id;
-                session.user.isAdmin = user.isAdmin;
-                session.user.roles = user.roles;
-                // session.user.role = user.role; <-- put other properties on the session here
+
+                let roles: UserRole[] = [];
+
+                // Retrieve user roles.
+                try {
+                    roles = await prisma.userRole.findMany({
+                        where: {
+                            userId: user.id
+                        }
+                    });
+                } catch (error) {
+                    console.error(`Failed to retrieve user roles (ID #${user.id})`);
+                }
+
+                if (roles)
+                    session.user.roles = roles.map(role => role.roleId);
             }
             return session;
         },
