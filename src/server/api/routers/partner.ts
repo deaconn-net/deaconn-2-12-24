@@ -6,26 +6,6 @@ import { TRPCError } from "@trpc/server";
 import { upload_file } from "@utils/file_upload";
 
 export const partnerRouter = createTRPCRouter({
-    get: publicProcedure
-        .input(z.object({
-            id: z.number().optional(),
-            url: z.string().optional(),
-        }))
-        .query(({ ctx, input }) => {
-            if (!input.id && !input.url)
-                return null;
-
-            return ctx.prisma.partner.findFirst({
-                where: {
-                    ...(input.id && {
-                        id: input.id
-                    }),
-                    ...(input.url && {
-                        url: input.url
-                    })
-                }
-            });
-        }),
     getAll: publicProcedure
         .input(z.object({
             limit: z.number().default(10),

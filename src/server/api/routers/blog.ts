@@ -6,31 +6,6 @@ import { TRPCError } from "@trpc/server";
 import { upload_file } from "@utils/file_upload";
 
 export const blogRouter = createTRPCRouter({
-    get: publicProcedure
-        .input(z.object({
-            id: z.number().optional(),
-            url: z.string().optional(),
-
-            incComments: z.boolean().default(false)
-        }))
-        .query(({ ctx, input }) => {
-            if (!input.id && !input.url)
-                return null;
-
-            return ctx.prisma.article.findFirst({
-                include: {
-                    articleComments: input.incComments
-                },
-                where: {
-                    ...(input.id && {
-                        id: input.id
-                    }),
-                    ...(input.url && {
-                        url: input.url
-                    })
-                }
-            });
-        }),
     getAll: publicProcedure
         .input(z.object({
             sort: z.string().default("createdAt"),
