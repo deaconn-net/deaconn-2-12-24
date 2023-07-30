@@ -5,7 +5,7 @@ const Page: NextPage = () => {
     return (
         <Wrapper>
             <div className="content">
-                <p className="text-white">About</p>
+                <p className="text-white">Aboot</p>
             </div>
         </Wrapper>
     );
