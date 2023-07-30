@@ -4,7 +4,7 @@ import { NextPage } from "next";
 import Link from "next/link";
 
 import Wrapper from "@components/wrapper";
-import ArticleRow from "@components/article/row";
+import ArticleRow from "@components/blog/article/row";
 import Meta from "@components/meta";
 
 import { type Article } from "@prisma/client";
