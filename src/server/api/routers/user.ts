@@ -35,47 +35,6 @@ const projectSchema = z.object({
 });
 
 export const userRouter = createTRPCRouter({
-    get: publicProcedure
-        .input(z.object({
-            id: z.string().nullable().default(null),
-            url: z.string().nullable().default(null),
-
-            incExperiences: z.boolean().default(false),
-            incSkills: z.boolean().default(false),
-            incProjects: z.boolean().default(false),
-            incPermissions: z.boolean().default(false),
-            incArticles: z.boolean().default(false),
-            incRequests: z.boolean().default(false)
-        }))
-        .query(({ ctx, input }) => {
-            if (!input.id && !input.url)
-                return null;
-
-            return ctx.prisma.user.findFirst({
-                include: {
-                    experiences: input.incExperiences,
-                    skills: input.incSkills,
-                    projects: input.incProjects,
-
-                    Article: input.incArticles,
-                    Request: input.incRequests
-                },
-                where: {
-                    OR: [
-                        {
-                            ...(input.id && {
-                                id: input.id
-                            })
-                        },
-                        {
-                            ...(input.url && {
-                                url: input.url
-                            })
-                        }
-                    ]
-                }
-            });
-        }),
     update: protectedProcedure
         .input(z.object({
             id: z.string(),
@@ -473,48 +432,6 @@ export const userRouter = createTRPCRouter({
                     message: "Unable to delete project #" + input.id
                 });
             }
-        }),
-    getExperience: publicProcedure
-        .input(z.object({
-            id: z.number()
-        }))
-        .query(({ ctx, input }) => {
-            if (input.id < 1)
-                return null;
-
-            return ctx.prisma.userExperience.findFirst({
-                where: {
-                    id: input.id
-                }
-            });
-        }),
-    getSkill: publicProcedure
-        .input(z.object({
-            id: z.number()
-        }))
-        .query(({ ctx, input }) => {
-            if (input.id < 1)
-                return null;
-
-            return ctx.prisma.userSkill.findFirst({
-                where: {
-                    id: input.id
-                }
-            });
-        }),
-    getProject: publicProcedure
-        .input(z.object({
-            id: z.number()
-        }))
-        .query(({ ctx, input }) => {
-            if (input.id < 1)
-                return null;
-
-            return ctx.prisma.userProject.findFirst({
-                where: {
-                    id: input.id
-                }
-            });
         }),
     addExperience: protectedProcedure
         .input(z.object({

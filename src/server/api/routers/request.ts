@@ -3,25 +3,6 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 export const requestRouter = createTRPCRouter({
-    get: protectedProcedure
-        .input(z.object({
-            id: z.number().nullable(),
-
-            incComments: z.boolean().default(false)
-        }))
-        .query(({ ctx, input }) => {
-            if (!input.id)
-                return null;
-
-            return ctx.prisma.request.findFirst({
-                include: {
-                    requestComments: input.incComments
-                },
-                where: {
-                    id: input.id
-                }
-            });
-        }),
     getAll: protectedProcedure
         .input(z.object({
             userId: z.string().nullable().default(null),
