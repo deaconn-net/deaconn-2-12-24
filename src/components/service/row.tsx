@@ -4,11 +4,12 @@ import { type Service } from "@prisma/client";
 
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
+import IconAndText from "@components/containers/icon_and_text";
 
 import ReactMarkdown from "react-markdown";
-import View from "@utils/icons/view";
-import Purchase from "@utils/icons/purchase";
-import Download from "@utils/icons/download";
+import ViewIcon from "@utils/icons/view";
+import PurchaseIcon from "@utils/icons/purchase";
+import DownloadIcon from "@utils/icons/download";
 
 const Row: React.FC<{
     service: Service,
@@ -36,57 +37,57 @@ const Row: React.FC<{
                 />
             ) : (
                 <div className={"service-row " + ((small) ? "service-row-sm" : "service-row-lg")}>
-                    <div className={"w-full " + ((small) ? "h-48" : "h-72")}>
-                        <img src={banner} className="w-full h-full max-h-full" />
+                    <div className="service-row-image">
+                        <img src={banner} />
                     </div>
-                    <div className="">
-                        <h3 className="text-white text-2xl font-bold text-center">{service.name}</h3>
+                    <div className="service-row-name">
+                        <h3>{service.name}</h3>
                     </div>
-                    <div className="pb-6 grow">
+                    <div className="service-row-description">
                         <ReactMarkdown
                             className="markdown"
                         >
                             {service.desc ?? ""}
                         </ReactMarkdown>
                     </div>
-                    <div className="pb-6 flex justify-center">
-                        <p className="text-xl text-green-300 font-bold italic">{(service.price > 0) ? "$" + service.price + "/m" : "Free"}</p>
+                    <div className="service-row-price">
+                        <p>{(service.price > 0) ? "$" + service.price + "/m" : "Free"}</p>
                     </div>
-                    <div className="pb-6 flex justify-between text-white text-sm">
-                        <div className="flex flex-wrap items-center">
-                            <span>
-                                <View
+                    <div className="service-row-stats">
+                        <IconAndText
+                            icon={
+                                <ViewIcon
                                     classes={["w-6", "h-6", "fill-white"]}
                                 />
-                            </span>
-                            <span className="ml-1">{service.views}</span>
-                        </div>
-                        <div className="flex flex-wrap items-center">
-                            <span>
-                                <Download
+                            }
+                            text={<>{service.views}</>}
+                        />
+                        <IconAndText
+                            icon={
+                                <DownloadIcon
                                     classes={["w-6", "h-6", "fill-white"]}
                                 />
-                            </span>
-                            <span className="ml-1">{service.downloads}</span>
-                        </div>
-                        <div className="flex flex-wrap items-center">
-                            <span>
-                                <Purchase
+                            }
+                            text={<>{service.downloads}</>}
+                        />
+                        <IconAndText
+                            icon={
+                                <PurchaseIcon
                                     classes={["w-6", "h-6", "fill-white"]}
                                 />
-                            </span>
-                            <span className="ml-1">{service.purchases}</span>
-                        </div>
+                            }
+                            text={<>{service.purchases}</>}
+                        />
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button" href={viewUrl}>View</Link>
+                    <div className="service-row-links">
+                        <Link className="button" href={viewUrl}>View</Link>
                         {service.openSource && service.gitLink && (
-                            <a className="w-full button" target="_blank" href={service.gitLink}>Source Code</a>
+                            <Link className="button" target="_blank" href={service.gitLink}>Source Code</Link>
                         )}
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button button-secondary" href={editUrl}>Edit</Link>
-                        <Link className="w-full button button-delete" href="#" onClick={(e) => {
+                    <div className="service-row-actions">
+                        <Link className="button button-secondary" href={editUrl}>Edit</Link>
+                        <Link className="button button-delete" href="#" onClick={(e) => {
                             e.preventDefault();
 
                             const yes = confirm("Are you sure you want to delete this service?");

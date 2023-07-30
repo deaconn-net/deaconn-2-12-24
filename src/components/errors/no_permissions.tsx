@@ -1,6 +1,6 @@
 const NoPermissions: React.FC = () => {
     return (
-        <div>
+        <div className="error error-no-permissions">
             <p>You do not have permissions to view this page.</p>
         </div>
     );

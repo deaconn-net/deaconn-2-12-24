@@ -13,9 +13,9 @@ const Row: React.FC<{
         <a href={partner.url} target="_blank">
             <div className="partner-row">
                 {partner.banner ? (
-                    <img src={banner} className="w-full h-18" alt={partner.name} />
+                    <img src={banner} alt={partner.name} />
                 ) : (
-                    <span className="text-lg text-white">{partner.name}</span>
+                    <span>{partner.name}</span>
                 )}
             </div>
         </a>

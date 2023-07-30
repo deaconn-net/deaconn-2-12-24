@@ -18,7 +18,7 @@ const Wrapper: React.FC<{
     }
 
     return (
-        <main className="min-h-screen bg-gradient-to-b from-zinc-900 to-gray-900">
+        <main>
             <Header />
             {children}
             <Footer />
