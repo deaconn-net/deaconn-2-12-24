@@ -1,0 +1,36 @@
+@tailwind components;
+
+@layer components {
+    .content {
+        @apply container;
+        @apply mx-auto;
+        @apply py-16;
+    }
+
+    .content-item {
+        @apply w-full;
+        @apply p-4;
+    }
+
+    .content-item p {
+        @apply pb-2;
+    }
+
+    .content-title {
+        @apply text-white;
+        @apply text-3xl;
+        @apply font-bold;
+        @apply italic;
+        @apply pb-4;
+    }
+
+    .content-col-large {
+        @apply w-full;
+        @apply sm:w-2/3;
+    }
+
+    .content-col-small {
+        @apply w-full;
+        @apply sm:w-1/3;
+    }
+}

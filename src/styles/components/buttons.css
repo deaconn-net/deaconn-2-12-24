@@ -1,0 +1,22 @@
+@tailwind components;
+
+@layer components {
+    .button {
+        @apply p-4;
+        @apply bg-cyan-700;
+        @apply text-white;
+        @apply hover:bg-cyan-600;
+        @apply text-center;
+        @apply rounded;
+    }
+    
+    .button-secondary {
+        @apply !bg-green-700;
+        @apply hover:!bg-green-600;
+    }
+    
+    .button-delete {
+        @apply !bg-red-700;
+        @apply hover:!bg-red-600;
+    } 
+}

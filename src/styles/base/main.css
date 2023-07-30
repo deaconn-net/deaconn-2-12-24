@@ -1,0 +1,14 @@
+@tailwind base;
+
+@layer base {
+    main {
+        /* Default text and height*/
+        @apply text-gray-100;
+        @apply min-h-screen;
+
+        /* Primary background */
+        @apply bg-gradient-to-b;
+        @apply from-zinc-900;
+        @apply to-gray-900;
+    }
+}

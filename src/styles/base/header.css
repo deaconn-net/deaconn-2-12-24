@@ -1,0 +1,17 @@
+@tailwind base;
+
+@layer base {
+    header {
+        @apply bg-slate-800;
+    }
+
+    header > nav {
+        @apply container;
+        @apply mx-auto;
+
+        @apply flex;
+        @apply justify-between;
+
+        @apply text-center;
+    }
+}

@@ -1,0 +1,118 @@
+@tailwind components;
+
+@layer components {
+    .service-row {
+        @apply p-4;
+        @apply bg-cyan-900;
+        @apply w-full;
+        @apply rounded;
+        @apply border-gray-800;
+        @apply border-2;
+        @apply border-solid;
+        @apply flex;
+        @apply flex-col;
+    }
+
+    .service-row-sm {
+        @apply sm:w-[18rem];
+    }
+
+    .service-row-lg {
+        @apply sm:w-[24rem];
+    }
+
+    /* Image */
+    .service-row-image {
+        @apply w-full;
+    }
+
+    .service-row-image > img {
+        @apply w-full;
+        @apply h-full;
+        @apply max-h-full;
+    }
+
+    .service-row-sm > .service-row-image {
+        @apply h-48;
+    }
+
+    .service-row-lg > .service-row-image {
+        @apply h-72;
+    }
+
+    /* Name */
+    .service-row-name > h3 {
+        @apply text-white;
+        @apply text-2xl;
+        @apply font-bold;
+        @apply text-center;
+    }
+
+    /* Description */
+    .service-row-description {
+        @apply p-6;
+        @apply grow;
+    }
+
+    /* Price */
+    .service-row-price {
+        @apply pb-6;
+
+        @apply flex;
+        @apply justify-center;
+    }
+
+    .service-row-price > p {
+        @apply text-xl;
+        @apply text-green-300;
+        @apply font-bold;
+        @apply italic;
+    }
+
+    /* Views */
+    .service-row-stats {
+        @apply pb-6;
+        @apply flex;
+        @apply justify-between;
+        
+        @apply text-white;
+        @apply text-sm;
+    }
+
+    .service-row-stats-stat {
+        @apply flex;
+        @apply flex-wrap;
+        @apply items-center;
+    }
+
+    .service-row-stats-stat > span:last-child {
+        @apply ml-1;
+    }
+
+    /* Links */
+    .service-row-links {
+        @apply p-6;
+        
+        @apply flex;
+        @apply flex-wrap;
+        @apply gap-2;
+        @apply justify-center;
+    }
+
+    .service-row-links > a {
+        @apply w-full;
+    }
+
+    /* Actions */
+    .service-row-actions {
+        @apply p-6;
+        @apply flex;
+        @apply flex-wrap;
+        @apply gap-2;
+        @apply justify-center;
+    }
+
+    .service-row-actions > a {
+        @apply w-full;
+    }
+}
