@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "HOST": "0.0.0.0",
+            "PORT": "3001"
+        }
+    },
+    "tasks": [
+        {
+            "label": "Start Web Server",
+            "type": "shell",
+            "command": "npm run dev"
+        }
+    ]
+}
