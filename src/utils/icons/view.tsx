@@ -1,4 +1,4 @@
-const View: React.FC<{
+const ViewIcon: React.FC<{
     classes?: string[]
 }> = ({
     classes
@@ -11,4 +11,4 @@ const View: React.FC<{
     );
 }
 
-export default View;
+export default ViewIcon;

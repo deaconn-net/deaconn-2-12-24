@@ -1,4 +1,4 @@
-const Purchase: React.FC<{
+const PurchaseIcon: React.FC<{
     classes?: string[]
 }> = ({
     classes
@@ -10,4 +10,4 @@ const Purchase: React.FC<{
     );
 }
 
-export default Purchase;
+export default PurchaseIcon;

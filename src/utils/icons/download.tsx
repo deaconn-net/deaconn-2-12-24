@@ -1,4 +1,4 @@
-const Download: React.FC<{
+const DownloadIcon: React.FC<{
     classes?: string[]
 }> = ({
     classes
@@ -10,4 +10,4 @@ const Download: React.FC<{
     );
 }
 
-export default Download;
+export default DownloadIcon;

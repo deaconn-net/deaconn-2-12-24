@@ -1,4 +1,4 @@
-const Comment: React.FC<{
+const CommentIcon: React.FC<{
     classes?: string[]
 }> = ({
     classes
@@ -10,4 +10,4 @@ const Comment: React.FC<{
     );
 }
 
-export default Comment;
+export default CommentIcon;
