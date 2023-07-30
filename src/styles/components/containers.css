@@ -1,0 +1,12 @@
+@tailwind components;
+
+@layer components {
+    .container-icon-and-text {
+        @apply flex;
+        @apply items-center;
+    }
+
+    .container-icon-and-text:not(flex-col) > span:last-child {
+        @apply ml-1;
+    }
+}
