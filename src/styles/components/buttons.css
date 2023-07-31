@@ -7,9 +7,14 @@
     @apply rounded;
 }
 
-.button-secondary {
+.button-primary {
     @apply !bg-green-700;
     @apply hover:!bg-green-600;
+}
+
+.button-secondary {
+    @apply !bg-cyan-800;
+    @apply hover:!bg-cyan-700;
 }
 
 .button-delete {
