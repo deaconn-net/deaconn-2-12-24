@@ -7,7 +7,7 @@ const Row: React.FC<{
 }) => {
     const avatar = (user.image) ? user.image : "/images/user/default.png";
 
-    const link = "/user/view/" + ((user.url) ? user.url : user.id);
+    const link = "/user/view/" + ((user.url) ? user.url : "$" + user.id);
 
     return (
         <a href={link} className="user-row">
