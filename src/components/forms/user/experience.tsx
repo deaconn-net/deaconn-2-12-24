@@ -58,8 +58,8 @@ const Form: React.FC<{
     const [preview, setPreview] = useState(false);
 
     const submit_btn =
-        <div className="text-center">
-            <button type="submit" className="button">{experience ? "Save" : "Add"} Experience</button>
+        <div className="flex gap-2 justify-center">
+            <button type="submit" className="button button-primary">{experience ? "Save" : "Add"} Experience</button>
             <button onClick={(e) => {
                 e.preventDefault();
 
@@ -67,7 +67,7 @@ const Form: React.FC<{
                     setPreview(false);
                 else
                     setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
+            }} className="button button-secondary">{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.

@@ -65,13 +65,13 @@ const Form: React.FC<{
 
     // Submit button.
     const submit_btn =
-        <div className="text-center">
+        <div className="flex gap-2 justify-center">
             <button 
                 type="submit"
-                className="p-6 text-white text-center bg-cyan-900 rounded"
+                className="button button-primary"
             >{article ? "Save Article" : "Add Article"}</button>
             <button
-                className="ml-4 p-6 text-white text-center bg-cyan-800 rounded"
+                className="button button-secondary"
                 onClick={(e) => {
                     e.preventDefault();
 
