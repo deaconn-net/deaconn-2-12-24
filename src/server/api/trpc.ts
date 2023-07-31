@@ -65,6 +65,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
+import { has_role } from "@utils/user/auth";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
     transformer: superjson,
@@ -123,18 +124,8 @@ const isMod = t.middleware(async ({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user)
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
-    // Retrieve user.
-    const user = await ctx.prisma.user.findFirst({
-        select: {
-            permissions: true
-        },
-        where: {
-            id: ctx.session.user.id
-        }
-    });
-
     // Check.
-    if (!user || user.permissions.length < 1 || !user.permissions.includes({ userId: ctx.session.user.id, name: "mod" }))
+    if (!has_role(ctx.session, "moderator"))
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Continue!
