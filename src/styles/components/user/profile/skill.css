@@ -17,3 +17,28 @@
 .skill-row-lg {
     @apply sm:w-[24rem];
 }
+
+/* Title */
+/*
+.skill-row-title {
+
+}
+/*
+
+/* Description */
+.skill-row-description {
+    @apply pb-6;
+}
+
+/* Actions */
+.skill-row-actions {
+    @apply p-6;
+    @apply flex;
+    @apply flex-wrap;
+    @apply gap-2;
+    @apply justify-center;
+}
+
+.skill-row-actions > a {
+    @apply w-full;
+}

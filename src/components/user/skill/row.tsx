@@ -27,8 +27,8 @@ const Row: React.FC<{
                 />
             ) : (
                 <div className={"skill-row " + ((small) ? "skill-row-sm" : "skill-row-lg")}>
-                    <div className="">
-                        <h3 className="text-white text-2xl font-bold text-center">{skill.title}</h3>
+                    <div className="skill-row-title">
+                        <h3>{skill.title}</h3>
                     </div>
                     <div className="pb-6">
                         <ReactMarkdown
@@ -37,9 +37,9 @@ const Row: React.FC<{
                             {skill.desc ?? ""}
                         </ReactMarkdown>
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button button-secondary" href={editUrl}>Edit</Link>
-                        <Link className="w-full button button-delete" href="#" onClick={(e) => {
+                    <div className="skill-row-actions">
+                        <Link className="button button-secondary" href={editUrl}>Edit</Link>
+                        <Link className="button button-delete" href="#" onClick={(e) => {
                             e.preventDefault();
 
                             const yes = confirm("Are you sure you want to delete this experience?");

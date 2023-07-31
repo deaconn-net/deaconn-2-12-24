@@ -27,19 +27,19 @@ const Row: React.FC<{
                 />
             ) : (
                 <div className={"project-row " + ((small) ? "project-row-sm" : "project-row-lg")}>
-                    <div className="">
-                        <h3 className="text-white text-2xl font-bold text-center">{project.name}</h3>
+                    <div className="project-row-name">
+                        <h3>{project.name}</h3>
                     </div>
-                    <div className="pb-6">
+                    <div className="project-row-description">
                         <ReactMarkdown
                             className="markdown"
                         >
                             {project.desc ?? ""}
                         </ReactMarkdown>
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button button-secondary" href={editUrl}>Edit</Link>
-                        <Link className="w-full button button-delete" href="#" onClick={(e) => {
+                    <div className="project-row-actions">
+                        <Link className="button button-secondary" href={editUrl}>Edit</Link>
+                        <Link className="button button-delete" href="#" onClick={(e) => {
                             e.preventDefault();
 
                             const yes = confirm("Are you sure you want to delete this experience?");

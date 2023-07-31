@@ -17,4 +17,29 @@
 .experience-row-lg {
     @apply sm:w-[24rem];
 }
-    
+
+/* Title */
+/*
+.experience-row-title {
+
+}
+*/
+ 
+/* Description */
+.experience-row-description {
+    @apply pb-6;
+}
+
+/* Actions */
+.experience-row-actions {
+    @apply p-6;
+
+    @apply flex;
+    @apply flex-wrap;
+    @apply gap-2;
+    @apply justify-center;
+}
+
+.experience-row-actions > a {
+    @apply w-full;
+}
