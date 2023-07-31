@@ -75,7 +75,7 @@ const Page: NextPage = () => {
                         else
                             setOldest(true);
                     }}>Oldest</Link>
-                    <Link href="/request/new" className="button button-secondary flex">
+                    <Link href="/request/new" className="button button-primary flex">
                         <AddIcon
                             classes={["w-6", "h-6", "fill-none"]}
                         />

@@ -64,7 +64,7 @@ const Page: NextPage = () => {
                         else
                             setMostPopular(true);
                     }}>Most Popular</Link>
-                    <Link href="/service/new" className="button button-secondary flex">
+                    <Link href="/service/new" className="button button-primary flex">
                         <AddIcon 
                             classes={["w-6", "h-6", "fill-none"]}
                         />
