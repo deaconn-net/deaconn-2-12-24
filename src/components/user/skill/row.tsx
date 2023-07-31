@@ -38,7 +38,7 @@ const Row: React.FC<{
                         </ReactMarkdown>
                     </div>
                     <div className="skill-row-actions">
-                        <Link className="button button-secondary" href={editUrl}>Edit</Link>
+                        <Link className="button button-primary" href={editUrl}>Edit</Link>
                         <Link className="button button-delete" href="#" onClick={(e) => {
                             e.preventDefault();
 

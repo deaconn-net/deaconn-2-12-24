@@ -67,7 +67,7 @@ const Row: React.FC<{
                         <Link className="button" href={viewUrl}>Read More</Link>
                     </div>
                     <div className="article-row-actions">
-                        <Link className="button button-secondary" href={editUrl}>Edit</Link>
+                        <Link className="button button-primary" href={editUrl}>Edit</Link>
                         <Link className="button button-delete" href="#" onClick={(e) => {
                             e.preventDefault();
 
