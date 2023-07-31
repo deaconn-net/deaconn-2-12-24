@@ -14,7 +14,7 @@ const Page: NextPage<{
     return (
         <Wrapper>
             <div className="content">
-                <h1 className="text-3xl text-white font-bold italic">Create Partner</h1>
+                <h1>Create Partner</h1>
                 <Form
                     partner={partner}
                 />

@@ -6,7 +6,7 @@ const Page: NextPage = () => {
     return (
         <Wrapper>
             <div className="content">
-                <p className="text-white">User Edit</p>
+                <p>User Edit</p>
             </div>
         </Wrapper>
     );

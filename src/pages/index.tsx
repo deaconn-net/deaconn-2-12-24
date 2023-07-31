@@ -32,13 +32,13 @@ const Page: NextPage<{
                 <div className="flex flex-wrap">
                     <div className="content-col-large">
                         <div className="content-item">
-                            <h1 className="content-title">Who Are We?</h1>
-                            <p className="text-white"><span className="font-bold">Deaconn</span> is a software developer which produces products and services in various areas within technology.</p>
+                            <h1>Who Are We?</h1>
+                            <p><span className="font-bold">Deaconn</span> is a software developer which produces products and services in various areas within technology.</p>
                         </div>
                         <div className="content-item">
-                            <h1 className="content-title">Have A Request?</h1>
-                            <p className="text-white">We are a freelancing business and accept requests.</p>
-                            <p className="text-white"><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
+                            <h1>Have A Request?</h1>
+                            <p>We are a freelancing business and accept requests.</p>
+                            <p><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
                             <div className="flex py-6">
                                 <Link href="/request/new" className="button">New Request</Link>
                             </div>
@@ -46,7 +46,7 @@ const Page: NextPage<{
                     </div>
                     <div className="content-col-small">
                         <div className="content-item">
-                            <h1 className="content-title">Our Team</h1>
+                            <h1>Our Team</h1>
                             {team.map((user) => {
                                 return (
                                     <UserRow
@@ -57,7 +57,7 @@ const Page: NextPage<{
                             })}
                         </div>
                         <div className="content-item">
-                            <h1 className="content-title">Partners</h1>
+                            <h1>Partners</h1>
                             {partners.map((partner) => {
                                 return (
                                     <PartnerRow
@@ -70,7 +70,7 @@ const Page: NextPage<{
                     </div>
                 </div>
                 <div className="content-item">
-                    <h1 className="content-title">Popular Services</h1>
+                    <h1>Popular Services</h1>
                     <div className="grid-view grid-view-sm">
                         {services.map((service) => {
                             return (
@@ -84,7 +84,7 @@ const Page: NextPage<{
                     </div>
                 </div>
                 <div className="content-item">
-                    <h1 className="content-title">Latest Articles</h1>
+                    <h1>Latest Articles</h1>
                     <div className="grid-view grid-view-sm">
                         {articles.map((article) => {
                             return (

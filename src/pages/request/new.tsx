@@ -15,7 +15,7 @@ const Page: NextPage<{
     return (
         <Wrapper>
             <div className="content">
-                <h1 className="text-3xl text-white font-bold italic">Create Request</h1>
+                <h1>Create Request</h1>
                 <Form
                     request={request}
                 />

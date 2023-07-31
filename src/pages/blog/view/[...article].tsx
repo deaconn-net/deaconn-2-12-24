@@ -40,7 +40,7 @@ const Page: NextPage<{
                         <div className="w-full flex justify-center">
                             <img src={image} className="w-[67.5rem] h-[33.75rem] max-h-full border-2 border-solid border-cyan-900 rounded-t" alt="Banner" />
                         </div>
-                        <h1 className="content-title">{article.title}</h1>
+                        <h1>{article.title}</h1>
                         <div className="w-full bg-cyan-900 p-6 rounded-sm">
                             <div className="text-white text-sm italic pb-4">
                                 {article.user && (

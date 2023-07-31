@@ -13,7 +13,7 @@ const Page: NextPage<{
     return (
         <Wrapper>
             <div className="content">
-                <h1 className="text-3xl text-white font-bold italic">Create Article</h1>
+                <h1>Create Article</h1>
                 <Form
                     article={article}
                 />
