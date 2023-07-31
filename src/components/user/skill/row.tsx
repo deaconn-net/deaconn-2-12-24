@@ -30,7 +30,7 @@ const Row: React.FC<{
                     <div className="skill-row-title">
                         <h3>{skill.title}</h3>
                     </div>
-                    <div className="pb-6">
+                    <div className="skill-row-description">
                         <ReactMarkdown
                             className="markdown"
                         >
