@@ -24,7 +24,7 @@ const Browser: React.FC<{
     const { data, fetchNextPage } = api.user.getAllExperiences.useInfiniteQuery({
         limit: limit,
 
-        userId: userId ?? null,
+        userId: userId,
 
         sort: sort,
         sortDir: sortDir

@@ -25,7 +25,7 @@ const Browser: React.FC<{
     const { data, fetchNextPage } = api.user.getAllProjects.useInfiniteQuery({
         limit: limit,
 
-        userId: userId ?? null,
+        userId: userId,
 
         sort: sort,
         sortDir: sortDir
