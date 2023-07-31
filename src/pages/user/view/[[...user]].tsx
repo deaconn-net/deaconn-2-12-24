@@ -62,6 +62,10 @@ const Page: NextPage<{
                         <div className="w-full sm:w-11/12">
                             {view == "general" && (
                                 <>
+                                    <h1>General</h1>
+                                    {!user.aboutMe && !user.showEmail && !birthday && (
+                                        <p>No general information to show.</p>
+                                    )}
                                     {user.aboutMe && (
                                         <div className="p-6">
                                             <h3>About Me</h3>
