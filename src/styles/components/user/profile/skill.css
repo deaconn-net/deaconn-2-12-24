@@ -1,24 +1,19 @@
-@tailwind components;
+.skill-row {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply w-full;
+    @apply rounded;
+    @apply border-gray-800;
+    @apply border-2;
+    @apply border-solid;
+    @apply flex;
+    @apply flex-col;
+}
 
-@layer components {
-    .skill-row {
-        @apply p-4;
-        @apply bg-cyan-900;
-        @apply w-full;
-        @apply rounded;
-        @apply border-gray-800;
-        @apply border-2;
-        @apply border-solid;
-        @apply flex;
-        @apply flex-col;
-    }
-    
-    .skill-row-sm {
-        @apply sm:w-[18rem];
-    }
-    
-    .skill-row-lg {
-        @apply sm:w-[24rem];
-    }
-    
+.skill-row-sm {
+    @apply sm:w-[18rem];
+}
+
+.skill-row-lg {
+    @apply sm:w-[24rem];
 }

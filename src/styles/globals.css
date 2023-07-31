@@ -2,38 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base */
-@import "base/main.css";
-@import "base/header.css";
-@import "base/footer.css";
+/* Base Layer (Imports Do Not Work In Base Layer) */
+@layer base {
+    main {
+        /* Default text and height*/
+        @apply text-gray-100;
+        @apply min-h-screen;
+    
+        /* Primary background */
+        @apply bg-gradient-to-b;
+        @apply from-zinc-900;
+        @apply to-gray-900;
+    }
+    
+    h1, h2, h3, h4, h5 {
+        @apply font-bold;
+        @apply italic;
+        @apply text-white;
+    }
+    
+    h1 {
+        @apply text-4xl;
+    }
+    
+    h2 {
+        @apply text-3xl;
+    }
+    
+    h3 {
+        @apply text-2xl;
+    }
+    
+    h4 {
+        @apply text-xl;
+    }
+    
+    h5 {
+        @apply text-lg;
+    }
 
-/* Utils */
+    header {
+        @apply bg-slate-800;
+    }
+    
+    header > nav {
+        @apply container;
+        @apply mx-auto;
+    
+        @apply flex;
+        @apply justify-between;
+    
+        @apply text-center;
+    }
+
+    footer {
+        @apply p-6;
+        @apply bg-slate-800;
+    }
+}
 
 /* Components */
-@import "components/blog/article/row.css";
+@layer components {
+    @import "components/blog/article/row.css";
 
-@import "components/forms/main.css";
+    @import "components/forms/main.css";
 
-@import "components/header/main.css";
-@import "components/header/navbar.css";
+    @import "components/header/navbar.css";
 
-@import "components/partner/row.css";
+    @import "components/partner/row.css";
 
-@import "components/request/main.css";
-@import "components/request/row.css";
+    @import "components/request/row.css";
 
-@import "components/service/row.css";
+    @import "components/service/row.css";
 
-@import "components/user/profile/main.css";
-@import "components/user/profile/experience.css";
-@import "components/user/profile/skill.css";
-@import "components/user/profile/project.css";
-@import "components/user/row.css";
+    @import "components/user/profile/main.css";
+    @import "components/user/profile/experience.css";
+    @import "components/user/profile/skill.css";
+    @import "components/user/profile/project.css";
+    @import "components/user/row.css";
 
-@import "components/buttons.css";
-@import "components/content.css";
-@import "components/footer.css";
-@import "components/grid.css";
-@import "components/markdown.css";
-@import "components/error.css";
-@import "components/containers.css";
+    @import "components/buttons.css";
+    @import "components/content.css";
+    @import "components/footer.css";
+    @import "components/grid.css";
+    @import "components/markdown.css";
+    @import "components/error.css";
+    @import "components/containers.css";
+}

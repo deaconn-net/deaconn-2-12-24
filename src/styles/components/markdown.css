@@ -1,42 +1,38 @@
-@tailwind components;
+.markdown h1 {
+    @apply text-2xl;
+    @apply font-bold;
+}
 
-@layer components {
-    .markdown h1 {
-        @apply text-2xl;
-        @apply font-bold;
-    }
+.markdown h2 {
+    @apply text-xl;
+    @apply font-bold;
+}
 
-    .markdown h2 {
-        @apply text-xl;
-        @apply font-bold;
-    }
+.markdown h3 {
+    @apply text-lg;
+    @apply font-bold;
+}
 
-    .markdown h3 {
-        @apply text-lg;
-        @apply font-bold;
-    }
+.markdown p {
+    @apply py-2;
+}
 
-    .markdown p {
-        @apply py-2;
-    }
+.markdown a {
+    @apply text-white;
+}
 
-    .markdown a {
-        @apply text-white;
-    }
+.markdown a:hover {
+    @apply underline;
+}
 
-    .markdown a:hover {
-        @apply underline;
-    }
+.markdown ol {
+    @apply list-decimal;
+}
 
-    .markdown ol {
-        @apply list-decimal;
-    }
+.markdown ol > li, .markdown ul > li {
+    @apply ml-12;
+}
 
-    .markdown ol > li, .markdown ul > li {
-        @apply ml-12;
-    }
-
-    .markdown ul {
-        @apply list-disc;
-    }
+.markdown ul {
+    @apply list-disc;
 }

@@ -1,8 +1,0 @@
-@tailwind base;
-
-@layer base {
-    footer {
-        @apply p-6;
-        @apply bg-slate-800;
-    }
-}

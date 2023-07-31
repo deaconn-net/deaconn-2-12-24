@@ -1,27 +1,23 @@
-@tailwind components;
+.nav-section {
+    @apply flex;
+    @apply justify-center;
+    @apply list-none;
+}
 
-@layer components {
-    .nav-section {
-        @apply flex;
-        @apply justify-center;
-        @apply list-none;
-    }
-    
-    .nav-link {
-        @apply p-2;
-        @apply min-w-[10em];
-        @apply text-base;
-        @apply hover:bg-cyan-800;
-    }
+.nav-link {
+    @apply p-2;
+    @apply min-w-[10em];
+    @apply text-base;
+    @apply hover:bg-cyan-800;
+}
 
-    .nav-item {
-        @apply flex;
-        @apply flex-col;
-        @apply items-center;
-        @apply justify-center;
-    }
+.nav-item {
+    @apply flex;
+    @apply flex-col;
+    @apply items-center;
+    @apply justify-center;
+}
 
-    .nav-text {
-        @apply pt-1;
-    }
+.nav-text {
+    @apply pt-1;
 }

@@ -1,22 +1,18 @@
-@tailwind components;
+.form-div {
+    @apply p-6;
+}
 
-@layer components {
-    .form-div {
-        @apply p-6;
-    }
-    
-    .form-input {
-        @apply p-4;
-        @apply bg-cyan-900;
-        @apply ring-cyan-800;
-        @apply rounded;
-        @apply w-full;
-    }
-    
-    .form-label {
-        @apply block;
-        @apply text-lg;
-        @apply font-bold;
-        @apply text-white;
-    }
+.form-input {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply ring-cyan-800;
+    @apply rounded;
+    @apply w-full;
+}
+
+.form-label {
+    @apply block;
+    @apply text-lg;
+    @apply font-bold;
+    @apply text-white;
 }

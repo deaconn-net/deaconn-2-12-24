@@ -1,23 +1,19 @@
-@tailwind components;
+.project-row {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply w-full;
+    @apply rounded;
+    @apply border-gray-800;
+    @apply border-2;
+    @apply border-solid;
+    @apply flex;
+    @apply flex-col;
+}
 
-@layer components {
-    .project-row {
-        @apply p-4;
-        @apply bg-cyan-900;
-        @apply w-full;
-        @apply rounded;
-        @apply border-gray-800;
-        @apply border-2;
-        @apply border-solid;
-        @apply flex;
-        @apply flex-col;
-    }
-    
-    .project-row-sm {
-        @apply sm:w-[18rem];
-    }
-    
-    .project-row-lg {
-        @apply sm:w-[24rem];
-    }
+.project-row-sm {
+    @apply sm:w-[18rem];
+}
+
+.project-row-lg {
+    @apply sm:w-[24rem];
 }
