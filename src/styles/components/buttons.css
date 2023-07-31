@@ -1,8 +1,8 @@
 .button {
     @apply p-4;
-    @apply bg-cyan-700;
+    @apply !bg-cyan-700;
     @apply text-white;
-    @apply hover:bg-cyan-600;
+    @apply hover:!bg-cyan-600;
     @apply text-center;
     @apply rounded;
 }
