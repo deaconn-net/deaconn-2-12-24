@@ -19,7 +19,7 @@ const Row: React.FC<{
     small = false
 }) => {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const upload_url = process.env.NEXT_PUBLIC_UPLOAD_PRE_URL ?? "";
+    const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
     
     const viewUrl = "/service/view/" + service.url;
     const editUrl = "/service/new?id=" + service.id;
