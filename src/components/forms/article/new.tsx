@@ -92,7 +92,7 @@ const Form: React.FC<{
             content: article?.content ?? "",
             bannerRemove: false
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.

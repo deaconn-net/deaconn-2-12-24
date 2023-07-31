@@ -86,7 +86,7 @@ const Form: React.FC<{
             url: partner?.url ?? "",
             bannerRemove: false
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.

@@ -90,7 +90,7 @@ const Form: React.FC<{
             bannerRemove: false,
             iconRemove: false
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.

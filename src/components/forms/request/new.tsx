@@ -87,7 +87,7 @@ const Form: React.FC<{
             price: request?.price ?? 50.0,
             content: request?.content ?? ""
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.
