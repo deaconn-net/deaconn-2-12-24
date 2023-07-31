@@ -22,7 +22,7 @@ const Page: NextPage<{
     user,
     view
 }) => {
-    const baseUrl = "/user/view/" + ((user?.url) ? user?.url : user?.id);
+    const baseUrl = "/user/view/" + ((user?.url) ? user?.url : "$" + user?.id);
 
     const birthday = (user?.birthday) ? dateFormat(user?.birthday, dateFormatTwo) : null;
 
