@@ -14,11 +14,16 @@
         @apply from-zinc-900;
         @apply to-gray-900;
     }
+
+    p {
+        @apply leading-10;
+    }
     
     h1, h2, h3, h4, h5 {
         @apply font-bold;
         @apply italic;
         @apply text-white;
+        @apply leading-10;
     }
     
     h1 {

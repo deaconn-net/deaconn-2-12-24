@@ -9,10 +9,6 @@
     @apply p-4;
 }
 
-.content-item p {
-    @apply pb-2;
-}
-
 .content-title {
     @apply text-white;
     @apply text-3xl;
