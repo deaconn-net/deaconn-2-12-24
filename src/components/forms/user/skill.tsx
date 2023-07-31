@@ -76,7 +76,7 @@ const Form: React.FC<{
             title: skill?.title ?? "",
             desc: skill?.desc ?? "",
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.

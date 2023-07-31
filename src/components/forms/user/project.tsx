@@ -79,7 +79,7 @@ const Form: React.FC<{
             name: project?.name ?? "",
             desc: project?.desc ?? "",
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.

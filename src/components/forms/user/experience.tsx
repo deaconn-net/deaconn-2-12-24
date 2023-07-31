@@ -78,7 +78,7 @@ const Form: React.FC<{
             title: experience?.title ?? "",
             desc: experience?.desc ?? "",
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.

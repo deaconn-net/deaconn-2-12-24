@@ -82,7 +82,7 @@ const Form: React.FC<{
             birthday: new Date(user?.birthday ?? Date.now()),
             showEmail: user?.showEmail ?? false
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
         onSubmit: async (values) => {
             // Reset error and success.
@@ -127,7 +127,10 @@ const Form: React.FC<{
                     {preview ? (
                         <p className="text-white italic">{form.values.name}</p>
                     ) : (
-                        <Field name="name" className="form-input" />
+                        <Field
+                            name="name"
+                            className="form-input"
+                        />
                     )}
                 </div>
                 <div className="form-div">
@@ -135,16 +138,29 @@ const Form: React.FC<{
                     {preview ? (
                         <p className="text-white italic">{form.values.url}</p>
                     ) : (
-                        <Field name="url" className="form-input" />
+                        <Field 
+                            name="url"
+                            className="form-input"
+                        />
                     )}
                     <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
                 </div>
                 <div className="form-div">
                     <label className="form-label">About Me</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.aboutMe}</ReactMarkdown>
+                        <ReactMarkdown 
+                            className="markdown text-white"
+                        >
+                            {form.values.aboutMe}
+                        </ReactMarkdown>
                     ) : (
-                        <Field as="textarea" rows="16" cols="32" name="aboutMe" className="form-input" />
+                        <Field
+                            name="aboutMe"
+                            className="form-input"
+                            as="textarea"
+                            rows="16"
+                            cols="32"
+                        />
                     )}
                 </div>
                 <div className="form-div">
