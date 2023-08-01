@@ -72,21 +72,31 @@ const Row: React.FC<{
                         />
                     </div>
                     <div className="article-row-read-more">
-                        <Link className="button" href={viewUrl}>Read More</Link>
+                        <Link
+                            className="button"
+                            href={viewUrl}
+                        >Read More</Link>
                     </div>
                     <div className="article-row-actions">
-                        <Link className="button button-primary" href={editUrl}>Edit</Link>
-                        <Link className="button button-danger" href="#" onClick={(e) => {
-                            e.preventDefault();
+                        <Link
+                            className="button button-primary"
+                            href={editUrl}
+                        >Edit</Link>
+                        <Link
+                            className="button button-danger"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                            const yes = confirm("Are you sure you want to delete this article?");
+                                const yes = confirm("Are you sure you want to delete this article?");
 
-                            if (yes) {
-                                deleteMut.mutate({
-                                    id: article.id
-                                });
-                            }
-                        }}>Delete</Link>
+                                if (yes) {
+                                    deleteMut.mutate({
+                                        id: article.id
+                                    });
+                                }
+                            }}
+                        >Delete</Link>
                     </div>
                 </div>
             )}

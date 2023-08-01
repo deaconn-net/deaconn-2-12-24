@@ -52,9 +52,7 @@ const Row: React.FC<{
                         </h3>
                     </div>
                     <div className="service-row-description">
-                        <ReactMarkdown
-                            className="markdown"
-                        >
+                        <ReactMarkdown className="markdown">
                             {service.desc ?? ""}
                         </ReactMarkdown>
                     </div>
@@ -88,25 +86,38 @@ const Row: React.FC<{
                         />
                     </div>
                     <div className="service-row-links">
-                        <Link className="button" href={viewUrl}>View</Link>
+                        <Link
+                            className="button"
+                            href={viewUrl}
+                        >View</Link>
                         {service.openSource && service.gitLink && (
-                            <Link className="button" target="_blank" href={service.gitLink}>Source Code</Link>
+                            <Link
+                                className="button"
+                                target="_blank"
+                                href={service.gitLink}
+                            >Source Code</Link>
                         )}
                     </div>
                     <div className="service-row-actions">
-                        <Link className="button button-primary" href={editUrl}>Edit</Link>
-                        <Link className="button button-danger" href="#" onClick={(e) => {
-                            e.preventDefault();
+                        <Link
+                            className="button button-primary"
+                            href={editUrl}
+                        >Edit</Link>
+                        <Link
+                            className="button button-danger"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                            const yes = confirm("Are you sure you want to delete this service?");
+                                const yes = confirm("Are you sure you want to delete this service?");
 
-                            if (yes) {
-                                deleteMut.mutate({
-                                    id: service.id
-                                });
-                            }
-                        }}>Delete</Link>
-
+                                if (yes) {
+                                    deleteMut.mutate({
+                                        id: service.id
+                                    });
+                                }
+                            }}
+                        >Delete</Link>
                     </div>
                 </div>
             )}
