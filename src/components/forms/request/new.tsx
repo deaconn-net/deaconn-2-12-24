@@ -124,26 +124,32 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Title</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.title}</p>
+                        <p className="italic">{form.values.title}</p>
                     ) : (
-                        <Field name="title" className="form-input" />
+                        <Field
+                            name="title"
+                            className="form-input"
+                        />
                     )}
                 </div>
                 <div className="form-div">
                     <label className="form-label">Service</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.service}</p>
+                        <p className="italic">{form.values.service}</p>
                     ) : (
                         <Field
-                            as="select"
                             name="service"
+                            as="select"
                             className="form-input"
                         >
                             <>
                                 <option value="0">None</option>
                                 {services?.map((service: Service) => {
                                     return (
-                                        <option value={service.id.toString()} key={"service-" + service.id.toString()}>{service.name}</option>
+                                        <option
+                                            key={"service-" + service.id.toString()}
+                                            value={service.id.toString()}
+                                        >{service.name}</option>
                                     )
                                 })}
                             </>
@@ -154,11 +160,11 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Start Date</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
+                        <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
                     ) : (
                         <DatePicker
-                            className="form-input"
                             name="startDate"
+                            className="form-input"
                             selected={form.values.startDate}
                             onChange={(date: Date) => {
                                 void form.setFieldValue('startDate', date);
@@ -171,26 +177,38 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Timeframe</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.timeframe}</p>
+                        <p className="italic">{form.values.timeframe}</p>
                     ) : (
-                        <Field name="timeframe" className="form-input" />
+                        <Field
+                            name="timeframe"
+                            className="form-input"
+                        />
                     )}
-                    <p className="text-sm text-gray-100 pt-1">Value should be in <span className="font-bold">hours</span>!</p>
+                    <p className="text-s leading-8">Value should be in <span className="font-bold">hours</span>!</p>
                 </div>
                 <div className="form-div">
                     <label className="form-label">Price</label>
                     {preview ? (
-                        <p className="text-white">{form.values.price}</p>
+                        <p className="italic">{form.values.price}</p>
                     ) : (
-                        <Field name="price" className="form-input" />
+                        <Field
+                            className="form-input"
+                            name="price"
+                        />
                     )}
                 </div>
                 <div className="form-div">
                     <label className="form-label">Details</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.content}</ReactMarkdown>
+                        <ReactMarkdown className="markdown">{form.values.content}</ReactMarkdown>
                     ) : (
-                        <Field as="textarea" rows="16" cols="32" name="content" className="form-input" />
+                        <Field
+                            name="content"
+                            as="textarea"
+                            className="form-input"
+                            rows="16"
+                            cols="32"
+                        />
                     )}
                 </div>
             </FormMain>

@@ -112,11 +112,11 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Start Date</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
+                        <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
                     ) : (
                         <DatePicker
-                            className="form-input"
                             name="startDate"
+                            className="form-input"
                             selected={form.values.startDate}
                             onChange={(date: Date) => {
                                 void form.setFieldValue('startDate', date);
@@ -128,11 +128,11 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">End Date</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
+                        <p className="italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
                     ) : (
                         <DatePicker
-                            className="form-input"
                             name="endDate"
+                            className="form-input"
                             selected={form.values.endDate}
                             onChange={(date: Date) => {
                                 void form.setFieldValue('endDate', date);
@@ -144,7 +144,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Title</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.title}</p>
+                        <p className="italic">{form.values.title}</p>
                     ) : (
                         <Field
                             name="title"
@@ -155,7 +155,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Details</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
+                        <ReactMarkdown className="markdown">{form.values.desc}</ReactMarkdown>
                     ) : (
                         <Field
                             as="textarea"

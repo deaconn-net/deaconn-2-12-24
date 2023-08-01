@@ -108,9 +108,12 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Title</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.title}</p>
+                        <p className="italic">{form.values.title}</p>
                     ) : (
-                        <Field name="title" className="form-input" />
+                        <Field
+                            name="title"
+                            className="form-input"
+                        />
                     )}
                 </div>
                 <div className="form-div">
@@ -118,7 +121,13 @@ const Form: React.FC<{
                     {preview ? (
                         <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
                     ) : (
-                        <Field as="textarea" rows="16" cols="32" name="desc" className="form-input" />
+                        <Field
+                            name="desc"
+                            className="form-input"
+                            as="textarea"
+                            rows="16"
+                            cols="32"
+                        />
                     )}
                 </div>
             </FormMain>

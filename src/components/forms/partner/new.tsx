@@ -121,8 +121,8 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Banner</label>
                     <input
-                        type="file"
                         name="banner"
+                        type="file"
                         className="form-input"
                         onChange={(e) => {
                             const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
@@ -138,24 +138,29 @@ const Form: React.FC<{
                             }
                         }}
                     />
-                    {preview ? (
+                    {partner?.banner && (
                         <>
-                            <h2 className="text-white font-bold">Remove Banner</h2>
-                            <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                        </>
-                    ) : (
-                        <>
-                            <Field
-                                name="bannerRemove"
-                                type="checkbox"
-                            /> <span className="text-white">Remove Banner</span>
+                            {preview ? (
+                                <>
+                                    <label>Remove Banner</label>
+                                    <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                                </>
+                            ) : (
+                                <>
+                                    <Field
+                                        name="bannerRemove"
+                                        type="checkbox"
+                                    /> <span>Remove Banner</span>
+                                </>
+                            )}
                         </>
                     )}
+
                 </div>
                 <div className="form-div">
                     <label className="form-label">Name</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.name}</p>
+                        <p className="italic">{form.values.name}</p>
                     ) : (
                         <Field
                             name="name"
@@ -166,7 +171,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">URL</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.url}</p>
+                        <p className="italic">{form.values.url}</p>
                     ) : (
                         <Field
                             name="url"

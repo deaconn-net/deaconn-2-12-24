@@ -124,7 +124,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Name</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.name}</p>
+                        <p className="italic">{form.values.name}</p>
                     ) : (
                         <Field
                             name="name"
@@ -135,28 +135,28 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">URL</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.url}</p>
+                        <p className="italic">{form.values.url}</p>
                     ) : (
                         <Field 
                             name="url"
                             className="form-input"
                         />
                     )}
-                    <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
+                    <p className="text-sm leading-8">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
                 </div>
                 <div className="form-div">
                     <label className="form-label">About Me</label>
                     {preview ? (
                         <ReactMarkdown 
-                            className="markdown text-white"
+                            className="markdown"
                         >
                             {form.values.aboutMe}
                         </ReactMarkdown>
                     ) : (
                         <Field
                             name="aboutMe"
-                            className="form-input"
                             as="textarea"
+                            className="form-input"
                             rows="16"
                             cols="32"
                         />
@@ -165,11 +165,11 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Birthday</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
+                        <p className="italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
                     ) : (
                         <DatePicker
-                            className="form-input"
                             name="birthday"
+                            className="form-input"
                             selected={form.values.birthday}
                             onChange={(date: Date) => {
                                 void form.setFieldValue('birthday', date);
@@ -187,7 +187,7 @@ const Form: React.FC<{
                             <Field
                                 name="showEmail"
                                 type="checkbox"
-                            /> <span className="text-white">Yes</span>
+                            /> <span>Yes</span>
                         </>
                     )}
                 </div>

@@ -131,9 +131,9 @@ const Form: React.FC<{
                         className="form-label"
                     >Banner</label>
                     <input
+                        name="banner"
                         className="form-input"
                         type="file"
-                        name="banner"
                         onChange={(e) => {
                             const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
 
@@ -148,24 +148,29 @@ const Form: React.FC<{
                             }
                         }}
                     />
-                    {preview ? (
+                    {article?.banner && (
                         <>
-                            <h2 className="text-white font-bold">Remove Banner</h2>
-                            <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                        </>
-                    ) : (
-                        <>
-                            <Field
-                                name="bannerRemove"
-                                type="checkbox"
-                            /> <span className="text-white">Remove Banner</span>
+                            {preview ? (
+                                <>
+                                    <label className="form-label">Remove Banner</label>
+                                    <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                                </>
+                            ) : (
+                                <>
+                                    <Field
+                                        name="bannerRemove"
+                                        type="checkbox"
+                                    /> <span>Remove Banner</span>
+                                </>
+                            )}
                         </>
                     )}
+
                 </div>
                 <div className="form-div">
                     <label className="form-label">URL</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.url}</p>
+                        <p className="italic">{form.values.url}</p>
                     ) : (
                         <Field 
                             name="url" 
@@ -177,7 +182,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Title</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.title}</p>
+                        <p className="italic">{form.values.title}</p>
                     ) : (
                         <Field
                             name="title"
@@ -188,11 +193,11 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Description</label>
                     {preview ? (
-                        <p className="text-white">{form.values.desc}</p>
+                        <p>{form.values.desc}</p>
                     ) : (
                         <Field
-                            as="textarea"
                             name="desc"
+                            as="textarea"
                             className="form-input"
                             rows="8"
                             cols="32"
@@ -203,12 +208,12 @@ const Form: React.FC<{
                     <label className="form-label">Content</label>
                     {preview ? (
                         <ReactMarkdown
-                            className="markdown text-white"
+                            className="markdown p-4 bg-gray-800"
                         >{form.values.content}</ReactMarkdown>
                     ) : (
                         <Field
-                            as="textarea"
                             name="content"
+                            as="textarea"
                             className="form-input"
                             rows="16"
                             cols="32"
