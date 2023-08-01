@@ -207,9 +207,9 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Content</label>
                     {preview ? (
-                        <ReactMarkdown
-                            className="markdown p-4 bg-gray-800"
-                        >{form.values.content}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.content}
+                        </ReactMarkdown>
                     ) : (
                         <Field
                             name="content"

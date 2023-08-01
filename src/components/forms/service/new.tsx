@@ -65,15 +65,21 @@ const Form: React.FC<{
     // Submit button.
     const submit_btn =
         <div className="flex gap-2 justify-center">
-            <button type="submit" className="button button-primary">{service ? "Save Service" : "Add Service"}</button>
-            <button onClick={(e) => {
-                e.preventDefault();
+            <button
+                type="submit"
+                className="button button-primary"
+            >{service ? "Save Service" : "Add Service"}</button>
+            <button
+                className="button button-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
 
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="button button-secondary">{preview ? "Preview Off" : "Preview On"}</button>
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.
@@ -245,7 +251,9 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Description</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown">{form.values.desc}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.desc}
+                        </ReactMarkdown>
                     ) : (
                         <Field
                             name="desc"
@@ -259,7 +267,9 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Installation</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown">{form.values.install}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.install}
+                        </ReactMarkdown>
                     ) : (
                         <Field
                             name="install"
@@ -273,7 +283,9 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Features</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown">{form.values.features}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.features}
+                        </ReactMarkdown>
                     ) : (
                         <Field
                             name="features"
@@ -287,7 +299,9 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Details</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown">{form.values.content}</ReactMarkdown>
+                        <ReactMarkdown className="markdown  p-4 bg-gray-800">
+                            {form.values.content}
+                        </ReactMarkdown>
                     ) : (
                         <Field
                             name="content"

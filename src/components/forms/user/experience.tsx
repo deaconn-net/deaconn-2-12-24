@@ -59,15 +59,21 @@ const Form: React.FC<{
 
     const submit_btn =
         <div className="flex gap-2 justify-center">
-            <button type="submit" className="button button-primary">{experience ? "Save" : "Add"} Experience</button>
-            <button onClick={(e) => {
-                e.preventDefault();
+            <button
+                type="submit"
+                className="button button-primary"
+            >{experience ? "Save" : "Add"} Experience</button>
+            <button
+                className="button button-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
 
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="button button-secondary">{preview ? "Preview Off" : "Preview On"}</button>
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.
@@ -118,10 +124,10 @@ const Form: React.FC<{
                             name="startDate"
                             className="form-input"
                             selected={form.values.startDate}
+                            dateFormat="yyyy/MM/dd"
                             onChange={(date: Date) => {
                                 void form.setFieldValue('startDate', date);
                             }}
-                            dateFormat="yyyy/MM/dd"
                         />
                     )}
                 </div>
@@ -134,10 +140,10 @@ const Form: React.FC<{
                             name="endDate"
                             className="form-input"
                             selected={form.values.endDate}
+                            dateFormat="yyyy/MM/dd"
                             onChange={(date: Date) => {
                                 void form.setFieldValue('endDate', date);
                             }}
-                            dateFormat="yyyy/MM/dd"
                         />
                     )}
                 </div>
@@ -155,7 +161,9 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Details</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown">{form.values.desc}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.desc}
+                        </ReactMarkdown>
                     ) : (
                         <Field
                             as="textarea"

@@ -61,15 +61,21 @@ const Form: React.FC<{
     // Submit button.
     const submit_btn =
         <div className="flex gap-2 justify-center">
-            <button type="submit" className="button button-primary">Save Profile</button>
-            <button onClick={(e) => {
-                e.preventDefault();
+            <button
+                type="submit"
+                className="button button-primary"
+            >Save Profile</button>
+            <button
+                className="button button-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
 
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="button button-secondary">{preview ? "Preview Off" : "Preview On"}</button>
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.
@@ -147,9 +153,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">About Me</label>
                     {preview ? (
-                        <ReactMarkdown 
-                            className="markdown"
-                        >
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
                             {form.values.aboutMe}
                         </ReactMarkdown>
                     ) : (
@@ -171,10 +175,10 @@ const Form: React.FC<{
                             name="birthday"
                             className="form-input"
                             selected={form.values.birthday}
+                            dateFormat="yyyy/MM/dd"
                             onChange={(date: Date) => {
                                 void form.setFieldValue('birthday', date);
                             }}
-                            dateFormat="yyyy/MM/dd"
                         />
                     )}
                 </div>
