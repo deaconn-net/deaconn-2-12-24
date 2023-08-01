@@ -47,7 +47,9 @@ const Row: React.FC<{
                         />
                     </div>
                     <div className="service-row-name">
-                        <h3>{service.name}</h3>
+                        <h3>
+                            <Link href={viewUrl}>{service.name}</Link>
+                        </h3>
                     </div>
                     <div className="service-row-description">
                         <ReactMarkdown

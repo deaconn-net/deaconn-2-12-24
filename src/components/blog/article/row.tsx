@@ -44,7 +44,9 @@ const Row: React.FC<{
                         />
                     </div>
                     <div className="article-row-title">
-                        <h3>{article.title}</h3>
+                        <h3>
+                            <Link href={viewUrl}>{article.title}</Link>
+                        </h3>
                     </div>
                     <div className="article-row-description">
                         <p>{article.desc}</p>
