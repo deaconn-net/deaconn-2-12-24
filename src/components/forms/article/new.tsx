@@ -13,7 +13,7 @@ import { ScrollToTop } from '@utils/scroll';
 import ReactMarkdown from 'react-markdown';
 
 const Form: React.FC<{
-    article?: Article | null
+    article?: Article
 }> = ({
     article
 }) => {

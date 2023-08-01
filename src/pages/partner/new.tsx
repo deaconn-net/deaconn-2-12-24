@@ -16,7 +16,7 @@ const Page: NextPage<{
             <div className="content">
                 <h1>Create Partner</h1>
                 <Form
-                    partner={partner}
+                    partner={partner ?? undefined}
                 />
             </div>
         </Wrapper>

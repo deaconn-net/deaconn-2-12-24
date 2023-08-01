@@ -11,7 +11,7 @@ import { ScrollToTop } from '@utils/scroll';
 import { type Partner } from "@prisma/client";
 
 const Form: React.FC<{
-    partner?: Partner | null
+    partner?: Partner
 }> = ({
     partner
 }) => {

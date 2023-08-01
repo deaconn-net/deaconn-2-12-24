@@ -6,13 +6,14 @@ import { type RequestWithService } from "~/types/request";
 import { type NextPage } from "next";
 import Link from "next/link";
 
-import RequestRow from "@components/request/row";
 import Wrapper from "@components/wrapper";
+import RequestRow from "@components/request/row";
+import NotSignedIn from "@components/errors/not_signed_in";
+import IconAndText from "@components/containers/icon_and_text";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
 import AddIcon from "@utils/icons/add";
-import IconAndText from "@components/containers/icon_and_text";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -42,12 +43,6 @@ const Page: NextPage = () => {
             getNextPageParam: (lastPage) => lastPage.nextCur,
         });
 
-    if (!session) {
-        return (
-            <p className="text-white">You must be logged in to view you requests.</p>
-        );
-    }
-
     const loadMore = () => {
         void fetchNextPage();
     }
@@ -66,68 +61,75 @@ const Page: NextPage = () => {
     return (
         <Wrapper>
             <div className="content">
-                <h1>My Requests</h1>
-                <div className="p-6 flex justify-between">
-                    <Link
-                        className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-
-                            if (oldest)
-                                setOldest(false);
-                            else
-                                setOldest(true);
-                        }}
-                    >Oldest</Link>
-                    <Link
-                        className="button button-primary flex"
-                        href="/request/new"
-                    >
-                        <IconAndText
-                            icon={
-                                <AddIcon
-                                    classes={["w-6", "h-6", "fill-none"]}
-                                />
-                            }
-                            text={<>New Request</>}
-                            inline={true}
-                        />
-                    </Link>
-                </div>
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={loadMore}
-                    loader={<Loader key={"loader"} />}
-                    hasMore={requireItems}
-                >
+                {session ? (
                     <>
-                        {data && (
-                            <table className="w-full table-auto border-spacing-2 border-collapse">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Service</th>
-                                        <th>Created</th>
-                                        <th>Last Updated</th>
-                                        <th>Status</th>
-                                        <th>Accepted</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {items.map((request: RequestWithService) => {
-                                        return (
-                                            <RequestRow
-                                                key={"request-" + request.id.toString()}
-                                                request={request}
-                                            />
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                        )}
+                        <h1>My Requests</h1>
+                        <div className="p-6 flex justify-between">
+                            <Link
+                                className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+
+                                    if (oldest)
+                                        setOldest(false);
+                                    else
+                                        setOldest(true);
+                                }}
+                            >Oldest</Link>
+                            <Link
+                                className="button button-primary flex"
+                                href="/request/new"
+                            >
+                                <IconAndText
+                                    icon={
+                                        <AddIcon
+                                            classes={["w-6", "h-6", "fill-none"]}
+                                        />
+                                    }
+                                    text={<>New Request</>}
+                                    inline={true}
+                                />
+                            </Link>
+                        </div>
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={loadMore}
+                            loader={<Loader key={"loader"} />}
+                            hasMore={requireItems}
+                        >
+                            <>
+                                {data && (
+                                    <table className="w-full table-auto border-spacing-2 border-collapse">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Service</th>
+                                                <th>Created</th>
+                                                <th>Last Updated</th>
+                                                <th>Status</th>
+                                                <th>Accepted</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {items.map((request: RequestWithService) => {
+                                                return (
+                                                    <RequestRow
+                                                        key={"request-" + request.id.toString()}
+                                                        request={request}
+                                                    />
+                                                )
+                                            })}
+                                        </tbody>
+                                    </table>
+                                )}
+                            </>
+                        </InfiniteScroll>
                     </>
-                </InfiniteScroll>
+                ) : (
+                    <NotSignedIn />
+                )}
+
             </div>
         </Wrapper>
     );

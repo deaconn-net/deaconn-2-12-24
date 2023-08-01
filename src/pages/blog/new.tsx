@@ -15,7 +15,7 @@ const Page: NextPage<{
             <div className="content">
                 <h1>Create Article</h1>
                 <Form
-                    article={article}
+                    article={article ?? undefined}
                 />
             </div>
         </Wrapper>

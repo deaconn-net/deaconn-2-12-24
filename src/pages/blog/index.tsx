@@ -68,7 +68,7 @@ const Page: NextPage = () => {
             <div className="content">
                 <h1>Blog</h1>
                 <div className="p-6 flex flex-wrap justify-between">
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                         <Link
                             className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
                             href="#"

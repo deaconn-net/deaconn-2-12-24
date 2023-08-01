@@ -16,7 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ReactMarkdown from "react-markdown";
 
 const Form: React.FC<{
-    request?: Request | null,
+    request?: Request,
     services?: Service[]
 }> = ({
     request,

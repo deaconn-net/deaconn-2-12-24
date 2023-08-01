@@ -16,7 +16,7 @@ const Page: NextPage<{
             <div className="content">
                 <h1>Create Service</h1>
                 <Form
-                    service={service}
+                    service={service ?? undefined}
                 />
             </div>
         </Wrapper>
