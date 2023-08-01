@@ -39,7 +39,7 @@ const Row: React.FC<{
                     </div>
                     <div className="experience-row-actions">
                         <Link className="button button-primary" href={editUrl}>Edit</Link>
-                        <Link className="button button-delete" href="#" onClick={(e) => {
+                        <Link className="button button-danger" href="#" onClick={(e) => {
                             e.preventDefault();
 
                             const yes = confirm("Are you sure you want to delete this experience?");
