@@ -10,6 +10,7 @@ import Wrapper from "@components/wrapper";
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
 import AddIcon from "@utils/icons/add";
+import IconAndText from "@components/containers/icon_and_text";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -56,19 +57,31 @@ const Page: NextPage = () => {
             <div className="content">
                 <h1>Services</h1>
                 <div className="p-6 flex justify-between">
-                    <Link href="#" className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")} onClick={(e) => {
-                        e.preventDefault();
+                    <Link
+                        className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
+                        href="#" 
+                        onClick={(e) => {
+                            e.preventDefault();
 
-                        if (mostPopular)
-                            setMostPopular(false);
-                        else
-                            setMostPopular(true);
-                    }}>Most Popular</Link>
-                    <Link href="/service/new" className="button button-primary flex">
-                        <AddIcon 
-                            classes={["w-6", "h-6", "fill-none"]}
+                            if (mostPopular)
+                                setMostPopular(false);
+                            else
+                                setMostPopular(true);
+                        }}
+                    >Most Popular</Link>
+                    <Link
+                        className="button button-primary flex"
+                        href="/service/new"
+                    >
+                        <IconAndText
+                            icon={
+                                <AddIcon 
+                                    classes={["w-6", "h-6", "fill-none"]}
+                                />
+                            }
+                            text={<>New Service</>}
+                            inline={true}
                         />
-                        <span className="ml-2">New Service</span>
                     </Link>
                 </div>
                 <InfiniteScroll

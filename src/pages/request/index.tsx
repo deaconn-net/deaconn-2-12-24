@@ -1,6 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
+import { type RequestWithService } from "~/types/request";
+
 import { type NextPage } from "next";
 import Link from "next/link";
 
@@ -8,10 +10,9 @@ import RequestRow from "@components/request/row";
 import Wrapper from "@components/wrapper";
 
 import { api } from "@utils/api";
-import { type RequestWithService } from "~/types/request";
-
 import Loader from "@utils/loader";
 import AddIcon from "@utils/icons/add";
+import IconAndText from "@components/containers/icon_and_text";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -67,19 +68,31 @@ const Page: NextPage = () => {
             <div className="content">
                 <h1>My Requests</h1>
                 <div className="p-6 flex justify-between">
-                    <Link href="#" className={"button" + ((oldest) ? " !bg-cyan-600" : "")} onClick={(e) => {
-                        e.preventDefault();
+                    <Link
+                        className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
 
-                        if (oldest)
-                            setOldest(false);
-                        else
-                            setOldest(true);
-                    }}>Oldest</Link>
-                    <Link href="/request/new" className="button button-primary flex">
-                        <AddIcon
-                            classes={["w-6", "h-6", "fill-none"]}
+                            if (oldest)
+                                setOldest(false);
+                            else
+                                setOldest(true);
+                        }}
+                    >Oldest</Link>
+                    <Link
+                        className="button button-primary flex"
+                        href="/request/new"
+                    >
+                        <IconAndText
+                            icon={
+                                <AddIcon
+                                    classes={["w-6", "h-6", "fill-none"]}
+                                />
+                            }
+                            text={<>New Request</>}
+                            inline={true}
                         />
-                        <span className="ml-2">New Request</span>
                     </Link>
                 </div>
                 <InfiniteScroll

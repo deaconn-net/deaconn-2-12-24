@@ -12,6 +12,7 @@ import { type Article } from "@prisma/client";
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
 import AddIcon from "@utils/icons/add";
+import IconAndText from "@components/containers/icon_and_text";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -68,29 +69,44 @@ const Page: NextPage = () => {
                 <h1>Blog</h1>
                 <div className="p-6 flex flex-wrap justify-between">
                     <div className="flex gap-2">
-                        <Link href="#" className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")} onClick={(e) => {
-                            e.preventDefault();
+                        <Link
+                            className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                            if (mostPopular)
-                                setMostPopular(false);
-                            else
-                                setMostPopular(true);
+                                if (mostPopular)
+                                    setMostPopular(false);
+                                else
+                                    setMostPopular(true);
+                            }}
+                        >Most Popular</Link>
+                        <Link
+                            className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                        }}>Most Popular</Link>
-                        <Link href="#" className={"button" + ((oldest) ? " !bg-cyan-600" : "")} onClick={(e) => {
-                            e.preventDefault();
-
-                            if (oldest)
-                                setOldest(false);
-                            else
-                                setOldest(true);
-                        }}>Oldest</Link>
+                                if (oldest)
+                                    setOldest(false);
+                                else
+                                    setOldest(true);
+                            }}
+                        >Oldest</Link>
                     </div>
-                    <Link href="/blog/new" className="button button-primary flex">
-                        <AddIcon 
-                            classes={["w-6", "h-6", "fill-none"]}
+                    <Link
+                        className="button button-primary flex"
+                        href="/blog/new"
+                    >
+                        <IconAndText
+                            icon={
+                                <AddIcon 
+                                    classes={["w-6", "h-6", "fill-none"]}
+                                />
+                            }
+                            text={<>New Article</>}
+                            inline={true}
                         />
-                        <span className="ml-2">New Article</span>
                     </Link>
                 </div>
                 <InfiniteScroll
