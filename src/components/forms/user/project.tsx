@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Field, useFormik } from "formik";
 
+import { type UserProject } from "@prisma/client";
+
 import FormMain from "@components/forms/main";
 
 import { api } from "@utils/api";
@@ -12,7 +14,6 @@ import ReactMarkdown from "react-markdown";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { UserProject } from "@prisma/client";
 
 const Form: React.FC<{
     project?: UserProject
@@ -81,7 +82,7 @@ const Form: React.FC<{
         },
         enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -119,7 +120,9 @@ const Form: React.FC<{
                             className="form-input"
                             name="startDate"
                             selected={form.values.startDate}
-                            onChange={(date: Date) => form.setFieldValue('startDate', date)}
+                            onChange={(date: Date) => {
+                                void form.setFieldValue('startDate', date);
+                            }}
                             dateFormat="yyyy/MM/dd"
                         />
                     )}
@@ -133,7 +136,9 @@ const Form: React.FC<{
                             className="form-input"
                             name="endDate"
                             selected={form.values.endDate}
-                            onChange={(date: Date) => form.setFieldValue('endDate', date)}
+                            onChange={(date: Date) => {
+                                void form.setFieldValue('endDate', date);
+                            }}
                             dateFormat="yyyy/MM/dd"
                         />
                     )}

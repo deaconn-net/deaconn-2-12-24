@@ -34,7 +34,7 @@ const Browser: React.FC<{
     });
 
     const loadMore = () => {
-        fetchNextPage();
+        void fetchNextPage();
     }
 
     const items: UserSkill[] = [];
@@ -62,7 +62,7 @@ const Browser: React.FC<{
                         {items.map((skill: UserSkill) => {
                             return (
                                 <Row
-                                    key={"skill-" + skill.id}
+                                    key={"skill-" + skill.id.toString()}
                                     skill={skill}
                                 />
                             )

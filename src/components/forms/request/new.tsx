@@ -89,7 +89,7 @@ const Form: React.FC<{
         },
         enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -143,7 +143,7 @@ const Form: React.FC<{
                                 <option value="0">None</option>
                                 {services?.map((service: Service) => {
                                     return (
-                                        <option value={service.id} key={"service-" + service.id}>{service.name}</option>
+                                        <option value={service.id.toString()} key={"service-" + service.id.toString()}>{service.name}</option>
                                     )
                                 })}
                             </>
@@ -160,7 +160,9 @@ const Form: React.FC<{
                             className="form-input"
                             name="startDate"
                             selected={form.values.startDate}
-                            onChange={(date: Date) => form.setFieldValue('startDate', date)}
+                            onChange={(date: Date) => {
+                                void form.setFieldValue('startDate', date);
+                            }}
                             dateFormat="yyyy/MM/dd"
                         />
                     )}

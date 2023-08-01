@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Link from "next/link";
 
-import { Service } from "@prisma/client";
+import { type Service } from "@prisma/client";
 
 import ServiceRow from "@components/service/row";
 import Wrapper from "@components/wrapper";
@@ -18,7 +18,7 @@ const Page: NextPage = () => {
     const [mostPopular, setMostPopular] = useState(false);
 
     let sort = "id";
-    let sortDir = "desc";
+    const sortDir = "desc";
 
     if (mostPopular)
         sort = "views";
@@ -37,7 +37,7 @@ const Page: NextPage = () => {
     });
 
     const loadMore = () => {
-        fetchNextPage();
+        void fetchNextPage();
     }
 
     const items: Service[] = [];
@@ -84,7 +84,7 @@ const Page: NextPage = () => {
                                 {items.map((service: Service) => {
                                     return (
                                         <ServiceRow
-                                            key={"service-" + service.id}
+                                            key={"service-" + service.id.toString()}
                                             service={service}
                                         />
                                     )

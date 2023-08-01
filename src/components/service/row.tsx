@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { type Service } from "@prisma/client";
 
@@ -22,7 +23,7 @@ const Row: React.FC<{
     const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
     
     const viewUrl = "/service/view/" + service.url;
-    const editUrl = "/service/new?id=" + service.id;
+    const editUrl = "/service/new?id=" + service.id.toString();
 
     const banner = (service.banner) ? cdn + upload_url + service.banner : "/images/service/default.jpg";
 
@@ -33,12 +34,17 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted service ID #" + service.id + "."}
+                    msg={"Successfully deleted service ID #" + service.id.toString() + "."}
                 />
             ) : (
                 <div className={"service-row " + ((small) ? "service-row-sm" : "service-row-lg")}>
                     <div className="service-row-image">
-                        <img src={banner} />
+                        <Image
+                            src={banner}
+                            width={300}
+                            height={300}
+                            alt="Service Banner"
+                        />
                     </div>
                     <div className="service-row-name">
                         <h3>{service.name}</h3>
@@ -51,7 +57,7 @@ const Row: React.FC<{
                         </ReactMarkdown>
                     </div>
                     <div className="service-row-price">
-                        <p>{(service.price > 0) ? "$" + service.price + "/m" : "Free"}</p>
+                        <p>{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>
                     </div>
                     <div className="service-row-stats">
                         <IconAndText

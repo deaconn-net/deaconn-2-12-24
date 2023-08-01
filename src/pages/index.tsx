@@ -1,6 +1,5 @@
-
 import Link from "next/link";
-import { GetServerSidePropsContext, type NextPage } from "next";
+import { type NextPage } from "next";
 
 import { prisma } from "@server/db";
 import { type Article, type Partner, type Service, type User } from "@prisma/client";
@@ -24,8 +23,6 @@ const Page: NextPage<{
     services,
     partners
 }) => {
-    const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-
     return (
         <Wrapper>
             <div className="content">
@@ -61,7 +58,7 @@ const Page: NextPage<{
                             {partners.map((partner) => {
                                 return (
                                     <PartnerRow
-                                        key={"partner-" + partner.id}
+                                        key={"partner-" + partner.id.toString()}
                                         partner={partner}
                                     />
                                 );
@@ -76,7 +73,7 @@ const Page: NextPage<{
                             return (
                                 <ServiceRow
                                     small={true}
-                                    key={"service-" + service.id}
+                                    key={"service-" + service.id.toString()}
                                     service={service}
                                 />
                             )
@@ -90,7 +87,7 @@ const Page: NextPage<{
                             return (
                                 <ArticleRow
                                     small={true}
-                                    key={"article-" + article.id}
+                                    key={"article-" + article.id.toString()}
                                     article={article}
                                 />
                             )
@@ -102,7 +99,7 @@ const Page: NextPage<{
     );
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export async function getServerSideProps() {
     // Retrieve articles, team members, and services.
     const articles = await prisma.article.findMany({
         take: 10,

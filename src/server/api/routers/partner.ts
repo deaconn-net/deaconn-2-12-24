@@ -71,7 +71,7 @@ export const partnerRouter = createTRPCRouter({
                if (!success || !full_path) {
                     throw new TRPCError({
                         code: "PARSE_ERROR",
-                        message: `Failed to upload banner for partner #${partner.id}. Error => ${err}.`
+                        message: `Failed to upload banner for partner #${partner.id.toString()}. Error => ${err ? err : ""}.`
                     });
                 }
 
@@ -107,7 +107,7 @@ export const partnerRouter = createTRPCRouter({
             if (!res) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete partner. Partner ID #" + input.id + " likely not found."
+                    message: "Unable to delete partner. Partner ID #" + input.id.toString() + " likely not found."
                 });
             }
         })

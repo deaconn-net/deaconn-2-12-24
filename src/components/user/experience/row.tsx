@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { type Service, type UserExperience } from "@prisma/client";
+import { type UserExperience } from "@prisma/client";
 
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
@@ -14,7 +14,7 @@ const Row: React.FC<{
     experience,
     small = false
 }) => {
-    const editUrl = "/user/profile/experiences?id=" + experience.id;
+    const editUrl = "/user/profile/experiences?id=" + experience.id.toString();
 
     const deleteMut = api.user.deleteExperience.useMutation();
 
@@ -23,7 +23,7 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted experience ID #" + experience.id + "."}
+                    msg={"Successfully deleted experience ID #" + experience.id.toString() + "."}
                 />
             ) : (
                 <div className={"experience-row " + ((small) ? "experience-row-sm" : "experience-row-lg")}>

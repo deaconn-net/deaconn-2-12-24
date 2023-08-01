@@ -94,7 +94,7 @@ const Form: React.FC<{
         },
         enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);

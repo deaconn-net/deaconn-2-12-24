@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Field, useFormik } from "formik";
 
+import { type Service } from "@prisma/client";
+
 import FormMain from "@components/forms/main";
 
 import { api } from "@utils/api";
@@ -9,7 +11,6 @@ import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
 import ReactMarkdown from "react-markdown";
-import { Service } from "@prisma/client";
 
 const Form: React.FC<{
     service?: Service | null
@@ -92,7 +93,7 @@ const Form: React.FC<{
         },
         enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);

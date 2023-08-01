@@ -113,7 +113,7 @@ export const blogRouter = createTRPCRouter({
                if (!success || !full_path) {
                     throw new TRPCError({
                         code: "PARSE_ERROR",
-                        message: `Failed to upload banner for article #${article.id}. Error => ${err}.`
+                        message: `Failed to upload banner for article #${article.id.toString()}. Error => ${err ? err : "N/A"}.`
                     });
                 }
 
@@ -149,7 +149,7 @@ export const blogRouter = createTRPCRouter({
             if (!res) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete article. Article ID #" + input.id + " likely not found."
+                    message: "Unable to delete article. Article ID #" + input.id.toString() + " likely not found."
                 });
             }
         })

@@ -14,7 +14,7 @@ const Row: React.FC<{
     project,
     small = false
 }) => {
-    const editUrl = "/user/profile/projects?id=" + project.id;
+    const editUrl = "/user/profile/projects?id=" + project.id.toString();
 
     const deleteMut = api.user.deleteProject.useMutation();
 
@@ -23,7 +23,7 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted project ID #" + project.id + "."}
+                    msg={"Successfully deleted project ID #" + project.id.toString() + "."}
                 />
             ) : (
                 <div className={"project-row " + ((small) ? "project-row-sm" : "project-row-lg")}>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { type Article } from "@prisma/client";
 
@@ -19,7 +20,7 @@ const Row: React.FC<{
     const upload_dir = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
 
     const viewUrl = "/blog/view/" + article.url;
-    const editUrl = "/blog/new?id=" + article.id;
+    const editUrl = "/blog/new?id=" + article.id.toString();
 
     const banner = (article.banner) ? cdn + upload_dir + article.banner : "/images/blog/default.jpg";
 
@@ -30,12 +31,17 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted article #" + article.id + "."}
+                    msg={"Successfully deleted article #" + article.id.toString() + "."}
                 />
             ) : (
                 <div className={"article-row " + ((small) ? "article-row-sm" : "article-row-lg")}>
                     <div className="article-row-image">
-                        <img src={banner} />
+                        <Image
+                            src={banner}
+                            width={300}
+                            height={300}
+                            alt="Article Banner"
+                        />
                     </div>
                     <div className="article-row-title">
                         <h3>{article.title}</h3>

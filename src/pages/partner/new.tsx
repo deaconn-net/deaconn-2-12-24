@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext, NextPage } from "next";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type Partner } from "@prisma/client";
 

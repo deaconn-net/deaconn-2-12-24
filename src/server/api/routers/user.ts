@@ -393,7 +393,7 @@ export const userRouter = createTRPCRouter({
             if (!res.id) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete experience #" + input.id
+                    message: "Unable to delete experience #" + input.id.toString()
                 });
             }
         }),
@@ -411,7 +411,7 @@ export const userRouter = createTRPCRouter({
             if (!res.id) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete skill #" + input.id
+                    message: "Unable to delete skill #" + input.id.toString()
                 });
             }
         }),
@@ -429,7 +429,7 @@ export const userRouter = createTRPCRouter({
             if (!res.id) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete project #" + input.id
+                    message: "Unable to delete project #" + input.id.toString()
                 });
             }
         }),

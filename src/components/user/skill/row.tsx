@@ -14,7 +14,7 @@ const Row: React.FC<{
     skill,
     small = false
 }) => {
-    const editUrl = "/user/profile/skills?id=" + skill.id;
+    const editUrl = "/user/profile/skills?id=" + skill.id.toString();
 
     const deleteMut = api.user.deleteSkill.useMutation();
 
@@ -23,7 +23,7 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted skill ID #" + skill.id + "."}
+                    msg={"Successfully deleted skill ID #" + skill.id.toString() + "."}
                 />
             ) : (
                 <div className={"skill-row " + ((small) ? "skill-row-sm" : "skill-row-lg")}>

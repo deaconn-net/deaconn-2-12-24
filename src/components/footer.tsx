@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
                                     const viewLink = "/service/view/" + service.url;
 
                                     return (
-                                        <li key={"footer-service-" + service.id} className="footer-link"><Link href={viewLink}>{service.name}</Link></li>
+                                        <li key={"footer-service-" + service.id.toString()} className="footer-link"><Link href={viewLink}>{service.name}</Link></li>
                                     );
                                 })}
 
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
                             <>
                                 {partners.map((partner: Partner) => {
                                     return (
-                                        <li key={"footer-partner-" + partner.id} className="footer-link"><a href={partner.url} target="_blank">{partner.name}</a></li>
+                                        <li key={"footer-partner-" + partner.id.toString()} className="footer-link"><a href={partner.url} target="_blank">{partner.name}</a></li>
                                     );
                                 })}
                             </>

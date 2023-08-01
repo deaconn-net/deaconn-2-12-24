@@ -63,7 +63,7 @@ const Header: React.FC = () => {
                             <Link className="nav-link" href="#" onClick={(e) => {
                                 e.preventDefault();
 
-                                signOut();
+                                void signOut();
                             }}>
                                 <li className="nav-item">
                                     <SignOutIcon
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
                         <Link className="nav-link" href="#" onClick={(e) => {
                             e.preventDefault();
 
-                            signIn("discord");
+                            void signIn("discord");
                         }}>
                             <li className="nav-item">
                                 <SignInIcon

@@ -34,7 +34,7 @@ const Browser: React.FC<{
     });
 
     const loadMore = () => {
-        fetchNextPage();
+        void fetchNextPage();
     }
 
     const items: UserProject[] = [];
@@ -62,7 +62,7 @@ const Browser: React.FC<{
                         {items.map((project: UserProject) => {
                             return (
                                 <Row
-                                    key={"project-" + project.id}
+                                    key={"project-" + project.id.toString()}
                                     project={project}
                                 />
                             )

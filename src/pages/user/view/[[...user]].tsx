@@ -1,6 +1,7 @@
-import { User } from "@prisma/client";
-import { GetServerSidePropsContext, NextPage } from "next";
+import { type User } from "@prisma/client";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 import Wrapper from "@components/wrapper";
 
@@ -22,7 +23,7 @@ const Page: NextPage<{
     user,
     view
 }) => {
-    const baseUrl = "/user/view/" + ((user?.url) ? user?.url : "$" + user?.id);
+    const baseUrl = "/user/view/" + ((user?.url) ? user.url : "$" + (user?.id ?? ""));
 
     const birthday = (user?.birthday) ? dateFormat(user?.birthday, dateFormatTwo) : null;
 
@@ -34,7 +35,13 @@ const Page: NextPage<{
                         <div className="w-full sm:w-1/12">
                             <div className="pb-6 flex flex-col items-center justify-center">
                                 {user.image && (
-                                    <img src={user.image} className="w-20 h-20" />
+                                    <Image
+                                        className="w-20 h-20"
+                                        src={user.image}
+                                        width={50}
+                                        height={50}
+                                        alt="User Avatar"
+                                    />
                                 )}
                                 {user.title && (
                                     <p className="text-lg font-bold text-white">{user.title}</p>

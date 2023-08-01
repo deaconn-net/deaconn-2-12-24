@@ -2,16 +2,16 @@ import Link from "next/link";
 
 import { type RequestWithService } from "~/types/request";
 
-import { api } from "@utils/api";
+//import { api } from "@utils/api";
 import { dateFormat, dateFormatOne } from "@utils/date";
 
 const Row: React.FC<{
     request: RequestWithService
 }> = ({ request }) => {
-    const viewUrl = "/request/view/" + request.id;
-    const editUrl = "/request/new?id=" + request.id;
+    const viewUrl = "/request/view/" + request.id.toString();
+    //const editUrl = "/request/new?id=" + request.id.toString();
 
-    const closeMut = api.request.close.useMutation();
+    //const closeMut = api.request.close.useMutation();
 
     const createdAt = dateFormat(request.createdAt, dateFormatOne);
     const updatedAt = dateFormat(request.updatedAt, dateFormatOne);

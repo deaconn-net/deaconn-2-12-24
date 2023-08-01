@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Link from "next/link";
 
 import Wrapper from "@components/wrapper";
@@ -45,7 +45,7 @@ const Page: NextPage = () => {
     });
 
     const loadMore = () => {
-        fetchNextPage();
+        void fetchNextPage();
     }
 
     const items: Article[] = [];
@@ -106,7 +106,7 @@ const Page: NextPage = () => {
                                 {items.map((article: Article) => {
                                     return (
                                         <ArticleRow
-                                            key={"article-" + article.id}
+                                            key={"article-" + article.id.toString()}
                                             article={article}
                                         />
                                     )

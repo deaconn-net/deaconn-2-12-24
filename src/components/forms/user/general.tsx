@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
 import { Field, useFormik } from "formik";
+
+import { type User } from "@prisma/client";
 
 import FormMain from "@components/forms/main";
 
@@ -11,8 +12,6 @@ import { ScrollToTop } from "@utils/scroll";
 
 import ReactMarkdown from "react-markdown";
 import DatePicker from "react-datepicker";
-
-import { User } from "@prisma/client";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -84,7 +83,7 @@ const Form: React.FC<{
         },
         enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -172,7 +171,9 @@ const Form: React.FC<{
                             className="form-input"
                             name="birthday"
                             selected={form.values.birthday}
-                            onChange={(date: Date) => form.setFieldValue('birthday', date)}
+                            onChange={(date: Date) => {
+                                void form.setFieldValue('birthday', date);
+                            }}
                             dateFormat="yyyy/MM/dd"
                         />
                     )}

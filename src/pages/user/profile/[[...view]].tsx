@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import { GetServerSidePropsContext, NextPage } from "next";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type User, type UserExperience, type UserProject, type UserSkill } from "@prisma/client";
 

@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Link from "next/link";
 
 import RequestRow from "@components/request/row";
@@ -22,7 +22,7 @@ const Page: NextPage = () => {
     // Filters
     const [oldest, setOldest] = useState(false);
 
-    let sort = "updatedAt";
+    const sort = "updatedAt";
     let sortDir = "desc";
 
     if (oldest)
@@ -48,7 +48,7 @@ const Page: NextPage = () => {
     }
 
     const loadMore = () => {
-        fetchNextPage();
+        void fetchNextPage();
     }
 
     const items: RequestWithService[] = [];
@@ -105,7 +105,7 @@ const Page: NextPage = () => {
                                     {items.map((request: RequestWithService) => {
                                         return (
                                             <RequestRow
-                                                key={"request-" + request.id}
+                                                key={"request-" + request.id.toString()}
                                                 request={request}
                                             />
                                         )

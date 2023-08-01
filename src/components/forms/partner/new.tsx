@@ -8,7 +8,7 @@ import ErrorBox from "@utils/error";
 import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
-import { Partner } from "@prisma/client";
+import { type Partner } from "@prisma/client";
 
 const Form: React.FC<{
     partner?: Partner | null
@@ -88,7 +88,7 @@ const Form: React.FC<{
         },
         enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
