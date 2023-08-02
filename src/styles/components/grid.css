@@ -5,11 +5,11 @@
 }
 
 .grid-view-sm {
-    @apply sm:grid-cols-[repeat(auto-fill,minmax(18rem,1fr))];
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
 }
 
 .grid-view-lg {
-    @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(36rem,1fr))];
 }
 
 .grid-view-center {

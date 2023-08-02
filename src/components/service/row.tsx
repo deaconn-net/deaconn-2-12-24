@@ -39,12 +39,14 @@ const Row: React.FC<{
             ) : (
                 <div className={"service-row " + ((small) ? "service-row-sm" : "service-row-lg")}>
                     <div className="service-row-image">
-                        <Image
-                            src={banner}
-                            width={300}
-                            height={300}
-                            alt="Service Banner"
-                        />
+                        <Link href={viewUrl}>
+                            <Image
+                                src={banner}
+                                width={300}
+                                height={300}
+                                alt="Service Banner"
+                            />
+                        </Link>
                     </div>
                     <div className="service-row-name">
                         <h3>

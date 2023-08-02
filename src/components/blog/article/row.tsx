@@ -36,12 +36,14 @@ const Row: React.FC<{
             ) : (
                 <div className={"article-row " + ((small) ? "article-row-sm" : "article-row-lg")}>
                     <div className="article-row-image">
-                        <Image
-                            src={banner}
-                            width={300}
-                            height={300}
-                            alt="Article Banner"
-                        />
+                        <Link href={viewUrl}>
+                            <Image
+                                src={banner}
+                                width={300}
+                                height={150}
+                                alt="Article Banner"
+                            />
+                        </Link>
                     </div>
                     <div className="article-row-title">
                         <h3>

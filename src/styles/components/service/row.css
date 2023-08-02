@@ -1,21 +1,32 @@
 .service-row {
-    @apply p-4;
-    @apply bg-cyan-900;
     @apply w-full;
+
+    @apply bg-cyan-900;
+
     @apply rounded;
-    @apply border-gray-800;
-    @apply border-2;
-    @apply border-solid;
+
     @apply flex;
     @apply flex-col;
+
+    @apply ring-4;
+    @apply ring-gray-800;
+    @apply hover:ring-gray-600;
+
+    &:hover .service-row-image > a > img {
+        @apply brightness-100;
+    }
+}
+
+.service-row > div:not(:first-child) {
+    @apply px-2;
 }
 
 .service-row-sm {
-    @apply sm:w-[18rem];
+    @apply sm:w-[24rem];
 }
 
 .service-row-lg {
-    @apply sm:w-[24rem];
+    @apply sm:w-[36rem];
 }
 
 /* Image */
@@ -23,7 +34,10 @@
     @apply w-full;
 }
 
-.service-row-image > img {
+.service-row-image > a > img {
+    @apply filter;
+    @apply brightness-[85%];
+    @apply rounded-t;
     @apply w-full;
     @apply h-full;
     @apply max-h-full;
@@ -39,10 +53,14 @@
 
 /* Name */
 .service-row-name > h3 {
-    @apply text-white;
     @apply text-2xl;
     @apply font-bold;
     @apply text-center;
+}
+
+.service-row-name > h3 > a {
+    @apply text-white;
+    @apply hover:text-blue-400;
 }
 
 /* Description */
