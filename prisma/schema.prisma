@@ -168,6 +168,11 @@ model User {
   isTeam    Boolean   @default(false)
   isRoot    Boolean   @default(false)
 
+  socialTwitter  String?
+  socialGithub   String?
+  socialLinkedin String?
+  socialFacebook String?
+
   experiences UserExperience[]
   skills      UserSkill[]
   projects    UserProject[]
