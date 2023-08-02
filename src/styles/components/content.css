@@ -7,6 +7,10 @@
 .content-item {
     @apply w-full;
     @apply p-4;
+
+    @apply flex;
+    @apply flex-col;
+    @apply gap-4;
 }
 
 .content-col-large {
