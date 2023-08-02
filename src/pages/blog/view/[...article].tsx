@@ -157,6 +157,20 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (article)
         updatedAtDate = dateFormat(article.updatedAt, dateFormatOne);
 
+    // Increment view count.
+    if (article) {
+        await prisma.article.update({
+            where: {
+                id: article.id
+            },
+            data: {
+                views: {
+                    increment: 1
+                }
+            }
+        });
+    }
+
     return { 
         props: { 
             article: JSON.parse(JSON.stringify(article)),

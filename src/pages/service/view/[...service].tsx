@@ -218,6 +218,20 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    // Increment view.
+    if (service) {
+        await prisma.service.update({
+            where: {
+                id: service.id
+            },
+            data: {
+                views: {
+                    increment: 1
+                }
+            }
+        });
+    }
+
     return {
         props: {
             service: JSON.parse(JSON.stringify(service)),
