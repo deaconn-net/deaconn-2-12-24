@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
                         </div>
                         <div>
                             <h3>Follow Us!</h3>
-                            <div className="flex flex-wrap gap-2 justify-center">
+                            <div className="flex flex-wrap gap-2 justify-center p-2">
                                 <Link
                                     href="https://twitter.com/deaconn_"
                                     target="_blank"
