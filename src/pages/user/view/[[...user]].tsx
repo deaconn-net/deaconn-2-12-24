@@ -34,7 +34,7 @@ const Page: NextPage<{
                 title={`Viewing ${user?.name ?? "Not Found"} ${view.charAt(0).toUpperCase() + view.slice(1)} - Users - Deaconn`}
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     {user ? (
                         <div className="flex flex-wrap">
                             <div className="w-full sm:w-1/12">

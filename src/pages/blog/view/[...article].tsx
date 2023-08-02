@@ -59,13 +59,15 @@ const Page: NextPage<{
                 description={`${article?.desc ?? "Article not found."}`}
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     {deleteMut.isSuccess && (
+                        
                         <SuccessBox
                             title="Successfully Deleted Article!"
                             msg={`Deleted article ${article?.title}. Please reload the page.`}
                         />
                     )}
+
                     {article ? (
                         <div className="flex flex-col gap-4">
                             <div className="w-full flex justify-center">

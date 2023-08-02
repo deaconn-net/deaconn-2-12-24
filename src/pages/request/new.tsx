@@ -20,7 +20,7 @@ const Page: NextPage<{
                 description="Create a new request with Deaconn."
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     <h1>Create Request</h1>
                     <Form
                         request={request ?? undefined}

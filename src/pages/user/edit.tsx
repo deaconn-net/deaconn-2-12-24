@@ -10,8 +10,9 @@ const Page: NextPage = () => {
                 title="Editing User - Users - Deaconn"
             />
             <Wrapper>
-                <div className="content">
-                    <p>User Edit</p>
+                <div className="content-item">
+                    <h1>User Edit</h1>
+                    <p>This is the user edit page!</p>
                 </div>
             </Wrapper>
         </>

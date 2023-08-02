@@ -20,7 +20,7 @@ const Page: NextPage<{
                 robots="noindex"
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     <h1>Create Partner</h1>
                     <Form
                         partner={partner ?? undefined}

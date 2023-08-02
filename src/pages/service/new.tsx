@@ -19,7 +19,7 @@ const Page: NextPage<{
                 title="New Service - Services - Deaconn"
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     <h1>Create Service</h1>
                     <Form
                         service={service ?? undefined}

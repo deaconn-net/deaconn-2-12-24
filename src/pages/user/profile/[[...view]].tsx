@@ -33,7 +33,7 @@ const Page: NextPage<{
                 title={`${view.charAt(0).toUpperCase() + view.slice(1)} Profile - Deaconn`}
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     {authed ? (
                         <UserSettingsPanel
                             current={view}

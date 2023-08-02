@@ -61,7 +61,7 @@ const Page: NextPage = () => {
                 description="Find services offered by Deaconn ranging from bots to network firewalls!"
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     <h1>Services</h1>
                     <div className="p-6 flex justify-between">
                         <Link

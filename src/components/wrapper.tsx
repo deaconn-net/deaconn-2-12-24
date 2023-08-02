@@ -11,7 +11,9 @@ const Wrapper: React.FC<{
     return (
         <main>
             <Header />
-            {children}
+            <div className="content">
+                {children}
+            </div>
             <Footer />
         </main>
     );

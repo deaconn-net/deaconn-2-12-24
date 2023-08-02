@@ -10,8 +10,9 @@ const Page: NextPage = () => {
                 title="View Request - Requests - Deaconn"
             />
             <Wrapper>
-                <div className="content">
-                    <p>Request View</p>
+                <div className="content-item">
+                    <h1>Request View</h1>
+                    <p>This is the request view page!</p>
                 </div>
             </Wrapper>
         </>

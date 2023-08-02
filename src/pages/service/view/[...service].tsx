@@ -55,7 +55,7 @@ const Page: NextPage<{
                 description={`${service?.desc ?? "Service not found."}`}
             />
             <Wrapper>
-                <div className="content">
+                <div className="content-item">
                     {deleteMut.isSuccess && (
                         <SuccessBox
                             title="Successfully Deleted Service!"

@@ -30,78 +30,76 @@ const Page: NextPage<{
                 title="Home - Deaconn"
             />
             <Wrapper>
-                <div className="content">
-                    <div className="flex flex-wrap">
-                        <div className="content-col-large">
-                            <div className="content-item">
-                                <h1>Who Are We?</h1>
-                                <p><span className="font-bold">Deaconn</span> is a software developer which produces products and services in various areas within technology.</p>
-                            </div>
-                            <div className="content-item">
-                                <h1>Have A Request?</h1>
-                                <p>We are a freelancing business and accept requests.</p>
-                                <p><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
-                                <div className="flex py-6">
-                                    <Link href="/request/new" className="button">New Request</Link>
-                                </div>
-                            </div>
+                <div className="flex flex-wrap">
+                    <div className="content-col-large">
+                        <div className="content-item">
+                            <h1>Who Are We?</h1>
+                            <p><span className="font-bold">Deaconn</span> is a software developer which produces products and services in various areas within technology.</p>
                         </div>
-                        <div className="content-col-small">
-                            <div className="content-item">
-                                <h1>Our Team</h1>
-                                <div className="flex flex-col gap-4">
-                                    {team.map((user) => {
-                                        return (
-                                            <UserRow
-                                                key={"team-" + user.id}
-                                                user={user}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                            <div className="content-item">
-                                <h1>Partners</h1>
-                                <div className="flex flex-col gap-4">
-                                    {partners.map((partner) => {
-                                        return (
-                                            <PartnerRow
-                                                key={"partner-" + partner.id.toString()}
-                                                partner={partner}
-                                            />
-                                        );
-                                    })}
-                                </div>
+                        <div className="content-item">
+                            <h1>Have A Request?</h1>
+                            <p>We are a freelancing business and accept requests.</p>
+                            <p><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
+                            <div className="flex py-6">
+                                <Link href="/request/new" className="button">New Request</Link>
                             </div>
                         </div>
                     </div>
-                    <div className="content-item">
-                        <h1>Popular Services</h1>
-                        <div className="grid-view grid-view-sm">
-                            {services.map((service) => {
-                                return (
-                                    <ServiceRow
-                                        small={true}
-                                        key={"service-" + service.id.toString()}
-                                        service={service}
-                                    />
-                                )
-                            })}
+                    <div className="content-col-small">
+                        <div className="content-item">
+                            <h1>Our Team</h1>
+                            <div className="flex flex-col gap-4">
+                                {team.map((user) => {
+                                    return (
+                                        <UserRow
+                                            key={"team-" + user.id}
+                                            user={user}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <div className="content-item">
+                            <h1>Partners</h1>
+                            <div className="flex flex-col gap-4">
+                                {partners.map((partner) => {
+                                    return (
+                                        <PartnerRow
+                                            key={"partner-" + partner.id.toString()}
+                                            partner={partner}
+                                        />
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
-                    <div className="content-item">
-                        <h1>Latest Articles</h1>
-                        <div className="grid-view grid-view-sm">
-                            {articles.map((article) => {
-                                return (
-                                    <ArticleRow
-                                        small={true}
-                                        key={"article-" + article.id.toString()}
-                                        article={article}
-                                    />
-                                )
-                            })}
-                        </div>
+                </div>
+                <div className="content-item">
+                    <h1>Popular Services</h1>
+                    <div className="grid-view grid-view-sm">
+                        {services.map((service) => {
+                            return (
+                                <ServiceRow
+                                    small={true}
+                                    key={"service-" + service.id.toString()}
+                                    service={service}
+                                />
+                            )
+                        })}
+                    </div>
+                </div>
+                <div className="content-item">
+                    <h1>Latest Articles</h1>
+                    <div className="grid-view grid-view-sm">
+                        {articles.map((article) => {
+                            return (
+                                <ArticleRow
+                                    small={true}
+                                    key={"article-" + article.id.toString()}
+                                    article={article}
+                                />
+                            )
+                        })}
                     </div>
                 </div>
             </Wrapper>

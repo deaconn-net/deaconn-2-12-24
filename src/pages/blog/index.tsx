@@ -67,10 +67,7 @@ const Page: NextPage = () => {
                 description="Deaconn's blog includes artiles on technology, programming, security, networking, and more!"
             />
             <Wrapper>
-                <Meta
-                    title="Blog - Deaconn"
-                />
-                <div className="content">
+                <div className="content-item">
                     <h1>Blog</h1>
                     <div className="p-6 flex flex-wrap justify-between">
                         <div className="flex flex-wrap gap-2">
@@ -136,7 +133,7 @@ const Page: NextPage = () => {
                             )}
                         </>
                     </InfiniteScroll>
-                </div>
+                    </div>
             </Wrapper>
         </>
     );

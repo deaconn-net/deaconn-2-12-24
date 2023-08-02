@@ -9,8 +9,9 @@ const Page: NextPage = () => {
                 title="About - Deaconn"
             />
             <Wrapper>
-                <div className="content">
-                    <p>About</p>
+                <div className="content-item">
+                    <h1>About Us</h1>
+                    <p>This is the start of our about us page!</p>
                 </div>
             </Wrapper>
         </>
