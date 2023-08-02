@@ -44,11 +44,11 @@
 }
 
 .article-row-sm > .article-row-image {
-    @apply h-48;
+    @apply h-72;
 }
 
 .article-row-lg > .article-row-image {
-    @apply h-72;
+    @apply h-96;
 }
 
 /* Title */

@@ -44,11 +44,11 @@
 }
 
 .service-row-sm > .service-row-image {
-    @apply h-48;
+    @apply h-72;
 }
 
 .service-row-lg > .service-row-image {
-    @apply h-72;
+    @apply h-96;
 }
 
 /* Name */
