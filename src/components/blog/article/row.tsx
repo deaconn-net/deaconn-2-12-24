@@ -46,8 +46,8 @@ const Row: React.FC<{
                         <Link href={viewUrl}>
                             <Image
                                 src={banner}
-                                width={300}
-                                height={150}
+                                width={600}
+                                height={400}
                                 alt="Article Banner"
                             />
                         </Link>
