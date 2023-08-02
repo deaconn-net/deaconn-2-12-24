@@ -49,7 +49,7 @@ const Page: NextPage<{
                         <div className="content-col-small">
                             <div className="content-item">
                                 <h1>Our Team</h1>
-                                <div className="py-6">
+                                <div>
                                     {team.map((user) => {
                                         return (
                                             <UserRow
@@ -62,7 +62,7 @@ const Page: NextPage<{
                             </div>
                             <div className="content-item">
                                 <h1>Partners</h1>
-                                <div className="py-6">
+                                <div>
                                     {partners.map((partner) => {
                                         return (
                                             <PartnerRow
@@ -77,7 +77,7 @@ const Page: NextPage<{
                     </div>
                     <div className="content-item">
                         <h1>Popular Services</h1>
-                        <div className="py-6 grid-view grid-view-sm">
+                        <div className="grid-view grid-view-sm">
                             {services.map((service) => {
                                 return (
                                     <ServiceRow
@@ -91,7 +91,7 @@ const Page: NextPage<{
                     </div>
                     <div className="content-item">
                         <h1>Latest Articles</h1>
-                        <div className="py-6 grid-view grid-view-sm">
+                        <div className="grid-view grid-view-sm">
                             {articles.map((article) => {
                                 return (
                                     <ArticleRow
