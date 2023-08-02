@@ -2,6 +2,8 @@
     @apply container;
     @apply mx-auto;
     @apply py-16;
+
+    @apply grow;
 }
 
 .content-item {
