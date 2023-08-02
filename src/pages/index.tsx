@@ -49,7 +49,7 @@ const Page: NextPage<{
                         <div className="content-col-small">
                             <div className="content-item">
                                 <h1>Our Team</h1>
-                                <div>
+                                <div className="flex flex-col gap-4">
                                     {team.map((user) => {
                                         return (
                                             <UserRow
@@ -62,7 +62,7 @@ const Page: NextPage<{
                             </div>
                             <div className="content-item">
                                 <h1>Partners</h1>
-                                <div>
+                                <div className="flex flex-col gap-4">
                                     {partners.map((partner) => {
                                         return (
                                             <PartnerRow
