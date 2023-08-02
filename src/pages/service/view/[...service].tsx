@@ -51,7 +51,7 @@ const Page: NextPage<{
     return (
         <>
             <Meta
-                title={`${service?.name ?? "Not Found"} - Services - Deaconn`}
+                title={`${service?.name ?? "Not Found"}${view != "details" ? " - " + view.charAt(0).toUpperCase() + view.slice(1) : ""} - Services - Deaconn`}
                 description={`${service?.desc ?? "Service not found."}`}
             />
             <Wrapper>
