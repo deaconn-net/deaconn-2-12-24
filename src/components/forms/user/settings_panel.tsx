@@ -31,25 +31,37 @@ const SettingsPanel: React.FC<{
 
     return (
         <>
-            <div className="flex flex-wrap">
-                <div className="w-full sm:w-1/12">
-                    <ul className="list-none">
-                        <Link href="/user/profile">
-                            <li className={"profile-item" + ((current == "general") ? " !bg-cyan-800" : "")}>General</li>
+            <div className="flex flex-wrap gap-2">
+                <div>
+                    <ul className="tab-container w-64">
+                        <Link
+                            href="/user/profile"
+                            className={`tab-link ${current == "general" ? "tab-active" : ""}`}    
+                        >
+                            <li>General</li>
                         </Link>
-                        <Link href="/user/profile/experiences">
-                            <li className={"profile-item" + ((current == "experiences") ? " !bg-cyan-800" : "")}>Experiences</li>
+                        <Link
+                            href="/user/profile/experiences"
+                            className={`tab-link ${current == "experiences" ? "tab-active" : ""}`}
+                        >
+                            <li>Experiences</li>
                         </Link>
-                        <Link href="/user/profile/skills">
-                            <li className={"profile-item" + ((current == "skills") ? " !bg-cyan-800" : "")}>Skills</li>
+                        <Link
+                            href="/user/profile/skills"
+                            className={`tab-link ${current == "skills" ? "tab-active" : ""}`}
+                        >
+                            <li>Skills</li>
                         </Link>
-                        <Link href="/user/profile/projects">
-                            <li className={"profile-item" + ((current == "projects") ? " !bg-cyan-800" : "")}>Projects</li>
+                        <Link
+                            href="/user/profile/projects"
+                            className={`tab-link ${current == "projects" ? "tab-active" : ""}`}
+                        >
+                            <li>Projects</li>
                         </Link>
                     </ul>
                 </div>
 
-                <div className="w-full sm:w-11/12">
+                <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
                     {current == "general" && (
                         <GeneralForm 
                             user={user}
