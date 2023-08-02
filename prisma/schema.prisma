@@ -172,6 +172,7 @@ model User {
   socialGithub   String?
   socialLinkedin String?
   socialFacebook String?
+  website        String?
 
   experiences UserExperience[]
   skills      UserSkill[]
