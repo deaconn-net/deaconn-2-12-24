@@ -1,6 +1,7 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { RetrieveSocialTag } from "@utils/social";
 
 const expSchema = z.object({
     id: z.number().nullable(),
@@ -50,6 +51,12 @@ export const userRouter = createTRPCRouter({
             showEmail: z.boolean().optional(),
             isTeam: z.boolean().optional(),
 
+            website: z.string().optional(),
+            socialTwitter: z.string().optional(),
+            socialGithub: z.string().optional(),
+            socialLinkedin: z.string().optional(),
+            socialFacebook: z.string().optional(),
+
             experiences: z.array(expSchema).optional(),
             skills: z.array(skillSchema).optional(),
             projects: z.array(projectSchema).optional(),
@@ -90,6 +97,21 @@ export const userRouter = createTRPCRouter({
                     }),
                     ...(input.isTeam && {
                         isTeam: input.isTeam
+                    }),
+                    ...(input.website && {
+                        website: RetrieveSocialTag(input.website, "website")
+                    }),
+                    ...(input.socialTwitter && {
+                        socialTwitter: RetrieveSocialTag(input.socialTwitter, "twitter")
+                    }),
+                    ...(input.socialGithub && {
+                        socialGithub: RetrieveSocialTag(input.socialGithub, "github")
+                    }),
+                    ...(input.socialLinkedin && {
+                        socialLinkedin: RetrieveSocialTag(input.socialLinkedin, "linkedin")
+                    }),
+                    ...(input.socialFacebook && {
+                        socialFacebook: RetrieveSocialTag(input.socialFacebook, "facebook")
                     })
                 }
             });

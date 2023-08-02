@@ -63,25 +63,33 @@ export function RetrieveSocialTag(
     // Now strip out URLs based off of platform parameter.
     switch (platform.toLowerCase()) {
         case "twitter":
+            tag = tag.replaceAll(`www.${TWITTER_URL}/`, ``);
             tag = tag.replaceAll(`${TWITTER_URL}/`, ``);
 
             break;
 
         case "github":
+            tag = tag.replaceAll(`www.${GITHUB_URL}/`, ``);
             tag = tag.replaceAll(`${GITHUB_URL}/`, ``);
 
             break;
 
         case "linkedin":
+            tag = tag.replaceAll(`www.${LINKEDIN_URL}/in/`, ``);
             tag = tag.replaceAll(`${LINKEDIN_URL}/in/`, ``);
 
             break;
 
         case "facebook":
-            tag = tag.replaceAll(`${FACEBOOK_URL}/`, ``)
+            tag = tag.replaceAll(`www.${FACEBOOK_URL}/`, ``);
+            tag = tag.replaceAll(`${FACEBOOK_URL}/`, ``);
 
             break;
     }
+
+    // When all said and done, remove other symbols.
+    tag = tag.replaceAll("@", "");
+    tag = tag.replaceAll("/", "");
 
     return tag;
 }

@@ -27,7 +27,7 @@ const Form: React.FC<{
     const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
     const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
 
-    // Request mutations.
+    // User mutations.
     const userMut = api.user.update.useMutation();
 
     // Check for errors or successes.
@@ -85,7 +85,13 @@ const Form: React.FC<{
             url: user?.url ?? "",
             aboutMe: user?.aboutMe ?? "",
             birthday: new Date(user?.birthday ?? Date.now()),
-            showEmail: user?.showEmail ?? false
+            showEmail: user?.showEmail ?? false,
+
+            website: user?.website ?? "",
+            socialTwitter: user?.socialTwitter ?? "",
+            socialGithub: user?.socialGithub,
+            socialLinkedin: user?.socialLinkedin,
+            socialFacebook: user?.socialFacebook
         },
         enableReinitialize: false,
 
@@ -108,7 +114,13 @@ const Form: React.FC<{
                 url: values.url,
                 aboutMe: values.aboutMe,
                 birthday: values.birthday,
-                showEmail: values.showEmail
+                showEmail: values.showEmail,
+
+                website: values.website || undefined,
+                socialTwitter: values.socialTwitter || undefined,
+                socialGithub: values.socialGithub || undefined,
+                socialLinkedin: values.socialLinkedin || undefined,
+                socialFacebook: values.socialFacebook || undefined
             });
         }
     });
@@ -193,6 +205,62 @@ const Form: React.FC<{
                                 type="checkbox"
                             /> <span>Yes</span>
                         </>
+                    )}
+                </div>
+                <h2>Social</h2>
+                <div className="form-div">
+                    <label className="form-label">Website</label>
+                    {preview ? (
+                        <p className="italic">{form.values.website}</p>
+                    ) : (
+                        <Field
+                            name="website"
+                            className="form-input"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Twitter</label>
+                    {preview ? (
+                        <p className="italic">{form.values.socialTwitter}</p>
+                    ) : (
+                        <Field
+                            name="socialTwitter"
+                            className="form-input"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Github</label>
+                    {preview ? (
+                        <p className="italic">{form.values.socialGithub}</p>
+                    ) : (
+                        <Field
+                            name="socialGithub"
+                            className="form-input"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Linkedin</label>
+                    {preview ? (
+                        <p className="italic">{form.values.socialLinkedin}</p>
+                    ) : (
+                        <Field
+                            name="socialLinkedin"
+                            className="form-input"
+                        />
+                    )}
+                </div>
+                <div className="form-div">
+                    <label className="form-label">Facebook</label>
+                    {preview ? (
+                        <p className="italic">{form.values.socialFacebook}</p>
+                    ) : (
+                        <Field
+                            name="socialFacebook"
+                            className="form-input"
+                        />
                     )}
                 </div>
             </FormMain>
