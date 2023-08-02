@@ -24,8 +24,14 @@ const Page: NextPage<{
     article
 }) => {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const image = cdn + (article?.banner ?? "") + "/images/blog/default.jpg";
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
 
+    let image = cdn + "/images/blog/default.jpg";
+
+    if (article?.banner) {
+        image = cdn + uploadUrl + article.banner;
+    }
+    
     let createdAt: string | null = null;
     let updatedAt: string | null = null;
 
