@@ -4,6 +4,7 @@ import { type Request } from "@prisma/client";
 
 import Form from '@components/forms/request/new';
 import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
 
 import { prisma } from "@server/db";
 
@@ -13,14 +14,20 @@ const Page: NextPage<{
     request
 }) => {
     return (
-        <Wrapper>
-            <div className="content">
-                <h1>Create Request</h1>
-                <Form
-                    request={request ?? undefined}
-                />
-            </div>
-        </Wrapper>
+        <>
+            <Meta
+                title="New Request - Requests - Deaconn"
+                description="Create a new request with Deaconn."
+            />
+            <Wrapper>
+                <div className="content">
+                    <h1>Create Request</h1>
+                    <Form
+                        request={request ?? undefined}
+                    />
+                </div>
+            </Wrapper>
+        </>
     );
 }
 

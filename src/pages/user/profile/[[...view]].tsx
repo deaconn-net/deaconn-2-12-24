@@ -6,6 +6,7 @@ import { type User, type UserExperience, type UserProject, type UserSkill } from
 import Wrapper from '@components/wrapper';
 import UserSettingsPanel from "@components/forms/user/settings_panel";
 import NoPermissions from "@components/errors/no_permissions";
+import Meta from "@components/meta";
 
 import { prisma } from "@server/db";
 
@@ -27,22 +28,27 @@ const Page: NextPage<{
     skill
 }) => {
     return (
-        <Wrapper>
-            <div className="content">
-                {authed ? (
-                    <UserSettingsPanel
-                        current={view}
+        <>
+            <Meta
+                title={`${view.charAt(0).toUpperCase() + view.slice(1)} Profile - Deaconn`}
+            />
+            <Wrapper>
+                <div className="content">
+                    {authed ? (
+                        <UserSettingsPanel
+                            current={view}
 
-                        user={user}
-                        experience={experience}
-                        project={project}
-                        skill={skill}
-                    />
-                ) : (
-                    <NoPermissions />
-                )}
-            </div>
-        </Wrapper>
+                            user={user}
+                            experience={experience}
+                            project={project}
+                            skill={skill}
+                        />
+                    ) : (
+                        <NoPermissions />
+                    )}
+                </div>
+            </Wrapper>
+        </>
     );
 }
 

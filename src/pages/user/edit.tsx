@@ -1,14 +1,20 @@
 import { type NextPage } from "next";
 
 import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
 
 const Page: NextPage = () => {
     return (
-        <Wrapper>
-            <div className="content">
-                <p>User Edit</p>
-            </div>
-        </Wrapper>
+        <>
+            <Meta
+                title="Editing User - Users - Deaconn"
+            />
+            <Wrapper>
+                <div className="content">
+                    <p>User Edit</p>
+                </div>
+            </Wrapper>
+        </>
     );
 }
 

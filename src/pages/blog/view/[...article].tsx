@@ -8,6 +8,7 @@ import { prisma } from "@server/db";
 import { UserLink } from "@components/user/link";
 import Wrapper from "@components/wrapper";
 import NotFound from "@components/errors/not_found";
+import Meta from "@components/meta";
 
 import { dateFormat, dateFormatOne } from "@utils/date";
 
@@ -34,43 +35,49 @@ const Page: NextPage<{
     }
 
     return (
-        <Wrapper>
-            <div className="content">
-                {article ? (
-                    <>
-                        <div className="w-full flex justify-center">
-                            <Image
-                                className="w-[67.5rem] h-[33.75rem] max-h-full border-2 border-solid border-cyan-900 rounded-t"
-                                src={image}
-                                width={500}
-                                height={500}
-                                alt="Banner"
-                            />
-                        </div>
-                        <h1>{article.title}</h1>
-                        <div className="w-full bg-cyan-900 p-6 rounded-sm">
-                            <div className="text-white text-sm italic pb-4">
-                                {article.user && (
-                                    <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
-                                )}
-                                {createdAt && (
-                                    <p>Created On <span className="font-bold">{createdAt}</span></p>
-                                )}
-                                {updatedAt && (
-                                    <p>Updated On <span className="font-bold">{updatedAt}</span></p>
-                                )}
-
+        <>
+            <Meta
+                title={`${article?.title ?? "Not Found!"} - Blog - Deaconn`}
+                description={`${article?.desc ?? ""}`}
+            />
+            <Wrapper>
+                <div className="content">
+                    {article ? (
+                        <>
+                            <div className="w-full flex justify-center">
+                                <Image
+                                    className="w-[67.5rem] h-[33.75rem] max-h-full border-2 border-solid border-cyan-900 rounded-t"
+                                    src={image}
+                                    width={500}
+                                    height={500}
+                                    alt="Banner"
+                                />
                             </div>
-                            <ReactMarkdown
-                                className="text-gray-100 markdown"
-                            >{article.content}</ReactMarkdown>
-                        </div>
-                    </>
-                ) : (
-                    <NotFound item="Article" />
-                )}
-            </div>
-        </Wrapper>
+                            <h1>{article.title}</h1>
+                            <div className="w-full bg-cyan-900 p-6 rounded-sm">
+                                <div className="text-white text-sm italic pb-4">
+                                    {article.user && (
+                                        <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
+                                    )}
+                                    {createdAt && (
+                                        <p>Created On <span className="font-bold">{createdAt}</span></p>
+                                    )}
+                                    {updatedAt && (
+                                        <p>Updated On <span className="font-bold">{updatedAt}</span></p>
+                                    )}
+
+                                </div>
+                                <ReactMarkdown
+                                    className="text-gray-100 markdown"
+                                >{article.content}</ReactMarkdown>
+                            </div>
+                        </>
+                    ) : (
+                        <NotFound item="Article" />
+                    )}
+                </div>
+            </Wrapper>
+        </>
     );
 }
 
