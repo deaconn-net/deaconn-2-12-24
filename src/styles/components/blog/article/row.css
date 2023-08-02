@@ -60,7 +60,7 @@
 
 .article-row-title > h3 > a {
     @apply text-white;
-    @apply hover:text-blue-400;
+    @apply hover:text-blue-200;
 }
 
 /* Description */

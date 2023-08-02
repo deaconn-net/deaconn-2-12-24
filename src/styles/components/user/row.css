@@ -1,33 +1,29 @@
 .user-row {
     @apply text-white;
 
-    @apply p-4;
-
     @apply bg-cyan-900;
     @apply hover:bg-cyan-800;
-
-    @apply border-gray-800;
-    @apply border-2;
-    @apply border-solid;
 
     @apply flex;
     @apply items-center;
     @apply gap-2;
 
+    @apply ring-4;
+    @apply ring-gray-800;
+    @apply hover:ring-gray-600;
 }
 
 /* Image */
 .user-row-image {
-    @apply w-12;
-    @apply h-12;
+    @apply w-16;
+    @apply h-16;
 }
 
 /* Username */
-/*
 .user-row-username {
-
+    @apply text-white;
+    @apply hover:text-white;
 }
-*/
 
 /* Title */
 .user-row-title {

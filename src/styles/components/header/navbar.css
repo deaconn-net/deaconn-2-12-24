@@ -7,7 +7,11 @@
 .nav-link {
     @apply p-2;
     @apply min-w-[10em];
+
     @apply text-base;
+    @apply text-white;
+    @apply hover:text-white;
+    
     @apply hover:bg-cyan-800;
 }
 
