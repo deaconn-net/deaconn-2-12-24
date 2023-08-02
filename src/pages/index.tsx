@@ -68,7 +68,7 @@ const Page: NextPage<{
                 </div>
                 <div className="content-item">
                     <h1>Popular Services</h1>
-                    <div className="grid-view grid-view-sm">
+                    <div className="py-6 grid-view grid-view-sm">
                         {services.map((service) => {
                             return (
                                 <ServiceRow
@@ -82,7 +82,7 @@ const Page: NextPage<{
                 </div>
                 <div className="content-item">
                     <h1>Latest Articles</h1>
-                    <div className="grid-view grid-view-sm">
+                    <div className="py-6 grid-view grid-view-sm">
                         {articles.map((article) => {
                             return (
                                 <ArticleRow
