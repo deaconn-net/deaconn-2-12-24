@@ -36,9 +36,9 @@ const Page: NextPage<{
             <Wrapper>
                 <div className="content-item">
                     {user ? (
-                        <div className="flex flex-wrap">
-                            <div className="w-full sm:w-1/12">
-                                <div className="pb-6 flex flex-col items-center justify-center">
+                        <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-col gap-4">
+                                <div className="flex flex-col items-center justify-center gap-2">
                                     {user.image && (
                                         <Image
                                             className="w-20 h-20"
@@ -55,23 +55,35 @@ const Page: NextPage<{
                                         <p>{user.name}</p>
                                     )}
                                 </div>
-                                <ul className="list-none">
-                                    <Link href={baseUrl}>
-                                        <li className={"profile-item" + ((view == "general") ? " !bg-cyan-800" : "")}>General</li>
+                                <ul className="tab-container w-64">
+                                    <Link
+                                        href={baseUrl}
+                                        className={`tab-link ${view == "general" ? "tab-active" : ""}`}
+                                    >
+                                        <li>General</li>
                                     </Link>
-                                    <Link href={baseUrl + "/experiences"}>
-                                        <li className={"profile-item" + ((view == "experiences") ? " !bg-cyan-800" : "")}>Experiences</li>
+                                    <Link
+                                        href={baseUrl + "/experiences"}
+                                        className={`tab-link ${view == "experiences" ? "tab-active" : ""}`}
+                                    >
+                                        <li>Experiences</li>
                                     </Link>
-                                    <Link href={baseUrl + "/skills"}>
-                                        <li className={"profile-item" + ((view == "skills") ? " !bg-cyan-800" : "")}>Skills</li>
+                                    <Link
+                                        href={baseUrl + "/skills"}
+                                        className={`tab-link ${view == "skills" ? "tab-active" : ""}`}
+                                    >
+                                        <li>Skills</li>
                                     </Link>
-                                    <Link href={baseUrl + "/projects"}>
-                                        <li className={"profile-item" + ((view == "projects") ? " !bg-cyan-800" : "")}>Projects</li>
+                                    <Link
+                                        href={baseUrl + "/projects"}
+                                        className={`tab-link ${view == "projects" ? "tab-active" : ""}`}
+                                    >
+                                        <li>Projects</li>
                                     </Link>
                                 </ul>
                             </div>
 
-                            <div className="w-full sm:w-11/12">
+                            <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
                                 {view == "general" && (
                                     <>
                                         <h1>General</h1>
