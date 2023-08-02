@@ -16,14 +16,21 @@ const Row: React.FC<{
     article,
     small = false
 }) => {
+    // Retrieve some environmental variables.
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const upload_dir = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
 
+    // Compile links.
     const viewUrl = "/blog/view/" + article.url;
     const editUrl = "/blog/new?id=" + article.id.toString();
 
-    const banner = (article.banner) ? cdn + upload_dir + article.banner : "/images/blog/default.jpg";
+    // Retrieve banner.
+    let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE ?? "");
 
+    if (article.banner)
+        banner =  cdn + uploadUrl + article.banner;
+
+    // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation();
 
     return (

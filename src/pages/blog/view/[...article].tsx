@@ -26,12 +26,13 @@ const Page: NextPage<{
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
 
-    let image = cdn + "/images/blog/default.jpg";
+    // Retrieve banner.
+    let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE ?? "");
 
     if (article?.banner) {
-        image = cdn + uploadUrl + article.banner;
+        banner = cdn + uploadUrl + article.banner;
     }
-    
+
     let createdAt: string | null = null;
     let updatedAt: string | null = null;
 
@@ -53,7 +54,7 @@ const Page: NextPage<{
                             <div className="w-full flex justify-center">
                                 <Image
                                     className="w-[67.5rem] h-[33.75rem] max-h-full border-2 border-solid border-cyan-900 rounded-t"
-                                    src={image}
+                                    src={banner}
                                     width={500}
                                     height={500}
                                     alt="Banner"

@@ -19,14 +19,21 @@ const Row: React.FC<{
     service,
     small = false
 }) => {
+    // Retrieve environmental variables.
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
     
+    // Compile links.
     const viewUrl = "/service/view/" + service.url;
     const editUrl = "/service/new?id=" + service.id.toString();
 
-    const banner = (service.banner) ? cdn + upload_url + service.banner : "/images/service/default.jpg";
+    // Retrieve banner.
+    let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE ?? "");
 
+    if (service.banner)
+        banner = cdn + uploadUrl + service.banner;
+
+    // Prepare delete mutation.
     const deleteMut = api.service.delete.useMutation();
 
     return (
