@@ -18,6 +18,22 @@
     p {
         @apply leading-10;
     }
+
+    a {
+        @apply text-gray-50;
+    }
+
+    a:hover {
+        @apply text-blue-500;
+    }
+
+    a:focus {
+        @apply text-blue-300;
+    }
+
+    a:visited {
+        @apply text-gray-200;
+    }
     
     h1, h2, h3, h4, h5 {
         @apply font-bold;
