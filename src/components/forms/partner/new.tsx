@@ -8,10 +8,10 @@ import ErrorBox from "@utils/error";
 import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
-import { Partner } from "@prisma/client";
+import { type Partner } from "@prisma/client";
 
 const Form: React.FC<{
-    partner?: Partner | null
+    partner?: Partner
 }> = ({
     partner
 }) => {
@@ -61,13 +61,13 @@ const Form: React.FC<{
 
     // Submit button.
     const submit_btn =
-        <div className="text-center">
+        <div className="flex gap-2 justify-center">
             <button
                 type="submit"
-                className="p-6 text-white text-center bg-cyan-900 rounded"
+                className="button button-primary"
             >{partner ? "Save Partner" : "Add Partner"}</button>
             <button
-                className="ml-4 p-6 text-white text-center bg-cyan-800 rounded"
+                className="button button-secondary"
                 onClick={(e) => {
                     e.preventDefault();
 
@@ -86,9 +86,9 @@ const Form: React.FC<{
             url: partner?.url ?? "",
             bannerRemove: false
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -121,8 +121,8 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Banner</label>
                     <input
-                        type="file"
                         name="banner"
+                        type="file"
                         className="form-input"
                         onChange={(e) => {
                             const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
@@ -138,24 +138,29 @@ const Form: React.FC<{
                             }
                         }}
                     />
-                    {preview ? (
+                    {partner?.banner && (
                         <>
-                            <h2 className="text-white font-bold">Remove Banner</h2>
-                            <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                        </>
-                    ) : (
-                        <>
-                            <Field
-                                name="bannerRemove"
-                                type="checkbox"
-                            /> <span className="text-white">Remove Banner</span>
+                            {preview ? (
+                                <>
+                                    <label>Remove Banner</label>
+                                    <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                                </>
+                            ) : (
+                                <>
+                                    <Field
+                                        name="bannerRemove"
+                                        type="checkbox"
+                                    /> <span>Remove Banner</span>
+                                </>
+                            )}
                         </>
                     )}
+
                 </div>
                 <div className="form-div">
                     <label className="form-label">Name</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.name}</p>
+                        <p className="italic">{form.values.name}</p>
                     ) : (
                         <Field
                             name="name"
@@ -166,7 +171,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">URL</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.url}</p>
+                        <p className="italic">{form.values.url}</p>
                     ) : (
                         <Field
                             name="url"

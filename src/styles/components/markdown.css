@@ -1,0 +1,11 @@
+.markdown ol {
+    @apply list-decimal;
+}
+
+.markdown ol > li, .markdown ul > li {
+    @apply ml-12;
+}
+
+.markdown ul {
+    @apply list-disc;
+}

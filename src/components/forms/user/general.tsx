@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
 import { Field, useFormik } from "formik";
+
+import { type User } from "@prisma/client";
 
 import FormMain from "@components/forms/main";
 
@@ -11,8 +12,6 @@ import { ScrollToTop } from "@utils/scroll";
 
 import ReactMarkdown from "react-markdown";
 import DatePicker from "react-datepicker";
-
-import { User } from "@prisma/client";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -61,16 +60,22 @@ const Form: React.FC<{
 
     // Submit button.
     const submit_btn =
-        <div className="text-center">
-            <button type="submit" className="button">Save Profile</button>
-            <button onClick={(e) => {
-                e.preventDefault();
+        <div className="flex gap-2 justify-center">
+            <button
+                type="submit"
+                className="button button-primary"
+            >Save Profile</button>
+            <button
+                className="button button-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
 
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.
@@ -82,9 +87,9 @@ const Form: React.FC<{
             birthday: new Date(user?.birthday ?? Date.now()),
             showEmail: user?.showEmail ?? false
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -125,39 +130,55 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Name</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.name}</p>
+                        <p className="italic">{form.values.name}</p>
                     ) : (
-                        <Field name="name" className="form-input" />
+                        <Field
+                            name="name"
+                            className="form-input"
+                        />
                     )}
                 </div>
                 <div className="form-div">
                     <label className="form-label">URL</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.url}</p>
+                        <p className="italic">{form.values.url}</p>
                     ) : (
-                        <Field name="url" className="form-input" />
+                        <Field 
+                            name="url"
+                            className="form-input"
+                        />
                     )}
-                    <p className="p-2 text-white text-sm">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
+                    <p className="text-sm leading-8">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
                 </div>
                 <div className="form-div">
                     <label className="form-label">About Me</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.aboutMe}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.aboutMe}
+                        </ReactMarkdown>
                     ) : (
-                        <Field as="textarea" rows="16" cols="32" name="aboutMe" className="form-input" />
+                        <Field
+                            name="aboutMe"
+                            as="textarea"
+                            className="form-input"
+                            rows="16"
+                            cols="32"
+                        />
                     )}
                 </div>
                 <div className="form-div">
                     <label className="form-label">Birthday</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
+                        <p className="italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
                     ) : (
                         <DatePicker
-                            className="form-input"
                             name="birthday"
+                            className="form-input"
                             selected={form.values.birthday}
-                            onChange={(date: Date) => form.setFieldValue('birthday', date)}
                             dateFormat="yyyy/MM/dd"
+                            onChange={(date: Date) => {
+                                void form.setFieldValue('birthday', date);
+                            }}
                         />
                     )}
                 </div>
@@ -170,7 +191,7 @@ const Form: React.FC<{
                             <Field
                                 name="showEmail"
                                 type="checkbox"
-                            /> <span className="text-white">Yes</span>
+                            /> <span>Yes</span>
                         </>
                     )}
                 </div>

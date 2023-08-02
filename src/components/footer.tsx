@@ -3,6 +3,10 @@ import Link from "next/link";
 import { type Partner, type Service } from "@prisma/client";
 
 import { api } from "@utils/api";
+import TwitterIcon from "@utils/icons/social/twitter";
+import GithubIcon from "@utils/icons/social/github";
+import FacebookIcon from "@utils/icons/social/facebook";
+import LinkedinIcon from "@utils/icons/social/linkedin";
 
 const Footer: React.FC = () => {
     const partnerQuery = api.partner.getAll.useQuery({
@@ -16,55 +20,95 @@ const Footer: React.FC = () => {
     const services = serviceQuery.data?.items;
 
     return (
-        <footer className="p-18 bg-slate-800">
-            <div className="container mx-auto flex flex-wrap text-center">
+        <footer>
+            <div className="footer-content">
                 <div className="footer-section">
-                    <div>
-                        <h3 className="footer-title">Links</h3>
-                        <ul className="list-none">
-                            <li className="footer-link"><Link href="/">Home</Link></li>
-                            <li className="footer-link"><Link href="/service">Services</Link></li>
-                            <li className="footer-link"><Link href="/blog">Blog</Link></li>
-                            <li className="footer-link"><Link href="/about">About Us</Link></li>
-                            <li className="footer-link"><Link href="/request">My Requests</Link></li>
-                            <li className="footer-link"><Link href="/request/new">New Request</Link></li>
-                        </ul>
-                    </div>
+                    <h3>Links</h3>
+                    <ul className="footer-list">
+                        <li className="footer-link"><Link href="/">Home</Link></li>
+                        <li className="footer-link"><Link href="/service">Services</Link></li>
+                        <li className="footer-link"><Link href="/blog">Blog</Link></li>
+                        <li className="footer-link"><Link href="/about">About Us</Link></li>
+                        <li className="footer-link"><Link href="/request">My Requests</Link></li>
+                        <li className="footer-link"><Link href="/request/new">New Request</Link></li>
+                    </ul>
                 </div>
                 <div className="footer-section">
-                    <div>
-                        <h3 className="footer-title">Services</h3>
-                        <ul className="list-none">
-                            {services && (
-                                <>
-                                    {services.map((service: Service) => {
-                                        const viewLink = "/service/view/" + service.url;
+                    <h3>Services</h3>
+                    <ul className="footer-list">
+                        {services && services.length > 0 ? (
+                            <>
+                                {services.map((service: Service) => {
+                                    const viewLink = "/service/view/" + service.url;
 
-                                        return (
-                                            <li key={"footer-service-" + service.id} className="footer-link"><Link href={viewLink}>{service.name}</Link></li>
-                                        );
-                                    })}
+                                    return (
+                                        <li key={"footer-service-" + service.id.toString()} className="footer-link"><Link href={viewLink}>{service.name}</Link></li>
+                                    );
+                                })}
 
-                                </>
-                            )}
-                        </ul>
-                    </div>
+                            </>
+                        ) : (
+                            <p>None.</p>
+                        )}
+                    </ul>
                 </div>
                 <div className="footer-section">
-                    <div>
-                        <h3 className="footer-title">Partners</h3>
-                        <ul className="list-none">
-                            {partners && (
-                                <>
-                                    {partners.map((partner: Partner) => {
-                                        return (
-                                            <li key={"footer-partner-" + partner.id} className="footer-link"><a href={partner.url} target="_blank">{partner.name}</a></li>
-                                        );
-                                    })}
-                                </>
-                            )}
-                        </ul>
+                    <div className="flex flex-col gap-4">
+                        <div>
+                            <h3>Partners</h3>
+                            <ul className="footer-list">
+                                {partners && partners.length > 0 ? (
+                                    <>
+                                        {partners.map((partner: Partner) => {
+                                            return (
+                                                <li key={"footer-partner-" + partner.id.toString()} className="footer-link"><a href={partner.url} target="_blank">{partner.name}</a></li>
+                                            );
+                                        })}
+                                    </>
+                                ) : (
+                                    <p>None.</p>
+                                )}
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Follow Us!</h3>
+                            <div className="flex flex-wrap gap-2 justify-center">
+                                <Link
+                                    href="https://twitter.com/deaconn_"
+                                    target="_blank"
+                                >
+                                    <TwitterIcon
+                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                    />
+                                </Link>
+                                <Link
+                                    href="https://github.com/deaconn-net"
+                                    target="_blank"
+                                >
+                                    <GithubIcon
+                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                    />
+                                </Link>
+                                <Link
+                                    href="https://www.facebook.com/deaconn.net"
+                                    target="_blank"
+                                >
+                                    <FacebookIcon
+                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                    />
+                                </Link>
+                                <Link
+                                    href="https://linkedin.com/company/89513696"
+                                    target="_blank"
+                                >
+                                    <LinkedinIcon
+                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                    />
+                                </Link>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </footer>

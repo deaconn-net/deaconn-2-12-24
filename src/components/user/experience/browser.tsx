@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { UserExperience } from "@prisma/client";
+import { type UserExperience } from "@prisma/client";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
@@ -24,7 +24,7 @@ const Browser: React.FC<{
     const { data, fetchNextPage } = api.user.getAllExperiences.useInfiniteQuery({
         limit: limit,
 
-        userId: userId ?? null,
+        userId: userId,
 
         sort: sort,
         sortDir: sortDir
@@ -33,7 +33,7 @@ const Browser: React.FC<{
     });
 
     const loadMore = () => {
-        fetchNextPage();
+        void fetchNextPage();
     }
 
     const items: UserExperience[] = [];
@@ -61,7 +61,7 @@ const Browser: React.FC<{
                         {items.map((experience: UserExperience) => {
                             return (
                                 <Row
-                                    key={"experience-" + experience.id}
+                                    key={"experience-" + experience.id.toString()}
                                     experience={experience}
                                 />
                             )

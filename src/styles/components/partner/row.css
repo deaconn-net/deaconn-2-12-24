@@ -1,0 +1,23 @@
+.partner-row {
+    @apply p-4;
+
+    @apply bg-cyan-900;
+    @apply hover:bg-cyan-800;
+
+    @apply flex;
+    @apply items-center;
+
+    @apply ring-4;
+    @apply ring-gray-800;
+    @apply hover:ring-gray-700;
+}
+
+.partner-row > img {
+    @apply w-full;
+    @apply h-16;
+}
+
+.partner-row > span {
+    @apply text-lg;
+    @apply text-white;
+}

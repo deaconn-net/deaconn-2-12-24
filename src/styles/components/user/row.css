@@ -1,0 +1,31 @@
+.user-row {
+    @apply text-white;
+
+    @apply bg-cyan-900;
+    @apply hover:bg-cyan-800;
+
+    @apply flex;
+    @apply items-center;
+    @apply gap-2;
+
+    @apply ring-4;
+    @apply ring-gray-800;
+    @apply hover:ring-gray-600;
+}
+
+/* Image */
+.user-row-image {
+    @apply w-16;
+    @apply h-16;
+}
+
+/* Username */
+.user-row-username {
+    @apply text-white;
+    @apply hover:text-white;
+}
+
+/* Title */
+.user-row-title {
+    @apply font-bold;
+}

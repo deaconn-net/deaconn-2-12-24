@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -101,7 +101,7 @@ export const requestRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             // Make sure we either own the request or are 
-            const res = await ctx.prisma.requestComment.upsert({
+            await ctx.prisma.requestComment.upsert({
                 where: {
                     id: input.id ?? 0
                 },
@@ -132,7 +132,7 @@ export const requestRouter = createTRPCRouter({
             if (!res.id) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to close request #" + input.id
+                    message: "Unable to close request #" + input.id.toString()
                 })
             }
         })

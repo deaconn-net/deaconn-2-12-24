@@ -14,7 +14,7 @@ const Row: React.FC<{
     skill,
     small = false
 }) => {
-    const editUrl = "/user/profile/skills?id=" + skill.id;
+    const editUrl = "/user/profile/skills?id=" + skill.id.toString();
 
     const deleteMut = api.user.deleteSkill.useMutation();
 
@@ -23,23 +23,23 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted skill ID #" + skill.id + "."}
+                    msg={"Successfully deleted skill ID #" + skill.id.toString() + "."}
                 />
             ) : (
                 <div className={"skill-row " + ((small) ? "skill-row-sm" : "skill-row-lg")}>
-                    <div className="">
-                        <h3 className="text-white text-2xl font-bold text-center">{skill.title}</h3>
+                    <div className="skill-row-title">
+                        <h3>{skill.title}</h3>
                     </div>
-                    <div className="pb-6">
+                    <div className="skill-row-description">
                         <ReactMarkdown
                             className="markdown"
                         >
                             {skill.desc ?? ""}
                         </ReactMarkdown>
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button button-secondary" href={editUrl}>Edit</Link>
-                        <Link className="w-full button button-delete" href="#" onClick={(e) => {
+                    <div className="skill-row-actions">
+                        <Link className="button button-primary" href={editUrl}>Edit</Link>
+                        <Link className="button button-danger" href="#" onClick={(e) => {
                             e.preventDefault();
 
                             const yes = confirm("Are you sure you want to delete this experience?");

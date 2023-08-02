@@ -8,7 +8,7 @@
     },
     "tasks": [
         {
-            "label": "Start Web Server",
+            "label": "startdev",
             "type": "shell",
             "command": "npm run dev"
         }

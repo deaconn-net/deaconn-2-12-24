@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { type Service, type UserExperience } from "@prisma/client";
+import { type UserExperience } from "@prisma/client";
 
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
@@ -14,7 +14,7 @@ const Row: React.FC<{
     experience,
     small = false
 }) => {
-    const editUrl = "/user/profile/experiences?id=" + experience.id;
+    const editUrl = "/user/profile/experiences?id=" + experience.id.toString();
 
     const deleteMut = api.user.deleteExperience.useMutation();
 
@@ -23,23 +23,23 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted experience ID #" + experience.id + "."}
+                    msg={"Successfully deleted experience ID #" + experience.id.toString() + "."}
                 />
             ) : (
                 <div className={"experience-row " + ((small) ? "experience-row-sm" : "experience-row-lg")}>
-                    <div className="">
-                        <h3 className="text-white text-2xl font-bold text-center">{experience.title}</h3>
+                    <div className="experience-row-title">
+                        <h3>{experience.title}</h3>
                     </div>
-                    <div className="pb-6">
+                    <div className="experience-row-description">
                         <ReactMarkdown
                             className="markdown"
                         >
                             {experience.desc ?? ""}
                         </ReactMarkdown>
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button button-secondary" href={editUrl}>Edit</Link>
-                        <Link className="w-full button button-delete" href="#" onClick={(e) => {
+                    <div className="experience-row-actions">
+                        <Link className="button button-primary" href={editUrl}>Edit</Link>
+                        <Link className="button button-danger" href="#" onClick={(e) => {
                             e.preventDefault();
 
                             const yes = confirm("Are you sure you want to delete this experience?");

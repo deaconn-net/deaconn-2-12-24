@@ -1,14 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { type Service } from "@prisma/client";
 
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
+import IconAndText from "@components/containers/icon_and_text";
 
 import ReactMarkdown from "react-markdown";
-import View from "@utils/icons/view";
-import Purchase from "@utils/icons/purchase";
-import Download from "@utils/icons/download";
+import ViewIcon from "@utils/icons/view";
+import PurchaseIcon from "@utils/icons/purchase";
+import DownloadIcon from "@utils/icons/download";
 
 const Row: React.FC<{
     service: Service,
@@ -18,10 +20,10 @@ const Row: React.FC<{
     small = false
 }) => {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const upload_url = process.env.NEXT_PUBLIC_UPLOAD_PRE_URL ?? "";
+    const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
     
     const viewUrl = "/service/view/" + service.url;
-    const editUrl = "/service/new?id=" + service.id;
+    const editUrl = "/service/new?id=" + service.id.toString();
 
     const banner = (service.banner) ? cdn + upload_url + service.banner : "/images/service/default.jpg";
 
@@ -32,72 +34,92 @@ const Row: React.FC<{
             {deleteMut.isSuccess ? (
                 <SuccessBox
                     title={"Successfully Deleted!"}
-                    msg={"Successfully deleted service ID #" + service.id + "."}
+                    msg={"Successfully deleted service ID #" + service.id.toString() + "."}
                 />
             ) : (
                 <div className={"service-row " + ((small) ? "service-row-sm" : "service-row-lg")}>
-                    <div className={"w-full " + ((small) ? "h-48" : "h-72")}>
-                        <img src={banner} className="w-full h-full max-h-full" />
+                    <div className="service-row-image">
+                        <Link href={viewUrl}>
+                            <Image
+                                src={banner}
+                                width={300}
+                                height={300}
+                                alt="Service Banner"
+                            />
+                        </Link>
                     </div>
-                    <div className="">
-                        <h3 className="text-white text-2xl font-bold text-center">{service.name}</h3>
+                    <div className="service-row-name">
+                        <h3>
+                            <Link href={viewUrl}>{service.name}</Link>
+                        </h3>
                     </div>
-                    <div className="pb-6 grow">
-                        <ReactMarkdown
-                            className="markdown"
-                        >
+                    <div className="service-row-description">
+                        <ReactMarkdown className="markdown">
                             {service.desc ?? ""}
                         </ReactMarkdown>
                     </div>
-                    <div className="pb-6 flex justify-center">
-                        <p className="text-xl text-green-300 font-bold italic">{(service.price > 0) ? "$" + service.price + "/m" : "Free"}</p>
+                    <div className="service-row-price">
+                        <p>{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>
                     </div>
-                    <div className="pb-6 flex justify-between text-white text-sm">
-                        <div className="flex flex-wrap items-center">
-                            <span>
-                                <View
+                    <div className="service-row-stats">
+                        <IconAndText
+                            icon={
+                                <ViewIcon
                                     classes={["w-6", "h-6", "fill-white"]}
                                 />
-                            </span>
-                            <span className="ml-1">{service.views}</span>
-                        </div>
-                        <div className="flex flex-wrap items-center">
-                            <span>
-                                <Download
+                            }
+                            text={<>{service.views}</>}
+                        />
+                        <IconAndText
+                            icon={
+                                <DownloadIcon
                                     classes={["w-6", "h-6", "fill-white"]}
                                 />
-                            </span>
-                            <span className="ml-1">{service.downloads}</span>
-                        </div>
-                        <div className="flex flex-wrap items-center">
-                            <span>
-                                <Purchase
+                            }
+                            text={<>{service.downloads}</>}
+                        />
+                        <IconAndText
+                            icon={
+                                <PurchaseIcon
                                     classes={["w-6", "h-6", "fill-white"]}
                                 />
-                            </span>
-                            <span className="ml-1">{service.purchases}</span>
-                        </div>
+                            }
+                            text={<>{service.purchases}</>}
+                        />
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button" href={viewUrl}>View</Link>
+                    <div className="service-row-links">
+                        <Link
+                            className="button"
+                            href={viewUrl}
+                        >View</Link>
                         {service.openSource && service.gitLink && (
-                            <a className="w-full button" target="_blank" href={service.gitLink}>Source Code</a>
+                            <Link
+                                className="button"
+                                target="_blank"
+                                href={service.gitLink}
+                            >Source Code</Link>
                         )}
                     </div>
-                    <div className="p-6 flex flex-wrap gap-2 justify-center">
-                        <Link className="w-full button button-secondary" href={editUrl}>Edit</Link>
-                        <Link className="w-full button button-delete" href="#" onClick={(e) => {
-                            e.preventDefault();
+                    <div className="service-row-actions">
+                        <Link
+                            className="button button-primary"
+                            href={editUrl}
+                        >Edit</Link>
+                        <Link
+                            className="button button-danger"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                            const yes = confirm("Are you sure you want to delete this service?");
+                                const yes = confirm("Are you sure you want to delete this service?");
 
-                            if (yes) {
-                                deleteMut.mutate({
-                                    id: service.id
-                                });
-                            }
-                        }}>Delete</Link>
-
+                                if (yes) {
+                                    deleteMut.mutate({
+                                        id: service.id
+                                    });
+                                }
+                            }}
+                        >Delete</Link>
                     </div>
                 </div>
             )}

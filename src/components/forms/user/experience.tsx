@@ -58,16 +58,22 @@ const Form: React.FC<{
     const [preview, setPreview] = useState(false);
 
     const submit_btn =
-        <div className="text-center">
-            <button type="submit" className="button">{experience ? "Save" : "Add"} Experience</button>
-            <button onClick={(e) => {
-                e.preventDefault();
+        <div className="flex gap-2 justify-center">
+            <button
+                type="submit"
+                className="button button-primary"
+            >{experience ? "Save" : "Add"} Experience</button>
+            <button
+                className="button button-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
 
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.
@@ -78,9 +84,9 @@ const Form: React.FC<{
             title: experience?.title ?? "",
             desc: experience?.desc ?? "",
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -112,35 +118,39 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Start Date</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
+                        <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
                     ) : (
                         <DatePicker
-                            className="form-input"
                             name="startDate"
+                            className="form-input"
                             selected={form.values.startDate}
-                            onChange={(date: Date) => form.setFieldValue('startDate', date)}
                             dateFormat="yyyy/MM/dd"
+                            onChange={(date: Date) => {
+                                void form.setFieldValue('startDate', date);
+                            }}
                         />
                     )}
                 </div>
                 <div className="form-div">
                     <label className="form-label">End Date</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
+                        <p className="italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
                     ) : (
                         <DatePicker
-                            className="form-input"
                             name="endDate"
+                            className="form-input"
                             selected={form.values.endDate}
-                            onChange={(date: Date) => form.setFieldValue('endDate', date)}
                             dateFormat="yyyy/MM/dd"
+                            onChange={(date: Date) => {
+                                void form.setFieldValue('endDate', date);
+                            }}
                         />
                     )}
                 </div>
                 <div className="form-div">
                     <label className="form-label">Title</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.title}</p>
+                        <p className="italic">{form.values.title}</p>
                     ) : (
                         <Field
                             name="title"
@@ -151,7 +161,9 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Details</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.desc}
+                        </ReactMarkdown>
                     ) : (
                         <Field
                             as="textarea"

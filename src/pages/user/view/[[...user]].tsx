@@ -1,6 +1,7 @@
-import { User } from "@prisma/client";
-import { GetServerSidePropsContext, NextPage } from "next";
+import { type User } from "@prisma/client";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 import Wrapper from "@components/wrapper";
 
@@ -22,8 +23,7 @@ const Page: NextPage<{
     user,
     view
 }) => {
-    
-    const baseUrl = "/user/view/" + ((user?.url) ? user?.url : user?.id);
+    const baseUrl = "/user/view/" + ((user?.url) ? user.url : "$" + (user?.id ?? ""));
 
     const birthday = (user?.birthday) ? dateFormat(user?.birthday, dateFormatTwo) : null;
 
@@ -35,7 +35,13 @@ const Page: NextPage<{
                         <div className="w-full sm:w-1/12">
                             <div className="pb-6 flex flex-col items-center justify-center">
                                 {user.image && (
-                                    <img src={user.image} className="w-20 h-20" />
+                                    <Image
+                                        className="w-20 h-20"
+                                        src={user.image}
+                                        width={50}
+                                        height={50}
+                                        alt="User Avatar"
+                                    />
                                 )}
                                 {user.title && (
                                     <p className="text-lg font-bold text-white">{user.title}</p>
@@ -63,9 +69,13 @@ const Page: NextPage<{
                         <div className="w-full sm:w-11/12">
                             {view == "general" && (
                                 <>
+                                    <h1>General</h1>
+                                    {!user.aboutMe && !user.showEmail && !birthday && (
+                                        <p>No general information to show.</p>
+                                    )}
                                     {user.aboutMe && (
                                         <div className="p-6">
-                                            <h3 className="content-title">About Me</h3>
+                                            <h3>About Me</h3>
                                             <ReactMarkdown
                                                 className="markdown"
                                             >{user.aboutMe}</ReactMarkdown>
@@ -73,13 +83,13 @@ const Page: NextPage<{
                                     )}
                                     {user.showEmail && user.email && (
                                         <div className="p-6">
-                                            <h3 className="content-title">Email</h3>
+                                            <h3>Email</h3>
                                             <p className="italic">{user.email}</p>
                                         </div>
                                     )}
                                     {birthday && (
                                         <div className="p-6">
-                                            <h3 className="content-title">Birthday</h3>
+                                            <h3>Birthday</h3>
                                             <p className="italic">{birthday}</p>
                                         </div>
                                     )}
@@ -87,7 +97,7 @@ const Page: NextPage<{
                             )}
                             {view == "experiences" && (
                                 <div className="p-6">
-                                    <h1 className="content-title">Experiences</h1>
+                                    <h1>Experiences</h1>
                                     <ExperienceBrowser
                                         userId={user.id}
                                     />
@@ -95,7 +105,7 @@ const Page: NextPage<{
                             )}
                             {view == "skills" && (
                                 <div className="p-6">
-                                    <h1 className="content-title">Skills</h1>
+                                    <h1>Skills</h1>
                                     <SkillBrowser
                                         userId={user.id}
                                     />
@@ -103,7 +113,7 @@ const Page: NextPage<{
                             )}
                             {view == "projects" && (
                                 <div className="p-6">
-                                    <h1 className="content-title">Projects</h1>
+                                    <h1>Projects</h1>
                                     <ProjectBrowser
                                         userId={user.id}
                                     />

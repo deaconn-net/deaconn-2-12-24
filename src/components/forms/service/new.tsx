@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Field, useFormik } from "formik";
 
+import { type Service } from "@prisma/client";
+
 import FormMain from "@components/forms/main";
 
 import { api } from "@utils/api";
@@ -9,10 +11,9 @@ import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
 import ReactMarkdown from "react-markdown";
-import { Service } from "@prisma/client";
 
 const Form: React.FC<{
-    service?: Service | null
+    service?: Service
 }> = ({
     service
 }) => {
@@ -63,16 +64,22 @@ const Form: React.FC<{
 
     // Submit button.
     const submit_btn =
-        <div className="text-center">
-            <button type="submit" className="p-6 text-white text-center bg-cyan-900 rounded">{service ? "Save Service" : "Add Service"}</button>
-            <button onClick={(e) => {
-                e.preventDefault();
+        <div className="flex gap-2 justify-center">
+            <button
+                type="submit"
+                className="button button-primary"
+            >{service ? "Save Service" : "Add Service"}</button>
+            <button
+                className="button button-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
 
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.
@@ -90,9 +97,9 @@ const Form: React.FC<{
             bannerRemove: false,
             iconRemove: false
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -133,8 +140,8 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Banner</label>
                     <input
-                        type="file"
                         name="banner"
+                        type="file"
                         className="form-input"
                         onChange={(e) => {
                             const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
@@ -150,25 +157,30 @@ const Form: React.FC<{
                             }
                         }}
                     />
-                    {preview ? (
+                    {service?.banner && (
                         <>
-                            <h2 className="text-white font-bold">Remove Banner</h2>
-                            <p className="text-white italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                        </>
-                    ) : (
-                        <>
-                            <Field
-                                name="bannerRemove"
-                                type="checkbox"
-                            /> <span className="text-white">Remove Banner</span>
+                            {preview ? (
+                                <>
+                                    <label>Remove Banner</label>
+                                    <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                                </>
+                            ) : (
+                                <>
+                                    <Field
+                                        name="bannerRemove"
+                                        type="checkbox"
+                                    /> <span>Remove Banner</span>
+                                </>
+                            )}  
                         </>
                     )}
+
                 </div>
                 <div className="form-div">
                     <label className="form-label">Icon</label>
                     <input
-                        type="file"
                         name="icon"
+                        type="file"
                         className="form-input"
                         onChange={(e) => {
                             const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
@@ -184,24 +196,29 @@ const Form: React.FC<{
                             }
                         }}
                     />
-                    {preview ? (
+                    {service?.icon && (
                         <>
-                            <h2 className="text-white font-bold">Remove Icon</h2>
-                            <p className="text-white italic">{form.values.iconRemove ? "Yes" : "No"}</p>
-                        </>
-                    ) : (
-                        <>
-                            <Field
-                                name="iconRemove"
-                                type="checkbox"
-                            /> <span className="text-white">Remove Icon</span>
+                            {preview ? (
+                                <>
+                                    <label>Remove Icon</label>
+                                    <p className="italic">{form.values.iconRemove ? "Yes" : "No"}</p>
+                                </>
+                            ) : (
+                                <>
+                                    <Field
+                                        name="iconRemove"
+                                        type="checkbox"
+                                    /> <span>Remove Icon</span>
+                                </>
+                            )}
                         </>
                     )}
+
                 </div>
                 <div className="form-div">
                     <label className="form-label">URL</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.url}</p>
+                        <p className="italic">{form.values.url}</p>
                     ) : (
                         <Field
                             name="url"
@@ -212,7 +229,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Name</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.name}</p>
+                        <p className="italic">{form.values.name}</p>
                     ) : (
                         <Field
                             name="name"
@@ -223,7 +240,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Price</label>
                     {preview ? (
-                        <p className="text-white">{form.values.price}</p>
+                        <p>{form.values.price}</p>
                     ) : (
                         <Field
                             name="price"
@@ -234,11 +251,13 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Description</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.desc}
+                        </ReactMarkdown>
                     ) : (
                         <Field
-                            as="textarea"
                             name="desc"
+                            as="textarea"
                             className="form-input"
                             rows="8"
                             cols="32"
@@ -248,11 +267,13 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Installation</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.install}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.install}
+                        </ReactMarkdown>
                     ) : (
                         <Field
-                            as="textarea"
                             name="install"
+                            as="textarea"
                             className="form-input"
                             rows="16"
                             cols="32"
@@ -262,11 +283,13 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Features</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.features}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.features}
+                        </ReactMarkdown>
                     ) : (
                         <Field
-                            as="textarea"
                             name="features"
+                            as="textarea"
                             className="form-input"
                             rows="16"
                             cols="32"
@@ -276,11 +299,13 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Details</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.content}</ReactMarkdown>
+                        <ReactMarkdown className="markdown  p-4 bg-gray-800">
+                            {form.values.content}
+                        </ReactMarkdown>
                     ) : (
                         <Field
-                            as="textarea"
                             name="content"
+                            as="textarea"
                             className="form-input"
                             rows="16"
                             cols="32"
@@ -290,7 +315,7 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Git Link</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.gitLink}</p>
+                        <p className="italic">{form.values.gitLink}</p>
                     ) : (
                         <Field
                             name="gitLink"
@@ -301,13 +326,13 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Open Source</label>
                     {preview ? (
-                        <p className="text-white italic">{(form.values.openSource) ? "Yes" : "No"}</p>
+                        <p className="italic">{(form.values.openSource) ? "Yes" : "No"}</p>
                     ) : (
                         <>
                             <Field
                                 name="openSource"
                                 type="checkbox"
-                            /> <span className="text-white">Yes</span>
+                            /> <span>Yes</span>
                         </>
                     )}
                 </div>

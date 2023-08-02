@@ -1,0 +1,44 @@
+.project-row {
+    @apply p-4;
+    @apply bg-cyan-900;
+    @apply w-full;
+    @apply rounded;
+    @apply border-gray-800;
+    @apply border-2;
+    @apply border-solid;
+    @apply flex;
+    @apply flex-col;
+}
+
+.project-row-sm {
+    @apply sm:w-[18rem];
+}
+
+.project-row-lg {
+    @apply sm:w-[24rem];
+}
+
+/* Name */
+/*
+.project-row-name {
+}
+*/
+
+/* Description */
+.project-row-description {
+    @apply pb-6;
+}
+
+/* Actions */
+.project-row-actions {
+    @apply p-6;
+    
+    @apply flex;
+    @apply flex-wrap;
+    @apply gap-2;
+    @apply justify-center;
+}
+
+.project-row-actions > a {
+    @apply w-full;
+}

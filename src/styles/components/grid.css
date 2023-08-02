@@ -1,0 +1,17 @@
+.grid-view {
+    @apply grid;
+    @apply grid-cols-[repeat(auto-fill,minmax(theme(width.full),1fr))];
+    @apply gap-8;
+}
+
+.grid-view-sm {
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
+}
+
+.grid-view-lg {
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(36rem,1fr))];
+}
+
+.grid-view-center {
+    @apply justify-items-center;
+}

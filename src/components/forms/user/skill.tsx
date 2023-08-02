@@ -58,16 +58,22 @@ const Form: React.FC<{
 
     // Submit button.
     const submit_btn =
-        <div className="text-center">
-            <button type="submit" className="button">{skill ? "Save" : "Add"} Skill</button>
-            <button onClick={(e) => {
-                e.preventDefault();
+        <div className="flex gap-2 justify-center">
+            <button
+                type="submit"
+                className="button button-primary"
+            >{skill ? "Save" : "Add"} Skill</button>
+            <button
+                className="button button-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
 
-                if (preview)
-                    setPreview(false);
-                else
-                    setPreview(true);
-            }} className="ml-4 p-6 text-white text-center bg-cyan-800 rounded">{preview ? "Preview Off" : "Preview On"}</button>
+                    if (preview)
+                        setPreview(false);
+                    else
+                        setPreview(true);
+                }}
+            >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
     // Setup form.
@@ -76,9 +82,9 @@ const Form: React.FC<{
             title: skill?.title ?? "",
             desc: skill?.desc ?? "",
         },
-        enableReinitialize: true,
+        enableReinitialize: false,
 
-        onSubmit: async (values) => {
+        onSubmit: (values) => {
             // Reset error and success.
             setErrTitle(undefined);
             setSucTitle(undefined);
@@ -108,17 +114,28 @@ const Form: React.FC<{
                 <div className="form-div">
                     <label className="form-label">Title</label>
                     {preview ? (
-                        <p className="text-white italic">{form.values.title}</p>
+                        <p className="italic">{form.values.title}</p>
                     ) : (
-                        <Field name="title" className="form-input" />
+                        <Field
+                            name="title"
+                            className="form-input"
+                        />
                     )}
                 </div>
                 <div className="form-div">
                     <label className="form-label">Details</label>
                     {preview ? (
-                        <ReactMarkdown className="markdown text-white">{form.values.desc}</ReactMarkdown>
+                        <ReactMarkdown className="markdown p-4 bg-gray-800">
+                            {form.values.desc}
+                        </ReactMarkdown>
                     ) : (
-                        <Field as="textarea" rows="16" cols="32" name="desc" className="form-input" />
+                        <Field
+                            name="desc"
+                            className="form-input"
+                            as="textarea"
+                            rows="16"
+                            cols="32"
+                        />
                     )}
                 </div>
             </FormMain>

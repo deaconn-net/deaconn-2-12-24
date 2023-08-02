@@ -1,5 +1,6 @@
 /** @type {import("eslint").Linter.Config} */
 const config = {
+    /*
   overrides: [
     {
       extends: [
@@ -11,6 +12,7 @@ const config = {
       },
     },
   ],
+    */
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "./tsconfig.json",

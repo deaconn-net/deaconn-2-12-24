@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Link from "next/link";
 
-import { Service } from "@prisma/client";
+import { type Service } from "@prisma/client";
 
 import ServiceRow from "@components/service/row";
 import Wrapper from "@components/wrapper";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
+import AddIcon from "@utils/icons/add";
+import IconAndText from "@components/containers/icon_and_text";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -17,7 +19,7 @@ const Page: NextPage = () => {
     const [mostPopular, setMostPopular] = useState(false);
 
     let sort = "id";
-    let sortDir = "desc";
+    const sortDir = "desc";
 
     if (mostPopular)
         sort = "views";
@@ -36,7 +38,7 @@ const Page: NextPage = () => {
     });
 
     const loadMore = () => {
-        fetchNextPage();
+        void fetchNextPage();
     }
 
     const items: Service[] = [];
@@ -53,19 +55,33 @@ const Page: NextPage = () => {
     return (
         <Wrapper>
             <div className="content">
-                <h1 className="content-title">Services</h1>
+                <h1>Services</h1>
                 <div className="p-6 flex justify-between">
-                    <Link href="#" className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")} onClick={(e) => {
-                        e.preventDefault();
+                    <Link
+                        className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
+                        href="#" 
+                        onClick={(e) => {
+                            e.preventDefault();
 
-                        if (mostPopular)
-                            setMostPopular(false);
-                        else
-                            setMostPopular(true);
-                    }}>Most Popular</Link>
-                    <Link href="/service/new" className="button button-secondary flex">
-                        <span><svg className="w-6 h-6 fill-none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path opacity="0.1" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" className="fill-white" /><path d="M9 12H15" className="stroke-white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 9L12 15" className="stroke-white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" className="stroke-white" strokeWidth="2" /></svg></span>
-                        <span className="ml-2">New Service</span>
+                            if (mostPopular)
+                                setMostPopular(false);
+                            else
+                                setMostPopular(true);
+                        }}
+                    >Most Popular</Link>
+                    <Link
+                        className="button button-primary flex"
+                        href="/service/new"
+                    >
+                        <IconAndText
+                            icon={
+                                <AddIcon 
+                                    classes={["w-6", "h-6", "fill-none"]}
+                                />
+                            }
+                            text={<>New Service</>}
+                            inline={true}
+                        />
                     </Link>
                 </div>
                 <InfiniteScroll
@@ -81,7 +97,7 @@ const Page: NextPage = () => {
                                 {items.map((service: Service) => {
                                     return (
                                         <ServiceRow
-                                            key={"service-" + service.id}
+                                            key={"service-" + service.id.toString()}
                                             service={service}
                                         />
                                     )

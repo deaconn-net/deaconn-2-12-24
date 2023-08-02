@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { type NextPage } from "next";
 
 import Wrapper from "@components/wrapper";
 
@@ -6,7 +6,7 @@ const Page: NextPage = () => {
     return (
         <Wrapper>
             <div className="content">
-                <p className="text-white">Service View</p>
+                <p>Service View</p>
             </div>
         </Wrapper>
     );

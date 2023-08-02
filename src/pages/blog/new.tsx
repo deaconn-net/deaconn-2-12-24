@@ -1,9 +1,9 @@
-import { GetServerSidePropsContext, NextPage } from "next";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import Form from '@components/forms/article/new';
 import Wrapper from "@components/wrapper";
 import { prisma } from "@server/db";
-import { Article } from "@prisma/client";
+import { type Article } from "@prisma/client";
 
 const Page: NextPage<{
     article: Article | null
@@ -13,9 +13,9 @@ const Page: NextPage<{
     return (
         <Wrapper>
             <div className="content">
-                <h1 className="text-3xl text-white font-bold italic">Create Article</h1>
+                <h1>Create Article</h1>
                 <Form
-                    article={article}
+                    article={article ?? undefined}
                 />
             </div>
         </Wrapper>
@@ -45,7 +45,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     return {
         props: {
-            article: JSON.parse(JSON.stringify(article, (_, v) => typeof v === "bigint" ? v.toString() : v))
+            article: JSON.parse(JSON.stringify(article))
         }
     }
 }

@@ -4,7 +4,7 @@ const NotFound: React.FC<{
     item = "User"
 }) => {
     return (
-        <div>
+        <div className="error error-not-found">
             <p>{item} not found. Please check the URL.</p>
         </div>
     );

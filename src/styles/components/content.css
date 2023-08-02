@@ -1,0 +1,20 @@
+.content {
+    @apply container;
+    @apply mx-auto;
+    @apply py-16;
+}
+
+.content-item {
+    @apply w-full;
+    @apply p-4;
+}
+
+.content-col-large {
+    @apply w-full;
+    @apply sm:w-2/3;
+}
+
+.content-col-small {
+    @apply w-full;
+    @apply sm:w-1/3;
+}

@@ -7,7 +7,7 @@ export const UserLink: React.FC<{
 }> = ({
     user
 }) => {
-    const link = "/user/view/" + ((user.url) ? user.url : user.id);
+    const link = "/user/view/" + ((user.url) ? user.url : "$" + user.id);
 
     return (
         <Link href={link}>

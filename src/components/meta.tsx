@@ -32,7 +32,7 @@ const Meta: React.FC<MetaType> = ({
     article_tags
 }) => {
     // Check if we must prepend CDN URL.
-    if (process.env.NEXT_PUBLIC_CDN_URL)
+    if (process.env.NEXT_PUBLIC_CDN_URL && image)
         image = process.env.NEXT_PUBLIC_CDN_URL + image;
 
     // Retrieve URLs.

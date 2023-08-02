@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext, NextPage } from "next";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type Service } from "@prisma/client";
 
@@ -14,9 +14,9 @@ const Page: NextPage<{
     return (
         <Wrapper>
             <div className="content">
-                <h1 className="text-3xl text-white font-bold italic">Create Service</h1>
+                <h1>Create Service</h1>
                 <Form
-                    service={service}
+                    service={service ?? undefined}
                 />
             </div>
         </Wrapper>

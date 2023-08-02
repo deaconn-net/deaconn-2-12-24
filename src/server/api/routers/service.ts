@@ -125,7 +125,7 @@ export const serviceRouter = createTRPCRouter({
                     if (!success || !full_path) {
                         throw new TRPCError({
                             code: "PARSE_ERROR",
-                            message: `Failed to upload banner for service #${service.id}. Error => ${err}.`
+                            message: `Failed to upload banner for service #${service.id.toString()}. Error => ${err ? err : ""}.`
                         });
                     }
 
@@ -142,7 +142,7 @@ export const serviceRouter = createTRPCRouter({
                     if (!success || !full_path) {
                         throw new TRPCError({
                             code: "PARSE_ERROR",
-                            message: `Failed to upload banner for service #${service.id}. Error => ${err}.`
+                            message: `Failed to upload banner for service #${service.id.toString()}. Error => ${err ? err : ""}.`
                         });
                     }
 
@@ -186,7 +186,7 @@ export const serviceRouter = createTRPCRouter({
             if (!res) {
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete service. Service ID #" + input.id + " likely not found."
+                    message: "Unable to delete service. Service ID #" + input.id.toString() + " likely not found."
                 });
             }
         })

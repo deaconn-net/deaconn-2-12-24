@@ -24,7 +24,7 @@ export const upload_file = (
     contents: string,
     allowed_types?: string | string[],
     no_append_file_type?: boolean,
-    no_prepend_upload_url?: boolean
+    prepend_upload_url?: boolean
 ): [boolean, string | null, string | null] => {
     // Split by comma if there is any.
     contents = contents.split(",")?.[1] ?? contents;
@@ -63,7 +63,7 @@ export const upload_file = (
     let full_path = path;
 
     // Check if we need to prepend upload URL.
-    if (!no_prepend_upload_url)
+    if (prepend_upload_url)
         full_path = (process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "") + path;
 
     return [true, null, full_path];

@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext, NextPage } from "next";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type Request } from "@prisma/client";
 
@@ -15,9 +15,9 @@ const Page: NextPage<{
     return (
         <Wrapper>
             <div className="content">
-                <h1 className="text-3xl text-white font-bold italic">Create Request</h1>
+                <h1>Create Request</h1>
                 <Form
-                    request={request}
+                    request={request ?? undefined}
                 />
             </div>
         </Wrapper>
