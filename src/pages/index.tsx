@@ -44,25 +44,29 @@ const Page: NextPage<{
                     <div className="content-col-small">
                         <div className="content-item">
                             <h1>Our Team</h1>
-                            {team.map((user) => {
-                                return (
-                                    <UserRow
-                                        key={"team-" + user.id}
-                                        user={user}
-                                    />
-                                );
-                            })}
+                            <div className="py-6">
+                                {team.map((user) => {
+                                    return (
+                                        <UserRow
+                                            key={"team-" + user.id}
+                                            user={user}
+                                        />
+                                    );
+                                })}
+                            </div>
                         </div>
                         <div className="content-item">
                             <h1>Partners</h1>
-                            {partners.map((partner) => {
-                                return (
-                                    <PartnerRow
-                                        key={"partner-" + partner.id.toString()}
-                                        partner={partner}
-                                    />
-                                );
-                            })}
+                            <div className="py-6">
+                                {partners.map((partner) => {
+                                    return (
+                                        <PartnerRow
+                                            key={"partner-" + partner.id.toString()}
+                                            partner={partner}
+                                        />
+                                    );
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>
