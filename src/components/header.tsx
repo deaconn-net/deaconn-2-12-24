@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import HomeIcon from "@utils/icons/header/home";
 import ServicesIcon from "@utils/icons/header/services";
@@ -12,11 +13,15 @@ import SignInIcon from "@utils/icons/header/signinicon";
 const Header: React.FC = () => {
     const { data: session } = useSession();
 
+    const router = useRouter();
+
+    const location = router.pathname;
+
     return (
         <header>
             <nav>
                 <ul className="nav-section">
-                    <Link className="nav-link" href="/">
+                    <Link className={`nav-link ${location == "/" ? "nav-active" : ""}`} href="/">
                         <li className="nav-item">
                             <HomeIcon
                                 classes={["w-10", "h-10", "fill-white", "stroke-gray-700"]}
@@ -24,7 +29,7 @@ const Header: React.FC = () => {
                             <span className="nav-text">Home</span>
                         </li>
                     </Link>
-                    <Link className="nav-link" href="/service">
+                    <Link className={`nav-link ${location.includes("/service") ? "nav-active" : ""}`} href="/service">
                         <li className="nav-item">
                             <ServicesIcon
                                 classes={["w-10", "h-10", "fill-white", "text-white"]}
@@ -32,7 +37,7 @@ const Header: React.FC = () => {
                             <span className="nav-text">Services</span>
                         </li>
                     </Link>
-                    <Link className="nav-link" href="/blog">
+                    <Link className={`nav-link ${location.includes("/blog") ? "nav-active" : ""}`} href="/blog">
                         <li className="nav-item">
                             <BlogIcon
                                 classes={["w-10", "h-10", "fill-white"]}
@@ -40,7 +45,7 @@ const Header: React.FC = () => {
                             <span className="nav-text">Blog</span>
                         </li>
                     </Link>
-                    <Link className="nav-link" href="/about">
+                    <Link className={`nav-link ${location == "/about" ? "nav-active" : ""}`} href="/about">
                         <li className="nav-item">
                             <AboutUsIcon
                                 classes={["w-10", "h-10", "fill-white"]}
