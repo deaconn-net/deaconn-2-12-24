@@ -14,6 +14,12 @@ import Meta from "@components/meta";
 import { prisma } from "@server/db";
 
 import { dateFormat, dateFormatTwo } from "@utils/date";
+import TwitterIcon from "@utils/icons/social/twitter";
+import GithubIcon from "@utils/icons/social/github";
+import FacebookIcon from "@utils/icons/social/facebook";
+import LinkedinIcon from "@utils/icons/social/linkedin";
+import { FormatSocialUrl } from "@utils/social";
+import WebsiteIcon from "@utils/icons/social/website";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
@@ -53,6 +59,60 @@ const Page: NextPage<{
                                     )}
                                     {user.name && (
                                         <p>{user.name}</p>
+                                    )}
+                                    {(user.website || user.socialTwitter || user.socialGithub || user.socialLinkedin || user.socialFacebook) && (
+                                        <div className="flex flex-wrap gap-2 items-center">
+                                            {user.website && (
+                                                <Link
+                                                    href={FormatSocialUrl(user.website, "website")}
+                                                    target="_blank"
+                                                >
+                                                    <WebsiteIcon
+                                                        classes={["w-6", "h-6", "stroke-gray-400", "hover:stroke-white"]}
+                                                    />
+                                                </Link>
+                                            )}
+                                            {user.socialTwitter && (
+                                                <Link
+                                                    href={FormatSocialUrl(user.socialTwitter, "twitter")}
+                                                    target="_blank"
+                                                >
+                                                    <TwitterIcon
+                                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                                    />
+                                                </Link>
+                                            )}
+                                            {user.socialGithub && (
+                                                <Link
+                                                    href={FormatSocialUrl(user.socialGithub, "github")}
+                                                    target="_blank"
+                                                >
+                                                    <GithubIcon
+                                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                                    />
+                                                </Link>
+                                            )}
+                                            {user.socialLinkedin && (
+                                                <Link
+                                                    href={FormatSocialUrl(user.socialLinkedin, "linkedin")}
+                                                    target="_blank"
+                                                >
+                                                    <LinkedinIcon
+                                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                                    />
+                                                </Link>
+                                            )}
+                                            {user.socialFacebook && (
+                                                <Link
+                                                    href={FormatSocialUrl(user.socialFacebook, "facebook")}
+                                                    target="_blank"
+                                                >
+                                                    <FacebookIcon
+                                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                                    />
+                                                </Link>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                                 <ul className="tab-container w-64">
