@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { type Partner } from "@prisma/client";
 
@@ -12,7 +13,10 @@ const Row: React.FC<{
     const banner = cdn + upload_url + (partner?.banner ?? "");
 
     return (
-        <a href={partner.url} target="_blank">
+        <Link
+            href={`https://${partner.url}`}
+            target="_blank"
+        >
             <div className="partner-row">
                 {partner.banner ? (
                     <Image
@@ -25,7 +29,7 @@ const Row: React.FC<{
                     <span>{partner.name}</span>
                 )}
             </div>
-        </a>
+        </Link>
     );
 }
 

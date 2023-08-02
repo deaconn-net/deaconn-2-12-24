@@ -22,9 +22,11 @@
 
 .footer-list {
     @apply list-none;
+    @apply flex;
+    @apply flex-col;
+    @apply gap-3;
 }
 
 .footer-link {
-    @apply py-2;
     @apply text-sm;
 }
