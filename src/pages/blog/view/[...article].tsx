@@ -102,7 +102,21 @@ const Page: NextPage<{
                                         <Link
                                             href={editUrl}
                                             className="button button-primary"
-                                        ></Link>
+                                        >Edit</Link>
+                                        <button
+                                            className="button button-danger"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+
+                                                const yes = confirm("Are you sure you want to delete this article?");
+
+                                                if (yes) {
+                                                    deleteMut.mutate({
+                                                        id: article.id
+                                                    });
+                                                }
+                                            }}
+                                        >Delete</button>
                                     </div>
                                 )}
                             </div>
