@@ -94,27 +94,27 @@ const Meta: React.FC<MetaType> = ({
             {web_type == "article" && (
                 <>
                     {article_ptime && (
-                        <meta key="meta_apt" property="article:published_time" content={article_ptime} />
+                        <meta property="article:published_time" content={article_ptime} />
                     )}
 
                     {article_mtime && (
-                        <meta key="meta_amt" property="article:modified_time" content={article_mtime} />
+                        <meta property="article:modified_time" content={article_mtime} />
                     )}
 
                     {article_etime && (
-                        <meta key="meta_aet" property="article:expiration_time" content={article_etime} />
+                        <meta property="article:expiration_time" content={article_etime} />
                     )}
 
                     {article_author && (
-                        <meta key="meta_aa" property="article:author" content={article_author} />
+                        <meta property="article:author" content={article_author} />
                     )}
 
                     {article_section && (
-                        <meta key="meta_as" property="article:section" content={article_section} />
+                        <meta property="article:section" content={article_section} />
                     )}
 
                     {article_tags && (
-                        <meta key="meta_t" property="article:tag" content={article_tags.join(",")} />
+                        <meta property="article:tag" content={article_tags.join(",")} />
                     )}
                 </>
             )}
