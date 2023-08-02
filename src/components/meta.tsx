@@ -13,28 +13,28 @@ export type MetaType = {
     article_etime?: string
     article_author?: string
     article_section?: string
-    article_tags?: string[]
+    article_tags?: string[],
+
+    include_cdn?: boolean
 };
 
 const Meta: React.FC<MetaType> = ({
-    title,
-    description,
-    robots,
-    image,
-    web_type,
-    key_words,
+    title = "Deaconn",
+    description = "A software developer and community with the goal to bring together and empower as many software, security, and network engineers and developers as possible.",
+    robots = "index, follow",
+    image = "/images/banner.png",
+    web_type = "website",
+    key_words = ["deaconn", "coding", "developer", "security", "network","tech", "cyber", "programming", "service", "tutorial"],
     
     article_ptime,
     article_mtime,
     article_etime,
     article_author,
     article_section,
-    article_tags
+    article_tags,
+    
+    include_cdn
 }) => {
-    // Check if we must prepend CDN URL.
-    if (process.env.NEXT_PUBLIC_CDN_URL && image)
-        image = process.env.NEXT_PUBLIC_CDN_URL + image;
-
     // Retrieve URLs.
     let base_url;
     let full_url;
@@ -42,6 +42,19 @@ const Meta: React.FC<MetaType> = ({
     if (typeof window !== "undefined") {
         base_url = window.location.protocol + "//" + window.location.host;
         full_url = base_url + window.location.pathname;
+    }
+
+    // Check if we must prepend CDN URL or use full URL instead.
+    if (process.env.NEXT_PUBLIC_CDN_URL && image && include_cdn)
+        image = process.env.NEXT_PUBLIC_CDN_URL + image;
+    else if (full_url) {
+        const partOne = window.location.protocol + "//";
+        let partTwo = window.location.host + image;
+
+        // Make sure we replace duplicate slashes in part two.
+        partTwo = partTwo.replaceAll("//", "/");
+
+        image = partOne + partTwo;
     }
 
     return (

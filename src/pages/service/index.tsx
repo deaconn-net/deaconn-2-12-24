@@ -6,13 +6,15 @@ import { type Service } from "@prisma/client";
 
 import ServiceRow from "@components/service/row";
 import Wrapper from "@components/wrapper";
+import IconAndText from "@components/containers/icon_and_text";
+import Meta from "@components/meta";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
 import AddIcon from "@utils/icons/add";
-import IconAndText from "@components/containers/icon_and_text";
 
 import InfiniteScroll from "react-infinite-scroller";
+
 
 const Page: NextPage = () => {
     // Filters
@@ -53,61 +55,67 @@ const Page: NextPage = () => {
     }
 
     return (
-        <Wrapper>
-            <div className="content">
-                <h1>Services</h1>
-                <div className="p-6 flex justify-between">
-                    <Link
-                        className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
-                        href="#" 
-                        onClick={(e) => {
-                            e.preventDefault();
+        <>
+            <Meta
+                title="Services - Deaconn"
+                description="Find services offered by Deaconn ranging from bots to network firewalls!"
+            />
+            <Wrapper>
+                <div className="content">
+                    <h1>Services</h1>
+                    <div className="p-6 flex justify-between">
+                        <Link
+                            className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
+                            href="#" 
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                            if (mostPopular)
-                                setMostPopular(false);
-                            else
-                                setMostPopular(true);
-                        }}
-                    >Most Popular</Link>
-                    <Link
-                        className="button button-primary flex"
-                        href="/service/new"
+                                if (mostPopular)
+                                    setMostPopular(false);
+                                else
+                                    setMostPopular(true);
+                            }}
+                        >Most Popular</Link>
+                        <Link
+                            className="button button-primary flex"
+                            href="/service/new"
+                        >
+                            <IconAndText
+                                icon={
+                                    <AddIcon 
+                                        classes={["w-6", "h-6", "fill-none"]}
+                                    />
+                                }
+                                text={<>New Service</>}
+                                inline={true}
+                            />
+                        </Link>
+                    </div>
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={loadMore}
+                        loader={<Loader key={"loader"} />}
+                        hasMore={requireItems}
+                        className={"grid-view grid-view-center grid-view-lg"}
                     >
-                        <IconAndText
-                            icon={
-                                <AddIcon 
-                                    classes={["w-6", "h-6", "fill-none"]}
-                                />
-                            }
-                            text={<>New Service</>}
-                            inline={true}
-                        />
-                    </Link>
+                        <>
+                            {data && (
+                                <>
+                                    {items.map((service: Service) => {
+                                        return (
+                                            <ServiceRow
+                                                key={"service-" + service.id.toString()}
+                                                service={service}
+                                            />
+                                        )
+                                    })}
+                                </>
+                            )}
+                        </>
+                    </InfiniteScroll>
                 </div>
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={loadMore}
-                    loader={<Loader key={"loader"} />}
-                    hasMore={requireItems}
-                    className={"grid-view grid-view-center grid-view-lg"}
-                >
-                    <>
-                        {data && (
-                            <>
-                                {items.map((service: Service) => {
-                                    return (
-                                        <ServiceRow
-                                            key={"service-" + service.id.toString()}
-                                            service={service}
-                                        />
-                                    )
-                                })}
-                            </>
-                        )}
-                    </>
-                </InfiniteScroll>
-            </div>
-        </Wrapper>
+            </Wrapper>
+        </>
     );
 }
 

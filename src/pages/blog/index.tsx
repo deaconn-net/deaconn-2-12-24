@@ -6,13 +6,13 @@ import Link from "next/link";
 import Wrapper from "@components/wrapper";
 import ArticleRow from "@components/blog/article/row";
 import Meta from "@components/meta";
+import IconAndText from "@components/containers/icon_and_text";
 
 import { type Article } from "@prisma/client";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
 import AddIcon from "@utils/icons/add";
-import IconAndText from "@components/containers/icon_and_text";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -61,79 +61,85 @@ const Page: NextPage = () => {
     }
 
     return (
-        <Wrapper>
+        <>
             <Meta
                 title="Blog - Deaconn"
+                description="Deaconn's blog includes artiles on technology, programming, security, networking, and more!"
             />
-            <div className="content">
-                <h1>Blog</h1>
-                <div className="p-6 flex flex-wrap justify-between">
-                    <div className="flex flex-wrap gap-2">
-                        <Link
-                            className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
+            <Wrapper>
+                <Meta
+                    title="Blog - Deaconn"
+                />
+                <div className="content">
+                    <h1>Blog</h1>
+                    <div className="p-6 flex flex-wrap justify-between">
+                        <div className="flex flex-wrap gap-2">
+                            <Link
+                                className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-                                if (mostPopular)
-                                    setMostPopular(false);
-                                else
-                                    setMostPopular(true);
-                            }}
-                        >Most Popular</Link>
-                        <Link
-                            className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
+                                    if (mostPopular)
+                                        setMostPopular(false);
+                                    else
+                                        setMostPopular(true);
+                                }}
+                            >Most Popular</Link>
+                            <Link
+                                className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-                                if (oldest)
-                                    setOldest(false);
-                                else
-                                    setOldest(true);
-                            }}
-                        >Oldest</Link>
+                                    if (oldest)
+                                        setOldest(false);
+                                    else
+                                        setOldest(true);
+                                }}
+                            >Oldest</Link>
+                        </div>
+                        <Link
+                            className="button button-primary flex"
+                            href="/blog/new"
+                        >
+                            <IconAndText
+                                icon={
+                                    <AddIcon 
+                                        classes={["w-6", "h-6", "fill-none"]}
+                                    />
+                                }
+                                text={<>New Article</>}
+                                inline={true}
+                            />
+                        </Link>
                     </div>
-                    <Link
-                        className="button button-primary flex"
-                        href="/blog/new"
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={loadMore}
+                        loader={<Loader key={"loader"} />}
+                        hasMore={requireItems}
+                        className={"grid-view grid-view-center grid-view-lg"}
                     >
-                        <IconAndText
-                            icon={
-                                <AddIcon 
-                                    classes={["w-6", "h-6", "fill-none"]}
-                                />
-                            }
-                            text={<>New Article</>}
-                            inline={true}
-                        />
-                    </Link>
+                        <>
+                            {data && (
+                                <>
+                                    {items.map((article: Article) => {
+                                        return (
+                                            <ArticleRow
+                                                key={"article-" + article.id.toString()}
+                                                article={article}
+                                            />
+                                        )
+                                    })}
+                                </>
+                            )}
+                        </>
+                    </InfiniteScroll>
                 </div>
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={loadMore}
-                    loader={<Loader key={"loader"} />}
-                    hasMore={requireItems}
-                    className={"grid-view grid-view-center grid-view-lg"}
-                >
-                    <>
-                        {data && (
-                            <>
-                                {items.map((article: Article) => {
-                                    return (
-                                        <ArticleRow
-                                            key={"article-" + article.id.toString()}
-                                            article={article}
-                                        />
-                                    )
-                                })}
-                            </>
-                        )}
-                    </>
-                </InfiniteScroll>
-            </div>
-        </Wrapper>
-    )
+            </Wrapper>
+        </>
+    );
 }
 
 export default Page;

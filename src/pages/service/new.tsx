@@ -4,6 +4,8 @@ import { type Service } from "@prisma/client";
 
 import Form from '@components/forms/service/new';
 import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
+
 import { prisma } from "@server/db";
 
 const Page: NextPage<{
@@ -12,14 +14,19 @@ const Page: NextPage<{
     service
 }) => {
     return (
-        <Wrapper>
-            <div className="content">
-                <h1>Create Service</h1>
-                <Form
-                    service={service ?? undefined}
-                />
-            </div>
-        </Wrapper>
+        <>
+            <Meta
+                title="New Service - Services - Deaconn"
+            />
+            <Wrapper>
+                <div className="content">
+                    <h1>Create Service</h1>
+                    <Form
+                        service={service ?? undefined}
+                    />
+                </div>
+            </Wrapper>
+        </>
     );
 }
 

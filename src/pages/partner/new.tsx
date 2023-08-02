@@ -4,6 +4,8 @@ import { type Partner } from "@prisma/client";
 
 import Form from '@components/forms/partner/new';
 import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
+
 import { prisma } from "@server/db";
 
 const Page: NextPage<{
@@ -12,14 +14,20 @@ const Page: NextPage<{
     partner
 }) => {
     return (
-        <Wrapper>
-            <div className="content">
-                <h1>Create Partner</h1>
-                <Form
-                    partner={partner ?? undefined}
-                />
-            </div>
-        </Wrapper>
+        <>
+            <Meta
+                title="New Partner - Partners - Deaconn"
+                robots="noindex"
+            />
+            <Wrapper>
+                <div className="content">
+                    <h1>Create Partner</h1>
+                    <Form
+                        partner={partner ?? undefined}
+                    />
+                </div>
+            </Wrapper>
+        </>
     );
 }
 
