@@ -101,4 +101,5 @@
     @import "components/markdown.css";
     @import "components/error.css";
     @import "components/containers.css";
+    @import "components/tabs.css";
 }
