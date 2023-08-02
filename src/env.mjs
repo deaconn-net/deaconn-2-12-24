@@ -24,7 +24,9 @@ const server = z.object({
   UPLOADS_DIR: z.string().default("/uploads"),
   NEXT_PUBLIC_UPLOADS_PRE_URL: z.string().default(""),
   NEXT_PUBLIC_CDN_URL: z.string().default(""),
-  ROOT_API: z.string().optional()
+  ROOT_API: z.string().optional(),
+  NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: z.string().default("/images/blog/default.jpg"),
+  NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: z.string().default("/images/service/default.png")
 });
 
 /**
@@ -51,7 +53,9 @@ const processEnv = {
   UPLOADS_DIR: process.env.UPLOADS_DIR,
   NEXT_PUBLIC_UPLOADS_PRE_URL: process.env.NEXT_PUBLIC_UPLOADS_PRE_URL,
   NEXT_PUBLIC_CDN_URL: process.env.CDN_URL,
-  ROOT_API: process.env.ROOT_API
+  ROOT_API: process.env.ROOT_API,
+  NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
+  NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
