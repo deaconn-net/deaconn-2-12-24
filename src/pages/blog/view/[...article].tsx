@@ -1,5 +1,7 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 import { type Article, type User } from "@prisma/client";
 
@@ -10,7 +12,10 @@ import Wrapper from "@components/wrapper";
 import NotFound from "@components/errors/not_found";
 import Meta from "@components/meta";
 
+import { api } from "@utils/api";
 import { dateFormat, dateFormatOne } from "@utils/date";
+import SuccessBox from "@utils/success";
+import { has_role } from "@utils/user/auth";
 
 import ReactMarkdown from "react-markdown";
 
@@ -19,12 +24,23 @@ type ArticleType = Article & {
 };
 
 const Page: NextPage<{
-    article: ArticleType | null
+    article: ArticleType | null,
+    createdAtDate: string | null,
+    updatedAtDate: string | null
 }> = ({
-    article
+    article,
+    createdAtDate,
+    updatedAtDate
 }) => {
+    // Retrieve session.
+    const { data: session } = useSession();
+
+    // Environmental variables.
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
+
+    // Compile links.
+    const editUrl = "/blog/new?id=" + (article?.id?.toString() ?? "");
 
     // Retrieve banner.
     let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE ?? "");
@@ -33,27 +49,28 @@ const Page: NextPage<{
         banner = cdn + uploadUrl + article.banner;
     }
 
-    let createdAt: string | null = null;
-    let updatedAt: string | null = null;
-
-    if (article) {
-        createdAt = dateFormat(article.createdAt, dateFormatOne);
-        updatedAt = dateFormat(article.updatedAt, dateFormatOne);
-    }
+    // Prepare delete mutation.
+    const deleteMut = api.blog.delete.useMutation();
 
     return (
         <>
             <Meta
                 title={`${article?.title ?? "Not Found!"} - Blog - Deaconn`}
-                description={`${article?.desc ?? ""}`}
+                description={`${article?.desc ?? "Article not found."}`}
             />
             <Wrapper>
                 <div className="content">
+                    {deleteMut.isSuccess && (
+                        <SuccessBox
+                            title="Successfully Deleted Article!"
+                            msg={`Deleted article ${article?.title}. Please reload the page.`}
+                        />
+                    )}
                     {article ? (
-                        <>
+                        <div className="flex flex-col gap-4">
                             <div className="w-full flex justify-center">
                                 <Image
-                                    className="w-[67.5rem] h-[33.75rem] max-h-full border-2 border-solid border-cyan-900 rounded-t"
+                                    className="max-h-[32rem] max-w-full min-h-[32rem]"
                                     src={banner}
                                     width={500}
                                     height={500}
@@ -61,24 +78,35 @@ const Page: NextPage<{
                                 />
                             </div>
                             <h1>{article.title}</h1>
-                            <div className="w-full bg-cyan-900 p-6 rounded-sm">
-                                <div className="text-white text-sm italic pb-4">
-                                    {article.user && (
-                                        <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
-                                    )}
-                                    {createdAt && (
-                                        <p>Created On <span className="font-bold">{createdAt}</span></p>
-                                    )}
-                                    {updatedAt && (
-                                        <p>Updated On <span className="font-bold">{updatedAt}</span></p>
-                                    )}
-
+                            <div className="w-full bg-gray-800 p-6 rounded-sm flex flex-col gap-4">
+                                <div className="flex justify-between text-white text-sm">
+                                    <div>
+                                        {article.user && (
+                                            <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        {createdAtDate && (
+                                            <p>Created On <span className="font-bold">{createdAtDate}</span></p>
+                                        )}
+                                        {updatedAtDate && (
+                                            <p>Updated On <span className="font-bold">{updatedAtDate}</span></p>
+                                        )}
+                                    </div>
                                 </div>
-                                <ReactMarkdown
-                                    className="text-gray-100 markdown"
-                                >{article.content}</ReactMarkdown>
+                                <ReactMarkdown className="markdown">
+                                    {article.content}
+                                </ReactMarkdown>
+                                {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                                    <div className="flex flex-wrap gap-4">
+                                        <Link
+                                            href={editUrl}
+                                            className="button button-primary"
+                                        ></Link>
+                                    </div>
+                                )}
                             </div>
-                        </>
+                        </div>
                     ) : (
                         <NotFound item="Article" />
                     )}
@@ -104,9 +132,22 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    // We need to parse the dates now, on the server-side.
+    let createdAtDate: string | null = null;
+
+    if (article)
+        createdAtDate = dateFormat(article.createdAt, dateFormatOne);
+
+    let updatedAtDate: string | null = null;
+
+    if (article)
+        updatedAtDate = dateFormat(article.updatedAt, dateFormatOne);
+
     return { 
         props: { 
-            article: JSON.parse(JSON.stringify(article))
+            article: JSON.parse(JSON.stringify(article)),
+            createdAtDate: createdAtDate,
+            updatedAtDate: updatedAtDate
         }
     };
 }
