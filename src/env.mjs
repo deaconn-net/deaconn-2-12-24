@@ -22,11 +22,8 @@ const server = z.object({
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
   UPLOADS_DIR: z.string().default("/uploads"),
-  NEXT_PUBLIC_UPLOADS_PRE_URL: z.string().default(""),
-  NEXT_PUBLIC_CDN_URL: z.string().default(""),
   ROOT_API: z.string().optional(),
-  NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: z.string().default("/images/blog/default.jpg"),
-  NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: z.string().default("/images/service/default.png")
+
 });
 
 /**
@@ -34,7 +31,10 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-  // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+    NEXT_PUBLIC_UPLOADS_PRE_URL: z.string().default(""),
+    NEXT_PUBLIC_CDN_URL: z.string().default(""),
+    NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: z.string().default("/images/blog/default.jpg"),
+    NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: z.string().default("/images/service/default.png")
 });
 
 /**
@@ -51,12 +51,11 @@ const processEnv = {
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   UPLOADS_DIR: process.env.UPLOADS_DIR,
+  ROOT_API: process.env.ROOT_API,
   NEXT_PUBLIC_UPLOADS_PRE_URL: process.env.NEXT_PUBLIC_UPLOADS_PRE_URL,
   NEXT_PUBLIC_CDN_URL: process.env.CDN_URL,
-  ROOT_API: process.env.ROOT_API,
   NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
   NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE
-  // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
 // Don't touch the part below
