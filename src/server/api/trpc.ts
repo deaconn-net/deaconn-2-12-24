@@ -120,12 +120,32 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
+// Admin middlware.
+const isAdmin = t.middleware(async ({ ctx, next }) => {
+    if (!ctx.session || !ctx.session.user)
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    // Check.
+    if (!has_role(ctx.session, "admin"))
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    // Continue!
+    return next({
+        ctx: {
+            session: { ...ctx.session, user: ctx.session.user }
+        }
+    });
+})
+
+export const adminProcedure = t.procedure.use(isAdmin);
+
+// Moderator middleware.
 const isMod = t.middleware(async ({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user)
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Check.
-    if (!has_role(ctx.session, "moderator"))
+    if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Continue!
