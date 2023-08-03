@@ -1,0 +1,20 @@
+.user-browser-table {
+    @apply w-full;
+    @apply table-auto;
+}
+
+.user-browser-table th, .user-browser-table > tbody td {
+    @apply text-center;
+}
+
+.user-browser-table-avatar {
+    @apply flex;
+    @apply justify-center;
+}
+
+.user-browser-table-actions {
+    @apply flex;
+    @apply flex-wrap;
+    @apply gap-2;
+    @apply justify-center;
+}
