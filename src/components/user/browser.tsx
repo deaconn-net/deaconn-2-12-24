@@ -75,7 +75,7 @@ const UserBrowser: React.FC<{
             </div>
             {grid ? (
                 <>
-                    {!requireItems && users.length > 0 ? (
+                    {requireItems || users.length > 0 ? (
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={loadMore}
@@ -106,7 +106,7 @@ const UserBrowser: React.FC<{
                 </>
             ) : (
                 <>
-                    {!requireItems && users.length > 0 ? (
+                    {requireItems || users.length > 0 ? (
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={loadMore}
