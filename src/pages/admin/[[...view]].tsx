@@ -21,9 +21,24 @@ import ErrorBox from "@utils/error";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 type statsType = {
-    articles?: number
-    services?: number,
-    users?: number
+    articles: number
+    articleComments: number
+
+    services: number
+    purchases: number
+
+    requests: number
+    requestComments: number
+
+    partners: number
+
+    roles: number
+
+    users: number
+    userExperiences: number
+    userSkills: number
+    userProjects: number
+
 };
 
 const Page: NextPage<{
@@ -66,9 +81,18 @@ const Page: NextPage<{
                                             <div className="content-item">
                                                 <h2>Stats</h2>
                                                 <ul>
-                                                    <li><span className="font-bold">{stats.articles}</span> Total Articles</li>
-                                                    <li><span className="font-bold">{stats.services}</span> Total Services</li>
-                                                    <li><span className="font-bold">{stats.users}</span> Total Users</li>
+                                                    <li><span className="font-bold">{stats.articles.toString()}</span> Total Articles</li>
+                                                    <li><span className="font-bold">{stats.articleComments.toString()}</span> Total Article Comments</li>
+                                                    <li><span className="font-bold">{stats.services.toString()}</span> Total Services</li>
+                                                    <li><span className="font-bold">{stats.purchases.toString()}</span> Total Service Purchases</li>
+                                                    <li><span className="font-bold">{stats.requests.toString()}</span> Total Requests</li>
+                                                    <li><span className="font-bold">{stats.requestComments.toString()}</span> Total Request Comments</li>
+                                                    <li><span className="font-bold">{stats.partners.toString()}</span> Total Partners</li>
+                                                    <li><span className="font-bold">{stats.roles.toString()}</span> Total Roles</li>
+                                                    <li><span className="font-bold">{stats.users.toString()}</span> Total Users</li>
+                                                    <li><span className="font-bold">{stats.userExperiences.toString()}</span> Total User Experiences</li>
+                                                    <li><span className="font-bold">{stats.userSkills.toString()}</span> Total User Skills</li>
+                                                    <li><span className="font-bold">{stats.userProjects.toString()}</span> Total User Projects</li>
                                                 </ul>
                                             </div>
                                         )}
@@ -184,14 +208,42 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     if (view == "general") {
         const articleCnt = await prisma.article.count();
+        const articleCommentCnt = await prisma.articleComment.count();
+
         const serviceCnt = await prisma.service.count();
+        const purchaseCnt = await prisma.purchase.count();
+
+        const requestCnt = await prisma.request.count();
+        const requestCommentCnt = await prisma.requestComment.count();
+
+        const partnerCnt = await prisma.partner.count();
+
+        const roleCnt = await prisma.role.count();
+
         const userCnt = await prisma.user.count();
+        const userExperienceCnt = await prisma.userExperience.count();
+        const userSkillCnt = await prisma.userSkill.count();
+        const userProjectCnt = await prisma.userProject.count();
 
         stats = {
             articles: articleCnt,
+            articleComments: articleCommentCnt,
+
             services: serviceCnt,
-            users: userCnt
-        }
+            purchases: purchaseCnt,
+
+            requests: requestCnt,
+            requestComments: requestCommentCnt,
+
+            partners: partnerCnt,
+
+            roles: roleCnt,
+
+            users: userCnt,
+            userExperiences: userExperienceCnt,
+            userSkills: userSkillCnt,
+            userProjects: userProjectCnt
+        };
     }
 
     return {

@@ -63,7 +63,6 @@ const UserBrowser: React.FC<{
                     <h3>Search</h3>
                     <input
                         className="form-input w-72 p-2"
-                        value={undefined}
                         onChange={(e) => {
                             e.preventDefault();
 
