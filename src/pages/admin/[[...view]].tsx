@@ -60,60 +60,64 @@ const Page: NextPage<{
                             )}
                             {view == "roles" && (
                                 <div className="flex flex-col gap-4">
-                                    <div>
+                                    <div className="content-item">
+                                        <h2>Add Role</h2>
                                         <RoleForm />
                                     </div>
-                                    <div className="flex gap-4">
-                                        {roles?.map((role) => {
-                                            // Compile links.
-                                            const editUrl = `/admin/role/edit/${role.id}`;
+                                    <div className="content-item">
+                                        <h2>Existing Roles</h2>
+                                        <div className="flex gap-4">
+                                            {roles?.map((role) => {
+                                                // Compile links.
+                                                const editUrl = `/admin/role/edit/${role.id}`;
 
-                                            return (
-                                                <div
-                                                    key={`admin-roles-${role.id}`}
-                                                    className="p-6 bg-gray-900 flex flex-col gap-2 rounded-md"
-                                                >
-                                                    <div className="flex gap-2 items-center">
-                                                        <h2 className="text-center">{role.title}</h2>
-                                                        <span className="text-sm">{` (${role.id})`}</span>
-                                                    </div>
-                                                    <div>
-                                                        {role.desc ? (
-                                                            <ReactMarkdown className="markdown">
-                                                                {role.desc}
-                                                            </ReactMarkdown>
-                                                        ) : (
-                                                            <p className="italic">No description available.</p>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        <Link
-                                                            href={editUrl}
-                                                            className="button button-primary"
-                                                        >Edit</Link>
-                                                        <button
-                                                            className="button button-danger"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
+                                                return (
+                                                    <div
+                                                        key={`admin-roles-${role.id}`}
+                                                        className="p-6 bg-cyan-900 flex flex-col gap-2 rounded-md"
+                                                    >
+                                                        <div className="flex gap-2 items-center">
+                                                            <h2 className="text-center">{role.title}</h2>
+                                                            <span className="text-sm">{` (${role.id})`}</span>
+                                                        </div>
+                                                        <div>
+                                                            {role.desc ? (
+                                                                <ReactMarkdown className="markdown">
+                                                                    {role.desc}
+                                                                </ReactMarkdown>
+                                                            ) : (
+                                                                <p className="italic">No description available.</p>
+                                                            )}
+                                                        </div>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            <Link
+                                                                href={editUrl}
+                                                                className="button button-primary"
+                                                            >Edit</Link>
+                                                            <button
+                                                                className="button button-danger"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
 
-                                                                const yes = confirm("Are you sure you want to delete this role?");
+                                                                    const yes = confirm("Are you sure you want to delete this role?");
 
-                                                                if (yes) {
-                                                                    roleDeleteMut.mutate({
-                                                                        role: role.id
-                                                                    });
-                                                                }
-                                                            }}
-                                                        >Delete</button>
+                                                                    if (yes) {
+                                                                        roleDeleteMut.mutate({
+                                                                            role: role.id
+                                                                        });
+                                                                    }
+                                                                }}
+                                                            >Delete</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
                             )}
                             {view == "users" && (
-                                <div className="flex flex-col gap-4">
+                                <div className="content-item">
                                     <UserBrowser />
                                 </div>
                             )}

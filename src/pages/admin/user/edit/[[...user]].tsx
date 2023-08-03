@@ -111,7 +111,7 @@ const Page: NextPage<{
                                 <div className="flex flex-wrap gap-4">
                                     {userRoles?.map((role) => {
                                         return (
-                                            <div key={`role-${role.roleId}`} className="p-6 rounded-md bg-gray-800 flex flex-col gap-2">
+                                            <div key={`role-${role.roleId}`} className="p-6 rounded-md bg-cyan-900 flex flex-col gap-2">
                                                 <h2 className="text-center">{role.roleId}</h2>
                                                 <button
                                                     className="button button-danger p-2"
