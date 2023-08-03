@@ -1,9 +1,9 @@
-import { GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext, type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import { Service } from ".prisma/client";
+import { type Service } from ".prisma/client";
 
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
