@@ -5,8 +5,9 @@ import { type Role } from "@prisma/client"
 
 import { prisma } from "@server/db";
 
-import NoPermissions from "@components/errors/no_permissions";
 import Wrapper from "@components/wrapper";
+import AdminSettingsPanel from "@components/admin/settingspanel";
+import NoPermissions from "@components/errors/no_permissions";
 import NotFound from "@components/errors/not_found";
 import RoleForm from "@components/forms/role/new";
 
@@ -37,9 +38,13 @@ const Edit: NextPage<{
 
     return (
         <Wrapper>
-            <RoleForm
-                role={role}
-            />
+            <div className="content-item">
+                <AdminSettingsPanel view="roles">
+                    <RoleForm
+                        role={role}
+                    />
+                </AdminSettingsPanel>
+            </div>
         </Wrapper>
     );
 }

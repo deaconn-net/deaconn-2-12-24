@@ -15,15 +15,24 @@ import { has_role } from "@utils/user/auth";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import RoleForm from "@components/forms/role/new";
+import AdminSettingsPanel from "@components/admin/settingspanel";
+
+type statsType = {
+    articles?: number
+    services?: number,
+    users?: number
+};
 
 const Page: NextPage<{
     authed: boolean,
     view: string,
-    roles?: Role[]
+    roles?: Role[],
+    stats?: statsType
 }> = ({
     authed,
     view,
-    roles
+    roles,
+    stats
 }) => {
     const roleDeleteMut = api.admin.delRole.useMutation();
 
@@ -32,34 +41,31 @@ const Page: NextPage<{
             <Wrapper>
                 {authed ? (
                     <div className="content-item">
-                        <div className="flex flex-wrap gap-2">
-                            <div>
-                                <ul className="tab-container w-64">
-                                    <Link
-                                        href="/admin"
-                                        className={`tab-link ${view == "general" ? "tab-active" : ""}`}
-                                    >General</Link>
-                                    <Link
-                                        href="/admin/roles"
-                                        className={`tab-link ${view == "roles" ? "tab-active" : ""}`}
-                                    >Roles</Link>
-                                    <Link
-                                        href="/admin/users"
-                                        className={`tab-link ${view == "users" ? "tab-active" : ""}`}
-                                    >Users</Link>
-                                </ul>
-                            </div>
-                            <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
-                                {view == "general" && (
-                                    <div className="flex flex-col gap-4">
-                                        <p>Default admin page!</p>
+                        <AdminSettingsPanel view={view}>
+                            {view == "general" && (
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex flex-wrap justify-center gap-4">
+                                        {stats && (
+                                            <div className="content-item">
+                                                <h2>Stats</h2>
+                                                <ul>
+                                                    <li><span className="font-bold">{stats.articles}</span> Total Articles</li>
+                                                    <li><span className="font-bold">{stats.services}</span> Total Services</li>
+                                                    <li><span className="font-bold">{stats.users}</span> Total Users</li>
+                                                </ul>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                                {view == "roles" && (
-                                    <div className="flex flex-col gap-4">
-                                        <div>
-                                            <RoleForm />
-                                        </div>
+                                </div>
+                            )}
+                            {view == "roles" && (
+                                <div className="flex flex-col gap-4">
+                                    <div className="content-item">
+                                        <h2>Add Role</h2>
+                                        <RoleForm />
+                                    </div>
+                                    <div className="content-item">
+                                        <h2>Existing Roles</h2>
                                         <div className="flex gap-4">
                                             {roles?.map((role) => {
                                                 // Compile links.
@@ -68,7 +74,7 @@ const Page: NextPage<{
                                                 return (
                                                     <div
                                                         key={`admin-roles-${role.id}`}
-                                                        className="p-6 bg-gray-900 flex flex-col gap-2 rounded-md"
+                                                        className="p-6 bg-cyan-900 flex flex-col gap-2 rounded-md"
                                                     >
                                                         <div className="flex gap-2 items-center">
                                                             <h2 className="text-center">{role.title}</h2>
@@ -108,14 +114,14 @@ const Page: NextPage<{
                                             })}
                                         </div>
                                     </div>
-                                )}
-                                {view == "users" && (
-                                    <div className="flex flex-col gap-4">
-                                        <UserBrowser />
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                                </div>
+                            )}
+                            {view == "users" && (
+                                <div className="content-item">
+                                    <UserBrowser />
+                                </div>
+                            )}
+                        </AdminSettingsPanel>
                     </div>
                 ) : (
                     <NoPermissions />
@@ -142,18 +148,33 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (!["general", "roles", "users"].includes(view))
         view = "general";
 
-    // Retrieve roles if we need to.
+    // Retrieve roles if needed.
     let roles: Role[] | undefined = undefined;
 
-    if (view == "roles") {
+    if (view == "roles")
         roles = await prisma.role.findMany();
+
+    // Retrieve stats if needed.
+    let stats: statsType | null = null;
+
+    if (view == "general") {
+        const articleCnt = await prisma.article.count();
+        const serviceCnt = await prisma.service.count();
+        const userCnt = await prisma.user.count();
+
+        stats = {
+            articles: articleCnt,
+            services: serviceCnt,
+            users: userCnt
+        }
     }
 
     return {
         props: {
             authed: authed,
             view: view,
-            roles: roles ? JSON.parse(JSON.stringify(roles)) : null
+            roles: roles ? JSON.parse(JSON.stringify(roles)) : null,
+            stats
         }
     }
 }

@@ -6,10 +6,11 @@ import { type Role, type User } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
+import Wrapper from "@components/wrapper";
+import AdminSettingsPanel from "@components/admin/settingspanel";
 import NoPermissions from "@components/errors/no_permissions";
 import NotFound from "@components/errors/not_found";
 import UserForm from "@components/forms/user/general";
-import Wrapper from "@components/wrapper";
 
 import { api } from "@utils/api";
 import ErrorBox from "@utils/error";
@@ -95,82 +96,86 @@ const Page: NextPage<{
                 title={errTitle}
                 msg={errMsg}
             />
-            <div className="flex flex-col gap-2">
-                <div className="content-item">
-                    <h1>General Form</h1>
-                    <UserForm
-                        user={user}
-                    />
-                </div>
-                <div className="flex flex-col gap-4">
-                    <div className="content-item">
-                        <h1>Roles</h1>
-                        <div className="flex flex-wrap gap-4">
-                            {userRoles?.map((role) => {
-                                return (
-                                    <div key={`role-${role.roleId}`} className="p-6 rounded-md bg-gray-800 flex flex-col gap-2">
-                                        <h2 className="text-center">{role.roleId}</h2>
-                                        <button
-                                            className="button button-danger p-2"
-                                            onClick={(e) => {
-                                                e.preventDefault();
+            <div className="content-item">
+                <AdminSettingsPanel view="users">
+                    <div className="flex flex-col gap-2">
+                        <div className="content-item">
+                            <h1>General Form</h1>
+                            <UserForm
+                                user={user}
+                            />
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            <div className="content-item">
+                                <h1>Roles</h1>
+                                <div className="flex flex-wrap gap-4">
+                                    {userRoles?.map((role) => {
+                                        return (
+                                            <div key={`role-${role.roleId}`} className="p-6 rounded-md bg-cyan-900 flex flex-col gap-2">
+                                                <h2 className="text-center">{role.roleId}</h2>
+                                                <button
+                                                    className="button button-danger p-2"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
 
-                                                const yes = confirm("Are you sure you want to remove this role?");
+                                                        const yes = confirm("Are you sure you want to remove this role?");
 
-                                                if (yes) {
-                                                    delRoleMut.mutate({
-                                                        userId: user.id,
-                                                        role: role.roleId
-                                                    });
-                                                }
+                                                        if (yes) {
+                                                            delRoleMut.mutate({
+                                                                userId: user.id,
+                                                                role: role.roleId
+                                                            });
+                                                        }
 
-                                                ScrollToTop();
-                                            }}
-                                        >Delete</button>
-                                    </div>
-                                );
-                            })}
+                                                        ScrollToTop();
+                                                    }}
+                                                >Delete</button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                            <div className="content-item w-full">
+                                <h2>Add Role</h2>
+                                <div className="flex flex-wrap items-center gap-2">
+                                    
+                                    <select
+                                        className="form-input w-72 p-2"
+                                        onChange={(e) => {
+                                            setRoleName(e.currentTarget.value);
+                                        }}
+                                    >
+                                        {roles.map((role) => {
+                                            return (
+                                                <option
+                                                    key={`add-role-${role.id}`}
+                                                    value={role.id}
+                                                >
+                                                    {role.title} ({role.id})
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                    <button
+                                        className="button button-primary"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+
+                                            if (roleName.length > 0) {
+                                                addRoleMut.mutate({
+                                                    userId: user.id,
+                                                    role: roleName
+                                                });
+                                            }
+
+                                            ScrollToTop();
+                                        }}
+                                    >Add!</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="content-item w-full">
-                        <h2>Add Role</h2>
-                        <div className="flex flex-wrap items-center gap-2">
-                            
-                            <select
-                                className="form-input w-72 p-2"
-                                onChange={(e) => {
-                                    setRoleName(e.currentTarget.value);
-                                }}
-                            >
-                                {roles.map((role) => {
-                                    return (
-                                        <option
-                                            key={`add-role-${role.id}`}
-                                            value={role.id}
-                                        >
-                                            {role.title} ({role.id})
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                            <button
-                                className="button button-primary"
-                                onClick={(e) => {
-                                    e.preventDefault();
-
-                                    if (roleName.length > 0) {
-                                        addRoleMut.mutate({
-                                            userId: user.id,
-                                            role: roleName
-                                        });
-                                    }
-
-                                    ScrollToTop();
-                                }}
-                            >Add!</button>
-                        </div>
-                    </div>
-                </div>
+                </AdminSettingsPanel>
             </div>
         </Wrapper>
     );
