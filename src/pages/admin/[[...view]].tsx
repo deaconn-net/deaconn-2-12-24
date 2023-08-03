@@ -6,16 +6,19 @@ import { type Role } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
+import Wrapper from "@components/wrapper";
+import AdminSettingsPanel from "@components/admin/settingspanel";
 import NoPermissions from "@components/errors/no_permissions";
 import UserBrowser from "@components/user/browser";
-import Wrapper from "@components/wrapper";
+import RoleForm from "@components/forms/role/new";
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
 
+import SuccessBox from "@utils/success";
+import ErrorBox from "@utils/error";
+
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import RoleForm from "@components/forms/role/new";
-import AdminSettingsPanel from "@components/admin/settingspanel";
 
 type statsType = {
     articles?: number
@@ -35,6 +38,20 @@ const Page: NextPage<{
     stats
 }) => {
     const roleDeleteMut = api.admin.delRole.useMutation();
+
+    let sucTitle: string | undefined = undefined;
+    let sucMsg: string | undefined = undefined;
+
+    let errTitle: string | undefined = undefined;
+    let errMsg: string | undefined = undefined;
+
+    if (roleDeleteMut.isError) {
+        errTitle = "Role Not Deleted";
+        errMsg = "Role not deleted successfully.";
+    } else if (roleDeleteMut.isSuccess) {
+        sucTitle = "Role Deleted!";
+        sucMsg = "Role deleted successfully.";
+    }
 
     return (
         <>
@@ -66,6 +83,14 @@ const Page: NextPage<{
                                     </div>
                                     <div className="content-item">
                                         <h2>Existing Roles</h2>
+                                        <SuccessBox
+                                            title={sucTitle}
+                                            msg={sucMsg}
+                                        />
+                                        <ErrorBox
+                                            title={errTitle}
+                                            msg={errMsg}
+                                        />
                                         <div className="flex gap-4">
                                             {roles?.map((role) => {
                                                 // Compile links.
