@@ -10,7 +10,6 @@ import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
 
 import ReactMarkdown from "react-markdown";
-import "react-datepicker/dist/react-datepicker.css";
 
 const Form: React.FC<{
     skill?: UserSkill
