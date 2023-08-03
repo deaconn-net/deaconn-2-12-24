@@ -166,7 +166,6 @@ model User {
   birthday  DateTime?
   showEmail Boolean   @default(false)
   isTeam    Boolean   @default(false)
-  isRoot    Boolean   @default(false)
 
   socialTwitter  String?
   socialGithub   String?

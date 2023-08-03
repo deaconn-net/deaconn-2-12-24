@@ -95,6 +95,8 @@
     @import "components/user/profile/experience.css";
     @import "components/user/profile/skill.css";
     @import "components/user/profile/project.css";
+    @import "components/user/row/grid.css";
+    @import "components/user/row/table.css";
     @import "components/user/row.css";
 
     @import "components/buttons.css";
