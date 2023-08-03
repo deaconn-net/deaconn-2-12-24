@@ -16,14 +16,22 @@ import { has_role } from "@utils/user/auth";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import RoleForm from "@components/forms/role/new";
 
+type statsType = {
+    articles?: number
+    services?: number,
+    users?: number
+};
+
 const Page: NextPage<{
     authed: boolean,
     view: string,
-    roles?: Role[]
+    roles?: Role[],
+    stats?: statsType
 }> = ({
     authed,
     view,
-    roles
+    roles,
+    stats
 }) => {
     const roleDeleteMut = api.admin.delRole.useMutation();
 
@@ -52,7 +60,18 @@ const Page: NextPage<{
                             <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
                                 {view == "general" && (
                                     <div className="flex flex-col gap-4">
-                                        <p>Default admin page!</p>
+                                        <div className="flex flex-wrap justify-center gap-4">
+                                            {stats && (
+                                                <div className="content-item">
+                                                    <h2>Stats</h2>
+                                                    <ul>
+                                                        <li><span className="font-bold">{stats.articles}</span> Total Articles</li>
+                                                        <li><span className="font-bold">{stats.services}</span> Total Services</li>
+                                                        <li><span className="font-bold">{stats.users}</span> Total Users</li>
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                                 {view == "roles" && (
@@ -142,18 +161,33 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (!["general", "roles", "users"].includes(view))
         view = "general";
 
-    // Retrieve roles if we need to.
+    // Retrieve roles if needed.
     let roles: Role[] | undefined = undefined;
 
-    if (view == "roles") {
+    if (view == "roles")
         roles = await prisma.role.findMany();
+
+    // Retrieve stats if needed.
+    let stats: statsType | null = null;
+
+    if (view == "general") {
+        const articleCnt = await prisma.article.count();
+        const serviceCnt = await prisma.service.count();
+        const userCnt = await prisma.user.count();
+
+        stats = {
+            articles: articleCnt,
+            services: serviceCnt,
+            users: userCnt
+        }
     }
 
     return {
         props: {
             authed: authed,
             view: view,
-            roles: roles ? JSON.parse(JSON.stringify(roles)) : null
+            roles: roles ? JSON.parse(JSON.stringify(roles)) : null,
+            stats
         }
     }
 }
