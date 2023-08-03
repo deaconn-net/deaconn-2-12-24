@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
 import { type UserSkill } from "@prisma/client";
 
-import { api } from "@utils/api";
 import FormMain from "@components/forms/main";
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
-import ErrorBox from "@utils/error";
-import SuccessBox from "@utils/success";
+import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
 
 import ReactMarkdown from "react-markdown";
@@ -19,39 +18,32 @@ const Form: React.FC<{
     skill
 }) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
-    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
-
-    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
-    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
+    const success = useContext(SuccessCtx);
+    const error = useContext(ErrorCtx);
 
     // Request mutations.
     const skillMut = api.user.addSkill.useMutation();
 
     // Check for errors or successes.
-    if (skillMut.isSuccess && !sucTitle) {
-        if (errTitle)
-            setErrTitle(undefined);
+    useEffect(() => {
+        if (skillMut.isSuccess && success) {    
+            success.setTitle(`Successfully ${skill ? "Saved" : "Created"} Skill!`);
+            success.setMsg(`Your skill was ${skill ? "saved" : "created"} successfully!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
 
-        setSucTitle("Skill Added!");
-        setSucMsg("Your skill was added or saved successfully!");
+        if (skillMut.isError && error) {
+            console.error(skillMut.error.message);
 
-        // Scroll to top.
-        ScrollToTop();
-    }
-
-    if (skillMut.isError && !errTitle) {
-        if (sucTitle)
-            setSucTitle(undefined);
-
-        setErrTitle("Error Adding Or Saving Skill");
-        setErrMsg("Error adding or editing skill. Read developer console for more information.");
-
-        console.error(skillMut.error.message);
-
-        // Scroll to top.
-        ScrollToTop();
-    }
+            error.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
+            error.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [skillMut, success, error, skill])
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -86,8 +78,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            setErrTitle(undefined);
-            setSucTitle(undefined);
+            if (success)
+                success.setTitle(undefined);
+
+            if (error)
+                error.setTitle(undefined);
 
             skillMut.mutate({
                 id: skill?.id,
@@ -98,48 +93,38 @@ const Form: React.FC<{
     });
 
     return (
-        <>
-            <ErrorBox
-                title={errTitle}
-                msg={errMsg}
-            />
-            <SuccessBox
-                title={sucTitle}
-                msg={sucMsg}
-            />
-            <FormMain
-                form={form}
-                submitBtn={submit_btn}
-            >
-                <div className="form-div">
-                    <label className="form-label">Title</label>
-                    {preview ? (
-                        <p className="italic">{form.values.title}</p>
-                    ) : (
-                        <Field
-                            name="title"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Details</label>
-                    {preview ? (
-                        <ReactMarkdown className="markdown p-4 bg-gray-800">
-                            {form.values.desc}
-                        </ReactMarkdown>
-                    ) : (
-                        <Field
-                            name="desc"
-                            className="form-input"
-                            as="textarea"
-                            rows="16"
-                            cols="32"
-                        />
-                    )}
-                </div>
-            </FormMain>
-        </>
+        <FormMain
+            form={form}
+            submitBtn={submit_btn}
+        >
+            <div className="form-div">
+                <label className="form-label">Title</label>
+                {preview ? (
+                    <p className="italic">{form.values.title}</p>
+                ) : (
+                    <Field
+                        name="title"
+                        className="form-input"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Details</label>
+                {preview ? (
+                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                        {form.values.desc}
+                    </ReactMarkdown>
+                ) : (
+                    <Field
+                        name="desc"
+                        className="form-input"
+                        as="textarea"
+                        rows="16"
+                        cols="32"
+                    />
+                )}
+            </div>
+        </FormMain>
     );
 }
 

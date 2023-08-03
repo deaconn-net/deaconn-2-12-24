@@ -1,11 +1,10 @@
 import { Field, useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import FormMain from "@components/forms/main";
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
-import ErrorBox from "@utils/error";
-import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
 import { type Request, type Service } from "@prisma/client";
@@ -23,42 +22,37 @@ const Form: React.FC<{
     services = []
 }) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
-    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
-
-    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
-    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
+    const success = useContext(SuccessCtx);
+    const error = useContext(ErrorCtx);
 
     // Request mutations.
     const requestMut = api.request.add.useMutation();
 
     // Check for errors or successes.
-    if (requestMut.isSuccess && !sucTitle) {
-        if (errTitle)
-            setErrTitle(undefined);
+    useEffect(() => {
+        if (requestMut.isSuccess && success) {    
+            success.setTitle(`Successfully " + ${request ? "Saved" : "Created"} Request!`);
+            success.setMsg(`Request successfully ${request ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
 
-        setSucTitle("Successfully " + (Boolean(request?.id) ? "Saved" : "Created") + "!");
-        setSucMsg("Request successfully " + (Boolean(request?.id) ? "saved" : "created") + "!");
+        if (requestMut.isError && error) {
+            console.error(requestMut.error.message);
 
-        // Scroll to top.
-        ScrollToTop();
-    }
+            error.setTitle("Error Creating Or Editing Request");
+    
+            if (requestMut.error.data?.code == "UNAUTHORIZED")
+                error.setMsg("You are not signed in or have permissions to create requests.")
+            else
+                error.setMsg(`Error ${request ? "saving" : "creating"} request.`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [requestMut, success, error, request])
 
-    if (requestMut.isError && !errTitle) {
-        if (sucTitle)
-            setSucTitle(undefined);
-
-        setErrTitle("Error Creating Or Editing Request");
-
-        console.error(requestMut.error.message);
-        if (requestMut.error.data?.code == "UNAUTHORIZED")
-            setErrMsg("You are not signed in or have permissions to create requests.")
-        else
-            setErrMsg("Error creating or editing request.");
-
-        // Scroll to top.
-        ScrollToTop();
-    }
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -97,8 +91,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            setErrTitle(undefined);
-            setSucTitle(undefined);
+            if (success)
+                success.setTitle(undefined);
+
+            if (error)
+                error.setTitle(undefined);
 
             requestMut.mutate({
                 id: request?.id,
@@ -114,113 +111,103 @@ const Form: React.FC<{
     });
 
     return (
-        <>
-            <ErrorBox
-                title={errTitle}
-                msg={errMsg}
-            />
-            <SuccessBox
-                title={sucTitle}
-                msg={sucMsg}
-            />
-            <FormMain
-                form={form}
-                submitBtn={submit_btn}
-            >
-                <div className="form-div">
-                    <label className="form-label">Title</label>
-                    {preview ? (
-                        <p className="italic">{form.values.title}</p>
-                    ) : (
-                        <Field
-                            name="title"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Service</label>
-                    {preview ? (
-                        <p className="italic">{form.values.service}</p>
-                    ) : (
-                        <Field
-                            name="service"
-                            as="select"
-                            className="form-input"
-                        >
-                            <>
-                                <option value="0">None</option>
-                                {services?.map((service: Service) => {
-                                    return (
-                                        <option
-                                            key={"service-" + service.id.toString()}
-                                            value={service.id.toString()}
-                                        >{service.name}</option>
-                                    )
-                                })}
-                            </>
-                        </Field>
-                    )}
+        <FormMain
+            form={form}
+            submitBtn={submit_btn}
+        >
+            <div className="form-div">
+                <label className="form-label">Title</label>
+                {preview ? (
+                    <p className="italic">{form.values.title}</p>
+                ) : (
+                    <Field
+                        name="title"
+                        className="form-input"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Service</label>
+                {preview ? (
+                    <p className="italic">{form.values.service}</p>
+                ) : (
+                    <Field
+                        name="service"
+                        as="select"
+                        className="form-input"
+                    >
+                        <>
+                            <option value="0">None</option>
+                            {services?.map((service: Service) => {
+                                return (
+                                    <option
+                                        key={"service-" + service.id.toString()}
+                                        value={service.id.toString()}
+                                    >{service.name}</option>
+                                )
+                            })}
+                        </>
+                    </Field>
+                )}
 
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Start Date</label>
-                    {preview ? (
-                        <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
-                    ) : (
-                        <DatePicker
-                            name="startDate"
-                            className="form-input"
-                            selected={form.values.startDate}
-                            onChange={(date: Date) => {
-                                void form.setFieldValue('startDate', date);
-                            }}
-                            dateFormat="yyyy/MM/dd"
-                        />
-                    )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Start Date</label>
+                {preview ? (
+                    <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
+                ) : (
+                    <DatePicker
+                        name="startDate"
+                        className="form-input"
+                        selected={form.values.startDate}
+                        onChange={(date: Date) => {
+                            void form.setFieldValue('startDate', date);
+                        }}
+                        dateFormat="yyyy/MM/dd"
+                    />
+                )}
 
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Timeframe</label>
-                    {preview ? (
-                        <p className="italic">{form.values.timeframe}</p>
-                    ) : (
-                        <Field
-                            name="timeframe"
-                            className="form-input"
-                        />
-                    )}
-                    <p className="text-s leading-8">Value should be in <span className="font-bold">hours</span>!</p>
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Price</label>
-                    {preview ? (
-                        <p className="italic">{form.values.price}</p>
-                    ) : (
-                        <Field
-                            className="form-input"
-                            name="price"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Details</label>
-                    {preview ? (
-                        <ReactMarkdown className="markdown p-4 bg-gray-800">
-                            {form.values.content}
-                        </ReactMarkdown>
-                    ) : (
-                        <Field
-                            name="content"
-                            as="textarea"
-                            className="form-input"
-                            rows="16"
-                            cols="32"
-                        />
-                    )}
-                </div>
-            </FormMain>
-        </>
+            </div>
+            <div className="form-div">
+                <label className="form-label">Timeframe</label>
+                {preview ? (
+                    <p className="italic">{form.values.timeframe}</p>
+                ) : (
+                    <Field
+                        name="timeframe"
+                        className="form-input"
+                    />
+                )}
+                <p className="text-s leading-8">Value should be in <span className="font-bold">hours</span>!</p>
+            </div>
+            <div className="form-div">
+                <label className="form-label">Price</label>
+                {preview ? (
+                    <p className="italic">{form.values.price}</p>
+                ) : (
+                    <Field
+                        className="form-input"
+                        name="price"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Details</label>
+                {preview ? (
+                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                        {form.values.content}
+                    </ReactMarkdown>
+                ) : (
+                    <Field
+                        name="content"
+                        as="textarea"
+                        className="form-input"
+                        rows="16"
+                        cols="32"
+                    />
+                )}
+            </div>
+        </FormMain>
     );
 }
 

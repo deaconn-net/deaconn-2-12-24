@@ -1,11 +1,10 @@
 import { Field, useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import FormMain from "@components/forms/main";
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
-import ErrorBox from "@utils/error";
-import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
 import { type Partner } from "@prisma/client";
@@ -16,42 +15,38 @@ const Form: React.FC<{
     partner
 }) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
-    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
-
-    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
-    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
+    const success = useContext(SuccessCtx);
+    const error = useContext(ErrorCtx);
 
     // Partner mutations.
     const partnerMut = api.partner.add.useMutation();
 
     // Check for errors or successes.
-    if (partnerMut.isSuccess && !sucTitle) {
-        if (errTitle)
-            setErrTitle(undefined);
+    
+    useEffect(() => {
+        if (partnerMut.isSuccess && success) {
+    
+            success.setTitle(`Successfully ${partner ? "Saved" : "Created"} Partner!`);
+            success.setMsg(`Partner successfully " + ${partner ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
 
-        setSucTitle("Successfully " + (Boolean(partner?.id) ? "Saved" : "Created") + "!");
-        setSucMsg("Partner successfully " + (Boolean(partner?.id) ? "saved" : "created") + "!");
+        if (partnerMut.isError && error) {
+            console.error(partnerMut.error.message);
 
-        // Scroll to top.
-        ScrollToTop();
-    }
-
-    if (partnerMut.isError && !errTitle) {
-        if (sucTitle)
-            setSucTitle(undefined);
-
-        setErrTitle("Error Creating Or Editing Article");
-
-        console.error(partnerMut.error.message);
-        if (partnerMut.error.data?.code == "UNAUTHORIZED")
-            setErrMsg("You are not signed in or have permissions to create partners.")
-        else
-            setErrMsg("Error creating or editing partner.");
-
-        // Scroll to top.
-        ScrollToTop();
-    }
+            error.setTitle(`Error ${partner ? "Saving" : "Creating"} Partner`);
+    
+            if (partnerMut.error.data?.code == "UNAUTHORIZED")
+                error.setMsg("You are not signed in or have permissions to create partners.")
+            else
+                error.setMsg(`Error ${partner ? "saving" : "creating"} partner.`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [partnerMut, success, error, partner])
 
     // Setup banner image.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
@@ -90,8 +85,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            setErrTitle(undefined);
-            setSucTitle(undefined);
+            if (success)
+                success.setTitle(undefined);
+
+            if (error)
+                error.setTitle(undefined);
 
             // Create article.
             partnerMut.mutate({
@@ -105,82 +103,72 @@ const Form: React.FC<{
     });
 
     return (
-        <>
-            <ErrorBox
-                title={errTitle}
-                msg={errMsg}
-            />
-            <SuccessBox
-                title={sucTitle}
-                msg={sucMsg}
-            />
-            <FormMain
-                form={form}
-                submitBtn={submit_btn}
-            >
-                <div className="form-div">
-                    <label className="form-label">Banner</label>
-                    <input
-                        name="banner"
-                        type="file"
+        <FormMain
+            form={form}
+            submitBtn={submit_btn}
+        >
+            <div className="form-div">
+                <label className="form-label">Banner</label>
+                <input
+                    name="banner"
+                    type="file"
+                    className="form-input"
+                    onChange={(e) => {
+                        const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
+
+                        if (file) {
+                            const reader = new FileReader();
+
+                            reader.onloadend = () => {
+                                setBanner(reader.result);
+                            };
+                            
+                            reader.readAsDataURL(file);
+                        }
+                    }}
+                />
+                {partner?.banner && (
+                    <>
+                        {preview ? (
+                            <>
+                                <label>Remove Banner</label>
+                                <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                            </>
+                        ) : (
+                            <>
+                                <Field
+                                    name="bannerRemove"
+                                    type="checkbox"
+                                /> <span>Remove Banner</span>
+                            </>
+                        )}
+                    </>
+                )}
+
+            </div>
+            <div className="form-div">
+                <label className="form-label">Name</label>
+                {preview ? (
+                    <p className="italic">{form.values.name}</p>
+                ) : (
+                    <Field
+                        name="name"
                         className="form-input"
-                        onChange={(e) => {
-                            const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
-
-                            if (file) {
-                                const reader = new FileReader();
-
-                                reader.onloadend = () => {
-                                    setBanner(reader.result);
-                                };
-                                
-                                reader.readAsDataURL(file);
-                            }
-                        }}
                     />
-                    {partner?.banner && (
-                        <>
-                            {preview ? (
-                                <>
-                                    <label>Remove Banner</label>
-                                    <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                                </>
-                            ) : (
-                                <>
-                                    <Field
-                                        name="bannerRemove"
-                                        type="checkbox"
-                                    /> <span>Remove Banner</span>
-                                </>
-                            )}
-                        </>
-                    )}
-
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Name</label>
-                    {preview ? (
-                        <p className="italic">{form.values.name}</p>
-                    ) : (
-                        <Field
-                            name="name"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">URL</label>
-                    {preview ? (
-                        <p className="italic">{form.values.url}</p>
-                    ) : (
-                        <Field
-                            name="url"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-            </FormMain>
-        </>
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">URL</label>
+                {preview ? (
+                    <p className="italic">{form.values.url}</p>
+                ) : (
+                    <Field
+                        name="url"
+                        className="form-input"
+                    />
+                )}
+            </div>
+        </FormMain>
     );
 }
 

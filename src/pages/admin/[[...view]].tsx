@@ -14,9 +14,7 @@ import RoleForm from "@components/forms/role/new";
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
-
-import SuccessBox from "@utils/success";
-import ErrorBox from "@utils/error";
+import { ScrollToTop } from "@utils/scroll";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
@@ -52,6 +50,7 @@ const Page: NextPage<{
     roles,
     stats
 }) => {
+    // Prepare mutations.
     const roleDeleteMut = api.admin.delRole.useMutation();
 
     let sucTitle: string | undefined = undefined;
@@ -70,7 +69,12 @@ const Page: NextPage<{
 
     return (
         <>
-            <Wrapper>
+            <Wrapper
+                successTitleOverride={sucTitle}
+                successMsgOverride={sucMsg}
+                errorTitleOverride={errTitle}
+                errorMsgOverride={errMsg}
+            >
                 {authed ? (
                     <div className="content-item">
                         <AdminSettingsPanel view={view}>
@@ -107,14 +111,6 @@ const Page: NextPage<{
                                     </div>
                                     <div className="content-item">
                                         <h2>Existing Roles</h2>
-                                        <SuccessBox
-                                            title={sucTitle}
-                                            msg={sucMsg}
-                                        />
-                                        <ErrorBox
-                                            title={errTitle}
-                                            msg={errMsg}
-                                        />
                                         <div className="flex gap-4">
                                             {roles?.map((role) => {
                                                 // Compile links.
@@ -155,6 +151,8 @@ const Page: NextPage<{
                                                                             role: role.id
                                                                         });
                                                                     }
+
+                                                                    ScrollToTop();
                                                                 }}
                                                             >Delete</button>
                                                         </div>

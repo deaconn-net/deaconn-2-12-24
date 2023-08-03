@@ -1,13 +1,12 @@
 import { Field, useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { type Article } from '@prisma/client';
 
 import FormMain from "@components/forms/main";
+import { ErrorCtx, SuccessCtx } from '@components/wrapper';
 
 import { api } from "@utils/api";
-import ErrorBox from "@utils/error";
-import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
 import ReactMarkdown from 'react-markdown';
@@ -18,44 +17,41 @@ const Form: React.FC<{
     article
 }) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
-    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
-
-    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
-    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
+    const success = useContext(SuccessCtx);
+    const error = useContext(ErrorCtx);
 
     // Article mutations.
     const articleMut = api.blog.add.useMutation();
 
     // Check for errors or successes.
-    if (articleMut.isSuccess && !sucTitle) {
-        if (errTitle)
-            setErrTitle(undefined);
+    useEffect(() => {
+        if (articleMut.isSuccess && success) {
+            success.setTitle(`Successfully ${article ? "Saved" : "Created"} Article`);
+            success.setMsg(`Article successfully ${article ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
 
-        setSucTitle("Successfully " + (Boolean(article?.id) ? "Saved" : "Created") + "!");
-        setSucMsg("Article successfully " + (Boolean(article?.id) ? "saved" : "created") + "!");
+        if (articleMut.isError && error) {
+            const errorMsg = articleMut.error.message;
 
-        // Scroll to top.
-        ScrollToTop();
-    }
+            console.error(errorMsg);
 
-    if (articleMut.isError && !errTitle) {
-        if (sucTitle)
-            setSucTitle(undefined);
+            error.setTitle(`Error ${article ? "Saving" : "Creating"} Article`);
+    
+            if (articleMut.error.data?.code == "UNAUTHORIZED")
+                error.setMsg("You are not signed in or have permissions to create articles on our blog.");
+            else if (errorMsg.includes("constraint"))
+                error.setMsg("URL is already in use. Please choose a different URL or modify the existing article properly.");
+            else
+                error.setMsg(`Error ${article ? "saving" : "creating"} article.`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [articleMut, success, error, article]);
 
-        setErrTitle("Error Creating Or Editing Article");
-
-        console.error(articleMut.error.message);
-        if (articleMut.error.data?.code == "UNAUTHORIZED")
-            setErrMsg("You are not signed in or have permissions to create articles on our blog.")
-        else if (articleMut.error.message.includes("constraint"))
-            setErrMsg("URL is already in use. Please choose a different URL or modify the existing article properly.")
-        else
-            setErrMsg("Error creating or editing article.");
-
-        // Scroll to top.
-        ScrollToTop();
-    }
 
     // Setup banner image.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
@@ -96,8 +92,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            setErrTitle(undefined);
-            setSucTitle(undefined);
+            if (success)
+                success.setTitle(undefined);
+
+            if (error)
+                error.setTitle(undefined);
 
             // Create article.
             articleMut.mutate({
@@ -113,115 +112,105 @@ const Form: React.FC<{
     });
 
     return (
-        <>
-            <ErrorBox
-                title={errTitle}
-                msg={errMsg}
-            />
-            <SuccessBox
-                title={sucTitle}
-                msg={sucMsg}
-            />
-            <FormMain
-                form={form}
-                submitBtn={submit_btn}
-            >
-                <div className="form-div">
-                    <label 
-                        className="form-label"
-                    >Banner</label>
-                    <input
-                        name="banner"
+        <FormMain
+            form={form}
+            submitBtn={submit_btn}
+        >
+            <div className="form-div">
+                <label 
+                    className="form-label"
+                >Banner</label>
+                <input
+                    name="banner"
+                    className="form-input"
+                    type="file"
+                    onChange={(e) => {
+                        const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
+
+                        if (file) {
+                            const reader = new FileReader();
+
+                            reader.onloadend = () => {
+                                setBanner(reader.result);
+                            };
+                            
+                            reader.readAsDataURL(file);
+                        }
+                    }}
+                />
+                {article?.banner && (
+                    <>
+                        {preview ? (
+                            <>
+                                <label className="form-label">Remove Banner</label>
+                                <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
+                            </>
+                        ) : (
+                            <>
+                                <Field
+                                    name="bannerRemove"
+                                    type="checkbox"
+                                /> <span>Remove Banner</span>
+                            </>
+                        )}
+                    </>
+                )}
+
+            </div>
+            <div className="form-div">
+                <label className="form-label">URL</label>
+                {preview ? (
+                    <p className="italic">{form.values.url}</p>
+                ) : (
+                    <Field 
+                        name="url" 
                         className="form-input"
-                        type="file"
-                        onChange={(e) => {
-                            const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
-
-                            if (file) {
-                                const reader = new FileReader();
-
-                                reader.onloadend = () => {
-                                    setBanner(reader.result);
-                                };
-                                
-                                reader.readAsDataURL(file);
-                            }
-                        }}
                     />
-                    {article?.banner && (
-                        <>
-                            {preview ? (
-                                <>
-                                    <label className="form-label">Remove Banner</label>
-                                    <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
-                                </>
-                            ) : (
-                                <>
-                                    <Field
-                                        name="bannerRemove"
-                                        type="checkbox"
-                                    /> <span>Remove Banner</span>
-                                </>
-                            )}
-                        </>
-                    )}
+                )}
 
-                </div>
-                <div className="form-div">
-                    <label className="form-label">URL</label>
-                    {preview ? (
-                        <p className="italic">{form.values.url}</p>
-                    ) : (
-                        <Field 
-                            name="url" 
-                            className="form-input"
-                        />
-                    )}
-
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Title</label>
-                    {preview ? (
-                        <p className="italic">{form.values.title}</p>
-                    ) : (
-                        <Field
-                            name="title"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Description</label>
-                    {preview ? (
-                        <p>{form.values.desc}</p>
-                    ) : (
-                        <Field
-                            name="desc"
-                            as="textarea"
-                            className="form-input"
-                            rows="8"
-                            cols="32"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Content</label>
-                    {preview ? (
-                        <ReactMarkdown className="markdown p-4 bg-gray-800">
-                            {form.values.content}
-                        </ReactMarkdown>
-                    ) : (
-                        <Field
-                            name="content"
-                            as="textarea"
-                            className="form-input"
-                            rows="16"
-                            cols="32"
-                        />
-                    )}
-                </div>
-            </FormMain>
-        </>
+            </div>
+            <div className="form-div">
+                <label className="form-label">Title</label>
+                {preview ? (
+                    <p className="italic">{form.values.title}</p>
+                ) : (
+                    <Field
+                        name="title"
+                        className="form-input"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Description</label>
+                {preview ? (
+                    <p>{form.values.desc}</p>
+                ) : (
+                    <Field
+                        name="desc"
+                        as="textarea"
+                        className="form-input"
+                        rows="8"
+                        cols="32"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Content</label>
+                {preview ? (
+                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                        {form.values.content}
+                    </ReactMarkdown>
+                ) : (
+                    <Field
+                        name="content"
+                        as="textarea"
+                        className="form-input"
+                        rows="16"
+                        cols="32"
+                    />
+                )}
+            </div>
+        </FormMain>
     );
 }
 

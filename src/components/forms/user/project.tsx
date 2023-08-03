@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
 import { type UserProject } from "@prisma/client";
 
 import FormMain from "@components/forms/main";
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
-import ErrorBox from "@utils/error";
-import SuccessBox from "@utils/success";
 import { ScrollToTop } from "@utils/scroll";
 
 import ReactMarkdown from "react-markdown";
@@ -21,39 +20,34 @@ const Form: React.FC<{
     project
 }) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
-    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
-
-    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
-    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
+    const success = useContext(SuccessCtx);
+    const error = useContext(ErrorCtx);
 
     // Request mutations.
     const projectMut = api.user.addProject.useMutation();
 
     // Check for errors or successes.
-    if (projectMut.isSuccess && !sucTitle) {
-        if (errTitle)
-            setErrTitle(undefined);
+    useEffect(() => {
+        if (projectMut.isSuccess && success) {   
+            success.setTitle(`Successfully ${project ? "Saved" : "Created"} Project!`);
+            success.setMsg(`Your project was ${project ? "saved" : "created"} successfully!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
 
-        setSucTitle("Project Added!");
-        setSucMsg("Your project was added or saved successfully!");
+        if (projectMut.isError && error) {
+            console.error(projectMut.error.message);
 
-        // Scroll to top.
-        ScrollToTop();
-    }
+            error.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
+            error.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
 
-    if (projectMut.isError && !errTitle) {
-        if (sucTitle)
-            setSucTitle(undefined);
+    }, [projectMut, success, error, project])
 
-        setErrTitle("Error Adding Or Saving Project");
-        setErrMsg("Error adding or editing project. Read developer console for more information.");
-
-        console.error(projectMut.error.message);
-
-        // Scroll to top.
-        ScrollToTop();
-    }
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -90,8 +84,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            setErrTitle(undefined);
-            setSucTitle(undefined);
+            if (success)
+                success.setTitle(undefined);
+
+            if (error)
+                error.setTitle(undefined);
 
             projectMut.mutate({
                 id: project?.id,
@@ -104,80 +101,70 @@ const Form: React.FC<{
     });
 
     return (
-        <>
-            <ErrorBox
-                title={errTitle}
-                msg={errMsg}
-            />
-            <SuccessBox
-                title={sucTitle}
-                msg={sucMsg}
-            />
-            <FormMain
-                form={form}
-                submitBtn={submit_btn}
-            >
-                <div className="form-div">
-                    <label className="form-label">Start Date</label>
-                    {preview ? (
-                        <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
-                    ) : (
-                        <DatePicker
-                        name="startDate"
-                            className="form-input"
-                            selected={form.values.startDate}
-                            dateFormat="yyyy/MM/dd"
-                            onChange={(date: Date) => {
-                                void form.setFieldValue('startDate', date);
-                            }}
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">End Date</label>
-                    {preview ? (
-                        <p className="italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
-                    ) : (
-                        <DatePicker
-                            name="endDate"
-                            className="form-input"
-                            selected={form.values.endDate}
-                            dateFormat="yyyy/MM/dd"
-                            onChange={(date: Date) => {
-                                void form.setFieldValue('endDate', date);
-                            }}
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Name</label>
-                    {preview ? (
-                        <p className="italic">{form.values.name}</p>
-                    ) : (
-                        <Field
-                            name="name"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Details</label>
-                    {preview ? (
-                        <ReactMarkdown className="markdown p-4 bg-gray-800">
-                            {form.values.desc}
-                        </ReactMarkdown>
-                    ) : (
-                        <Field
-                            name="desc"
-                            as="textarea"
-                            className="form-input"
-                            rows="16"
-                            cols="32"
-                        />
-                    )}
-                </div>
-            </FormMain>
-        </>
+        <FormMain
+            form={form}
+            submitBtn={submit_btn}
+        >
+            <div className="form-div">
+                <label className="form-label">Start Date</label>
+                {preview ? (
+                    <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
+                ) : (
+                    <DatePicker
+                    name="startDate"
+                        className="form-input"
+                        selected={form.values.startDate}
+                        dateFormat="yyyy/MM/dd"
+                        onChange={(date: Date) => {
+                            void form.setFieldValue('startDate', date);
+                        }}
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">End Date</label>
+                {preview ? (
+                    <p className="italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
+                ) : (
+                    <DatePicker
+                        name="endDate"
+                        className="form-input"
+                        selected={form.values.endDate}
+                        dateFormat="yyyy/MM/dd"
+                        onChange={(date: Date) => {
+                            void form.setFieldValue('endDate', date);
+                        }}
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Name</label>
+                {preview ? (
+                    <p className="italic">{form.values.name}</p>
+                ) : (
+                    <Field
+                        name="name"
+                        className="form-input"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Details</label>
+                {preview ? (
+                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                        {form.values.desc}
+                    </ReactMarkdown>
+                ) : (
+                    <Field
+                        name="desc"
+                        as="textarea"
+                        className="form-input"
+                        rows="16"
+                        cols="32"
+                    />
+                )}
+            </div>
+        </FormMain>
     );
 }
 

@@ -1,11 +1,10 @@
 import { Field, useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import FormMain from "@components/forms/main";
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
-import ErrorBox from "@utils/error";
-import SuccessBox from "@utils/success";
 import { ScrollToTop } from '@utils/scroll';
 
 import { type Role } from "@prisma/client";
@@ -17,42 +16,37 @@ const Form: React.FC<{
     role
 }) => {
     // Success and error messages.
-    const [errTitle, setErrTitle] = useState<string | undefined>(undefined);
-    const [errMsg, setErrMsg] = useState<string | undefined>(undefined);
-
-    const [sucTitle, setSucTitle] = useState<string | undefined>(undefined);
-    const [sucMsg, setSucMsg] = useState<string | undefined>(undefined);
+    const success = useContext(SuccessCtx);
+    const error = useContext(ErrorCtx);
 
     // Role mutations.
     const roleMut = api.admin.addRole.useMutation();
 
     // Check for errors or successes.
-    if (roleMut.isSuccess && !sucTitle) {
-        if (errTitle)
-            setErrTitle(undefined);
+    useEffect(() => {
+        if (roleMut.isSuccess && success) {    
+            success.setTitle(`Successfully ${role ? "Saved" : "Created"} Role!`);
+            success.setMsg(`Role successfully ${role ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
 
-        setSucTitle("Successfully " + (role ? "Saved" : "Created") + "!");
-        setSucMsg("Role successfully " + (role ? "saved" : "created") + "!");
+        if (roleMut.isError && error) {    
+            console.error(roleMut.error.message);
 
-        // Scroll to top.
-        ScrollToTop();
-    }
-
-    if (roleMut.isError && !errTitle) {
-        if (sucTitle)
-            setSucTitle(undefined);
-
-        setErrTitle("Error Creating Or Editing Role");
-
-        console.error(roleMut.error.message);
-        if (roleMut.error.data?.code == "UNAUTHORIZED")
-            setErrMsg("You are not signed in or have permissions to create roles.")
-        else
-            setErrMsg("Error creating or editing role.");
-
-        // Scroll to top.
-        ScrollToTop();
-    }
+            error.setTitle(`Error ${role ? "Saving" : "Creating"} Role`);
+    
+            if (roleMut.error.data?.code == "UNAUTHORIZED")
+                error.setMsg("You are not signed in or have permissions to create roles.")
+            else
+                error.setMsg(`Error ${role ? "saving" : "creating"} role.`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    
+    }, [roleMut, success, error, role])
 
 
     // Setup preview.
@@ -89,8 +83,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            setErrTitle(undefined);
-            setSucTitle(undefined);
+            if (success)
+                success.setTitle(undefined);
+
+            if (error)
+                error.setTitle(undefined);
 
             // Create article.
             roleMut.mutate({
@@ -102,59 +99,49 @@ const Form: React.FC<{
     });
 
     return (
-        <>
-            <ErrorBox
-                title={errTitle}
-                msg={errMsg}
-            />
-            <SuccessBox
-                title={sucTitle}
-                msg={sucMsg}
-            />
-            <FormMain
-                form={form}
-                submitBtn={submit_btn}
-            >
-                <div className="form-div">
-                    <label className="form-label">Name (ID)</label>
-                    {preview ? (
-                        <p className="italic">{form.values.role}</p>
-                    ) : (
-                        <Field
-                            name="role"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Title</label>
-                    {preview ? (
-                        <p className="italic">{form.values.title}</p>
-                    ) : (
-                        <Field
-                            name="title"
-                            className="form-input"
-                        />
-                    )}
-                </div>
-                <div className="form-div">
-                    <label className="form-label">Description</label>
-                    {preview ? (
-                        <ReactMarkdown className="markdown">
-                            {form.values.description}
-                        </ReactMarkdown>
-                    ) : (
-                        <Field
-                            name="description"
-                            as="textarea"
-                            className="form-input"
-                            rows={16}
-                            cols={32}
-                        />
-                    )}
-                </div>
-            </FormMain>
-        </>
+        <FormMain
+            form={form}
+            submitBtn={submit_btn}
+        >
+            <div className="form-div">
+                <label className="form-label">Name (ID)</label>
+                {preview ? (
+                    <p className="italic">{form.values.role}</p>
+                ) : (
+                    <Field
+                        name="role"
+                        className="form-input"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Title</label>
+                {preview ? (
+                    <p className="italic">{form.values.title}</p>
+                ) : (
+                    <Field
+                        name="title"
+                        className="form-input"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Description</label>
+                {preview ? (
+                    <ReactMarkdown className="markdown">
+                        {form.values.description}
+                    </ReactMarkdown>
+                ) : (
+                    <Field
+                        name="description"
+                        as="textarea"
+                        className="form-input"
+                        rows={16}
+                        cols={32}
+                    />
+                )}
+            </div>
+        </FormMain>
     );
 }
 

@@ -13,10 +13,10 @@ import NotFound from "@components/errors/not_found";
 import UserForm from "@components/forms/user/general";
 
 import { api } from "@utils/api";
-import ErrorBox from "@utils/error";
-import { ScrollToTop } from "@utils/scroll";
 import SuccessBox from "@utils/success";
+import ErrorBox from "@utils/error";
 import { has_role } from "@utils/user/auth";
+import { ScrollToTop } from "@utils/scroll";
 
 const Page: NextPage<{
     authed: boolean,
