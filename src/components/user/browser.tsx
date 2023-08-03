@@ -20,7 +20,7 @@ const UserBrowser: React.FC<{
 
     // Filters
     const [search, setSearch] = useState<string | undefined>(undefined);
-    //const [searchMode, setSearchMode] = useState(0);
+    const [searchMode, setSearchMode] = useState(0);
 
     // Sorting.
     //const [sort, setSort] = useState("id");
@@ -33,7 +33,8 @@ const UserBrowser: React.FC<{
     const { data, fetchNextPage } = api.admin.getUsers.useInfiniteQuery({
         limit: limit,
         
-        search: search
+        search: search,
+        searchMode: searchMode
     }, {
         getNextPageParam: (lastPage) => lastPage.nextUser
     });
@@ -58,10 +59,10 @@ const UserBrowser: React.FC<{
     return (
         <>
             <div className="flex flex-wrap gap-4">
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-wrap gap-2 items-center">
                     <h3>Search</h3>
                     <input
-                        className="form-input p-2"
+                        className="form-input w-72 p-2"
                         value={undefined}
                         onChange={(e) => {
                             e.preventDefault();
@@ -71,6 +72,20 @@ const UserBrowser: React.FC<{
                             setSearch(val);
                         }}
                     />
+                    <select
+                        className="form-input w-32 p-2"
+                        onChange={(e) => {
+                            const val = Number(e.currentTarget.value);
+
+                            setSearchMode(val);
+                        }}
+                    >
+                        <option value="0">All</option>
+                        <option value="1">Email</option>
+                        <option value="2">Name</option>
+                        <option value="3">URL</option>
+                        <option value="4">Title</option>
+                    </select>
                 </div>
             </div>
             {grid ? (

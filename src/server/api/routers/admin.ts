@@ -23,6 +23,11 @@ export const adminRouter = createTRPCRouter({
                         ...(input.searchMode == 0 && {
                             OR: [
                                 {
+                                    email: {
+                                        contains: input.search
+                                    }
+                                },
+                                {
                                     name: {
                                         contains: input.search,
                                     }
@@ -40,11 +45,21 @@ export const adminRouter = createTRPCRouter({
                             ]
                         }),
                         ...(input.searchMode == 1 && {
-                            url: {
+                            email: {
                                 contains: input.search
                             }
                         }),
                         ...(input.searchMode == 2 && {
+                            name: {
+                                contains: input.search
+                            }
+                        }),
+                        ...(input.searchMode == 3 && {
+                            url: {
+                                contains: input.search
+                            }
+                        }),
+                        ...(input.searchMode == 4 && {
                             title: {
                                 contains: input.search
                             }
