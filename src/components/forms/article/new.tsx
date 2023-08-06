@@ -2,6 +2,7 @@ import { Field, useFormik } from 'formik';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { type Article } from '@prisma/client';
+import { type CategoryWithChildren } from '~/types/category';
 
 import FormMain from "@components/forms/main";
 import { ErrorCtx, SuccessCtx } from '@components/wrapper';
@@ -12,9 +13,11 @@ import { ScrollToTop } from '@utils/scroll';
 import ReactMarkdown from 'react-markdown';
 
 const Form: React.FC<{
-    article?: Article
+    article?: Article,
+    categories?: CategoryWithChildren[]
 }> = ({
-    article
+    article,
+    categories = []
 }) => {
     // Success and error messages.
     const success = useContext(SuccessCtx);
@@ -82,6 +85,7 @@ const Form: React.FC<{
     // Setup form.
     const form = useFormik({
         initialValues: {
+            category: article?.categoryId ?? 0,
             url: article?.url ?? "",
             title: article?.title ?? "",
             desc: article?.desc ?? "",
@@ -101,6 +105,7 @@ const Form: React.FC<{
             // Create article.
             articleMut.mutate({
                 id: article?.id,
+                category: Number(values.category) || null,
                 url: values.url,
                 title: values.title,
                 desc: values.desc,
@@ -155,7 +160,38 @@ const Form: React.FC<{
                         )}
                     </>
                 )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Category</label>
+                {preview ? (
+                    <p className="italic">{form.values.category}</p>
+                ) : (
+                    <select
+                        name="category"
+                        value={form.values.category}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
+                        className="form-input"
+                    >
+                        <option value={0}>None</option>
+                        {categories.map((category) => {
+                            return (
+                                <React.Fragment key={`article-category-${category.id.toString()}`}>
+                                    <option value={category.id}>{category.name}</option>
 
+                                    {category.children.map((categoryChild) => {
+                                        return (
+                                            <option
+                                                key={`article-category-${categoryChild.id.toString()}`}
+                                                value={categoryChild.id}
+                                            >&nbsp;&nbsp;&nbsp;&nbsp;{"->"} {categoryChild.name}</option>
+                                        );
+                                    })}
+                                </React.Fragment>
+                            );
+                        })}
+                    </select>
+                )}
             </div>
             <div className="form-div">
                 <label className="form-label">URL</label>
