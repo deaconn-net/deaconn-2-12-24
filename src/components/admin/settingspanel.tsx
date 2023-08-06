@@ -23,6 +23,10 @@ const AdminSettingsPanel: React.FC<{
                         href="/admin/users"
                         className={`tab-link ${view == "users" ? "tab-active" : ""}`}
                     >Users</Link>
+                    <Link
+                        href="/admin/categories"
+                        className={`tab-link ${view == "categories" ? "tab-active" : ""}`}
+                    >Categories</Link>
                 </ul>
             </div>
             <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
