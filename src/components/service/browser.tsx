@@ -14,7 +14,11 @@ import Loader from "@utils/loader";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const ServiceBrowser: React.FC = () => {
+const ServiceBrowser: React.FC<{
+    categories?: number[]
+}> = ({
+    categories
+}) => {
     // Retrieve session.
     const { data: session } = useSession();
 
@@ -32,6 +36,8 @@ const ServiceBrowser: React.FC = () => {
     const limit = 10;
     const { data, fetchNextPage } = api.service.getAll.useInfiniteQuery({
         limit: limit,
+
+        categories: categories,
 
         sort: sort,
         sortDir: sortDir

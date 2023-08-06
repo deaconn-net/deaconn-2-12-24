@@ -10,13 +10,25 @@ export const serviceRouter = createTRPCRouter({
             sort: z.string().default("purchases"),
             sortDir: z.string().default("desc"),
 
+            categories: z.array(z.number()).optional(),
+
             limit: z.number().default(10),
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
             const items = await ctx.prisma.service.findMany({
+                where: {
+                    ...(input.categories && {
+                        categoryId: {
+                            in: input.categories
+                        }
+                    })
+                },
                 orderBy: {
                     [input.sort]: input.sortDir
+                },
+                include: {
+                    category: true
                 },
 
                 take: input.limit + 1,
