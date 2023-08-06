@@ -61,19 +61,13 @@ export const blogRouter = createTRPCRouter({
                 create: {
                     categoryId: input.category,
                     url: input.url,
-                    ...(input.createdAt && {
-                        createdAt: input.createdAt
-                    }),
-                    ...(input.updatedAt && {
-                        updatedAt: input.updatedAt
-                    }),
+                    createdAt: input.createdAt,
+                    updatedAt: input.updatedAt,
                     ...(input.hasUser && {
                         userId: ctx.session.user.id
                     }),
                     title: input.title,
-                    ...(input.desc && {
-                        desc: input.desc
-                    }),
+                    desc: input.desc,
                     content: input.content,
                     ...(input.bannerRemove && {
                         banner: null
@@ -82,19 +76,13 @@ export const blogRouter = createTRPCRouter({
                 update: {
                     categoryId: input.category,
                     url: input.url,
-                    ...(input.createdAt && {
-                        createdAt: input.createdAt
-                    }),
-                    ...(input.updatedAt && {
-                        updatedAt: input.updatedAt
-                    }),
+                    createdAt: input.createdAt,
+                    updatedAt: input.updatedAt,
                     ...(input.hasUser && {
                         userId: ctx.session.user.id
                     }),
                     title: input.title,
-                    ...(input.desc && {
-                        desc: input.desc
-                    }),
+                    desc: input.desc,
                     content: input.content,
                     ...(input.bannerRemove && {
                         banner: null

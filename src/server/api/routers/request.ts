@@ -48,7 +48,7 @@ export const requestRouter = createTRPCRouter({
             id: z.number().optional(),
 
             userId: z.string().optional(),
-            serviceId: z.number().optional(),
+            serviceId: z.number().nullable().optional(),
 
             title: z.string().optional(),
             timeframe: z.number(),
@@ -63,12 +63,8 @@ export const requestRouter = createTRPCRouter({
                 },
                 create: {
                     userId: input.userId ?? ctx.session.user.id,
-                    ...(input.serviceId && {
-                        serviceId: input.serviceId
-                    }),
-                    ...(input.title && {
-                        title: input.title
-                    }),
+                    serviceId: input.serviceId,
+                    title: input.title,
                     timeframe: input.timeframe,
                     content: input.content,
                     startDate: input.startDate,
@@ -76,12 +72,8 @@ export const requestRouter = createTRPCRouter({
                 },
                 update: {
                     userId: input.userId ?? ctx.session.user.id,
-                    ...(input.serviceId && {
-                        serviceId: input.serviceId
-                    }),
-                    ...(input.title && {
-                        title: input.title
-                    }),
+                    serviceId: input.serviceId,
+                    title: input.title,
                     timeframe: input.timeframe,
                     content: input.content,
                     startDate: input.startDate,

@@ -21,24 +21,16 @@ export const categoryRouter = createTRPCRouter({
                         id: input.id ?? 0
                     },
                     create: {
-                        ...(input.parent !== undefined && {
-                            parentId: input.parent
-                        }),
+                        parentId: input.parent,
                         url: input.url,
                         name: input.name,
-                        ...(input.description && {
-                            desc: input.description
-                        })
+                        desc: input.description
                     },
                     update: {
-                        ...(input.parent !== undefined && {
-                            parentId: input.parent
-                        }),
+                        parentId: input.parent,
                         url: input.url,
                         name: input.name,
-                        ...(input.description && {
-                            desc: input.description
-                        })
+                        desc: input.description
                     }
                 });
             } catch (err) {

@@ -67,19 +67,11 @@ export const serviceRouter = createTRPCRouter({
                     url: input.url,
                     name: input.name,
                     price: input.price,
-                    ...(input.desc && {
-                        desc: input.desc
-                    }),
-                    ...(input.install && {
-                        install: input.install
-                    }),
-                    ...(input.features && {
-                        features: input.features
-                    }),
+                    desc: input.desc,
+                    install: input.install,
+                    features: input.features,
                     content: input.content,
-                    ...(input.gitLink && {
-                        gitLink: input.gitLink
-                    }),
+                    gitLink: input.gitLink,
                     openSource: input.openSource
                 },
                 update: {
@@ -87,19 +79,11 @@ export const serviceRouter = createTRPCRouter({
                     url: input.url,
                     name: input.name,
                     price: input.price,
-                    ...(input.desc && {
-                        desc: input.desc
-                    }),
-                    ...(input.install && {
-                        install: input.install
-                    }),
-                    ...(input.features && {
-                        features: input.features
-                    }),
+                    desc: input.desc,
+                    install: input.install,
+                    features: input.features,
                     content: input.content,
-                    ...(input.gitLink && {
-                        gitLink: input.gitLink
-                    }),
+                    gitLink: input.gitLink,
                     openSource: input.openSource,
                     ...(input.bannerRemove && {
                         banner: null

@@ -102,15 +102,11 @@ export const adminRouter = createTRPCRouter({
                     create: {
                         id: input.role,
                         title: input.title,
-                        ...(input.description && {
-                            desc: input.description
-                        })
+                        desc: input.description
                     },
                     update: {
                         title: input.title,
-                        ...(input.description && {
-                            desc: input.description
-                        })
+                        desc: input.description
                     }
                 });
             } catch (err) {

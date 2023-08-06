@@ -71,33 +71,15 @@ export const userRouter = createTRPCRouter({
                     id: input.id
                 },
                 data: {
-                    ...(input.credit && {
-                        credit: input.credit
-                    }),
-                    ...(input.image && {
-                        image: input.image
-                    }),
-                    ...(input.name && {
-                        name: input.name
-                    }),
-                    ...(input.url && {
-                        url: input.url
-                    }),
-                    ...(input.title && {
-                        title: input.title
-                    }),
-                    ...(input.aboutMe && {
-                        aboutMe: input.aboutMe
-                    }),
-                    ...(input.birthday && {
-                        birthday: input.birthday
-                    }),
-                    ...(input.showEmail != null && {
-                        showEmail: input.showEmail
-                    }),
-                    ...(input.isTeam && {
-                        isTeam: input.isTeam
-                    }),
+                    credit: input.credit,
+                    image: input.image,
+                    name: input.name,
+                    url: input.url,
+                    title: input.title,
+                    aboutMe: input.aboutMe,
+                    birthday: input.birthday,
+                    showEmail: input.showEmail,
+                    isTeam: input.isTeam,
                     ...(input.website && {
                         website: RetrieveSocialTag(input.website, "website")
                     }),
@@ -126,12 +108,8 @@ export const userRouter = createTRPCRouter({
                         },
                         create: {
                             userId: input.id,
-                            ...(exp.startDate && {
-                                startDate: exp.startDate
-                            }),
-                            ...(exp.endDate && {
-                                endDate: exp.endDate
-                            }),
+                            startDate: exp.startDate,
+                            endDate: exp.endDate,
                             title: exp.title,
                             desc: exp.desc
                         },
@@ -212,12 +190,8 @@ export const userRouter = createTRPCRouter({
                         },
                         create: {
                             userId: input.id,
-                            ...(pro.startDate && {
-                                startDate: pro.startDate
-                            }),
-                            ...(pro.endDate && {
-                                endDate: pro.endDate
-                            }),
+                            startDate: pro.startDate,
+                            endDate: pro.endDate,
                             name: pro.name,
                             desc: pro.desc
                         },
