@@ -20,6 +20,9 @@ model Article {
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+
   title   String
   desc    String?
   content String // @db.Text
@@ -52,6 +55,9 @@ model Service {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
 
   name     String
   price    Float   @default(0)
@@ -257,6 +263,20 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+
+  parentId Int?
+  parent   Category?  @relation("children", fields: [parentId], references: [id], onUpdate: Cascade, onDelete: NoAction)
+  children Category[] @relation("children")
+
+  name String
+  desc String?
+
+  Article Article[]
+  Service Service[]
 }
 
 model Purchase {
