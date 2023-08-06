@@ -13,14 +13,14 @@ import ProjectForm from "@components/forms/user/project";
 import SkillForm from "@components/forms/user/skill";
 
 const SettingsPanel: React.FC<{
-    current?: string,
+    view?: string,
     
     user?: User,
     experience?: UserExperience,
     skill?: UserSkill,
     project?: UserProject
 }> = ({
-    current = "general",
+    view = "general",
 
     user,
     experience,
@@ -36,74 +36,91 @@ const SettingsPanel: React.FC<{
                     <ul className="tab-container w-64">
                         <Link
                             href="/user/profile"
-                            className={`tab-link ${current == "general" ? "tab-active" : ""}`}    
+                            className={`tab-link ${view == "general" ? "tab-active" : ""}`}    
                         >
                             <li>General</li>
                         </Link>
                         <Link
                             href="/user/profile/experiences"
-                            className={`tab-link ${current == "experiences" ? "tab-active" : ""}`}
+                            className={`tab-link ${view == "experiences" ? "tab-active" : ""}`}
                         >
                             <li>Experiences</li>
                         </Link>
                         <Link
                             href="/user/profile/skills"
-                            className={`tab-link ${current == "skills" ? "tab-active" : ""}`}
+                            className={`tab-link ${view == "skills" ? "tab-active" : ""}`}
                         >
                             <li>Skills</li>
                         </Link>
                         <Link
                             href="/user/profile/projects"
-                            className={`tab-link ${current == "projects" ? "tab-active" : ""}`}
+                            className={`tab-link ${view == "projects" ? "tab-active" : ""}`}
                         >
                             <li>Projects</li>
                         </Link>
                     </ul>
                 </div>
-
                 <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
-                    {current == "general" && (
-                        <GeneralForm 
-                            user={user}
-                        />
-                    )}
-                    {current == "experiences" && (
-                        <>
-                            {!experience && (
-                                <ExperienceBrowser
-                                    userId={session?.user?.id}
-                                />
-                            )}
-
-                            <ExperienceForm
-                                experience={experience}
+                    {view == "general" && (
+                        <div className="content-item">
+                            <h2>General</h2>
+                            <GeneralForm 
+                                user={user}
                             />
+                        </div>
+                    )}
+                    {view == "experiences" && (
+                        <>
+                            <div className="content-item">
+                                <h2>Add Experience</h2>
+                                <ExperienceForm
+                                    experience={experience}
+                                />
+                            </div>
+                            <div className="content-item">
+                                <h2>Existing Experiences</h2>
+                                {!experience && (
+                                    <ExperienceBrowser
+                                        userId={session?.user?.id}
+                                    />
+                                )}
+                            </div>
                         </>
                     )}
-                    {current == "skills" && (
+                    {view == "skills" && (
                         <>
-                            {!skill && (
-                                <SkillBrowser
-                                    userId={session?.user?.id}
+                            <div className="content-item">
+                                <h2>Add Skill</h2>
+                                <SkillForm
+                                    skill={skill}
                                 />
-                            )}
-
-                            <SkillForm
-                                skill={skill}
-                            />
+                            </div>
+                            <div className="content-item">
+                                <h2>Existing Skills</h2>
+                                {!skill && (
+                                    <SkillBrowser
+                                        userId={session?.user?.id}
+                                    />
+                                )}
+                            </div>
                         </>
                     )}
-                    {current == "projects" && (
+                    {view == "projects" && (
                         <>
-                            {!project && (
-                                <ProjectBrowser
-                                    userId={session?.user?.id}
+                            <div className="content-item">
+                                <h2>Add Project</h2>
+                                <ProjectForm
+                                    project={project}
                                 />
-                            )}
-
-                            <ProjectForm
-                                project={project}
-                            />
+                            </div>
+                            <div className="content-item">
+                                <h2>Existing Projects</h2>
+                                {!project && (
+                                    <ProjectBrowser
+                                        userId={session?.user?.id}
+                                    />
+                                )}
+                            </div>
                         </>
                     )}
                 </div>

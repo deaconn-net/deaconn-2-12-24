@@ -36,7 +36,7 @@ const Page: NextPage<{
                 <div className="content-item">
                     {authed ? (
                         <UserSettingsPanel
-                            current={view}
+                            view={view}
 
                             user={user}
                             experience={experience}
