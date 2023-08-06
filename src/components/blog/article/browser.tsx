@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-import { Article, type Service } from "@prisma/client";
+import { type Article } from "@prisma/client";
 
 import IconAndText from "@components/containers/icon_and_text";
 import ArticleRow from "@components/blog/article/row";
@@ -111,28 +111,29 @@ const ArticleBrowser: React.FC<{
                 )}
 
             </div>
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={loadMore}
-                loader={<Loader key={"loader"} />}
-                hasMore={requireItems}
-                className={"article-browser-scroller"}
-            >
-                <>
-                    {data && (
-                        <>
-                            {articles.map((article: Article) => {
-                                return (
-                                    <ArticleRow
-                                        key={"article-" + article.id.toString()}
-                                        article={article}
-                                    />
-                                )
-                            })}
-                        </>
-                    )}
-                </>
-            </InfiniteScroll>
+            {data && articles.length > 0 ? (
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={loadMore}
+                    loader={<Loader key={"loader"} />}
+                    hasMore={requireItems}
+                    className={"article-browser-scroller"}
+                >
+                    <>
+                        {articles.map((article: Article) => {
+                            return (
+                                <ArticleRow
+                                    key={"article-" + article.id.toString()}
+                                    article={article}
+                                    small={true}
+                                />
+                            )
+                        })}
+                    </>
+                </InfiniteScroll>
+            ) : (
+                <p>No articles found.</p>
+            )}
         </div>
     );
 }

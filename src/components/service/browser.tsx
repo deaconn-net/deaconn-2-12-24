@@ -94,28 +94,27 @@ const ServiceBrowser: React.FC<{
                 )}
 
             </div>
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={loadMore}
-                loader={<Loader key={"loader"} />}
-                hasMore={requireItems}
-                className={"service-browser-scroller"}
-            >
-                <>
-                    {data && (
-                        <>
-                            {services.map((service: Service) => {
-                                return (
-                                    <ServiceRow
-                                        key={"service-" + service.id.toString()}
-                                        service={service}
-                                    />
-                                )
-                            })}
-                        </>
-                    )}
-                </>
-            </InfiniteScroll>
+            {data && services.length > 0 ? (
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={loadMore}
+                    loader={<Loader key={"loader"} />}
+                    hasMore={requireItems}
+                    className={"service-browser-scroller"}
+                >
+                    {services.map((service: Service) => {
+                        return (
+                            <ServiceRow
+                                key={"service-" + service.id.toString()}
+                                service={service}
+                                small={true}
+                            />
+                        )
+                    })}
+                </InfiniteScroll>        
+            ) : (
+                <p>No services found.</p>
+            )}
         </div>
     );
 }

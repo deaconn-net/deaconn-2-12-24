@@ -21,7 +21,7 @@ const RequestBrowser: React.FC = () => {
     // Filters.
     const [oldest, setOldest] = useState(false);
 
-    let sort = "updatedAt";
+    const sort = "updatedAt";
     let sortDir = "desc";
 
     if (oldest)

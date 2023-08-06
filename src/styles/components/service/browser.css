@@ -16,5 +16,5 @@
     @apply justify-items-center;
     @apply gap-4;
 
-    @apply sm:grid-cols-[repeat(auto-fill,minmax(36rem,1fr))];
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
 }

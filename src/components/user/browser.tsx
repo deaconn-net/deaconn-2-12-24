@@ -120,7 +120,7 @@ const UserBrowser: React.FC<{
                 </>
             ) : (
                 <>
-                    {requireItems || users.length > 0 ? (
+                    {data && users.length > 0 ? (
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={loadMore}
