@@ -1,0 +1,20 @@
+.article-browser {
+    @apply flex;
+    @apply flex-col;
+    @apply gap-4;
+}
+
+.article-browser-buttons {
+    @apply flex;
+    @apply justify-between;
+}
+
+.article-browser-scroller {
+    @apply grid;
+    @apply grid-cols-[repeat(auto-fill,minmax(theme(width.full),1fr))];
+
+    @apply justify-items-center;
+    @apply gap-4;
+
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(36rem,1fr))];
+}

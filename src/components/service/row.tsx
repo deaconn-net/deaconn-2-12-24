@@ -12,7 +12,7 @@ import ViewIcon from "@utils/icons/view";
 import PurchaseIcon from "@utils/icons/purchase";
 import DownloadIcon from "@utils/icons/download";
 
-const Row: React.FC<{
+const ServiceRow: React.FC<{
     service: Service,
     small?: boolean
 }> = ({
@@ -134,4 +134,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default ServiceRow;

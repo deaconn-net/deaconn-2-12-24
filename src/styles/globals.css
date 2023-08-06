@@ -80,6 +80,7 @@
 /* Components */
 @layer components {
     @import "components/blog/article/row.css";
+    @import "components/blog/article/browser.css";
 
     @import "components/forms/main.css";
 
@@ -88,8 +89,10 @@
     @import "components/partner/row.css";
 
     @import "components/request/row.css";
+    @import "components/request/browser.css";
 
     @import "components/service/row.css";
+    @import "components/service/browser.css";
 
     @import "components/user/profile/main.css";
     @import "components/user/profile/experience.css";

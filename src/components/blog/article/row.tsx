@@ -9,7 +9,7 @@ import CommentIcon from "@utils/icons/comment";
 import ViewIcon from "@utils/icons/view";
 import IconAndText from "@components/containers/icon_and_text";
 
-const Row: React.FC<{
+const ArticleRow: React.FC<{
     article: Article,
     small?: boolean
 }> = ({
@@ -113,4 +113,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default ArticleRow;

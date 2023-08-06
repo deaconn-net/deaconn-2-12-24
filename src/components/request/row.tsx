@@ -5,7 +5,7 @@ import { type RequestWithService } from "~/types/request";
 //import { api } from "@utils/api";
 import { dateFormat, dateFormatOne } from "@utils/date";
 
-const Row: React.FC<{
+const RequestRow: React.FC<{
     request: RequestWithService
 }> = ({ request }) => {
     const viewUrl = "/request/view/" + request.id.toString();
@@ -43,4 +43,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default RequestRow;
