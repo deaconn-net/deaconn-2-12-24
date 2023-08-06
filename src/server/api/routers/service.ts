@@ -39,6 +39,7 @@ export const serviceRouter = createTRPCRouter({
         .input(z.object({
             id: z.number().optional(),
 
+            category: z.number().nullable().optional(),
             url: z.string(),
             name: z.string(),
             price: z.number().default(0),
@@ -62,6 +63,7 @@ export const serviceRouter = createTRPCRouter({
                     id: input.id ?? 0,
                 },
                 create: {
+                    categoryId: input.category,
                     url: input.url,
                     name: input.name,
                     price: input.price,
@@ -81,6 +83,7 @@ export const serviceRouter = createTRPCRouter({
                     openSource: input.openSource
                 },
                 update: {
+                    categoryId: input.category,
                     url: input.url,
                     name: input.name,
                     price: input.price,
