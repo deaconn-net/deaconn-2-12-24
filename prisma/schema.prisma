@@ -272,6 +272,7 @@ model Category {
   parent   Category?  @relation("children", fields: [parentId], references: [id], onUpdate: Cascade, onDelete: NoAction)
   children Category[] @relation("children")
 
+  url  String
   name String
   desc String?
 
