@@ -1,9 +1,7 @@
 import { Prisma } from "@prisma/client";
 
-const requestWithService = Prisma.validator<Prisma.RequestArgs>()({
+export type RequestWithService = Prisma.RequestGetPayload<{
     include: {
         service: true
     }
-});
-
-export type RequestWithService = Prisma.RequestGetPayload<typeof requestWithService>;
+}>;
