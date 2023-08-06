@@ -8,7 +8,7 @@ const AdminSettingsPanel: React.FC<{
     children
 }) => {
     return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2">
             <div>
                 <ul className="tab-container w-64">
                     <Link

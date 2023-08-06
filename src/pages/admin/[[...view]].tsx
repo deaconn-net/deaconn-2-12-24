@@ -179,16 +179,16 @@ const Page: NextPage<{
                             )}
                             {view == "categories" && (
                                 <div className="flex flex-col gap-4">
-                                <div className="content-item">
-                                    <h2>Add Category</h2>
-                                    <CategoryForm
-                                        key={"category-add-form"}
-                                        categories={categories ?? []}
-                                    />
-                                </div>
-                                <div className="content-item">
-                                    <h2>Existing Categories</h2>
-                                        <div className="flex gap-4">
+                                    <div className="content-item">
+                                        <h2>Add Category</h2>
+                                        <CategoryForm
+                                            key={"category-add-form"}
+                                            categories={categories ?? []}
+                                        />
+                                    </div>
+                                    <div className="content-item">
+                                        <h2>Existing Categories</h2>
+                                        <div className="flex flex-wrap gap-4">
                                             {categories?.map((category) => {
                                                 // Compile links.
                                                 const editUrl = `/admin/category/edit/${category.id.toString()}`;
