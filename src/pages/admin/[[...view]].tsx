@@ -3,6 +3,7 @@ import { getSession } from "next-auth/react";
 import Link from "next/link";
 
 import { type Role } from "@prisma/client";
+import { type CategoryWithChildren } from "~/types/category";
 
 import { prisma } from "@server/db";
 
@@ -17,6 +18,7 @@ import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import CategoryForm from "@components/forms/category/new";
 
 type statsType = {
     articles: number
@@ -42,17 +44,21 @@ type statsType = {
 const Page: NextPage<{
     authed: boolean,
     view: string,
+    stats?: statsType,
     roles?: Role[],
-    stats?: statsType
+    categories?: CategoryWithChildren[],
 }> = ({
     authed,
     view,
+    stats,
     roles,
-    stats
+    categories
 }) => {
     // Prepare mutations.
     const roleDeleteMut = api.admin.delRole.useMutation();
+    const categoryDeleteMut = api.category.delete.useMutation();
 
+    // Success and error management.
     let sucTitle: string | undefined = undefined;
     let sucMsg: string | undefined = undefined;
 
@@ -65,6 +71,14 @@ const Page: NextPage<{
     } else if (roleDeleteMut.isSuccess) {
         sucTitle = "Role Deleted!";
         sucMsg = "Role deleted successfully.";
+    }
+
+    if (categoryDeleteMut.isError) {
+        errTitle = "Category Not Deleted";
+        errMsg = "Category not deleted successfully.";
+    } else if (categoryDeleteMut.isSuccess) {
+        sucTitle = "Category Deleted!";
+        sucMsg = "Category deleted successfully.";
     }
 
     return (
@@ -163,6 +177,105 @@ const Page: NextPage<{
                                     </div>
                                 </div>
                             )}
+                            {view == "categories" && (
+                                <div className="flex flex-col gap-4">
+                                <div className="content-item">
+                                    <h2>Add Category</h2>
+                                    <CategoryForm
+                                        key={"category-add-form"}
+                                        categories={categories ?? []}
+                                    />
+                                </div>
+                                <div className="content-item">
+                                    <h2>Existing Categories</h2>
+                                        <div className="flex gap-4">
+                                            {categories?.map((category) => {
+                                                // Compile links.
+                                                const editUrl = `/admin/category/edit/${category.id.toString()}`;
+
+                                                return (
+                                                    <div
+                                                        key={`admin-categories-${category.id.toString()}`}
+                                                        className="p-6 bg-cyan-900 flex flex-col gap-2 rounded-md"
+                                                    >
+                                                        <div className="flex gap-2 items-center">
+                                                            <h2 className="text-center">{category.name}</h2>
+                                                        </div>
+                                                        <div className="grow">
+                                                            {category.desc ? (
+                                                                <ReactMarkdown className="markdown">
+                                                                    {category.desc}
+                                                                </ReactMarkdown>
+                                                            ) : (
+                                                                <p className="italic">No description available.</p>
+                                                            )}
+                                                        </div>
+                                                        {category.children.length > 0 && (
+                                                            <div className="content-item">
+                                                                <h3>Children</h3>
+                                                                <ul className="list-none flex flex-wrap gap-4">
+                                                                    {category.children.map((categoryChild) => {
+                                                                        const editUrlChild = `/admin/category/edit/${categoryChild.id.toString()}`;
+
+                                                                        return (
+                                                                            <div
+                                                                                key={`admin-categories-${categoryChild.id.toString()}`}
+                                                                                className="flex gap-2 items-center"
+                                                                            >
+                                                                                <Link
+                                                                                    href={editUrlChild}
+                                                                                >{categoryChild.name}</Link>
+                                                                                <button
+                                                                                    className="text-red-600 hover:text-red-500"
+                                                                                    onClick={(e) => {
+                                                                                        e.preventDefault();
+
+                                                                                        const yes = confirm("Are you sure you want to delete this category?");
+
+                                                                                        if (yes) {
+                                                                                            categoryDeleteMut.mutate({
+                                                                                                id: categoryChild.id
+                                                                                            });
+                                                                                        }
+
+                                                                                        ScrollToTop();
+                                                                                    }}
+                                                                                >X</button>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                        <div className="flex flex-wrap gap-2">
+                                                            <Link
+                                                                href={editUrl}
+                                                                className="button button-primary"
+                                                            >Edit</Link>
+                                                            <button
+                                                                className="button button-danger"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+
+                                                                    const yes = confirm("Are you sure you want to delete this category?");
+
+                                                                    if (yes) {
+                                                                        categoryDeleteMut.mutate({
+                                                                            id: category.id
+                                                                        });
+                                                                    }
+
+                                                                    ScrollToTop();
+                                                                }}
+                                                            >Delete</button>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             {view == "users" && (
                                 <div className="content-item">
                                     <UserBrowser />
@@ -192,7 +305,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     let view = params?.view?.[0] ?? "general";
 
-    if (!["general", "roles", "users"].includes(view))
+    if (!["general", "roles", "users", "categories"].includes(view))
         view = "general";
 
     // Retrieve roles if needed.
@@ -200,6 +313,20 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     if (view == "roles")
         roles = await prisma.role.findMany();
+
+    // Retrieve categories if needed.
+    let categories: CategoryWithChildren[] | undefined = undefined;
+
+    if (view == "categories") {
+        categories = await prisma.category.findMany({
+            where: {
+                parent: null
+            },
+            include: {
+                children: true
+            }
+        });
+    }
 
     // Retrieve stats if needed.
     let stats: statsType | null = null;
@@ -248,8 +375,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         props: {
             authed: authed,
             view: view,
+            stats,
             roles: roles ? JSON.parse(JSON.stringify(roles)) : null,
-            stats
+            categories: categories ?? null
         }
     }
 }

@@ -1,6 +1,7 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type Article } from "@prisma/client";
+import { type CategoryWithChildren } from "~/types/category";
 
 import Form from '@components/forms/article/new';
 import Wrapper from "@components/wrapper";
@@ -9,9 +10,11 @@ import Meta from "@components/meta";
 import { prisma } from "@server/db";
 
 const Page: NextPage<{
-    article: Article | null
+    article: Article | null,
+    categories: CategoryWithChildren[]
 }> = ({
-    article
+    article,
+    categories
 }) => {
     return (
         <>
@@ -24,6 +27,7 @@ const Page: NextPage<{
                     <h1>Create Article</h1>
                     <Form
                         article={article ?? undefined}
+                        categories={categories}
                     />
                 </div>
             </Wrapper>
@@ -38,6 +42,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const lookup_url = query?.url;
 
     let article: Article | null = null;
+    let categories: CategoryWithChildren[] = [];
 
     if (lookup_id || lookup_url) {
         article = await prisma.article.findFirst({
@@ -52,9 +57,19 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    categories = await prisma.category.findMany({
+        where: {
+            parent: null
+        },
+        include: {
+            children: true
+        }
+    });
+
     return {
         props: {
-            article: JSON.parse(JSON.stringify(article))
+            article: JSON.parse(JSON.stringify(article)),
+            categories: categories
         }
     }
 }

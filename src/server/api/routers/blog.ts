@@ -45,6 +45,7 @@ export const blogRouter = createTRPCRouter({
 
             hasUser: z.boolean().default(true),
 
+            category: z.number().nullable().optional(),
             url: z.string(),
             title: z.string(),
             desc: z.string().optional(),
@@ -58,6 +59,7 @@ export const blogRouter = createTRPCRouter({
                     id: input.id ?? 0
                 },
                 create: {
+                    categoryId: input.category,
                     url: input.url,
                     ...(input.createdAt && {
                         createdAt: input.createdAt
@@ -78,6 +80,7 @@ export const blogRouter = createTRPCRouter({
                     })
                 },
                 update: {
+                    categoryId: input.category,
                     url: input.url,
                     ...(input.createdAt && {
                         createdAt: input.createdAt

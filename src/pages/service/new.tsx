@@ -1,6 +1,7 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type Service } from "@prisma/client";
+import { type CategoryWithChildren } from "~/types/category";
 
 import Form from '@components/forms/service/new';
 import Wrapper from "@components/wrapper";
@@ -9,9 +10,11 @@ import Meta from "@components/meta";
 import { prisma } from "@server/db";
 
 const Page: NextPage<{
-    service: Service | null
+    service: Service | null,
+    categories: CategoryWithChildren[]
 }> = ({
-    service
+    service,
+    categories
 }) => {
     return (
         <>
@@ -23,6 +26,7 @@ const Page: NextPage<{
                     <h1>Create Service</h1>
                     <Form
                         service={service ?? undefined}
+                        categories={categories}
                     />
                 </div>
             </Wrapper>
@@ -35,6 +39,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const lookup_url = ctx.query?.url;
 
     let service: Service | null = null;
+    let categories: CategoryWithChildren[] = [];
 
     if (lookup_id || lookup_url) {
         service = await prisma.service.findFirst({
@@ -49,9 +54,19 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    categories = await prisma.category.findMany({
+        where: {
+            parent: null
+        },
+        include: {
+            children: true
+        }
+    });
+
     return {
         props: {
-            service: JSON.parse(JSON.stringify(service, (_, v) => typeof v === "bigint" ? v.toString() : v))
+            service: JSON.parse(JSON.stringify(service, (_, v) => typeof v === "bigint" ? v.toString() : v)),
+            categories: categories
         }
     };
 }
