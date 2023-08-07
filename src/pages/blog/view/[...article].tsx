@@ -81,7 +81,7 @@ const Page: NextPage<{
                             </div>
                             <h1>{article.title}</h1>
                             <div className="w-full bg-gray-800 p-6 rounded-sm flex flex-col gap-4">
-                                <div className="flex justify-between text-white text-sm">
+                                <div className="flex justify-between flex-wrap text-white text-sm">
                                     <div>
                                         {article.user && (
                                             <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>

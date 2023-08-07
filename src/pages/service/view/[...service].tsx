@@ -9,6 +9,7 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 import NotFound from "@components/errors/not_found";
 import IconAndText from "@components/containers/icon_and_text";
+import TabMenuWithData from "@components/tabs/tab_menu_with_data";
 
 import { prisma } from "@server/db";
 
@@ -20,6 +21,7 @@ import { has_role } from "@utils/user/auth";
 import SuccessBox from "@utils/success";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Tabs, { TabItemType } from "@components/tabs/tabs";
 
 const Page: NextPage<{
     service: Service | null,
@@ -48,6 +50,25 @@ const Page: NextPage<{
     // Prepare delete mutation.
     const deleteMut = api.service.delete.useMutation();
 
+    // Compile tabs.
+    const tabs: TabItemType[] = [
+        {
+            url: viewUrl,
+            text: <>Details</>,
+            active: view == "details"
+        },
+        {
+            url: `${viewUrl}/install`,
+            text: <>Installation</>,
+            active: view == "install"
+        },
+        {
+            url: `${viewUrl}/features`,
+            text: <>Features</>,
+            active: view == "features"
+        }
+    ];
+
     return (
         <>
             <Meta
@@ -74,36 +95,17 @@ const Page: NextPage<{
                                 />
                             </div>
                             <h1>{service.name}</h1>
-                            <div className="flex flex-wrap gap-2">
-                                <div>
-                                    <ul className="tab-container w-64">
-                                        <Link 
-                                            href={viewUrl}
-                                            className={`tab-link ${view == "details" ? "tab-active" : ""}`}
-                                        >
-                                            <li>Details</li>
-                                        </Link>
-                                        {service.install && (
-                                            <Link
-                                                href={`${viewUrl}/install`}
-                                                className={`tab-link ${view == "install" ? "tab-active" : ""}`} 
-                                            >
-                                                <li>Installation</li>
-                                            </Link>
-                                        )}
-                                        {service.features && (
-                                            <Link
-                                                href={`${viewUrl}/features`}
-                                                className={`tab-link ${view == "features" ? "tab-active" : ""}`} 
-                                            >
-                                                <li>Features</li>
-                                            </Link>
-                                        )}
-
-                                    </ul>
-                                </div>
-                                <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
-                                    <div className="flex flex-wrap justify-between">
+                            <TabMenuWithData
+                                data_background={true}
+                                menu={
+                                    <Tabs
+                                        items={tabs}
+                                        classes={["sm:w-64"]}
+                                    />
+                                }
+                                data={
+                                    <div>
+                                        <div className="flex flex-wrap justify-between">
                                             <div>
                                                 <p className="text-green-300 font-bold italic">{service.price > 0 ? "$" + service.price + "/m" : "Free"}</p>
                                             </div>
@@ -135,58 +137,58 @@ const Page: NextPage<{
                                                     />
                                                 </div>
                                             </div>
-                                    </div>
-                                    <div>
-                                        {view == "details" && (
-                                            <>
-                                                <h2>Details</h2>
-                                                <ReactMarkdown className="markdown">
-                                                    {service.content}
-                                                </ReactMarkdown>
-                                            </>
-                                        )}
-                                        {service.install && view == "install" && (
-                                            <>
-                                                <h2>Installation</h2>
-                                                <ReactMarkdown className="markdown">
-                                                    {service.install}
-                                                </ReactMarkdown>
-                                            </>
-                                        )}
-                                        {service.features && view == "features" && (
-                                            <>
-                                                <h2>Features</h2>
-                                                <ReactMarkdown className="markdown">
-                                                    {service.features}
-                                                </ReactMarkdown>
-                                            </>
-                                        )}
-                                    </div>
-                                    {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
-                                        <div className="flex flex-wrap gap-4">
-                                            <Link
-                                                href={editUrl}
-                                                className="button button-primary"
-                                            >Edit</Link>
-                                            <button
-                                                className="button button-danger"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-
-                                                    const yes = confirm("Are you sure you want to delete this article?");
-
-                                                    if (yes) {
-                                                        deleteMut.mutate({
-                                                            id: service.id
-                                                        });
-                                                    }
-                                                }}
-                                            >Delete</button>
                                         </div>
-                                    )}
+                                        <div>
+                                            {view == "details" && (
+                                                <>
+                                                    <h2>Details</h2>
+                                                    <ReactMarkdown className="markdown">
+                                                        {service.content}
+                                                    </ReactMarkdown>
+                                                </>
+                                            )}
+                                            {service.install && view == "install" && (
+                                                <>
+                                                    <h2>Installation</h2>
+                                                    <ReactMarkdown className="markdown">
+                                                        {service.install}
+                                                    </ReactMarkdown>
+                                                </>
+                                            )}
+                                            {service.features && view == "features" && (
+                                                <>
+                                                    <h2>Features</h2>
+                                                    <ReactMarkdown className="markdown">
+                                                        {service.features}
+                                                    </ReactMarkdown>
+                                                </>
+                                            )}
+                                        </div>
+                                        {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                                            <div className="flex flex-wrap gap-4">
+                                                <Link
+                                                    href={editUrl}
+                                                    className="button button-primary"
+                                                >Edit</Link>
+                                                <button
+                                                    className="button button-danger"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
 
-                                </div>
-                            </div>
+                                                        const yes = confirm("Are you sure you want to delete this article?");
+
+                                                        if (yes) {
+                                                            deleteMut.mutate({
+                                                                id: service.id
+                                                            });
+                                                        }
+                                                    }}
+                                                >Delete</button>
+                                            </div>
+                                        )}
+                                    </div>
+                                }
+                            />
                         </div>
                     ) : (
                         <NotFound item="Service" />
