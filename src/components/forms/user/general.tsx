@@ -51,7 +51,7 @@ const Form: React.FC<{
 
     // Submit button.
     const submit_btn =
-        <div className="flex gap-2 justify-center">
+        <div className="flex flex-wrap gap-2 justify-center">
             <button
                 type="submit"
                 className="button button-primary"

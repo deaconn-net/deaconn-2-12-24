@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+import TabMenuWithData from "@components/tabs/tab_menu_with_data";
+import Tabs, { TabItemType } from "@components/tabs/tabs";
+
 const AdminSettingsPanel: React.FC<{
     view: string,
     children: React.ReactNode
@@ -7,32 +10,45 @@ const AdminSettingsPanel: React.FC<{
     view,
     children
 }) => {
+    // Compile tabs.
+    const tabs: TabItemType[] = [
+        {
+            url: "/admin",
+            text: <>General</>,
+            active: view == "general"
+        },
+        {
+            url: "/admin/roles",
+            text: <>Roles</>,
+            active: view == "roles"
+        },
+        {
+            url: "/admin/categories",
+            text: <>Categories</>,
+            active: view == "categories"
+        },
+        {
+            url: "/admin/users",
+            text: <>Users</>,
+            active: view == "users"
+        }
+    ];
+    
     return (
-        <div className="flex gap-2">
-            <div>
-                <ul className="tab-container w-64">
-                    <Link
-                        href="/admin"
-                        className={`tab-link ${view == "general" ? "tab-active" : ""}`}
-                    >General</Link>
-                    <Link
-                        href="/admin/roles"
-                        className={`tab-link ${view == "roles" ? "tab-active" : ""}`}
-                    >Roles</Link>
-                    <Link
-                        href="/admin/users"
-                        className={`tab-link ${view == "users" ? "tab-active" : ""}`}
-                    >Users</Link>
-                    <Link
-                        href="/admin/categories"
-                        className={`tab-link ${view == "categories" ? "tab-active" : ""}`}
-                    >Categories</Link>
-                </ul>
-            </div>
-            <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
-                {children}
-            </div>
-        </div>
+        <TabMenuWithData
+            data_background={true}
+            menu={
+                <Tabs
+                    items={tabs}
+                    classes={["sm:w-64"]}
+                />
+            }
+            data={
+                <>
+                    {children}
+                </>
+            }
+        />
     );
 }
 

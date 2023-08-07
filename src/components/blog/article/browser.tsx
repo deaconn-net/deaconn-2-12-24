@@ -67,7 +67,7 @@ const ArticleBrowser: React.FC<{
     return (
         <div className="article-browser">
             <div className="article-browser-buttons">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                     <Link
                         className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
                         href="#" 
@@ -95,7 +95,7 @@ const ArticleBrowser: React.FC<{
                 </div>
                 {session && (has_role(session, "moderator") || has_role(session, "admin")) && (
                     <Link
-                        className="button button-primary flex"
+                        className="button button-primary flex justify-center"
                         href="/blog/new"
                     >
                         <IconAndText
@@ -109,7 +109,6 @@ const ArticleBrowser: React.FC<{
                         />
                     </Link>
                 )}
-
             </div>
             {data && articles.length > 0 ? (
                 <InfiniteScroll

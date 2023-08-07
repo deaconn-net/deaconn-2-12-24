@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { type UserExperience, type User, type UserSkill, type UserProject } from "@prisma/client";
@@ -11,6 +11,8 @@ import GeneralForm from "@components/forms/user/general";
 import ExperienceForm from "@components/forms/user/experience";
 import ProjectForm from "@components/forms/user/project";
 import SkillForm from "@components/forms/user/skill";
+import TabMenuWithData from "@components/tabs/tab_menu_with_data";
+import Tabs, { TabItemType } from "@components/tabs/tabs";
 
 const SettingsPanel: React.FC<{
     view?: string,
@@ -29,38 +31,50 @@ const SettingsPanel: React.FC<{
 }) => {
     const { data: session } = useSession();
 
+    // Compile tabs.
+    const tabs: TabItemType[] = [
+        {
+            url: "/user/profile",
+            text: <>General</>,
+            active: view == "general"
+        },
+        {
+            url: "/user/profile/experiences",
+            text: <>Experiences</>,
+            active: view == "experiences"
+        },
+        {
+            url: "/user/profile/skills",
+            text: <>Skills</>,
+            active: view == "skills"
+        },
+        {
+            url: "/user/profile/projects",
+            text: <>Projects</>,
+            active: view == "projects"
+        },
+        {
+            url: "#",
+            text: <>Sign Out</>,
+            onClick: (e) => {
+                e.preventDefault();
+
+                void signOut();
+            }
+        }
+    ];
+
     return (
-        <>
-            <div className="flex flex-wrap gap-2">
-                <div>
-                    <ul className="tab-container w-64">
-                        <Link
-                            href="/user/profile"
-                            className={`tab-link ${view == "general" ? "tab-active" : ""}`}    
-                        >
-                            <li>General</li>
-                        </Link>
-                        <Link
-                            href="/user/profile/experiences"
-                            className={`tab-link ${view == "experiences" ? "tab-active" : ""}`}
-                        >
-                            <li>Experiences</li>
-                        </Link>
-                        <Link
-                            href="/user/profile/skills"
-                            className={`tab-link ${view == "skills" ? "tab-active" : ""}`}
-                        >
-                            <li>Skills</li>
-                        </Link>
-                        <Link
-                            href="/user/profile/projects"
-                            className={`tab-link ${view == "projects" ? "tab-active" : ""}`}
-                        >
-                            <li>Projects</li>
-                        </Link>
-                    </ul>
-                </div>
-                <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
+        <TabMenuWithData
+            data_background={true}
+            menu={
+                <Tabs
+                    items={tabs}
+                    classes={["sm:w-64"]}
+                />
+            }
+            data={
+                <>
                     {view == "general" && (
                         <div className="content-item">
                             <h2>General</h2>
@@ -123,9 +137,9 @@ const SettingsPanel: React.FC<{
                             </div>
                         </>
                     )}
-                </div>
-            </div>
-        </>
+                </>
+            }
+        />
     );
 }
 
