@@ -1,7 +1,12 @@
 .nav-section {
     @apply flex;
+    @apply flex-col;
+    @apply sm:flex-row;
+    @apply flex-wrap;
     @apply justify-center;
     @apply list-none;
+
+    @apply w-full;
 }
 
 .nav-link {
@@ -22,11 +27,12 @@
     @apply justify-center;
 }
 
-.nav-text {
-    @apply pt-1;
-}
-
 .nav-active {
     @apply font-bold;
     @apply bg-cyan-800;
+}
+
+.nav-item-icon {
+    @apply h-7;
+    @apply w-7;
 }

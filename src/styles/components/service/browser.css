@@ -7,6 +7,8 @@
 .service-browser-buttons {
     @apply flex;
     @apply justify-between;
+    @apply flex-wrap;
+    @apply gap-2;
 }
 
 .service-browser-scroller {

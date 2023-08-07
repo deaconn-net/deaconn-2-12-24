@@ -9,6 +9,9 @@
     @apply !bg-cyan-700;
     @apply hover:!bg-cyan-600;
 
+    @apply w-full;
+    @apply sm:w-auto;
+
     @apply text-center;
 }
 

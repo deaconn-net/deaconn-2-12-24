@@ -6,6 +6,8 @@
 
 .article-browser-buttons {
     @apply flex;
+    @apply flex-wrap;
+    @apply gap-2;
     @apply justify-between;
 }
 
