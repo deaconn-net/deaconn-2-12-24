@@ -1,16 +1,19 @@
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
 import { type Service } from "@prisma/client";
 
-import { api } from "@utils/api";
-import SuccessBox from "@utils/success";
 import IconAndText from "@components/containers/icon_and_text";
 
-import ReactMarkdown from "react-markdown";
+import { api } from "@utils/api";
+import SuccessBox from "@utils/success";
 import ViewIcon from "@utils/icons/view";
 import PurchaseIcon from "@utils/icons/purchase";
 import DownloadIcon from "@utils/icons/download";
+
+import ReactMarkdown from "react-markdown";
+import { has_role } from "@utils/user/auth";
 
 const ServiceRow: React.FC<{
     service: Service,
@@ -19,6 +22,9 @@ const ServiceRow: React.FC<{
     service,
     small = false
 }) => {
+    // Retrieve session.
+    const { data: session } = useSession();
+
     // Retrieve environmental variables.
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
@@ -107,27 +113,30 @@ const ServiceRow: React.FC<{
                             >Source Code</Link>
                         )}
                     </div>
-                    <div className="service-row-actions">
-                        <Link
-                            className="button button-primary"
-                            href={editUrl}
-                        >Edit</Link>
-                        <Link
-                            className="button button-danger"
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
+                    {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                        <div className="service-row-actions">
+                            <Link
+                                className="button button-primary"
+                                href={editUrl}
+                            >Edit</Link>
+                            <Link
+                                className="button button-danger"
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-                                const yes = confirm("Are you sure you want to delete this service?");
+                                    const yes = confirm("Are you sure you want to delete this service?");
 
-                                if (yes) {
-                                    deleteMut.mutate({
-                                        id: service.id
-                                    });
-                                }
-                            }}
-                        >Delete</Link>
-                    </div>
+                                    if (yes) {
+                                        deleteMut.mutate({
+                                            id: service.id
+                                        });
+                                    }
+                                }}
+                            >Delete</Link>
+                        </div>
+                    )}
+
                 </div>
             )}
         </>
