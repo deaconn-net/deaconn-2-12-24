@@ -2,10 +2,8 @@
     <img width="139" height="40" src="./public/images/header_banner.png">
 </p>
 
-# Deaconn (Rebuilt)
-**Warning** - New website still *under development* and **no public preview available** at this moment.
-
-This is the rebuilt Deaconn website that will be transforming Deaconn into a publisher instead of a resume/blog for Christian Deacon.
+# Deaconn (New & Rebuilt)
+This is Deaconn's rebuilt website which uses the T3 stack, [Create T3 App](https://create.t3.gg/). This stack comes with TypeScript, Next.js, React, tRPC, Prisma, and Tailwind CSS.
 
 ## Under Development!
 This website is still under development and not yet public.
