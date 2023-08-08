@@ -3,6 +3,8 @@ import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import Image from "next/image";
+
 import IconAndText from "@components/containers/icon_and_text";
 
 import HomeIcon from "@utils/icons/header/home";
@@ -52,22 +54,15 @@ const Header: React.FC = () => {
                 <ul className="nav-section">
                     <Link
                         href="/"
-                        className={`nav-link ${location == "/" ? "nav-active" : ""}`}
+                        className={`nav-link`}
                     >
                         <li className="nav-item">
-                            <IconAndText
-                                icon={
-                                    <HomeIcon
-                                        classes={[
-                                            "nav-item-icon",
-                                            "fill-none",
-                                            "stroke-white"
-                                        ]}
-                                    />
-                                }
-                                text={
-                                    <>Home</>
-                                }
+                            <Image
+                                src="/images/header_banner.png"
+                                className="h-16 p-2"
+                                width={200}
+                                height={72}
+                                alt="Deaconn Banner"
                             />
                         </li>
                     </Link>
