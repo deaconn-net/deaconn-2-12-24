@@ -11,8 +11,10 @@
 
 .nav-link {
     @apply p-2;
-    @apply min-w-[10em];
-
+    @apply w-full;
+    @apply sm:w-auto;
+    @apply sm:min-w-[6em];
+    @apply lg:min-w-[10em];
     @apply text-base;
     @apply text-white;
     @apply hover:text-white;
