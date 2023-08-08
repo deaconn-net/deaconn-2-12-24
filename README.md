@@ -1,3 +1,7 @@
+<p align="center">
+    <img width="139" height="40" src="./public/images/header_banner.png">
+</p>
+
 # Deaconn (Rebuilt)
 **Warning** - New website still *under development* and **no public preview available** at this moment.
 
