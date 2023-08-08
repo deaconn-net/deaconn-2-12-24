@@ -19,6 +19,11 @@
     @apply rounded;
 }
 
+.tab-item {
+    @apply hidden;
+    @apply sm:block;
+}
+
 .tab-active {
     @apply text-white;
     @apply font-bold;
