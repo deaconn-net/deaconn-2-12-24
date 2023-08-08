@@ -138,7 +138,7 @@ const Page: NextPage<{
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
+                                        <div className="flex flex-col gap-4">
                                             {view == "details" && (
                                                 <>
                                                     <h2>Details</h2>
@@ -165,7 +165,7 @@ const Page: NextPage<{
                                             )}
                                         </div>
                                         {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
-                                            <div className="flex flex-wrap gap-4">
+                                            <div className="flex flex-wrap gap-4 justify-center">
                                                 <Link
                                                     href={editUrl}
                                                     className="button button-primary"
