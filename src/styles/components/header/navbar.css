@@ -1,13 +1,20 @@
 .nav-section {
     @apply flex;
+    @apply flex-col;
+    @apply sm:flex-row;
+    @apply flex-wrap;
     @apply justify-center;
     @apply list-none;
+
+    @apply w-full;
 }
 
 .nav-link {
     @apply p-2;
-    @apply min-w-[10em];
-
+    @apply w-full;
+    @apply sm:w-auto;
+    @apply sm:min-w-[6em];
+    @apply lg:min-w-[10em];
     @apply text-base;
     @apply text-white;
     @apply hover:text-white;
@@ -22,11 +29,12 @@
     @apply justify-center;
 }
 
-.nav-text {
-    @apply pt-1;
-}
-
 .nav-active {
     @apply font-bold;
     @apply bg-cyan-800;
+}
+
+.nav-item-icon {
+    @apply h-7;
+    @apply w-7;
 }

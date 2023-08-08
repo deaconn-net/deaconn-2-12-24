@@ -2,8 +2,8 @@
     @apply list-none;
     @apply flex;
     @apply flex-col;
-    @apply justify-center;
     @apply gap-2;
+    @apply w-full;
 }
 
 .tab-link {
@@ -19,8 +19,41 @@
     @apply rounded;
 }
 
+.tab-item {
+    @apply hidden;
+    @apply sm:block;
+}
+
 .tab-active {
     @apply text-white;
     @apply font-bold;
     @apply bg-cyan-900;
+}
+
+.tab-menu-with-data {
+    @apply flex;
+    @apply flex-wrap;
+    @apply sm:flex-nowrap;
+    @apply gap-2;
+    @apply justify-center;
+}
+
+.tab-menu-with-data > div {
+    @apply w-full;
+    @apply sm:w-auto;
+}
+
+.tab-menu-with-data > div:first-child {
+    @apply flex;
+    @apply justify-center;
+}
+
+.tab-menu-with-data > div:last-child {
+    @apply grow;
+
+    @apply p-0;
+    @apply sm:p-6;
+    @apply flex;
+    @apply flex-col;
+    @apply gap-4;
 }

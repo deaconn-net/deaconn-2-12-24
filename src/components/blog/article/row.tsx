@@ -1,13 +1,16 @@
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
 import { type Article } from "@prisma/client";
 
+import IconAndText from "@components/containers/icon_and_text";
+
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
 import CommentIcon from "@utils/icons/comment";
 import ViewIcon from "@utils/icons/view";
-import IconAndText from "@components/containers/icon_and_text";
+import { has_role } from "@utils/user/auth";
 
 const ArticleRow: React.FC<{
     article: Article,
@@ -16,6 +19,7 @@ const ArticleRow: React.FC<{
     article,
     small = false
 }) => {
+    const { data: session } = useSession();
     // Retrieve some environmental variables.
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
@@ -86,27 +90,30 @@ const ArticleRow: React.FC<{
                             href={viewUrl}
                         >Read More</Link>
                     </div>
-                    <div className="article-row-actions">
-                        <Link
-                            className="button button-primary"
-                            href={editUrl}
-                        >Edit</Link>
-                        <Link
-                            className="button button-danger"
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
+                    {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                        <div className="article-row-actions">
+                            <Link
+                                className="button button-primary"
+                                href={editUrl}
+                            >Edit</Link>
+                            <Link
+                                className="button button-danger"
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-                                const yes = confirm("Are you sure you want to delete this article?");
+                                    const yes = confirm("Are you sure you want to delete this article?");
 
-                                if (yes) {
-                                    deleteMut.mutate({
-                                        id: article.id
-                                    });
-                                }
-                            }}
-                        >Delete</Link>
-                    </div>
+                                    if (yes) {
+                                        deleteMut.mutate({
+                                            id: article.id
+                                        });
+                                    }
+                                }}
+                            >Delete</Link>
+                        </div>
+                    )}
+
                 </div>
             )}
         </>

@@ -10,6 +10,7 @@ import Meta from "@components/meta";
 
 import ArticleBrowser from "@components/blog/article/browser";
 import CategoryTabs from "@components/category/tabs";
+import TabMenuWithData from "@components/tabs/tab_menu_with_data";
 
 const Page: NextPage<{
     categories?: CategoryWithAllAndAricleCount[]
@@ -25,19 +26,18 @@ const Page: NextPage<{
             <Wrapper>
                 <div className="content-item">
                     <h1>Blog</h1>
-                    <div className="flex flex-wrap gap-2">
-                        {categories && (
-                            <div>
-                                <CategoryTabs
-                                    categories_with_articles={categories}
-                                />
-                            </div>
-                        )}
-
-                        <div className="grow p-6 flex flex-col gap-4">
+                    <TabMenuWithData
+                        menu={
+                            <>
+                                {categories && (
+                                    <CategoryTabs categories_with_articles={categories} />
+                                )}
+                            </>
+                        }
+                        data={
                             <ArticleBrowser />
-                        </div>
-                    </div>
+                        }
+                    />
                 </div>
             </Wrapper>
         </>

@@ -9,6 +9,7 @@ import Meta from "@components/meta";
 
 import ArticleBrowser from "@components/blog/article/browser";
 import CategoryTabs from "@components/category/tabs";
+import TabMenuWithData from "@components/tabs/tab_menu_with_data";
 
 const Page: NextPage<{
     category?: CategoryWithAll,
@@ -30,21 +31,20 @@ const Page: NextPage<{
                     {category ? (
                         <>
                             <h1>Category {category.name.charAt(0).toUpperCase() + category.name.slice(1)}</h1>
-                            <div className="flex flex-wrap gap-2">
-                                {categoriesList && (
-                                    <div>
-                                        <CategoryTabs
-                                            categories_with_articles={categoriesList}
-                                            active={category.id}
-                                        />
-                                    </div>
-                                )}
-                                <div className="grow p-6">
-                                    <ArticleBrowser
-                                        categories={categories}
-                                    />
-                                </div>
-                            </div>
+                            <TabMenuWithData
+                                menu={
+                                    <>
+                                        {categoriesList && (
+                                            <CategoryTabs
+                                                categories_with_articles={categoriesList}
+                                                active={category.id}
+                                            />
+                                        )}
+
+                                    </>
+                                }
+                                data={<ArticleBrowser categories={categories} />}
+                            />
                         </>
                     ) : (
                         <>

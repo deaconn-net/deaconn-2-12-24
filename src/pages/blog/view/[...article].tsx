@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -16,6 +17,9 @@ import { api } from "@utils/api";
 import { dateFormat, dateFormatOne } from "@utils/date";
 import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
+import TwitterIcon from "@utils/icons/social/twitter";
+import FacebookIcon from "@utils/icons/social/facebook";
+import LinkedinIcon from "@utils/icons/social/linkedin";
 
 import ReactMarkdown from "react-markdown";
 
@@ -52,6 +56,19 @@ const Page: NextPage<{
     // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation();
 
+    // Retrieve base URL.
+    const [baseUrl, setBaseUrl] = useState("");
+
+    useEffect(() => {
+        if (typeof window != "undefined")
+            setBaseUrl(`${window.location.protocol}//${window.location.host}`)
+    }, [])
+
+    // Sharing.
+    const shareUrl = `${baseUrl}/blog/view/${article?.url ?? ""}`;
+    const shareText = `I'm sharing this article! ${encodeURI(shareUrl)}`;
+    const encodedText = encodeURI(shareText);
+
     return (
         <>
             <Meta
@@ -81,7 +98,7 @@ const Page: NextPage<{
                             </div>
                             <h1>{article.title}</h1>
                             <div className="w-full bg-gray-800 p-6 rounded-sm flex flex-col gap-4">
-                                <div className="flex justify-between text-white text-sm">
+                                <div className="flex justify-between flex-wrap text-white text-sm">
                                     <div>
                                         {article.user && (
                                             <p>Created By <span className="font-bold"><UserLink user={article.user} /></span></p>
@@ -99,8 +116,52 @@ const Page: NextPage<{
                                 <ReactMarkdown className="markdown">
                                     {article.content}
                                 </ReactMarkdown>
+                                <div className="flex flex-col gap-2">
+                                    <h2>Share!</h2>
+                                    <div className="flex flex-wrap gap-2">
+                                        <Link
+                                            href={`https://twitter.com/intent/tweet?text=${encodedText}`}
+                                            target="_blank"
+                                        >
+                                            <TwitterIcon
+                                                classes={[
+                                                    "h-6",
+                                                    "w-6",
+                                                    "fill-gray-400",
+                                                    "hover:fill-white"
+                                                ]}
+                                            />
+                                        </Link>
+                                        <Link
+                                            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                                            target="_blank"
+                                        >
+                                            <FacebookIcon
+                                                classes={[
+                                                    "h-6",
+                                                    "w-6",
+                                                    "fill-gray-400",
+                                                    "hover:fill-white"
+                                                ]}
+                                            />
+                                        </Link>
+                                        <Link
+                                            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+                                            target="_blank"
+                                        >
+                                            <LinkedinIcon
+                                                classes={[
+                                                    "h-6",
+                                                    "w-6",
+                                                    "fill-gray-400",
+                                                    "hover:fill-white"
+                                                ]}
+                                            />
+                                        </Link>
+                                    </div>
+                                </div>
                                 {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
-                                    <div className="flex flex-wrap gap-4">
+                                    <div className="flex flex-wrap justify-center gap-4">
                                         <Link
                                             href={editUrl}
                                             className="button button-primary"

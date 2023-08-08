@@ -22,6 +22,7 @@ import { FormatSocialUrl } from "@utils/social";
 import WebsiteIcon from "@utils/icons/social/website";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Tabs, { TabItemType } from "@components/tabs/tabs";
 
 const Page: NextPage<{
     user: User | null,
@@ -33,6 +34,30 @@ const Page: NextPage<{
     const baseUrl = "/user/view/" + ((user?.url) ? user.url : "$" + (user?.id ?? ""));
 
     const birthday = (user?.birthday) ? dateFormat(user?.birthday, dateFormatTwo) : null;
+
+    // Compile tabs.
+    const tabs: TabItemType[] = [
+        {
+            url: baseUrl,
+            text: <>General</>,
+            active: view == "general"
+        },
+        {
+            url: `${baseUrl}/experiences`,
+            text: <>Experiences</>,
+            active: view == "experiences"
+        },
+        {
+            url: `${baseUrl}/skills`,
+            text: <>Skills</>,
+            active: view == "skills"
+        },
+        {
+            url: `${baseUrl}/projects`,
+            text: <>Projects</>,
+            active: view == "projects"
+        }
+    ];
 
     return (
         <>
@@ -115,32 +140,10 @@ const Page: NextPage<{
                                         </div>
                                     )}
                                 </div>
-                                <ul className="tab-container w-64">
-                                    <Link
-                                        href={baseUrl}
-                                        className={`tab-link ${view == "general" ? "tab-active" : ""}`}
-                                    >
-                                        <li>General</li>
-                                    </Link>
-                                    <Link
-                                        href={baseUrl + "/experiences"}
-                                        className={`tab-link ${view == "experiences" ? "tab-active" : ""}`}
-                                    >
-                                        <li>Experiences</li>
-                                    </Link>
-                                    <Link
-                                        href={baseUrl + "/skills"}
-                                        className={`tab-link ${view == "skills" ? "tab-active" : ""}`}
-                                    >
-                                        <li>Skills</li>
-                                    </Link>
-                                    <Link
-                                        href={baseUrl + "/projects"}
-                                        className={`tab-link ${view == "projects" ? "tab-active" : ""}`}
-                                    >
-                                        <li>Projects</li>
-                                    </Link>
-                                </ul>
+                                <Tabs
+                                    items={tabs}
+                                    classes={["sm:w-64"]}
+                                />
                             </div>
 
                             <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">

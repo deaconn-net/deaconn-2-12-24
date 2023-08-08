@@ -31,7 +31,7 @@ const Form: React.FC<{
     // Check for errors or successes.
     useEffect(() => {
         if (requestMut.isSuccess && success) {    
-            success.setTitle(`Successfully " + ${request ? "Saved" : "Created"} Request!`);
+            success.setTitle(`Successfully ${request ? "Saved" : "Created"} Request!`);
             success.setMsg(`Request successfully ${request ? "saved" : "created"}!`);
     
             // Scroll to top.

@@ -64,8 +64,12 @@
     header > nav {
         @apply container;
         @apply mx-auto;
+
+        @apply hidden;
     
-        @apply flex;
+        @apply sm:flex;
+        @apply sm:!flex-nowrap;
+        @apply flex-wrap;
         @apply justify-between;
     
         @apply text-center;
@@ -85,6 +89,7 @@
     @import "components/forms/main.css";
 
     @import "components/header/navbar.css";
+    @import "components/header/navbar_mobile.css";
 
     @import "components/partner/row.css";
 

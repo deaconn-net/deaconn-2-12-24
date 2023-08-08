@@ -1,94 +1,180 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import Image from "next/image";
+
+import IconAndText from "@components/containers/icon_and_text";
 
 import HomeIcon from "@utils/icons/header/home";
 import ServicesIcon from "@utils/icons/header/services";
 import BlogIcon from "@utils/icons/header/blog";
 import AboutUsIcon from "@utils/icons/header/aboutus";
 import AccountIcon from "@utils/icons/header/account";
-import SignOutIcon from "@utils/icons/header/signout";
 import SignInIcon from "@utils/icons/header/signinicon";
+import MobileMenuIcon from "@utils/icons/header/mobile_menu";
+import MobileMenuCollapseIcon from "@utils/icons/header/mobile_menu_collapse";
 
 const Header: React.FC = () => {
     const { data: session } = useSession();
 
     const router = useRouter();
-
     const location = router.pathname;
+
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
         <header>
-            <nav>
+            <button
+                className="navbar-mobile-button"
+                onClick={(e) => {
+                    e.preventDefault();
+
+                    setMobileOpen(!mobileOpen);
+                }}
+            >
+                {mobileOpen ? (
+                    <MobileMenuCollapseIcon
+                        classes={[
+                            "nav-item-icon",
+                            "fill-white"
+                        ]}
+                    />
+                ) : (
+                    <MobileMenuIcon
+                        classes={[
+                            "nav-item-icon",
+                            "fill-white"
+                        ]}
+                    />
+                )}
+            </button>
+            <nav className={mobileOpen ? "block" : ""}>
                 <ul className="nav-section">
-                    <Link className={`nav-link ${location == "/" ? "nav-active" : ""}`} href="/">
+                    <Link
+                        href="/"
+                        className={`nav-link`}
+                    >
                         <li className="nav-item">
-                            <HomeIcon
-                                classes={["w-10", "h-10", "fill-white", "stroke-gray-700"]}
+                            <Image
+                                src="/images/header_banner.png"
+                                className="h-16 p-2"
+                                width={200}
+                                height={72}
+                                alt="Deaconn Banner"
                             />
-                            <span className="nav-text">Home</span>
                         </li>
                     </Link>
-                    <Link className={`nav-link ${location.includes("/service") ? "nav-active" : ""}`} href="/service">
+                    <Link
+                        href="/service"
+                        className={`nav-link ${location.includes("/service") ? "nav-active" : ""}`}
+                    >
                         <li className="nav-item">
-                            <ServicesIcon
-                                classes={["w-10", "h-10", "fill-white", "text-white"]}
+                            <IconAndText
+                                icon={
+                                    <ServicesIcon
+                                        classes={[
+                                            "nav-item-icon",
+                                            "fill-white"
+                                        ]}
+                                    />
+                                }
+                                text={
+                                    <>Services</>
+                                }
                             />
-                            <span className="nav-text">Services</span>
                         </li>
                     </Link>
-                    <Link className={`nav-link ${location.includes("/blog") ? "nav-active" : ""}`} href="/blog">
+                    <Link
+                        href="/blog"
+                        className={`nav-link ${location.includes("/blog") ? "nav-active" : ""}`}
+                    >
                         <li className="nav-item">
-                            <BlogIcon
-                                classes={["w-10", "h-10", "fill-white"]}
+                            <IconAndText
+                                icon={
+                                    <BlogIcon
+                                        classes={[
+                                            "nav-item-icon",
+                                            "fill-white"
+                                        ]}
+                                    />
+                                }
+                                text={
+                                    <>Blog</>
+                                }
                             />
-                            <span className="nav-text">Blog</span>
                         </li>
                     </Link>
-                    <Link className={`nav-link ${location == "/about" ? "nav-active" : ""}`} href="/about">
+                    <Link
+                        href="/about"
+                        className={`nav-link ${location == "/about" ? "nav-active" : ""}`}
+                    >
                         <li className="nav-item">
-                            <AboutUsIcon
-                                classes={["w-10", "h-10", "fill-white"]}
+                            <IconAndText
+                                icon={
+                                    <AboutUsIcon
+                                        classes={[
+                                            "nav-item-icon",
+                                            "fill-white"
+                                        ]}
+                                    />
+                                }
+                                text={
+                                    <>About Us</>
+                                }
                             />
-                            <span className="nav-text">About Us</span>
                         </li>
                     </Link>
-                </ul>
-                <ul className="nav-section">
+                    <div className="grow"></div>
                     {session ? (
                         <>
-                            <Link className="nav-link" href="/user/profile">
+                            <Link
+                                href="/user/profile"
+                                className="nav-link" 
+                            >
                                 <li className="nav-item">
-                                    <AccountIcon
-                                        classes={["w-10", "h-10", "fill-white"]}
+                                    <IconAndText
+                                        icon={
+                                            <AccountIcon
+                                                classes={[
+                                                    "nav-item-icon",
+                                                    "fill-white"
+                                                ]}
+                                            />
+                                        }
+                                        text={
+                                            <>Account</>
+                                        }
                                     />
-                                    <span className="nav-text">Account</span>
-                                </li>
-                            </Link>
-                            <Link className="nav-link" href="#" onClick={(e) => {
-                                e.preventDefault();
-
-                                void signOut();
-                            }}>
-                                <li className="nav-item">
-                                    <SignOutIcon
-                                        classes={["w-10", "h-10", "fill-none", "stroke-white"]}
-                                    />
-                                    <span className="nav-text">Sign Out</span>
                                 </li>
                             </Link>
                         </>
                     ) : (
-                        <Link className="nav-link" href="#" onClick={(e) => {
-                            e.preventDefault();
+                        <Link
+                            href="#"
+                            className="nav-link" 
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                            void signIn("discord");
-                        }}>
+                                void signIn("discord");
+                            }}
+                        >
                             <li className="nav-item">
-                                <SignInIcon
-                                    classes={["w-10", "h-10", "fill-none", "stroke-white"]}
+                                <IconAndText
+                                    icon={
+                                        <SignInIcon
+                                            classes={[
+                                                "nav-item-icon",
+                                                "fill-none",
+                                                "stroke-white"
+                                            ]}
+                                        />
+                                    }
+                                    text={
+                                        <>Sign In</>
+                                    }
                                 />
-                                <span className="nav-text">Sign In</span>
                             </li>
                         </Link>
                     )}

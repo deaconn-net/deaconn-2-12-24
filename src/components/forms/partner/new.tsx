@@ -27,7 +27,7 @@ const Form: React.FC<{
         if (partnerMut.isSuccess && success) {
     
             success.setTitle(`Successfully ${partner ? "Saved" : "Created"} Partner!`);
-            success.setMsg(`Partner successfully " + ${partner ? "saved" : "created"}!`);
+            success.setMsg(`Partner successfully ${partner ? "saved" : "created"}!`);
     
             // Scroll to top.
             ScrollToTop();

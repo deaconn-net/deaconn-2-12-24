@@ -63,7 +63,7 @@ const ServiceBrowser: React.FC<{
     
     return (
         <div className="service-browser">
-            <div className="service-browser-buttons">
+            <div className="service-browser-buttons w-full sm:w-auto">
                 <Link
                     className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
                     href="#" 
@@ -78,7 +78,7 @@ const ServiceBrowser: React.FC<{
                 >Most Popular</Link>
                 {session && (has_role(session, "moderator") || has_role(session, "admin")) && (
                     <Link
-                        className="button button-primary flex"
+                        className="button button-primary flex justify-center"
                         href="/service/new"
                     >
                         <IconAndText

@@ -9,6 +9,7 @@ import Meta from "@components/meta";
 import CategoryTabs from "@components/category/tabs";
 
 import ServiceBrowser from "@components/service/browser";
+import TabMenuWithData from "@components/tabs/tab_menu_with_data";
 
 const Page: NextPage<{
     categories?: CategoryWithAllAndServiceCount[]
@@ -24,18 +25,20 @@ const Page: NextPage<{
             <Wrapper>
                 <div className="content-item">
                     <h1>Services</h1>
-                    <div className="flex flex-wrap gap-2">
-                        {categories && (
-                            <div>
-                                <CategoryTabs
-                                    categories_with_services={categories}
-                                />
-                            </div>
-                        )}
-                        <div className="grow p-6 flex flex-col gap-4">
+                    <TabMenuWithData
+                        menu={
+                            <>
+                                {categories && (
+                                    <CategoryTabs
+                                        categories_with_services={categories}
+                                    />
+                                )}
+                            </>
+                        }
+                        data={
                             <ServiceBrowser />
-                        </div>
-                    </div>
+                        }
+                    />
                 </div>
             </Wrapper>
         </>
