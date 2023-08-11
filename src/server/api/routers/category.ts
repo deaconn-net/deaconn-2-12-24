@@ -1,10 +1,10 @@
-import { createTRPCRouter, adminProcedure } from "../trpc";
+import { createTRPCRouter, contributorProcedure, modProcedure } from "../trpc";
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
 
 export const categoryRouter = createTRPCRouter({
-    add: adminProcedure
+    add: contributorProcedure
         .input(z.object({
             id: z.number().optional(),
 
@@ -42,7 +42,7 @@ export const categoryRouter = createTRPCRouter({
                 });
             }
         }),
-        delete: adminProcedure
+        delete: modProcedure
             .input(z.object({
                 id: z.number()
             }))

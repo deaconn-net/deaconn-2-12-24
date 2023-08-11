@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, contributorProcedure, publicProcedure, modProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -47,7 +47,7 @@ export const serviceRouter = createTRPCRouter({
                 nextCur
             };
         }),
-    add: protectedProcedure
+    add: contributorProcedure
         .input(z.object({
             id: z.number().optional(),
 
@@ -171,7 +171,7 @@ export const serviceRouter = createTRPCRouter({
                 }
             }
         }),
-    delete: protectedProcedure
+    delete: modProcedure
         .input(z.object({
             id: z.number()
         }))
