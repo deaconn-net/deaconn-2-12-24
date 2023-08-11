@@ -33,8 +33,8 @@ const Page: NextPage<{
                 title={`${view.charAt(0).toUpperCase() + view.slice(1)} Profile - Deaconn`}
             />
             <Wrapper>
-                <div className="content-item">
-                    {authed ? (
+                {authed ? (
+                    <div className="content-item"> 
                         <UserSettingsPanel
                             view={view}
 
@@ -43,10 +43,10 @@ const Page: NextPage<{
                             project={project}
                             skill={skill}
                         />
-                    ) : (
-                        <NoPermissions />
-                    )}
-                </div>
+                    </div>
+                ) : (
+                    <NoPermissions />
+                )}
             </Wrapper>
         </>
     );
@@ -62,7 +62,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     // Retrieve view and ID if any.
     const { query, params } = ctx;
-    let view = params?.view ? params?.view[0] ?? undefined : undefined;
+    let view = params?.view?.[0];
 
     if (!view || !["general", "experiences", "skills", "projects"].includes(view))
         view = "general";

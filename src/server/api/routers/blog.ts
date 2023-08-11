@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, contributorProcedure, modProcedure } from "../trpc";
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
@@ -48,7 +48,7 @@ export const blogRouter = createTRPCRouter({
                 nextCur
             };
         }),
-    add: protectedProcedure
+    add: contributorProcedure
         .input(z.object({
             id: z.number().optional(),
 
@@ -58,8 +58,8 @@ export const blogRouter = createTRPCRouter({
             hasUser: z.boolean().default(true),
 
             category: z.number().nullable().optional(),
-            url: z.string(),
-            title: z.string(),
+            url: z.string().max(128),
+            title: z.string().max(64),
             desc: z.string().optional(),
             content: z.string(),
             banner: z.string().optional(),
@@ -138,7 +138,7 @@ export const blogRouter = createTRPCRouter({
                 }
             }
         }),
-    delete: protectedProcedure
+    delete: modProcedure
         .input(z.object({
             id: z.number()
         }))

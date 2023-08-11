@@ -90,30 +90,34 @@ const ArticleRow: React.FC<{
                             href={viewUrl}
                         >Read More</Link>
                     </div>
-                    {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                    {session && (
                         <div className="article-row-actions">
-                            <Link
-                                className="button button-primary"
-                                href={editUrl}
-                            >Edit</Link>
-                            <Link
-                                className="button button-danger"
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
+                            {(has_role(session, "contributor") || has_role(session, "admin")) && (
+                                <Link
+                                    className="button button-primary"
+                                    href={editUrl}
+                                >Edit</Link>
+                            )}
 
-                                    const yes = confirm("Are you sure you want to delete this article?");
+                            {(has_role(session, "moderator") || has_role(session, "admin")) && (
+                                <Link
+                                    className="button button-danger"
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
 
-                                    if (yes) {
-                                        deleteMut.mutate({
-                                            id: article.id
-                                        });
-                                    }
-                                }}
-                            >Delete</Link>
+                                        const yes = confirm("Are you sure you want to delete this article?");
+
+                                        if (yes) {
+                                            deleteMut.mutate({
+                                                id: article.id
+                                            });
+                                        }
+                                    }}
+                                >Delete</Link>
+                            )}
                         </div>
                     )}
-
                 </div>
             )}
         </>

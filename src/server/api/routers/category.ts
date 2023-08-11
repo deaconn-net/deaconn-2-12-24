@@ -1,17 +1,17 @@
-import { createTRPCRouter, adminProcedure } from "../trpc";
+import { createTRPCRouter, contributorProcedure, modProcedure } from "../trpc";
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
 
 export const categoryRouter = createTRPCRouter({
-    add: adminProcedure
+    add: contributorProcedure
         .input(z.object({
             id: z.number().optional(),
 
             parent: z.number().nullable().optional(),
 
-            url: z.string(),
-            name: z.string(),
+            url: z.string().max(128),
+            name: z.string().max(64),
             description: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
@@ -42,7 +42,7 @@ export const categoryRouter = createTRPCRouter({
                 });
             }
         }),
-        delete: adminProcedure
+        delete: modProcedure
             .input(z.object({
                 id: z.number()
             }))

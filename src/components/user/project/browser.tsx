@@ -37,11 +37,11 @@ const Browser: React.FC<{
         void fetchNextPage();
     }
 
-    const items: UserProject[] = [];
+    const projects: UserProject[] = [];
 
     if (data) {
         data.pages.forEach((pg) => {
-            items.push(...pg.items);
+            projects.push(...pg.items);
 
             if (!pg.nextCur && requireItems)
                 setRequireItems(false);
@@ -49,28 +49,30 @@ const Browser: React.FC<{
     }
 
     return (
-        <InfiniteScroll
-            pageStart={0}
-            loadMore={loadMore}
-            loader={<Loader key={"loader"} />}
-            hasMore={requireItems}
-            className={"grid-view grid-view-center grid-view-lg"}
-        >
-            <>
-                {data && (
+        <>
+            {data && projects.length > 0 ? (
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={loadMore}
+                    loader={<Loader key={"loader"} />}
+                    hasMore={requireItems}
+                    className={"grid-view grid-view-center grid-view-lg"}
+                >
                     <>
-                        {items.map((project: UserProject) => {
+                        {projects.map((project: UserProject) => {
                             return (
                                 <Row
-                                    key={"project-" + project.id.toString()}
+                                    key={`project-${project.id.toString()}`}
                                     project={project}
                                 />
                             )
                         })}
                     </>
-                )}
-            </>
-        </InfiniteScroll>
+                </InfiniteScroll>
+            ) : (
+                <p>No projects found.</p>
+            )}
+        </>
     );
 }
 

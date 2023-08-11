@@ -113,30 +113,33 @@ const ServiceRow: React.FC<{
                             >Source Code</Link>
                         )}
                     </div>
-                    {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                    {session && (
                         <div className="service-row-actions">
-                            <Link
-                                className="button button-primary"
-                                href={editUrl}
-                            >Edit</Link>
-                            <Link
-                                className="button button-danger"
-                                href="#"
-                                onClick={(e) => {
-                                    e.preventDefault();
+                            {(has_role(session, "contributor" || has_role(session, "admin")) && 
+                                <Link
+                                    className="button button-primary"
+                                    href={editUrl}
+                                >Edit</Link>    
+                            )}
+                            {(has_role(session, "moderator") || has_role(session, "admin") && 
+                                <Link
+                                    className="button button-danger"
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
 
-                                    const yes = confirm("Are you sure you want to delete this service?");
+                                        const yes = confirm("Are you sure you want to delete this service?");
 
-                                    if (yes) {
-                                        deleteMut.mutate({
-                                            id: service.id
-                                        });
-                                    }
-                                }}
-                            >Delete</Link>
+                                        if (yes) {
+                                            deleteMut.mutate({
+                                                id: service.id
+                                            });
+                                        }
+                                    }}
+                                >Delete</Link>  
+                            )}
                         </div>
                     )}
-
                 </div>
             )}
         </>

@@ -37,11 +37,11 @@ const Browser: React.FC<{
         void fetchNextPage();
     }
 
-    const items: UserSkill[] = [];
+    const skills: UserSkill[] = [];
 
     if (data) {
         data.pages.forEach((pg) => {
-            items.push(...pg.items);
+            skills.push(...pg.items);
 
             if (!pg.nextCur && requireItems)
                 setRequireItems(false);
@@ -49,17 +49,17 @@ const Browser: React.FC<{
     }
 
     return (
-        <InfiniteScroll
-            pageStart={0}
-            loadMore={loadMore}
-            loader={<Loader key={"loader"} />}
-            hasMore={requireItems}
-            className={"grid-view grid-view-center grid-view-lg"}
-        >
-            <>
-                {data && (
+        <>
+            {data && skills.length > 0 ? (
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={loadMore}
+                    loader={<Loader key={"loader"} />}
+                    hasMore={requireItems}
+                    className={"grid-view grid-view-center grid-view-lg"}
+                >
                     <>
-                        {items.map((skill: UserSkill) => {
+                        {skills.map((skill: UserSkill) => {
                             return (
                                 <Row
                                     key={"skill-" + skill.id.toString()}
@@ -68,9 +68,11 @@ const Browser: React.FC<{
                             )
                         })}
                     </>
-                )}
-            </>
-        </InfiniteScroll>
+                </InfiniteScroll>
+            ) : (
+                <p>No skills found.</p>
+            )}
+        </>
     );
 }
 

@@ -1,16 +1,20 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
+import { getSession } from "next-auth/react";
 
 import { type Request } from "@prisma/client";
+
+import { prisma } from "@server/db";
 
 import Form from '@components/forms/request/new';
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
-
-import { prisma } from "@server/db";
+import NoPermissions from "@components/errors/no_permissions";
 
 const Page: NextPage<{
-    request: Request | null
+    authed: boolean,
+    request?: Request
 }> = ({
+    authed,
     request
 }) => {
     return (
@@ -20,19 +24,33 @@ const Page: NextPage<{
                 description="Create a new request with Deaconn."
             />
             <Wrapper>
-                <div className="content-item">
-                    <h1>Create Request</h1>
-                    <Form
-                        request={request ?? undefined}
-                    />
-                </div>
+                {authed ? (
+                    <div className="content-item">
+                        <h1>{request ? "Save" : "Create"} Request</h1>
+                        <Form
+                            request={request}
+                        />
+                    </div>
+                ) : (
+                    <NoPermissions />
+                )}
             </Wrapper>
         </>
     );
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    const lookup_id = ctx.query?.id;
+    const { query } = ctx;
+
+    const session = await getSession(ctx);
+
+    // Make sure we're signed in.
+    let authed = false;
+
+    if (session)
+        authed = true;
+
+    const lookup_id = query?.id;
 
     let request: Request | null = null;
 
@@ -46,6 +64,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     return {
         props: {
+            authed: authed,
             request: request
         }
     };

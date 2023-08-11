@@ -157,3 +157,22 @@ const isMod = t.middleware(async ({ ctx, next }) => {
 })
 
 export const modProcedure = t.procedure.use(isMod);
+
+// Contributor middleware.
+const isContributor = t.middleware(async ({ ctx, next }) => {
+    if (!ctx.session || !ctx.session.user)
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    // Check.
+    if (!has_role(ctx.session, "contributor") && !has_role(ctx.session, "admin"))
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    // Continue!
+    return next({
+        ctx: {
+            session: { ...ctx.session, user: ctx.session.user }
+        }
+    });
+})
+
+export const contributorProcedure = t.procedure.use(isContributor);

@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, modProcedure, contributorProcedure } from "../trpc";
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
@@ -29,12 +29,12 @@ export const partnerRouter = createTRPCRouter({
                 nextCur
             };
         }),
-    add: protectedProcedure
+    add: contributorProcedure
         .input(z.object({
             id: z.number().optional(),
 
-            url: z.string(),
-            name: z.string(),
+            url: z.string().max(128),
+            name: z.string().max(64),
 
             banner: z.string().optional(),
             bannerRemove: z.boolean().default(false)
@@ -93,7 +93,7 @@ export const partnerRouter = createTRPCRouter({
                 }
             }
         }),
-    delete: protectedProcedure
+    delete: modProcedure
         .input(z.object({
             id: z.number()
         }))
