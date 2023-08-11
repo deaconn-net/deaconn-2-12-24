@@ -1,7 +1,7 @@
 .grid-view {
     @apply grid;
     @apply grid-cols-[repeat(auto-fill,minmax(theme(width.full),1fr))];
-    @apply gap-8;
+    @apply gap-4;
 }
 
 .grid-view-sm {
