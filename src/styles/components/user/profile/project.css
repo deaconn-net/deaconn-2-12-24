@@ -10,14 +10,6 @@
     @apply flex-col;
 }
 
-.project-row-sm {
-    @apply sm:w-[24rem];
-}
-
-.project-row-lg {
-    @apply sm:w-[36rem];
-}
-
 /* Name */
 /*
 .project-row-name {

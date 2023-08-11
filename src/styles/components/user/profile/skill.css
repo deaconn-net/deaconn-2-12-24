@@ -10,13 +10,6 @@
     @apply flex-col;
 }
 
-.skill-row-sm {
-    @apply sm:w-[24rem];
-}
-
-.skill-row-lg {
-    @apply sm:w-[36rem];
-}
 
 /* Title */
 /*

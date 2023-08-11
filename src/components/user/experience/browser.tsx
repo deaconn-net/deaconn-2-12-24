@@ -65,7 +65,6 @@ const Browser: React.FC<{
                                 <Row
                                     key={`experience-${experience.id.toString()}`}
                                     experience={experience}
-                                    small={small}
                                 />
                             )
                         })}

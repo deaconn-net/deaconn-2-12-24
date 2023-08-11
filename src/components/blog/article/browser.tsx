@@ -116,7 +116,7 @@ const ArticleBrowser: React.FC<{
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={"article-browser-scroller"}
+                    className={"grid-view grid-view-sm"}
                 >
                     <>
                         {articles.map((article: Article) => {
@@ -124,7 +124,6 @@ const ArticleBrowser: React.FC<{
                                 <ArticleRow
                                     key={"article-" + article.id.toString()}
                                     article={article}
-                                    small={true}
                                 />
                             )
                         })}

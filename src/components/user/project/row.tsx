@@ -8,11 +8,9 @@ import SuccessBox from "@utils/success";
 import ReactMarkdown from "react-markdown";
 
 const Row: React.FC<{
-    project: UserProject,
-    small?: boolean
+    project: UserProject
 }> = ({
-    project,
-    small = false
+    project
 }) => {
     const editUrl = "/user/profile/projects?id=" + project.id.toString();
 
@@ -26,7 +24,7 @@ const Row: React.FC<{
                     msg={"Successfully deleted project ID #" + project.id.toString() + "."}
                 />
             ) : (
-                <div className={"project-row " + ((small) ? "project-row-sm" : "project-row-lg")}>
+                <div className="project-row">
                     <div className="project-row-name">
                         <h3>{project.name}</h3>
                     </div>

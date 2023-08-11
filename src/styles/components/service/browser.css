@@ -10,13 +10,3 @@
     @apply flex-wrap;
     @apply gap-2;
 }
-
-.service-browser-scroller {
-    @apply grid;
-    @apply grid-cols-[repeat(auto-fill,minmax(theme(width.full),1fr))];
-
-    @apply justify-items-center;
-    @apply gap-4;
-
-    @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
-}

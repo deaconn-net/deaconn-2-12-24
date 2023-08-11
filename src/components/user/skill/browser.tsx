@@ -66,7 +66,6 @@ const Browser: React.FC<{
                                 <Row
                                     key={"skill-" + skill.id.toString()}
                                     skill={skill}
-                                    small={small}
                                 />
                             )
                         })}

@@ -16,11 +16,9 @@ import ReactMarkdown from "react-markdown";
 import { has_role } from "@utils/user/auth";
 
 const ServiceRow: React.FC<{
-    service: Service,
-    small?: boolean
+    service: Service
 }> = ({
-    service,
-    small = false
+    service
 }) => {
     // Retrieve session.
     const { data: session } = useSession();
@@ -50,8 +48,8 @@ const ServiceRow: React.FC<{
                     msg={"Successfully deleted service ID #" + service.id.toString() + "."}
                 />
             ) : (
-                <div className={"service-row " + ((small) ? "service-row-sm" : "service-row-lg")}>
-                    <div className="service-row-image">
+                <div className="service-row">
+                    <div className="grid-view-image">
                         <Link href={viewUrl}>
                             <Image
                                 src={banner}

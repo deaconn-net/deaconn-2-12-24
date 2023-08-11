@@ -12,43 +12,19 @@
     @apply ring-gray-800;
     @apply hover:ring-gray-600;
 
-    &:hover .service-row-image > a > img {
+    & .grid-view-image img {
+        @apply filter;
+        @apply brightness-[85%];
+        @apply rounded-t;
+    }
+    &:hover .grid-view-image img {
         @apply brightness-100;
     }
+
 }
 
 .service-row > div:not(:first-child) {
     @apply px-2;
-}
-
-.service-row-sm {
-    @apply sm:w-[24rem];
-}
-
-.service-row-lg {
-    @apply sm:w-[36rem];
-}
-
-/* Image */
-.service-row-image {
-    @apply w-full;
-}
-
-.service-row-image > a > img {
-    @apply filter;
-    @apply brightness-[85%];
-    @apply rounded-t;
-    @apply w-full;
-    @apply h-full;
-    @apply max-h-full;
-}
-
-.service-row-sm > .service-row-image {
-    @apply h-72;
-}
-
-.service-row-lg > .service-row-image {
-    @apply h-96;
 }
 
 /* Name */

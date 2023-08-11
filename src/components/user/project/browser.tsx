@@ -66,7 +66,6 @@ const Browser: React.FC<{
                                 <Row
                                     key={`project-${project.id.toString()}`}
                                     project={project}
-                                    small={small}
                                 />
                             )
                         })}

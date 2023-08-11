@@ -80,7 +80,6 @@ const Page: NextPage<{
                         {services.map((service) => {
                             return (
                                 <ServiceRow
-                                    small={true}
                                     key={"service-" + service.id.toString()}
                                     service={service}
                                 />
@@ -94,7 +93,6 @@ const Page: NextPage<{
                         {articles.map((article) => {
                             return (
                                 <ArticleRow
-                                    small={true}
                                     key={"article-" + article.id.toString()}
                                     article={article}
                                 />

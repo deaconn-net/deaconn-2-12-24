@@ -1,17 +1,36 @@
 .grid-view {
     @apply grid;
     @apply grid-cols-[repeat(auto-fill,minmax(theme(width.full),1fr))];
+
     @apply gap-4;
 }
 
 .grid-view-sm {
     @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
+
+    & .grid-view-image {
+        @apply h-72;
+    }
 }
 
 .grid-view-lg {
     @apply sm:grid-cols-[repeat(auto-fill,minmax(36rem,1fr))];
+
+    & .grid-view-image {
+        @apply h-96;
+    }
 }
 
 .grid-view-center {
     @apply justify-items-center;
+}
+
+.grid-view-image {
+    @apply w-full;
+}
+
+.grid-view-image img {
+    @apply w-full;
+    @apply h-full;
+    @apply max-h-full;
 }

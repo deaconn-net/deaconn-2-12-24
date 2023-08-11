@@ -14,10 +14,8 @@ import { has_role } from "@utils/user/auth";
 
 const ArticleRow: React.FC<{
     article: Article,
-    small?: boolean
 }> = ({
-    article,
-    small = false
+    article
 }) => {
     const { data: session } = useSession();
     // Retrieve some environmental variables.
@@ -45,8 +43,8 @@ const ArticleRow: React.FC<{
                     msg={"Successfully deleted article #" + article.id.toString() + "."}
                 />
             ) : (
-                <div className={"article-row " + ((small) ? "article-row-sm" : "article-row-lg")}>
-                    <div className="article-row-image">
+                <div className="article-row">
+                    <div className="grid-view-image">
                         <Link href={viewUrl}>
                             <Image
                                 src={banner}

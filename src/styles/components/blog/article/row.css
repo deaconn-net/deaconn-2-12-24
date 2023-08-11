@@ -11,44 +11,21 @@
     @apply ring-4;
     @apply ring-gray-800;
     @apply hover:ring-gray-600;
+
+
+    & .grid-view-image img {
+        @apply filter;
+        @apply brightness-[85%];
+        @apply rounded-t;
+    }
     
-    &:hover .article-row-image > a > img {
+    &:hover .grid-view-image img {
         @apply brightness-100;
     }
 }
 
 .article-row > div:not(:first-child) {
     @apply px-2;
-}
-
-.article-row-sm {
-    @apply sm:w-[24rem];
-}
-
-.article-row-lg {
-    @apply sm:w-[36rem];
-}
-
-/* Image */
-.article-row-image {
-    @apply w-full;
-}
-
-.article-row-image > a > img {
-    @apply filter;
-    @apply brightness-[85%];
-    @apply rounded-t;
-    @apply w-full;
-    @apply h-full;
-    @apply max-h-full;
-}
-
-.article-row-sm > .article-row-image {
-    @apply h-72;
-}
-
-.article-row-lg > .article-row-image {
-    @apply h-96;
 }
 
 /* Title */

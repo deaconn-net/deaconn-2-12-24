@@ -8,11 +8,9 @@ import SuccessBox from "@utils/success";
 import ReactMarkdown from "react-markdown";
 
 const Row: React.FC<{
-    experience: UserExperience,
-    small?: boolean
+    experience: UserExperience
 }> = ({
-    experience,
-    small = false
+    experience
 }) => {
     const editUrl = "/user/profile/experiences?id=" + experience.id.toString();
 
@@ -26,7 +24,7 @@ const Row: React.FC<{
                     msg={"Successfully deleted experience ID #" + experience.id.toString() + "."}
                 />
             ) : (
-                <div className={"experience-row " + ((small) ? "experience-row-sm" : "experience-row-lg")}>
+                <div className={"experience-row"}>
                     <div className="experience-row-title">
                         <h3>{experience.title}</h3>
                     </div>

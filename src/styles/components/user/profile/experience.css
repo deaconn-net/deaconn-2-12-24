@@ -10,14 +10,6 @@
     @apply flex-col;
 }
 
-.experience-row-sm {
-    @apply sm:w-[24rem];
-}
-
-.experience-row-lg {
-    @apply sm:w-[36rem];
-}
-
 /* Title */
 /*
 .experience-row-title {

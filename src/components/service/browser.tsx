@@ -100,14 +100,13 @@ const ServiceBrowser: React.FC<{
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={"service-browser-scroller"}
+                    className={"grid-view grid-view-sm"}
                 >
                     {services.map((service: Service) => {
                         return (
                             <ServiceRow
                                 key={"service-" + service.id.toString()}
                                 service={service}
-                                small={true}
                             />
                         )
                     })}
