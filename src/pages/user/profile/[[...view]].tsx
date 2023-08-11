@@ -62,7 +62,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     // Retrieve view and ID if any.
     const { query, params } = ctx;
-    let view = params?.view ? params?.view[0] ?? undefined : undefined;
+    let view = params?.view?.[0];
 
     if (!view || !["general", "experiences", "skills", "projects"].includes(view))
         view = "general";

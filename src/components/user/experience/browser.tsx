@@ -36,11 +36,11 @@ const Browser: React.FC<{
         void fetchNextPage();
     }
 
-    const items: UserExperience[] = [];
+    const experiences: UserExperience[] = [];
 
     if (data) {
         data.pages.forEach((pg) => {
-            items.push(...pg.items);
+            experiences.push(...pg.items);
 
             if (!pg.nextCur && requireItems)
                 setRequireItems(false);
@@ -48,28 +48,30 @@ const Browser: React.FC<{
     }
 
     return (
-        <InfiniteScroll
-            pageStart={0}
-            loadMore={loadMore}
-            loader={<Loader key={"loader"} />}
-            hasMore={requireItems}
-            className={"grid-view grid-view-center grid-view-lg"}
-        >
-            <>
-                {data && (
+        <>
+            {data && experiences.length > 0 ? (
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={loadMore}
+                    loader={<Loader key={"loader"} />}
+                    hasMore={requireItems}
+                    className={"grid-view grid-view-center grid-view-lg"}
+                >
                     <>
-                        {items.map((experience: UserExperience) => {
+                        {experiences.map((experience: UserExperience) => {
                             return (
                                 <Row
-                                    key={"experience-" + experience.id.toString()}
+                                    key={`experience-${experience.id.toString()}`}
                                     experience={experience}
                                 />
                             )
                         })}
                     </>
-                )}
-            </>
-        </InfiniteScroll>
+                </InfiniteScroll>
+            ) : (
+                <p>No experiences found.</p>
+            )}
+        </>
     );
 }
 
