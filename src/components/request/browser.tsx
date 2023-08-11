@@ -88,43 +88,43 @@ const RequestBrowser: React.FC = () => {
                 )}
 
             </div>
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={loadMore}
-                loader={<Loader key={"loader"} />}
-                hasMore={requireItems}
-            >
-                <>
-                    {data && (
-                        <>
-                            {data && (
-                                <table className="request-browser-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Service</th>
-                                            <th>Created</th>
-                                            <th>Last Updated</th>
-                                            <th>Status</th>
-                                            <th>Accepted</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {requests.map((request: RequestWithService) => {
-                                            return (
-                                                <RequestRow
-                                                    key={`request-${request.id.toString()}`}
-                                                    request={request}
-                                                />
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
-                            )}
-                        </>
-                    )}
-                </>
-            </InfiniteScroll>
+            {data && requests.length > 0 ? (
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={loadMore}
+                    loader={<Loader key={"loader"} />}
+                    hasMore={requireItems}
+                >
+                    <>
+                        {data && (
+                            <table className="request-browser-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Service</th>
+                                        <th>Created</th>
+                                        <th>Last Updated</th>
+                                        <th>Status</th>
+                                        <th>Accepted</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {requests.map((request: RequestWithService) => {
+                                        return (
+                                            <RequestRow
+                                                key={`request-${request.id.toString()}`}
+                                                request={request}
+                                            />
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        )}
+                    </>
+                </InfiniteScroll>
+            ) : (
+                <p>No requests found.</p>
+            )}
         </div>
     );
 }
