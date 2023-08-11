@@ -13,12 +13,14 @@ const Browser: React.FC<{
     sort?: string,
     sortDir?: string,
     userId?: string,
-    limit?: number
+    limit?: number,
+    small?: boolean
 }> = ({
     sort,
     sortDir,
     userId,
-    limit = 10
+    limit = 10,
+    small = false
 }) => {
     const [requireItems, setRequireItems] = useState(true);
 
@@ -56,7 +58,7 @@ const Browser: React.FC<{
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={"grid-view grid-view-center grid-view-lg"}
+                    className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}
                 >
                     <>
                         {projects.map((project: UserProject) => {
