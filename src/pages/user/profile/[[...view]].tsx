@@ -33,8 +33,8 @@ const Page: NextPage<{
                 title={`${view.charAt(0).toUpperCase() + view.slice(1)} Profile - Deaconn`}
             />
             <Wrapper>
-                <div className="content-item">
-                    {authed ? (
+                {authed ? (
+                    <div className="content-item"> 
                         <UserSettingsPanel
                             view={view}
 
@@ -43,10 +43,10 @@ const Page: NextPage<{
                             project={project}
                             skill={skill}
                         />
-                    ) : (
-                        <NoPermissions />
-                    )}
-                </div>
+                    </div>
+                ) : (
+                    <NoPermissions />
+                )}
             </Wrapper>
         </>
     );

@@ -93,7 +93,7 @@ const ArticleBrowser: React.FC<{
                         }}
                     >Oldest</Link>
                 </div>
-                {session && (has_role(session, "moderator") || has_role(session, "admin")) && (
+                {session && (has_role(session, "contributor") || has_role(session, "admin")) && (
                     <Link
                         className="button button-primary flex justify-center"
                         href="/blog/new"
