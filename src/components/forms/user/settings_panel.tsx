@@ -96,6 +96,7 @@ const SettingsPanel: React.FC<{
                                 {!experience && (
                                     <ExperienceBrowser
                                         userId={session?.user?.id}
+                                        small={true}
                                     />
                                 )}
                             </div>
@@ -114,6 +115,7 @@ const SettingsPanel: React.FC<{
                                 {!skill && (
                                     <SkillBrowser
                                         userId={session?.user?.id}
+                                        small={true}
                                     />
                                 )}
                             </div>
@@ -132,6 +134,7 @@ const SettingsPanel: React.FC<{
                                 {!project && (
                                     <ProjectBrowser
                                         userId={session?.user?.id}
+                                        small={true}
                                     />
                                 )}
                             </div>
