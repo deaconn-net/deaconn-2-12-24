@@ -80,9 +80,9 @@ const Form: React.FC<{
 
             website: user?.website ?? "",
             socialTwitter: user?.socialTwitter ?? "",
-            socialGithub: user?.socialGithub,
-            socialLinkedin: user?.socialLinkedin,
-            socialFacebook: user?.socialFacebook
+            socialGithub: user?.socialGithub ?? "",
+            socialLinkedin: user?.socialLinkedin ?? "",
+            socialFacebook: user?.socialFacebook ?? ""
         },
         enableReinitialize: false,
 
@@ -112,11 +112,11 @@ const Form: React.FC<{
                 birthday: values.birthday,
                 showEmail: values.showEmail,
 
-                website: values.website || undefined,
-                socialTwitter: values.socialTwitter || undefined,
-                socialGithub: values.socialGithub || undefined,
-                socialLinkedin: values.socialLinkedin || undefined,
-                socialFacebook: values.socialFacebook || undefined
+                website: values.website,
+                socialTwitter: values.socialTwitter,
+                socialGithub: values.socialGithub,
+                socialLinkedin: values.socialLinkedin,
+                socialFacebook: values.socialFacebook
             });
         }
     });

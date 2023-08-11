@@ -1,40 +1,11 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+
 import { z } from "zod";
+
 import { TRPCError } from "@trpc/server";
+
 import { RetrieveSocialTag } from "@utils/social";
 import { has_role } from "@utils/user/auth";
-
-const expSchema = z.object({
-    id: z.number().optional(),
-
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
-    title: z.string(),
-    desc: z.string()
-});
-
-const skillSchema = z.object({
-    id: z.number().optional(),
-
-    title: z.string(),
-    desc: z.string()
-});
-
-const projectSrcSchema = z.object({
-    title: z.string(),
-    url: z.string()
-})
-
-const projectSchema = z.object({
-    id: z.number().optional(),
-
-    startDate: z.date().optional(),
-    endDate: z.date().optional(),
-    name: z.string(),
-    desc: z.string(),
-
-    projectSources: z.array(projectSrcSchema)
-});
 
 export const userRouter = createTRPCRouter({
     update: protectedProcedure
@@ -44,25 +15,19 @@ export const userRouter = createTRPCRouter({
             credit: z.number().optional(),
 
             image: z.string().optional(),
-            name: z.string().optional(),
-            url: z.string().optional(),
-            title: z.string().optional(),
-            aboutMe: z.string().optional(),
+            name: z.string().max(64).optional(),
+            url: z.string().max(32).optional(),
+            title: z.string().min(3).max(64).optional(),
+            aboutMe: z.string().max(16384).optional(),
             birthday: z.date().optional(),
             showEmail: z.boolean().optional(),
             isTeam: z.boolean().optional(),
 
-            website: z.string().optional(),
-            socialTwitter: z.string().optional(),
-            socialGithub: z.string().optional(),
-            socialLinkedin: z.string().optional(),
-            socialFacebook: z.string().optional(),
-
-            experiences: z.array(expSchema).optional(),
-            skills: z.array(skillSchema).optional(),
-            projects: z.array(projectSchema).optional(),
-
-            permissions: z.string().optional()
+            website: z.string().max(64).optional(),
+            socialTwitter: z.string().max(64).optional(),
+            socialGithub: z.string().max(64).optional(),
+            socialLinkedin: z.string().max(64).optional(),
+            socialFacebook: z.string().max(64).optional(),
         }))
         .mutation(async ({ ctx, input }) => {
             // If we have a custom user ID and the IDs don't match, make sure the user has permissions.
@@ -76,7 +41,9 @@ export const userRouter = createTRPCRouter({
                         id: input.id ?? ctx.session.user.id
                     },
                     data: {
-                        credit: input.credit,
+                        ...(input.id && {
+                            credit: input.credit,
+                        }),
                         image: input.image,
                         name: input.name,
                         url: input.url,
@@ -362,8 +329,8 @@ export const userRouter = createTRPCRouter({
             startDate: z.date().optional(),
             endDate: z.date().optional(),
 
-            title: z.string(),
-            desc: z.string().optional()
+            title: z.string().min(2).max(32),
+            desc: z.string().max(32768).optional()
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns item if ID is set (indicating they're editing).
@@ -424,8 +391,8 @@ export const userRouter = createTRPCRouter({
 
             userId: z.string().optional(),
 
-            title: z.string(),
-            desc: z.string().optional()
+            title: z.string().min(2).max(32),
+            desc: z.string().max(32768).optional()
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns item if ID is set (indicating they're editing).
@@ -484,8 +451,8 @@ export const userRouter = createTRPCRouter({
             startDate: z.date().optional(),
             endDate: z.date().optional(),
 
-            name: z.string(),
-            desc: z.string().optional()
+            name: z.string().min(2).max(32),
+            desc: z.string().max(32768).optional()
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns item if ID is set (indicating they're saving).
