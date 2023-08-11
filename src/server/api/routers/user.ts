@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { RetrieveSocialTag } from "@utils/social";
+import { has_role } from "@utils/user/auth";
 
 const expSchema = z.object({
     id: z.number().nullable(),
@@ -377,56 +378,136 @@ export const userRouter = createTRPCRouter({
         }),
     deleteExperience: protectedProcedure
         .input(z.object({
-            id: z.number()
+            id: z.number(),
+            userId: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.userExperience.delete({
-                where: {
-                    id: input.id
-                }
-            });
+            // Check if user owns experience if not admin/moderator.
+            if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin")) {
+                const userId = ctx.session.user.id;
 
-            if (!res.id) {
+                // Check if user owns experience.
+                try {
+                    await ctx.prisma.userExperience.findFirstOrThrow({
+                        where: {
+                            id: input.id,
+                            userId: userId
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED"
+                    });
+                }
+            }
+
+            // Make sure the user has permissions if a custom user ID is set.
+            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            try {
+                await ctx.prisma.userExperience.delete({
+                    where: {
+                        id: input.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete experience #" + input.id.toString()
+                    message: `Failed to delete experience (ID => ${input.id.toString()}). Error => ${typeof err == "string" ? err : "Check console"}.`
                 });
             }
         }),
     deleteSkill: protectedProcedure
         .input(z.object({
-            id: z.number()
+            id: z.number(),
+            userId: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.userSkill.delete({
-                where: {
-                    id: input.id
-                }
-            });
+            // Check if user owns skill if not admin/moderator.
+            if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin")) {
+                const userId = ctx.session.user.id;
 
-            if (!res.id) {
+                // Check if user owns skill.
+                try {
+                    await ctx.prisma.userSkill.findFirstOrThrow({
+                        where: {
+                            id: input.id,
+                            userId: userId
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED"
+                    });
+                }
+            }
+
+            // Make sure the user has permissions if a custom user ID is set.
+            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+        
+            try {
+                await ctx.prisma.userSkill.delete({
+                    where: {
+                        id: input.id,
+                        userId: input.userId ?? ctx.session.user.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete skill #" + input.id.toString()
+                    message: `Failed to delete skill (ID => ${input.id.toString()}). Error => ${typeof err == "string" ? err : "Check console"}.`
                 });
             }
         }),
     deleteProject: protectedProcedure
         .input(z.object({
-            id: z.number()
+            id: z.number(),
+            userId: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.userProject.delete({
-                where: {
-                    id: input.id
-                }
-            });
+            // Check if user owns project if not admin/moderator.
+            if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin")) {
+                const userId = ctx.session.user.id;
 
-            if (!res.id) {
+                // Check if user owns project.
+                try {
+                    await ctx.prisma.userProject.findFirstOrThrow({
+                        where: {
+                            id: input.id,
+                            userId: userId
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED"
+                    });
+                }
+            }
+
+            // Make sure the user has permissions if a custom user ID is set.
+            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+            
+            try {
+                await ctx.prisma.userProject.delete({
+                    where: {
+                        id: input.id,
+                        userId: input.userId ?? ctx.session.user.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to delete project #" + input.id.toString()
-                });
+                    message: `Failed to delete project (ID => ${input.id.toString()}). Error => ${typeof err == "string" ? err : "Check console."}`
+                })
             }
         }),
     addExperience: protectedProcedure
@@ -442,42 +523,55 @@ export const userRouter = createTRPCRouter({
             desc: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.userExperience.upsert({
-                where: {
-                    id: input.id ?? 0
-                },
-                create: {
-                    userId: (input.userId) ? input.userId : ctx.session.user.id,
-                    ...(input.startDate && {
-                        startDate: input.startDate
-                    }),
-                    ...(input.endDate && {
-                        endDate: input.endDate
-                    }),
-                    title: input.title,
-                    ...(input.desc && {
-                        desc: input.desc
-                    })
-                },
-                update: {
-                    userId: (input.userId) ? input.userId : ctx.session.user.id,
-                    ...(input.startDate && {
-                        startDate: input.startDate
-                    }),
-                    ...(input.endDate && {
-                        endDate: input.endDate
-                    }),
-                    title: input.title,
-                    ...(input.desc && {
-                        desc: input.desc
-                    })
-                }
-            });
+            // Check if user owns item if ID is set (indicating they're editing).
+            if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
+                const userId = ctx.session.user.id;
 
-            if (!res.id) {
+                // Check if user owns experience.
+                try {
+                    await ctx.prisma.userExperience.findFirstOrThrow({
+                        where: {
+                            userId: userId
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED"
+                    });
+                }
+            }
+
+            // Make sure the user has permissions if a custom user ID is set.
+            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            // Attempt to create or update experience.
+            try {
+                await ctx.prisma.userExperience.upsert({
+                    where: {
+                        id: input.id ?? 0
+                    },
+                    create: {
+                        userId: input.userId ?? ctx.session.user.id,
+                        startDate: input.startDate,
+                        endDate: input.endDate,
+                        title: input.title,
+                        desc: input.desc
+                    },
+                    update: {
+                        userId: input.userId ?? ctx.session.user.id,
+                        startDate: input.startDate,
+                        endDate: input.endDate,
+                        title: input.title,
+                        desc: input.desc
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to create experience."
+                    message: `Failed to ${input.id ? "save" : "create"} user experience (ID => ${input.id?.toString() ?? "N/A"}). Error => ${typeof err == "string" ? err : "Check console"}.`
                 });
             }
         }),
@@ -491,30 +585,50 @@ export const userRouter = createTRPCRouter({
             desc: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.userSkill.upsert({
-                where: {
-                    id: input.id ?? 0
-                },
-                create: {
-                    userId: (input.userId) ? input.userId : ctx.session.user.id,
-                    title: input.title,
-                    ...(input.desc && {
-                        desc: input.desc
-                    })
-                },
-                update: {
-                    userId: (input.userId) ? input.userId : ctx.session.user.id,
-                    title: input.title,
-                    ...(input.desc && {
-                        desc: input.desc
-                    })
-                }
-            });
+            // Check if user owns item if ID is set (indicating they're editing).
+            if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
+                const userId = ctx.session.user.id;
 
-            if (!res.id) {
+                // Check if user owns skill.
+                try {
+                    await ctx.prisma.userSkill.findFirstOrThrow({
+                        where: {
+                            userId: userId
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED"
+                    });
+                }
+            }
+
+            // Make sure the user has permissions if a custom user ID is set.
+            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            try {
+                await ctx.prisma.userSkill.upsert({
+                    where: {
+                        id: input.id ?? 0
+                    },
+                    create: {
+                        userId: input.userId ?? ctx.session.user.id,
+                        title: input.title,
+                        desc: input.desc
+                    },
+                    update: {
+                        userId: input.userId ?? ctx.session.user.id,
+                        title: input.title,
+                        desc: input.desc
+                    }
+                });
+            } catch(err) {
+                console.error(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to create skill."
+                    message: `Failed to ${input.id ? "save" : "create"} skill (ID => ${input.id?.toString() ?? "N/A"}). Error => ${typeof err == "string" ? err : "Check console"}.`
                 });
             }
         }),
@@ -531,43 +645,55 @@ export const userRouter = createTRPCRouter({
             desc: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.userProject.upsert({
-                where: {
-                    id: input.id ?? 0
-                },
-                create: {
-                    userId: (input.userId) ? input.userId : ctx.session.user.id,
-                    ...(input.startDate && {
-                        startDate: input.startDate
-                    }),
-                    ...(input.endDate && {
-                        endDate: input.endDate
-                    }),
-                    name: input.name,
-                    ...(input.desc && {
-                        desc: input.desc
-                    })
-                },
-                update: {
-                    userId: (input.userId) ? input.userId : ctx.session.user.id,
-                    ...(input.startDate && {
-                        startDate: input.startDate
-                    }),
-                    ...(input.endDate && {
-                        endDate: input.endDate
-                    }),
-                    name: input.name,
-                    ...(input.desc && {
-                        desc: input.desc
-                    })
-                }
-            });
+            // Check if user owns item if ID is set (indicating they're saving).
+            if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
+                const userId = ctx.session.user.id;
 
-            if (!res.id) {
+                // Check if user owns project.
+                try {
+                    await ctx.prisma.userProject.findFirstOrThrow({
+                        where: {
+                            userId: userId
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({
+                        code: "UNAUTHORIZED"
+                    });
+                }
+            }
+
+            // Make sure the user has permissions if a custom user ID is set.
+            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            try {
+                await ctx.prisma.userProject.upsert({
+                    where: {
+                        id: input.id ?? 0
+                    },
+                    create: {
+                        userId: input.userId ?? ctx.session.user.id,
+                        startDate: input.startDate,
+                        endDate: input.endDate,
+                        name: input.name,
+                        desc: input.desc
+                    },
+                    update: {
+                        userId: input.userId ?? ctx.session.user.id,
+                        startDate: input.startDate,
+                        endDate: input.endDate,
+                        name: input.name,
+                        desc: input.desc
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+                
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to create experience."
-                });
+                    message: `Failed to ${input.id ? "save" : "create"} project (ID => ${input.id?.toString() ?? "N/A"}). Error => ${typeof err == "string" ? err : "Check console"}.`
+                })
             }
         }),
 });
