@@ -89,8 +89,8 @@ export const adminRouter = createTRPCRouter({
     /* Roles */
     addRole: adminProcedure
         .input(z.object({
-            role: z.string(),
-            title: z.string(),
+            role: z.string().max(64),
+            title: z.string().max(64),
             description: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {

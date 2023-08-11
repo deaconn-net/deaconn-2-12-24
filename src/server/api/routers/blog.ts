@@ -58,8 +58,8 @@ export const blogRouter = createTRPCRouter({
             hasUser: z.boolean().default(true),
 
             category: z.number().nullable().optional(),
-            url: z.string(),
-            title: z.string(),
+            url: z.string().max(128),
+            title: z.string().max(64),
             desc: z.string().optional(),
             content: z.string(),
             banner: z.string().optional(),

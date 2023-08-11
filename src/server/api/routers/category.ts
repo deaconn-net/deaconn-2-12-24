@@ -10,8 +10,8 @@ export const categoryRouter = createTRPCRouter({
 
             parent: z.number().nullable().optional(),
 
-            url: z.string(),
-            name: z.string(),
+            url: z.string().max(128),
+            name: z.string().max(64),
             description: z.string().optional()
         }))
         .mutation(async ({ ctx, input }) => {

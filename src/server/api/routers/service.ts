@@ -52,15 +52,15 @@ export const serviceRouter = createTRPCRouter({
             id: z.number().optional(),
 
             category: z.number().nullable().optional(),
-            url: z.string(),
-            name: z.string(),
+            url: z.string().max(128),
+            name: z.string().max(64),
             price: z.number().default(0),
             desc: z.string().optional(),
             install: z.string().optional(),
             features: z.string().optional(),
             content: z.string(),
 
-            gitLink: z.string().optional(),
+            gitLink: z.string().max(128).optional(),
             openSource: z.boolean().default(true),
 
             icon: z.string().optional(),

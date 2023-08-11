@@ -33,8 +33,8 @@ export const partnerRouter = createTRPCRouter({
         .input(z.object({
             id: z.number().optional(),
 
-            url: z.string(),
-            name: z.string(),
+            url: z.string().max(128),
+            name: z.string().max(64),
 
             banner: z.string().optional(),
             bannerRemove: z.boolean().default(false)

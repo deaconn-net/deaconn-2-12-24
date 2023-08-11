@@ -50,7 +50,7 @@ export const requestRouter = createTRPCRouter({
             userId: z.string().optional(),
             serviceId: z.number().nullable().optional(),
 
-            title: z.string().optional(),
+            title: z.string().max(64).optional(),
             timeframe: z.number(),
             content: z.string(),
             startDate: z.date().optional(),
@@ -89,7 +89,7 @@ export const requestRouter = createTRPCRouter({
             id: z.number().nullable(),
 
             requestId: z.number(),
-            content: z.string()
+            content: z.string().max(32768)
         }))
         .mutation(async ({ ctx, input }) => {
             // Make sure we either own the request or are 
