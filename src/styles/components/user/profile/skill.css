@@ -11,11 +11,11 @@
 }
 
 .skill-row-sm {
-    @apply sm:w-[18rem];
+    @apply sm:w-[24rem];
 }
 
 .skill-row-lg {
-    @apply sm:w-[24rem];
+    @apply sm:w-[36rem];
 }
 
 /* Title */
