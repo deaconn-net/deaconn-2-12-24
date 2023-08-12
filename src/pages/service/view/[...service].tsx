@@ -13,7 +13,7 @@ import Meta from "@components/meta";
 import NotFound from "@components/errors/not_found";
 import IconAndText from "@components/containers/icon_and_text";
 import TabMenuWithData from "@components/tabs/tab_menu_with_data";
-import Tabs, { TabItemType } from "@components/tabs/tabs";
+import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 import { api } from "@utils/api";
 import ViewIcon from "@utils/icons/view";

@@ -1,5 +1,4 @@
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 
 import { type UserExperience, type User, type UserSkill, type UserProject } from "@prisma/client";
 
@@ -12,7 +11,7 @@ import ExperienceForm from "@components/forms/user/experience";
 import ProjectForm from "@components/forms/user/project";
 import SkillForm from "@components/forms/user/skill";
 import TabMenuWithData from "@components/tabs/tab_menu_with_data";
-import Tabs, { TabItemType } from "@components/tabs/tabs";
+import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 const SettingsPanel: React.FC<{
     view?: string,

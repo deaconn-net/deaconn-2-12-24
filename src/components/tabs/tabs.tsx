@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MouseEventHandler, useState } from "react";
+import { type MouseEventHandler, useState } from "react";
 
 export type TabItemType = {
     url: string,
@@ -26,6 +26,8 @@ const Tabs: React.FC<{
                 href="#"
                 className="tab-link sm:hidden"
                 onClick={(e) => {
+                    e.preventDefault();
+                    
                     const tabItems = document.getElementsByClassName("tab-item");
 
                     for (let i = 0; i < tabItems.length; i++) {

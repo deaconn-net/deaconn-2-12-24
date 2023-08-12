@@ -1,8 +1,7 @@
 import React from "react";
-import Link from "next/link";
 
 import { type CategoryWithAllAndServiceCount, type CategoryWithAllAndAricleCount } from "~/types/category";
-import Tabs, { TabItemType } from "@components/tabs/tabs";
+import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 const CategoryTabs: React.FC<{
     categories_with_articles?: CategoryWithAllAndAricleCount[],

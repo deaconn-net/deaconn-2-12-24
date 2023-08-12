@@ -1,7 +1,5 @@
-import Link from "next/link";
-
 import TabMenuWithData from "@components/tabs/tab_menu_with_data";
-import Tabs, { TabItemType } from "@components/tabs/tabs";
+import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 const AdminSettingsPanel: React.FC<{
     view: string,
