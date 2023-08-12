@@ -201,8 +201,9 @@ model UserExperience {
   startDate DateTime?
   endDate   DateTime?
 
-  title String
-  desc  String?
+  title   String
+  desc    String?
+  details String?
 }
 
 model UserSkill {
@@ -224,8 +225,9 @@ model UserProject {
   startDate DateTime?
   endDate   DateTime?
 
-  name String
-  desc String?
+  name    String
+  desc    String?
+  details String?
 
   projectSources ProjectSource[]
 }
