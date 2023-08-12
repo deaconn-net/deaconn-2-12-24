@@ -1,24 +1,20 @@
 import Link from "next/link";
 
-import { type Partner, type Service } from "@prisma/client";
+import { type ServiceFooter } from "~/types/service";
+import { type PartnerFooter } from "~/types/partner";
 
-import { api } from "@utils/api";
 import TwitterIcon from "@utils/icons/social/twitter";
 import GithubIcon from "@utils/icons/social/github";
 import FacebookIcon from "@utils/icons/social/facebook";
 import LinkedinIcon from "@utils/icons/social/linkedin";
 
-const Footer: React.FC = () => {
-    const partnerQuery = api.partner.getAll.useQuery({
-        limit: 10
-    });
-    const partners = partnerQuery.data?.items;
-
-    const serviceQuery = api.service.getAll.useQuery({
-        limit: 10
-    });
-    const services = serviceQuery.data?.items;
-
+const Footer: React.FC<{
+    services?: ServiceFooter[],
+    partners?: PartnerFooter[]
+}> = ({
+    services,
+    partners
+}) => {
     return (
         <footer>
             <div className="footer-content">
@@ -41,7 +37,7 @@ const Footer: React.FC = () => {
                         <ul className="footer-list">
                             {services && services.length > 0 ? (
                                 <>
-                                    {services.map((service: Service) => {
+                                    {services.map((service) => {
                                         const viewLink = "/service/view/" + service.url;
 
                                         return (
@@ -63,7 +59,7 @@ const Footer: React.FC = () => {
                             <ul className="footer-list">
                                 {partners && partners.length > 0 ? (
                                     <>
-                                        {partners.map((partner: Partner) => {
+                                        {partners.map((partner) => {
                                             return (
                                                 <Link
                                                     href={`https://${partner.url}`}

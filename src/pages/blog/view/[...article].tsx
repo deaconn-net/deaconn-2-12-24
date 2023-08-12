@@ -8,10 +8,11 @@ import { type Article, type User } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
-import { UserLink } from "@components/user/link";
 import Wrapper from "@components/wrapper";
-import NotFound from "@components/errors/not_found";
 import Meta from "@components/meta";
+
+import { UserLink } from "@components/user/link";
+import NotFound from "@components/errors/not_found";
 
 import { api } from "@utils/api";
 import { dateFormat, dateFormatOne } from "@utils/date";
@@ -20,6 +21,7 @@ import { has_role } from "@utils/user/auth";
 import TwitterIcon from "@utils/icons/social/twitter";
 import FacebookIcon from "@utils/icons/social/facebook";
 import LinkedinIcon from "@utils/icons/social/linkedin";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 import ReactMarkdown from "react-markdown";
 
@@ -31,10 +33,13 @@ const Page: NextPage<{
     article: ArticleType | null,
     createdAtDate: string | null,
     updatedAtDate: string | null
-}> = ({
+} & GlobalPropsType> = ({
     article,
     createdAtDate,
-    updatedAtDate
+    updatedAtDate,
+
+    footerServices,
+    footerPartners
 }) => {
     // Retrieve session.
     const { data: session } = useSession();
@@ -75,7 +80,10 @@ const Page: NextPage<{
                 title={`${article?.title ?? "Not Found!"} - Blog - Deaconn`}
                 description={`${article?.desc ?? "Article not found."}`}
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <div className="content-item">
                     {deleteMut.isSuccess && (
                         
@@ -234,8 +242,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return { 
-        props: { 
+        props: {
+            ...globalProps,
             article: JSON.parse(JSON.stringify(article)),
             createdAtDate: createdAtDate,
             updatedAtDate: updatedAtDate

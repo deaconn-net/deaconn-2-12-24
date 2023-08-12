@@ -5,17 +5,22 @@ import { type Request } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
-import Form from '@components/forms/request/new';
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
+
+import Form from '@components/forms/request/new';
 import NoPermissions from "@components/errors/no_permissions";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
     request?: Request
-}> = ({
+} & GlobalPropsType> = ({
     authed,
-    request
+    request,
+
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
@@ -23,7 +28,10 @@ const Page: NextPage<{
                 title="New Request - Requests - Deaconn"
                 description="Create a new request with Deaconn."
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 {authed ? (
                     <div className="content-item">
                         <h1>{request ? "Save" : "Create"} Request</h1>
@@ -62,8 +70,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             authed: authed,
             request: request
         }

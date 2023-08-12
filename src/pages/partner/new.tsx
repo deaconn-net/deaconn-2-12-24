@@ -5,19 +5,24 @@ import { type Partner } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
-import Form from '@components/forms/partner/new';
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
+
+import Form from '@components/forms/partner/new';
 import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
     partner?: Partner
-}> = ({
+} & GlobalPropsType> = ({
     authed,
-    partner
+    partner,
+    
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
@@ -25,7 +30,10 @@ const Page: NextPage<{
                 title="New Partner - Partners - Deaconn"
                 robots="noindex"
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 {authed ? (
                     <div className="content-item">
                         <h1>{partner ? "Save" : "Create"} Partner</h1>
@@ -71,8 +79,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return { 
         props: {
+            ...globalProps,
             authed: authed,
             partner: partner
         }

@@ -12,10 +12,15 @@ import ArticleBrowser from "@components/blog/article/browser";
 import CategoryTabs from "@components/category/tabs";
 import TabMenuWithData from "@components/tabs/tab_menu_with_data";
 
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+
 const Page: NextPage<{
     categories?: CategoryWithAllAndAricleCount[]
-}> = ({
-    categories
+} & GlobalPropsType> = ({
+    categories,
+
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
@@ -23,7 +28,10 @@ const Page: NextPage<{
                 title="Blog - Deaconn"
                 description="Deaconn's blog includes artiles on technology, programming, security, networking, and more!"
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <div className="content-item">
                     <h1>Blog</h1>
                     <TabMenuWithData
@@ -67,8 +75,11 @@ export async function getServerSideProps() {
         }
     });
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             categories: categories
         }
     };

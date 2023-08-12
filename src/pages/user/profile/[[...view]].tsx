@@ -3,12 +3,15 @@ import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type User, type UserExperience, type UserProject, type UserSkill } from "@prisma/client";
 
-import Wrapper from '@components/wrapper';
-import UserSettingsPanel from "@components/forms/user/settings_panel";
-import NoPermissions from "@components/errors/no_permissions";
+import { prisma } from "@server/db";
+
+import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import { prisma } from "@server/db";
+import UserSettingsPanel from "@components/forms/user/settings_panel";
+import NoPermissions from "@components/errors/no_permissions";
+
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
@@ -18,21 +21,27 @@ const Page: NextPage<{
     experience?: UserExperience,
     project?: UserProject,
     skill?: UserSkill
-}> = ({
+} & GlobalPropsType> = ({
     authed,
     view,
 
     user,
     experience,
     project,
-    skill
+    skill,
+
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
             <Meta
                 title={`${view.charAt(0).toUpperCase() + view.slice(1)} Profile - Deaconn`}
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 {authed ? (
                     <div className="content-item"> 
                         <UserSettingsPanel
@@ -110,8 +119,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             authed: authed,
             view: view,
 

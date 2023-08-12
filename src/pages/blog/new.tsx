@@ -1,26 +1,31 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-import { prisma } from "@server/db";
-
 import { type Article } from "@prisma/client";
 import { type CategoryWithChildren } from "~/types/category";
 
-import Form from '@components/forms/article/new';
+import { prisma } from "@server/db";
+
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
+
+import Form from '@components/forms/article/new';
 import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
     article?: Article,
     categories: CategoryWithChildren[]
-}> = ({
+} & GlobalPropsType> = ({
     authed,
     article,
-    categories
+    categories,
+
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
@@ -28,7 +33,10 @@ const Page: NextPage<{
                 title="New Article - Blog - Deaconn"
                 robots="noindex"
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 {authed ? (
                     <div className="content-item">
                         <h1>{article ? "Save" : "Create"} Article</h1>
@@ -87,8 +95,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             authed: authed,
             article: JSON.parse(JSON.stringify(article)),
             categories: categories

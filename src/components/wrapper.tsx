@@ -1,5 +1,7 @@
 import React, { createContext, useState } from "react";
 
+import { type GlobalPropsType } from "@utils/global_props";
+
 import Header from "@components/header";
 import Footer from "@components/footer";
 import ErrorBox from "@utils/error";
@@ -25,11 +27,14 @@ const Wrapper: React.FC<{
     errorMsgOverride?: string,
 
     children: React.ReactNode,
-}> = ({
+} & GlobalPropsType> = ({
     successTitleOverride,
     successMsgOverride,
     errorTitleOverride,
     errorMsgOverride,
+
+    footerServices,
+    footerPartners,
 
     children
 }) => {
@@ -76,7 +81,10 @@ const Wrapper: React.FC<{
                         
                         {children}
                     </div>
-                    <Footer />
+                    <Footer
+                        services={footerServices}
+                        partners={footerPartners}
+                    />
                 </main>
             </ErrorCtx.Provider>
         </SuccessCtx.Provider>

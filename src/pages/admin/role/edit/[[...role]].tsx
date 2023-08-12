@@ -12,17 +12,24 @@ import NotFound from "@components/errors/not_found";
 import RoleForm from "@components/forms/role/new";
 
 import { has_role } from "@utils/user/auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Edit: NextPage<{
     authed: boolean,
     role: Role | null
-}> = ({
+} & GlobalPropsType> = ({
     authed,
-    role
+    role,
+
+    footerServices,
+    footerPartners
 }) => {
     if (!authed) {
         return (
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <NoPermissions />
             </Wrapper>
         );
@@ -30,14 +37,20 @@ const Edit: NextPage<{
 
     if (!role) {
         return (
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <NotFound item="Role" />
             </Wrapper>
         );
     }
 
     return (
-        <Wrapper>
+        <Wrapper
+            footerServices={footerServices}
+            footerPartners={footerPartners}
+        >
             <div className="content-item">
                 <AdminSettingsPanel view="roles">
                     <RoleForm
@@ -73,8 +86,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         })
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             authed: authed,
             role: role
         }

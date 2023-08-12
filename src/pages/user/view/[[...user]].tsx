@@ -3,15 +3,18 @@ import { type GetServerSidePropsContext, type NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
 
+import { type GlobalPropsType } from "@utils/global_props";
+
+import { prisma } from "@server/db";
+
 import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
 
 import ExperienceBrowser from "@components/user/experience/browser";
 import ProjectBrowser from "@components/user/project/browser";
 import SkillBrowser from "@components/user/skill/browser";
 import NotFound from "@components/errors/not_found";
-import Meta from "@components/meta";
-
-import { prisma } from "@server/db";
+import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 import { dateFormat, dateFormatTwo } from "@utils/date";
 import TwitterIcon from "@utils/icons/social/twitter";
@@ -22,14 +25,16 @@ import { FormatSocialUrl } from "@utils/social";
 import WebsiteIcon from "@utils/icons/social/website";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import Tabs, { TabItemType } from "@components/tabs/tabs";
 
 const Page: NextPage<{
     user: User | null,
     view: string
-}> = ({
+} & GlobalPropsType> = ({
     user,
-    view
+    view,
+
+    footerServices,
+    footerPartners
 }) => {
     const baseUrl = "/user/view/" + ((user?.url) ? user.url : "$" + (user?.id ?? ""));
 
@@ -64,7 +69,10 @@ const Page: NextPage<{
             <Meta
                 title={`Viewing ${user?.name ?? "Not Found"} ${view.charAt(0).toUpperCase() + view.slice(1)} - Users - Deaconn`}
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <div className="content-item">
                     {user ? (
                         <div className="flex flex-wrap gap-2">

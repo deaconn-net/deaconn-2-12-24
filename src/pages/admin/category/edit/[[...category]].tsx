@@ -7,25 +7,33 @@ import { type CategoryWithChildren } from "~/types/category";
 import { prisma } from "@server/db";
 
 import Wrapper from "@components/wrapper";
+
 import AdminSettingsPanel from "@components/admin/settingspanel";
 import NoPermissions from "@components/errors/no_permissions";
 import NotFound from "@components/errors/not_found";
+import CategoryForm from "@components/forms/category/new";
 
 import { has_role } from "@utils/user/auth";
-import CategoryForm from "@components/forms/category/new";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
     category: Category | null,
     categories: CategoryWithChildren[]
-}> = ({
+} & GlobalPropsType> = ({
     authed,
     category,
-    categories
+    categories,
+
+    footerServices,
+    footerPartners
 }) => {
     if (!authed) {
         return (
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <NoPermissions />
             </Wrapper>
         );
@@ -33,14 +41,20 @@ const Page: NextPage<{
 
     if (!category) {
         return (
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <NotFound item="Category" />
             </Wrapper>
         );
     }
 
     return (
-        <Wrapper>
+        <Wrapper
+            footerServices={footerServices}
+            footerPartners={footerPartners}
+        >
             <div className="content-item">
                 <AdminSettingsPanel view="categories">
                     <CategoryForm
@@ -87,8 +101,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             authed: authed,
             category: category,
             categories: categories
