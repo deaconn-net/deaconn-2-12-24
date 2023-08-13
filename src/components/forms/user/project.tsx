@@ -77,9 +77,6 @@ const UserProjectForm: React.FC<{
             >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
-    // Sources.
-    const sources = project?.sources ?? [DEFAULT_SOURCE];
-
     // Setup form.
     const form = useFormik({
         initialValues: {
@@ -89,7 +86,7 @@ const UserProjectForm: React.FC<{
             desc: project?.desc ?? "",
             details: project?.details ?? "",
             openSource: project?.openSource ?? true,
-            sources: sources
+            sources: project?.sources ?? [DEFAULT_SOURCE]
         },
         enableReinitialize: false,
 
