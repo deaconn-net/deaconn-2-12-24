@@ -240,7 +240,7 @@ model ProjectSource {
   title String @default("Source")
   url   String
 
-  @@unique([projectId, url])
+  @@id([projectId, url])
 }
 
 model Role {
