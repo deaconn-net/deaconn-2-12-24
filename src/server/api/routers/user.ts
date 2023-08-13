@@ -455,7 +455,7 @@ export const userRouter = createTRPCRouter({
             endDate: z.date().optional(),
 
             name: z.string().min(2).max(32),
-            desc: z.string().max(128).optional(),
+            desc: z.string().max(512).optional(),
             details: z.string().max(32768).optional(),
             openSource: z.boolean().default(true),
 
