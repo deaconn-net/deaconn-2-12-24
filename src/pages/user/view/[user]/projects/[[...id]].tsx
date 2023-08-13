@@ -17,6 +17,10 @@ import { type GlobalPropsType } from "@utils/global_props";
 import { dateFormat, dateFormatThree } from "@utils/date";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import IconAndText from "@components/containers/icon_and_text";
+import Link from "next/link";
+import { SourceCode } from "eslint";
+import SourceIcon from "@utils/icons/source";
 
 const Page: NextPage<{
     user?: User,
@@ -67,6 +71,36 @@ const Page: NextPage<{
                                         <ReactMarkdown className="markdown">
                                             {project.details ?? ""}
                                         </ReactMarkdown>
+                                        {project.sources.length > 0 && (
+                                            <div className="project-sources">
+                                                {project.sources.map((source) => {
+                                                    return (
+                                                        <Link
+                                                            href={source.url}
+                                                            key={`project-source-${source.projectId.toString()}-${source.url}`}
+                                                            className="project-source"
+                                                            target="_blank"
+                                                        >
+                                                            <IconAndText
+                                                                icon={
+                                                                    <SourceIcon
+                                                                        classes={[
+                                                                            "w-10",
+                                                                            "h-10",
+                                                                            "fill-white"
+                                                                        ]}
+                                                                    />
+                                                                }
+                                                                text={
+                                                                    <>{source.title}</>
+                                                                }
+                                                                inline={true}
+                                                            />
+                                                        </Link>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
                                     </>
                                 ) : (
                                     <>
