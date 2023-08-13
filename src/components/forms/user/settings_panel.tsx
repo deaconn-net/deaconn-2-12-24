@@ -1,6 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 
-import { type UserExperience, type User, type UserSkill, type UserProject } from "@prisma/client";
+import { type UserExperience, type User, type UserSkill } from "@prisma/client";
+import { type UserProjectWithSources } from "~/types/user/project";
 
 import ExperienceBrowser from "@components/user/experience/browser";
 import ProjectBrowser from "@components/user/project/browser";
@@ -19,7 +20,7 @@ const SettingsPanel: React.FC<{
     user?: User,
     experience?: UserExperience,
     skill?: UserSkill,
-    project?: UserProject
+    project?: UserProjectWithSources
 }> = ({
     view = "general",
 
@@ -77,7 +78,7 @@ const SettingsPanel: React.FC<{
                     {view == "general" && (
                         <div className="content-item">
                             <h2>General</h2>
-                            <GeneralForm 
+                            <GeneralForm
                                 user={user}
                             />
                         </div>
@@ -87,6 +88,7 @@ const SettingsPanel: React.FC<{
                             <div className="content-item">
                                 <h2>Add Experience</h2>
                                 <ExperienceForm
+                                    key={`experience-${experience?.id?.toString() ?? "new"}`}
                                     experience={experience}
                                 />
                             </div>
@@ -106,6 +108,7 @@ const SettingsPanel: React.FC<{
                             <div className="content-item">
                                 <h2>Add Skill</h2>
                                 <SkillForm
+                                    key={`skill-${skill?.id?.toString() ?? "new"}`}
                                     skill={skill}
                                 />
                             </div>
@@ -125,6 +128,7 @@ const SettingsPanel: React.FC<{
                             <div className="content-item">
                                 <h2>Add Project</h2>
                                 <ProjectForm
+                                    key={`project-${project?.id?.toString() ?? "new"}`}
                                     project={project}
                                 />
                             </div>
