@@ -31,6 +31,6 @@
     @apply justify-center;
 }
 
-.project-row-actions > a {
+.project-row-actions > a, .project-row-actions > button {
     @apply w-full;
 }

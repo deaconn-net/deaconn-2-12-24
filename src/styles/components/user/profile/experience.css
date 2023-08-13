@@ -32,6 +32,6 @@
     @apply justify-center;
 }
 
-.experience-row-actions > a {
+.experience-row-actions > a, .experience-row-actions > button {
     @apply w-full;
 }
