@@ -330,7 +330,7 @@ export const userRouter = createTRPCRouter({
             endDate: z.date().optional(),
 
             title: z.string().min(2).max(32),
-            desc: z.string().max(128).optional(),
+            desc: z.string().max(512).optional(),
             details: z.string().max(32768).optional()
         }))
         .mutation(async ({ ctx, input }) => {
@@ -395,7 +395,7 @@ export const userRouter = createTRPCRouter({
             userId: z.string().optional(),
 
             title: z.string().min(2).max(32),
-            desc: z.string().max(32768).optional()
+            desc: z.string().max(512).optional()
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns item if ID is set (indicating they're editing).
