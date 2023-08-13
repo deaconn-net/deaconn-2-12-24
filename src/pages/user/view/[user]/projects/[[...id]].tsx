@@ -19,7 +19,6 @@ import { dateFormat, dateFormatThree } from "@utils/date";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import IconAndText from "@components/containers/icon_and_text";
 import Link from "next/link";
-import { SourceCode } from "eslint";
 import SourceIcon from "@utils/icons/source";
 
 const Page: NextPage<{
@@ -99,6 +98,11 @@ const Page: NextPage<{
                                                         </Link>
                                                     );
                                                 })}
+                                            </div>
+                                        )}
+                                        {project.openSource && (
+                                            <div className="flex justify-center">
+                                                <p>This project is <span className="text-green-400 font-bold">open source</span>!</p>
                                             </div>
                                         )}
                                     </>
