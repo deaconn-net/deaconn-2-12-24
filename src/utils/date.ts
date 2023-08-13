@@ -13,11 +13,17 @@ export const dateFormatTwo: Intl.DateTimeFormatOptions = {
     day: "2-digit"
 };
 
+export const dateFormatThree: Intl.DateTimeFormatOptions = {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+};
+
 export const dateFormat = (date: Date | string, format: Intl.DateTimeFormatOptions) => {
     // For some strange reason, Prisma DB returns dates as strings at times.
     // Therefore, check if it is a string and if so, parse as a date.
     if (typeof date === "string")
         date = new Date(date);
 
-    return date ? date.toLocaleDateString("en-US", format) : null;
+    return date?.toLocaleDateString("en-US", format) ?? null;
 }
