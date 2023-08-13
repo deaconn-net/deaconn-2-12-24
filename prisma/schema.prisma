@@ -225,9 +225,10 @@ model UserProject {
   startDate DateTime?
   endDate   DateTime?
 
-  name    String
-  desc    String?
-  details String?
+  name       String
+  desc       String?
+  details    String?
+  openSource Boolean @default(true)
 
   projectSources ProjectSource[]
 }
