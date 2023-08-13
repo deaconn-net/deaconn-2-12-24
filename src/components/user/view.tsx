@@ -51,8 +51,8 @@ const UserView: React.FC<{
     ];
 
     return (
-        <div className="flex flex-wrap gap-2">
-            <div className="flex flex-col gap-4">
+        <div className="tab-menu-with-data">
+            <div className="flex flex-col gap-4 !justify-normal">
                 <div className="flex flex-col items-center justify-center gap-2">
                     {user.image && (
                         <Image
@@ -130,7 +130,7 @@ const UserView: React.FC<{
                 />
             </div>
 
-            <div className="grow p-6 bg-gray-800 rounded-sm flex flex-col gap-4">
+            <div className="bg-gray-800">
                 {children}
             </div>
         </div>
