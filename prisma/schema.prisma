@@ -230,7 +230,7 @@ model UserProject {
   details    String?
   openSource Boolean @default(true)
 
-  projectSources ProjectSource[]
+  sources ProjectSource[]
 }
 
 model ProjectSource {
