@@ -330,7 +330,8 @@ export const userRouter = createTRPCRouter({
             endDate: z.date().optional(),
 
             title: z.string().min(2).max(32),
-            desc: z.string().max(32768).optional()
+            desc: z.string().max(128).optional(),
+            details: z.string().max(32768).optional()
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns item if ID is set (indicating they're editing).
@@ -366,14 +367,16 @@ export const userRouter = createTRPCRouter({
                         startDate: input.startDate,
                         endDate: input.endDate,
                         title: input.title,
-                        desc: input.desc
+                        desc: input.desc,
+                        details: input.details
                     },
                     update: {
                         userId: input.userId ?? ctx.session.user.id,
                         startDate: input.startDate,
                         endDate: input.endDate,
                         title: input.title,
-                        desc: input.desc
+                        desc: input.desc,
+                        details: input.details
                     }
                 });
             } catch (err) {
@@ -452,7 +455,16 @@ export const userRouter = createTRPCRouter({
             endDate: z.date().optional(),
 
             name: z.string().min(2).max(32),
-            desc: z.string().max(32768).optional()
+            desc: z.string().max(128).optional(),
+            details: z.string().max(32768).optional(),
+            openSource: z.boolean().default(true),
+
+            sources: z.array(z.object({
+                projectId: z.number(),
+                title: z.string().max(64),
+                url: z.string().max(128),
+            })).optional(),
+            sourcesToDelete: z.array(z.number()).optional()
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns item if ID is set (indicating they're saving).
@@ -487,14 +499,33 @@ export const userRouter = createTRPCRouter({
                         startDate: input.startDate,
                         endDate: input.endDate,
                         name: input.name,
-                        desc: input.desc
+                        desc: input.desc,
+                        details: input.details,
+                        openSource: input.openSource,
+                        sources: {
+                            create: input.sources?.map((source) => ({
+                                title: source.title,
+                                url: source.url
+                            }))
+                        }
                     },
                     update: {
                         userId: input.userId ?? ctx.session.user.id,
                         startDate: input.startDate,
                         endDate: input.endDate,
                         name: input.name,
-                        desc: input.desc
+                        desc: input.desc,
+                        details: input.details,
+                        openSource: input.openSource,
+                        sources: {
+                            deleteMany: {
+                                projectId: input.id
+                            },
+                            create: input.sources?.map((source) => ({
+                                title: source.title,
+                                url: source.url
+                            }))
+                        }
                     }
                 });
             } catch (err) {
@@ -505,5 +536,5 @@ export const userRouter = createTRPCRouter({
                     message: `Failed to ${input.id ? "save" : "create"} project (ID => ${input.id?.toString() ?? "N/A"}). Error => ${typeof err == "string" ? err : "Check console"}.`
                 })
             }
-        }),
+        })
 });
