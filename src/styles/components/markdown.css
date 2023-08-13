@@ -9,3 +9,22 @@
 .markdown ul {
     @apply list-disc;
 }
+
+.markdown > p {
+    @apply leading-10;
+}
+
+.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5 {
+    @apply py-2;
+}
+
+.markdown img {
+    @apply py-2;
+}
+
+.markdown pre {
+    @apply bg-gray-950;
+    @apply p-4;
+    @apply rounded-sm;
+    @apply text-white;
+}
