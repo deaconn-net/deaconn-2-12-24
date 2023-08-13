@@ -2,6 +2,7 @@ import { getSession } from "next-auth/react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type User, type UserExperience, type UserProject, type UserSkill } from "@prisma/client";
+import { type UserProjectWithSources } from "~/types/user/project";
 
 import { prisma } from "@server/db";
 
@@ -19,7 +20,7 @@ const Page: NextPage<{
 
     user?: User,
     experience?: UserExperience,
-    project?: UserProject,
+    project?: UserProjectWithSources,
     skill?: UserSkill
 } & GlobalPropsType> = ({
     authed,
@@ -81,7 +82,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     let user: User | null = null;
     let experience: UserExperience | null = null;
     let skill: UserSkill | null = null;
-    let project: UserProject | null = null;
+    let project: UserProjectWithSources | null = null;
 
     if (authed) {
         if (lookup_id) {
@@ -106,6 +107,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                     where: {
                         userId: session?.user?.id,
                         id: id
+                    },
+                    include: {
+                        sources: true
                     }
                 });
             }
