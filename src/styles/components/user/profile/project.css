@@ -50,4 +50,5 @@
     @apply sm:w-auto;
     @apply sm:min-w-[24rem];
     @apply sm:max-w-full;
+    @apply hover:text-white;
 }
