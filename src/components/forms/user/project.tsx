@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
-import { type UserProject } from "@prisma/client";
+import { type UserProjectWithSources } from "~/types/user/project";
 
 import FormMain from "@components/forms/main";
 import { ErrorCtx, SuccessCtx } from "@components/wrapper";
@@ -14,8 +14,14 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import ReactMarkdown from "react-markdown";
 
-const Form: React.FC<{
-    project?: UserProject
+const DEFAULT_SOURCE = {
+    projectId: 0,
+    title: "",
+    url: ""
+};
+
+const UserProjectForm: React.FC<{
+    project?: UserProjectWithSources
 }> = ({
     project
 }) => {
@@ -48,7 +54,6 @@ const Form: React.FC<{
 
     }, [projectMut, success, error, project])
 
-
     // Setup preview.
     const [preview, setPreview] = useState(false);
 
@@ -72,6 +77,9 @@ const Form: React.FC<{
             >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
+    // Sources.
+    const sources = project?.sources ?? [DEFAULT_SOURCE];
+
     // Setup form.
     const form = useFormik({
         initialValues: {
@@ -79,6 +87,9 @@ const Form: React.FC<{
             endDate: new Date(project?.endDate ?? Date.now()),
             name: project?.name ?? "",
             desc: project?.desc ?? "",
+            details: project?.details ?? "",
+            openSource: project?.openSource ?? true,
+            sources: sources
         },
         enableReinitialize: false,
 
@@ -95,7 +106,11 @@ const Form: React.FC<{
                 startDate: values.startDate,
                 endDate: values.endDate,
                 name: values.name,
-                desc: values.desc
+                desc: values.desc,
+                details: values.details,
+                openSource: values.openSource,
+
+                sources: values.sources
             });
         }
     });
@@ -149,11 +164,9 @@ const Form: React.FC<{
                 )}
             </div>
             <div className="form-div">
-                <label className="form-label">Details</label>
+                <label className="form-label">Short Description</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
-                        {form.values.desc}
-                    </ReactMarkdown>
+                    <p className="italic">{form.values.desc}</p>
                 ) : (
                     <Field
                         name="desc"
@@ -164,8 +177,93 @@ const Form: React.FC<{
                     />
                 )}
             </div>
+            <div className="form-div">
+                <label>Details</label>
+                {preview ? (
+                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                        {form.values.details}
+                    </ReactMarkdown>
+                ) : (
+                    <Field
+                        name="details"
+                        as="textarea"
+                        className="form-input"
+                        rows="16"
+                        cols="32"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label>Open Source</label>
+                {preview ? (
+                    <p className="italic">{(form.values.openSource) ? "Yes" : "No"}</p>
+                ) : (
+                    <div className="form-checkbox">
+                        <Field
+                            name="openSource"
+                            type="checkbox"
+                        />
+                        <span>Yes</span>
+                    </div>
+                )}
+            </div>
+            <h2>Sources</h2>
+            <div className="form-div">
+                {form.values.sources.map((source, index) => {
+                    return (
+                        <div
+                            key={`source-${index.toString()}`}
+                            className="flex flex-col gap-4"
+                        >
+                            <div>
+                                <label>Title</label>
+                                <Field
+                                    name={`sources[${index.toString()}].title`}
+                                    value={source.title ?? ""}
+                                    className="form-input"
+                                />
+                            </div>
+                            <div>
+                                <label>URL</label>
+                                <Field
+                                    name={`sources[${index.toString()}].url`}
+                                    value={source.url ?? ""}
+                                    className="form-input"
+                                />
+                            </div>
+                            <button
+                                className="button button-danger sm:w-32"
+                                onClick={(e) => {
+                                    e.preventDefault();
+
+                                    // Remove from form values.
+                                    const sources = form.values.sources;
+                                    sources.splice(index, 1);
+
+                                    form.setValues({
+                                        ...form.values,
+                                        sources
+                                    });
+                                }}
+                            >Remove</button>
+                        </div>
+                    );
+                })}
+
+                <button
+                    className="button button-priamry sm:w-32"
+                    onClick={(e) => {
+                        e.preventDefault();
+
+                        form.setValues({
+                            ...form.values,
+                            sources: [...form.values.sources, DEFAULT_SOURCE]
+                        });
+                    }}
+                >Add Source!</button>
+            </div>
         </FormMain>
     );
 }
 
-export default Form;
+export default UserProjectForm;
