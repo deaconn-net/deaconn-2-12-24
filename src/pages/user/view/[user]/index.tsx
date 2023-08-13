@@ -1,7 +1,7 @@
 import { type User } from "@prisma/client";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 import { prisma } from "@server/db";
 
@@ -103,8 +103,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             user: JSON.parse(JSON.stringify(user))
         }
     };

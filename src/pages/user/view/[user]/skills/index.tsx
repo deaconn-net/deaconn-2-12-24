@@ -11,7 +11,7 @@ import SkillBrowser from "@components/user/skill/browser";
 import NotFound from "@components/errors/not_found";
 import UserView from "@components/user/view";
 
-import { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     user?: User
@@ -80,8 +80,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             user: JSON.parse(JSON.stringify(user))
         }
     };

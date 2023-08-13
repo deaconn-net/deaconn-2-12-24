@@ -12,7 +12,7 @@ import ExperienceBrowser from "@components/user/experience/browser";
 import NotFound from "@components/errors/not_found";
 import UserView from "@components/user/view";
 
-import { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { dateFormat, dateFormatThree } from "@utils/date";
 
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -132,8 +132,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             user: JSON.parse(JSON.stringify(user)),
             experience: JSON.parse(JSON.stringify(experience))
         }
