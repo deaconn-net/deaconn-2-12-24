@@ -91,8 +91,8 @@ const Form: React.FC<{
 
             experienceMut.mutate({
                 id: experience?.id,
-                startDate: values.startDate || undefined,
-                endDate: values.endDate || undefined,
+                startDate: values.startDate || null,
+                endDate: values.endDate || null,
                 title: values.title,
                 desc: values.desc,
                 details: values.details

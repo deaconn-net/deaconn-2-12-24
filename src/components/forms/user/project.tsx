@@ -100,8 +100,8 @@ const UserProjectForm: React.FC<{
 
             projectMut.mutate({
                 id: project?.id,
-                startDate: values.startDate || undefined,
-                endDate: values.endDate || undefined,
+                startDate: values.startDate || null,
+                endDate: values.endDate || null,
                 name: values.name,
                 desc: values.desc,
                 details: values.details,
