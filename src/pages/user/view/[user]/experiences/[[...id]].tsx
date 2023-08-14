@@ -15,7 +15,7 @@ import UserView from "@components/user/view";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { dateFormat, dateFormatThree } from "@utils/date";
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Markdown from "@components/markdown";
 
 const Page: NextPage<{
     user?: User,
@@ -69,9 +69,9 @@ const Page: NextPage<{
                                         {endDate && (
                                             <p><span className="text-lg font-bold">End Date</span> - <span className="italic">{endDate}</span></p>
                                         )}
-                                        <ReactMarkdown className="markdown">
+                                        <Markdown>
                                             {experience.details ?? ""}
-                                        </ReactMarkdown>
+                                        </Markdown>
                                     </>
                                 ) : (
                                     <>

@@ -1,14 +1,15 @@
 import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
+import { type Role } from "@prisma/client";
+
 import FormMain from "@components/forms/main";
 import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
 
-import { type Role } from "@prisma/client";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Markdown from "@components/markdown";
 
 const Form: React.FC<{
     role?: Role
@@ -128,9 +129,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Description</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown">
+                    <Markdown>
                         {form.values.description}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="description"

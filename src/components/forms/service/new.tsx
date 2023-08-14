@@ -10,7 +10,7 @@ import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@components/markdown";
 
 const Form: React.FC<{
     service?: Service,
@@ -275,9 +275,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Description</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.desc}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="desc"
@@ -291,9 +291,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Installation</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.install}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="install"
@@ -307,9 +307,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Features</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.features}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="features"
@@ -323,9 +323,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Details</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown  p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.content}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="content"

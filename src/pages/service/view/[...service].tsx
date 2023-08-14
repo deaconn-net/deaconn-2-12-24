@@ -24,7 +24,7 @@ import SuccessBox from "@utils/success";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Markdown from "@components/markdown";
 
 const Page: NextPage<{
     service: Service | null,
@@ -151,25 +151,25 @@ const Page: NextPage<{
                                             {view == "details" && (
                                                 <>
                                                     <h2>Details</h2>
-                                                    <ReactMarkdown className="markdown">
+                                                    <Markdown>
                                                         {service.content}
-                                                    </ReactMarkdown>
+                                                    </Markdown>
                                                 </>
                                             )}
                                             {service.install && view == "install" && (
                                                 <>
                                                     <h2>Installation</h2>
-                                                    <ReactMarkdown className="markdown">
+                                                    <Markdown>
                                                         {service.install}
-                                                    </ReactMarkdown>
+                                                    </Markdown>
                                                 </>
                                             )}
                                             {service.features && view == "features" && (
                                                 <>
                                                     <h2>Features</h2>
-                                                    <ReactMarkdown className="markdown">
+                                                    <Markdown>
                                                         {service.features}
-                                                    </ReactMarkdown>
+                                                    </Markdown>
                                                 </>
                                             )}
                                         </div>

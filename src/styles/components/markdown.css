@@ -23,10 +23,14 @@
 }
 
 .markdown pre {
-    @apply bg-gray-950;
     @apply p-4;
     @apply rounded-sm;
     @apply text-white;
-    @apply whitespace-break-spaces;
-    @apply break-all;
+}
+
+.markdown-code-line {
+    @apply bg-gray-950;
+    @apply p-1;
+    @apply rounded-sm;
+    @apply text-cyan-300;
 }

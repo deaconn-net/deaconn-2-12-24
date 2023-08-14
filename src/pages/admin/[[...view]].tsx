@@ -19,7 +19,7 @@ import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Markdown from "@components/markdown";
 
 type statsType = {
     articles: number
@@ -147,9 +147,9 @@ const Page: NextPage<{
                                                     </div>
                                                     <div>
                                                         {role.desc ? (
-                                                            <ReactMarkdown className="markdown">
+                                                            <Markdown>
                                                                 {role.desc}
-                                                            </ReactMarkdown>
+                                                            </Markdown>
                                                         ) : (
                                                             <p className="italic">No description available.</p>
                                                         )}
@@ -209,9 +209,9 @@ const Page: NextPage<{
                                                     </div>
                                                     <div className="grow">
                                                         {category.desc ? (
-                                                            <ReactMarkdown className="markdown">
+                                                            <Markdown>
                                                                 {category.desc}
-                                                            </ReactMarkdown>
+                                                            </Markdown>
                                                         ) : (
                                                             <p className="italic">No description available.</p>
                                                         )}

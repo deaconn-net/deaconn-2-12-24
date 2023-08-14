@@ -12,11 +12,11 @@ import Meta from "@components/meta";
 import ProjectBrowser from "@components/user/project/browser";
 import NotFound from "@components/errors/not_found";
 import UserView from "@components/user/view";
+import Markdown from "@components/markdown";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { dateFormat, dateFormatThree } from "@utils/date";
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import IconAndText from "@components/containers/icon_and_text";
 import Link from "next/link";
 import SourceIcon from "@utils/icons/source";
@@ -74,9 +74,9 @@ const Page: NextPage<{
                                         {endDate && (
                                             <p><span className="text-lg font-bold">End Date</span> - <span className="italic">{endDate}</span></p>
                                         )}
-                                        <ReactMarkdown className="markdown">
+                                        <Markdown>
                                             {project.details ?? ""}
-                                        </ReactMarkdown>
+                                        </Markdown>
                                         {project.sources.length > 0 && (
                                             <div className="project-sources">
                                                 {project.sources.map((source) => {

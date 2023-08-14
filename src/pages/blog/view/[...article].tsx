@@ -23,7 +23,7 @@ import FacebookIcon from "@utils/icons/social/facebook";
 import LinkedinIcon from "@utils/icons/social/linkedin";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@components/markdown";
 
 type ArticleType = Article & {
     user: User | null;
@@ -121,9 +121,9 @@ const Page: NextPage<{
                                         )}
                                     </div>
                                 </div>
-                                <ReactMarkdown className="markdown">
+                                <Markdown>
                                     {article.content}
-                                </ReactMarkdown>
+                                </Markdown>
                                 <div className="flex flex-col gap-2">
                                     <h2>Share!</h2>
                                     <div className="flex flex-wrap gap-2">

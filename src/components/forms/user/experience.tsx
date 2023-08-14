@@ -12,7 +12,7 @@ import { ScrollToTop } from "@utils/scroll";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@components/markdown";
 
 const Form: React.FC<{
     experience?: UserExperience
@@ -165,9 +165,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Details</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.details}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         as="textarea"

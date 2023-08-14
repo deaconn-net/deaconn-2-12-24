@@ -12,8 +12,8 @@ import ViewIcon from "@utils/icons/view";
 import PurchaseIcon from "@utils/icons/purchase";
 import DownloadIcon from "@utils/icons/download";
 
-import ReactMarkdown from "react-markdown";
 import { has_role } from "@utils/user/auth";
+import Markdown from "@components/markdown";
 
 const ServiceRow: React.FC<{
     service: Service
@@ -65,9 +65,9 @@ const ServiceRow: React.FC<{
                         </h3>
                     </div>
                     <div className="service-row-description">
-                        <ReactMarkdown className="markdown">
+                        <Markdown>
                             {service.desc ?? ""}
-                        </ReactMarkdown>
+                        </Markdown>
                     </div>
                     <div className="service-row-price">
                         <p>{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>

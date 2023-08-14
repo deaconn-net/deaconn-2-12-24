@@ -13,7 +13,7 @@ import UserView from "@components/user/view";
 
 import { dateFormat, dateFormatTwo } from "@utils/date";
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Markdown from "@components/markdown";
 
 const Page: NextPage<{
     user?: User
@@ -48,9 +48,9 @@ const Page: NextPage<{
                                 {user.aboutMe && (
                                     <div className="p-6">
                                         <h3>About Me</h3>
-                                        <ReactMarkdown
-                                            className="markdown"
-                                        >{user.aboutMe}</ReactMarkdown>
+                                        <Markdown>
+                                            {user.aboutMe}
+                                        </Markdown>
                                     </div>
                                 )}
                                 {user.showEmail && user.email && (

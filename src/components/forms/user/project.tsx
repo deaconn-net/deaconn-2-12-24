@@ -12,7 +12,7 @@ import { ScrollToTop } from "@utils/scroll";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@components/markdown";
 
 const DEFAULT_SOURCE = {
     projectId: 0,
@@ -177,9 +177,9 @@ const UserProjectForm: React.FC<{
             <div className="form-div">
                 <label>Details</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.details}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="details"
