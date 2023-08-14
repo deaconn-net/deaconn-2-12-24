@@ -36,6 +36,12 @@ const Page: NextPage<{
         
         if (experience?.endDate)
             setEndDate(dateFormat(experience.endDate, dateFormatThree) ?? undefined);
+
+        // Clean up.
+        return () => {
+            setStartDate(undefined);
+            setEndDate(undefined);
+        }
     }, [experience]);
 
     return (

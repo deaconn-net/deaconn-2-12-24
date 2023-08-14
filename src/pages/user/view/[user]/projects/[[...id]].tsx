@@ -40,6 +40,13 @@ const Page: NextPage<{
         
         if (project?.endDate)
             setEndDate(dateFormat(project.endDate, dateFormatThree) ?? undefined);
+
+        // Clean up.
+        return () => {
+            setStartDate(undefined);
+            setEndDate(undefined);
+        }
+
     }, [project]);
     
     return (
