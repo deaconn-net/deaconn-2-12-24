@@ -12,10 +12,9 @@ const Markdown: React.FC<{
 }) => {
     return (
         <ReactMarkdown
-            children={children}
             className={`markdown ${className ?? ""}`}
             components={{
-                code({ node, inline, className, children, ...props}) {
+                code({ inline, className, children, ...props}) {
                     const match = /language-(\w+)/.exec(className || "");
 
                     return !inline ? (
@@ -24,11 +23,12 @@ const Markdown: React.FC<{
                             wrapLines={true}
                             showLineNumbers={true}
                             wrapLongLines={true}
-                            children={String(children).replace(/\n$/, "")}
                             style={DefaultTheme}
                             language={match?.[1]}
                             PreTag="div"
-                        />
+                        >
+                            {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
                     ) : (
                         <code
                             {...props}
@@ -39,7 +39,9 @@ const Markdown: React.FC<{
                     )
                 }
             }}
-        />
+        >
+            {children}
+        </ReactMarkdown>
     );
 }
 
