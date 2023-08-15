@@ -151,12 +151,12 @@ const Form: React.FC<{
                                 <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
                             </>
                         ) : (
-                            <>
+                            <div className="form-checkbox">
                                 <Field
                                     name="bannerRemove"
                                     type="checkbox"
                                 /> <span>Remove Banner</span>
-                            </>
+                            </div>
                         )}
                     </>
                 )}

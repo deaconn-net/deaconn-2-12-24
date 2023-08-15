@@ -186,12 +186,12 @@ const Form: React.FC<{
                 {preview ? (
                     <p className="italic">{form.values.showEmail ? "Yes" : "No"}</p>
                 ) : (
-                    <>
+                    <div className="form-checkbox">
                         <Field
                             name="showEmail"
                             type="checkbox"
                         /> <span>Yes</span>
-                    </>
+                    </div>
                 )}
             </div>
             <h2>Social</h2>

@@ -158,12 +158,12 @@ const Form: React.FC<{
                                 <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
                             </>
                         ) : (
-                            <>
+                            <div className="form-checkbox">
                                 <Field
                                     name="bannerRemove"
                                     type="checkbox"
                                 /> <span>Remove Banner</span>
-                            </>
+                            </div>
                         )}  
                     </>
                 )}
@@ -197,12 +197,12 @@ const Form: React.FC<{
                                 <p className="italic">{form.values.iconRemove ? "Yes" : "No"}</p>
                             </>
                         ) : (
-                            <>
+                            <div className="form-checkbox">
                                 <Field
                                     name="iconRemove"
                                     type="checkbox"
                                 /> <span>Remove Icon</span>
-                            </>
+                            </div>
                         )}
                     </>
                 )}
@@ -352,12 +352,12 @@ const Form: React.FC<{
                 {preview ? (
                     <p className="italic">{(form.values.openSource) ? "Yes" : "No"}</p>
                 ) : (
-                    <>
+                    <div className="form-checkbox">
                         <Field
                             name="openSource"
                             type="checkbox"
                         /> <span>Yes</span>
-                    </>
+                    </div>
                 )}
             </div>
         </FormMain>
