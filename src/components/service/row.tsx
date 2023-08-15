@@ -113,7 +113,7 @@ const ServiceRow: React.FC<{
                     </div>
                     {session && (
                         <div className="service-row-actions">
-                            {(has_role(session, "contributor" || has_role(session, "admin")) && 
+                            {(has_role(session, "contributor") || has_role(session, "admin")) && (
                                 <Link
                                     className="button button-primary"
                                     href={editUrl}
