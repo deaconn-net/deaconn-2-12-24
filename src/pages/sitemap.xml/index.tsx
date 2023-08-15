@@ -64,6 +64,23 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         });
     })
 
+    // User projects.
+    const userProjects = await prisma.userProject.findMany({
+        include: {
+            user: true
+        }
+    });
+
+    userProjects.map((project) => {
+        const url = `https://deaconn.net/user/view/$${project.user.id}/projects/${project.id.toString()}`;
+
+        items.push({
+            loc: url,
+            lastmod: new Date().toISOString(),
+            priority: 0.4
+        });
+    })
+
     return getServerSideSitemapLegacy(ctx, items)
 }
 

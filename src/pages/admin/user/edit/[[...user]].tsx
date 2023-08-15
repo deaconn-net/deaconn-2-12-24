@@ -17,15 +17,19 @@ import SuccessBox from "@utils/success";
 import ErrorBox from "@utils/error";
 import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
     user: User | null,
     roles: Role[]
-}> = ({
+} & GlobalPropsType> = ({
     authed,
     user,
-    roles
+    roles,
+
+    footerServices,
+    footerPartners
 }) => {
     let errTitle: string | undefined = undefined;
     let errMsg: string | undefined = undefined;
@@ -39,7 +43,10 @@ const Page: NextPage<{
     // Make sure we have permissions.
     if (!authed) {
         return (
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <NoPermissions />
             </Wrapper>
         );
@@ -48,7 +55,10 @@ const Page: NextPage<{
     // Make sure the user is found.
     if (!user) {
         return (
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <NotFound item="User" />
             </Wrapper>
         );
@@ -87,7 +97,10 @@ const Page: NextPage<{
     }
 
     return (
-        <Wrapper>
+        <Wrapper
+            footerServices={footerServices}
+            footerPartners={footerPartners}
+        >
             <SuccessBox
                 title={sucTitle}
                 msg={sucMsg}
@@ -208,8 +221,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         roles = await prisma.role.findMany();
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             authed: authed,
             user: JSON.parse(JSON.stringify(user)),
             roles: roles

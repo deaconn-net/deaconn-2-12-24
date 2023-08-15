@@ -5,13 +5,15 @@ import { useSession } from "next-auth/react";
 
 import { type Service } from ".prisma/client";
 
+import { prisma } from "@server/db";
+
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
+
 import NotFound from "@components/errors/not_found";
 import IconAndText from "@components/containers/icon_and_text";
 import TabMenuWithData from "@components/tabs/tab_menu_with_data";
-
-import { prisma } from "@server/db";
+import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 import { api } from "@utils/api";
 import ViewIcon from "@utils/icons/view";
@@ -20,15 +22,19 @@ import PurchaseIcon from "@utils/icons/purchase";
 import { has_role } from "@utils/user/auth";
 import SuccessBox from "@utils/success";
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import Tabs, { TabItemType } from "@components/tabs/tabs";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+
+import Markdown from "@components/markdown";
 
 const Page: NextPage<{
     service: Service | null,
     view: string
-}> = ({
+} & GlobalPropsType> = ({
     service,
-    view
+    view,
+
+    footerServices,
+    footerPartners
 }) => {
     // Retrieve session.
     const { data: session } = useSession();
@@ -75,7 +81,10 @@ const Page: NextPage<{
                 title={`${service?.name ?? "Not Found"}${view != "details" ? " - " + view.charAt(0).toUpperCase() + view.slice(1) : ""} - Services - Deaconn`}
                 description={`${service?.desc ?? "Service not found."}`}
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <div className="content-item">
                     {deleteMut.isSuccess && (
                         <SuccessBox
@@ -142,25 +151,25 @@ const Page: NextPage<{
                                             {view == "details" && (
                                                 <>
                                                     <h2>Details</h2>
-                                                    <ReactMarkdown className="markdown">
+                                                    <Markdown>
                                                         {service.content}
-                                                    </ReactMarkdown>
+                                                    </Markdown>
                                                 </>
                                             )}
                                             {service.install && view == "install" && (
                                                 <>
                                                     <h2>Installation</h2>
-                                                    <ReactMarkdown className="markdown">
+                                                    <Markdown>
                                                         {service.install}
-                                                    </ReactMarkdown>
+                                                    </Markdown>
                                                 </>
                                             )}
                                             {service.features && view == "features" && (
                                                 <>
                                                     <h2>Features</h2>
-                                                    <ReactMarkdown className="markdown">
+                                                    <Markdown>
                                                         {service.features}
-                                                    </ReactMarkdown>
+                                                    </Markdown>
                                                 </>
                                             )}
                                         </div>
@@ -234,8 +243,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             service: JSON.parse(JSON.stringify(service)),
             view: view
         }

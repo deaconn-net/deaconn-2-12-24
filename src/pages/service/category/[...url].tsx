@@ -11,14 +11,19 @@ import ServiceBrowser from "@components/service/browser";
 import CategoryTabs from "@components/category/tabs";
 import TabMenuWithData from "@components/tabs/tab_menu_with_data";
 
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+
 const Page: NextPage<{
     category?: CategoryWithAll,
     categories?: number[],
     categoriesList?: CategoryWithAllAndServiceCount[]
-}> = ({
+} & GlobalPropsType> = ({
     category,
     categories,
-    categoriesList
+    categoriesList,
+    
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
@@ -26,7 +31,10 @@ const Page: NextPage<{
                 title={`${category?.name ?? "Not Found"} - Services - Deaconn`}
                 description={`${category?.desc ?? "Not found."}`}
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <div className="content-item">
                     {category ? (
                         <>
@@ -130,9 +138,12 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             }
         });
     }
+
+    const globalProps = await GlobalProps();
     
     return {
         props: {
+            ...globalProps,
             category: category,
             categories: categories,
             categoriesList: categoriesList

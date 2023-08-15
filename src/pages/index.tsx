@@ -5,31 +5,35 @@ import { prisma } from "@server/db";
 import { type Article, type Partner, type Service, type User } from "@prisma/client";
 
 import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
+
 import ArticleRow from "@components/blog/article/row";
 import UserRow from "@components/user/row";
 import ServiceRow from "@components/service/row";
 import PartnerRow from "@components/partner/row";
 
-import GlobalProps from "@utils/global_props";
-import Meta from "@components/meta";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     articles: Article[],
     team: User[],
-    services: Service[],
-    partners: Partner[]
-}> = ({
+    services: Service[]
+} & GlobalPropsType> = ({
     articles,
     team,
     services,
-    partners
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
             <Meta
                 title="Home - Deaconn"
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <div className="flex flex-wrap">
                     <div className="content-col-large">
                         <div className="content-item">
@@ -62,11 +66,16 @@ const Page: NextPage<{
                         <div className="content-item">
                             <h1>Partners</h1>
                             <div className="flex flex-col gap-4">
-                                {partners.map((partner) => {
+                                {footerPartners?.map((partner) => {
+                                    const partnerFull: Partner = {
+                                        ...partner,
+                                        banner: null
+                                    };
+
                                     return (
                                         <PartnerRow
                                             key={"partner-" + partner.id.toString()}
-                                            partner={partner}
+                                            partner={partnerFull}
                                         />
                                     );
                                 })}
@@ -129,11 +138,11 @@ export async function getServerSideProps() {
     });
 
     // Assign props.
-    const global = await GlobalProps();
+    const globalProps = await GlobalProps();
 
     return {
         props: {
-            ...global,
+            ...globalProps,
             articles: JSON.parse(JSON.stringify(articles)),
             team: JSON.parse(JSON.stringify(team)),
             services: JSON.parse(JSON.stringify(services))

@@ -10,7 +10,7 @@ import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
 
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import Markdown from "@components/markdown";
 
 const CategoryForm: React.FC<{
     category?: Category,
@@ -167,9 +167,9 @@ const CategoryForm: React.FC<{
             <div className="form-div">
                 <label className="form-label">Description</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown">
+                    <Markdown>
                         {form.values.description}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="description"

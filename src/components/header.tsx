@@ -7,7 +7,6 @@ import Image from "next/image";
 
 import IconAndText from "@components/containers/icon_and_text";
 
-import HomeIcon from "@utils/icons/header/home";
 import ServicesIcon from "@utils/icons/header/services";
 import BlogIcon from "@utils/icons/header/blog";
 import AboutUsIcon from "@utils/icons/header/aboutus";

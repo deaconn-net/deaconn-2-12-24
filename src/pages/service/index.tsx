@@ -6,15 +6,20 @@ import { prisma } from "@server/db";
 
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
-import CategoryTabs from "@components/category/tabs";
 
+import CategoryTabs from "@components/category/tabs";
 import ServiceBrowser from "@components/service/browser";
 import TabMenuWithData from "@components/tabs/tab_menu_with_data";
 
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+
 const Page: NextPage<{
     categories?: CategoryWithAllAndServiceCount[]
-}> = ({
-    categories
+} & GlobalPropsType> = ({
+    categories,
+
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
@@ -22,7 +27,10 @@ const Page: NextPage<{
                 title="Services - Deaconn"
                 description="Find services offered by Deaconn ranging from bots to network firewalls!"
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 <div className="content-item">
                     <h1>Services</h1>
                     <TabMenuWithData
@@ -68,8 +76,11 @@ export async function getServerSideProps() {
         }
     });
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             categories: categories
         }
     };

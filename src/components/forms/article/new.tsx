@@ -10,7 +10,7 @@ import { ErrorCtx, SuccessCtx } from '@components/wrapper';
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
 
-import ReactMarkdown from 'react-markdown';
+import Markdown from '@components/markdown';
 
 const Form: React.FC<{
     article?: Article,
@@ -151,12 +151,12 @@ const Form: React.FC<{
                                 <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
                             </>
                         ) : (
-                            <>
+                            <div className="form-checkbox">
                                 <Field
                                     name="bannerRemove"
                                     type="checkbox"
                                 /> <span>Remove Banner</span>
-                            </>
+                            </div>
                         )}
                     </>
                 )}
@@ -233,9 +233,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Content</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.content}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="content"

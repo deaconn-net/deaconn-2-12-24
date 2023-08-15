@@ -12,7 +12,7 @@ import { ScrollToTop } from "@utils/scroll";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@components/markdown";
 
 const Form: React.FC<{
     user?: User
@@ -152,9 +152,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">About Me</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.aboutMe}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="aboutMe"
@@ -186,12 +186,12 @@ const Form: React.FC<{
                 {preview ? (
                     <p className="italic">{form.values.showEmail ? "Yes" : "No"}</p>
                 ) : (
-                    <>
+                    <div className="form-checkbox">
                         <Field
                             name="showEmail"
                             type="checkbox"
                         /> <span>Yes</span>
-                    </>
+                    </div>
                 )}
             </div>
             <h2>Social</h2>

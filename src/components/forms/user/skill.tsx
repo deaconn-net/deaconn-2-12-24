@@ -9,8 +9,6 @@ import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
 
-import ReactMarkdown from "react-markdown";
-
 const Form: React.FC<{
     skill?: UserSkill
 }> = ({
@@ -110,9 +108,7 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Details</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
-                        {form.values.desc}
-                    </ReactMarkdown>
+                    <p className="italic">{form.values.desc}</p>
                 ) : (
                     <Field
                         name="desc"

@@ -1,20 +1,37 @@
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import { type UserSkill } from "@prisma/client";
 
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
-
-import ReactMarkdown from "react-markdown";
+import { has_role } from "@utils/user/auth";
 
 const Row: React.FC<{
     skill: UserSkill
 }> = ({
     skill
 }) => {
-    const editUrl = "/user/profile/skills?id=" + skill.id.toString();
-
+    const { data: session } = useSession();
     const deleteMut = api.user.deleteSkill.useMutation();
+
+    // Compile URLs.
+    const editUrl = `/user/profile/skills?id=${skill.id.toString()}`;
+
+    // See if we have permissions.
+    let canEdit = false;
+
+    if (session?.user) {
+        const userId = session.user.id;
+
+        // Is user owner?
+        if (userId == skill.userId)
+            canEdit = true;
+
+        // Is user admin or moderator?
+        if (has_role(session, "admin") || has_role(session, "moderator"))
+            canEdit = true;
+    }
 
     return (
         <>
@@ -29,25 +46,31 @@ const Row: React.FC<{
                         <h3>{skill.title}</h3>
                     </div>
                     <div className="skill-row-description">
-                        <ReactMarkdown
-                            className="markdown"
-                        >
-                            {skill.desc ?? ""}
-                        </ReactMarkdown>
+                        <p>{skill.desc ?? ""}</p>
                     </div>
                     <div className="skill-row-actions">
-                        <Link className="button button-primary" href={editUrl}>Edit</Link>
-                        <Link className="button button-danger" href="#" onClick={(e) => {
-                            e.preventDefault();
+                        {canEdit && (
+                            <>
+                                <Link
+                                    href={editUrl}
+                                    className="button button-primary"
+                                >Edit</Link>
+                                <button
+                                    className="button button-danger"
+                                    onClick={(e) => {
+                                        e.preventDefault();
 
-                            const yes = confirm("Are you sure you want to delete this experience?");
+                                        const yes = confirm("Are you sure you want to delete this experience?");
 
-                            if (yes) {
-                                deleteMut.mutate({
-                                    id: skill.id
-                                });
-                            }
-                        }}>Delete</Link>
+                                        if (yes) {
+                                            deleteMut.mutate({
+                                                id: skill.id
+                                            });
+                                        }
+                                    }}
+                                >Delete</button>
+                            </>
+                        )}
                     </div>
                 </div>
             )}

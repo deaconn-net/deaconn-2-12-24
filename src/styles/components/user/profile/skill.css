@@ -32,6 +32,6 @@
     @apply justify-center;
 }
 
-.skill-row-actions > a {
+.skill-row-actions > a, .skill-row-actions > button {
     @apply w-full;
 }

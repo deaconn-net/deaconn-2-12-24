@@ -1,14 +1,18 @@
 import { getSession } from "next-auth/react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import { type User, type UserExperience, type UserProject, type UserSkill } from "@prisma/client";
-
-import Wrapper from '@components/wrapper';
-import UserSettingsPanel from "@components/forms/user/settings_panel";
-import NoPermissions from "@components/errors/no_permissions";
-import Meta from "@components/meta";
+import { type User, type UserExperience, type UserSkill } from "@prisma/client";
+import { type UserProjectWithSources } from "~/types/user/project";
 
 import { prisma } from "@server/db";
+
+import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
+
+import UserSettingsPanel from "@components/forms/user/settings_panel";
+import NoPermissions from "@components/errors/no_permissions";
+
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
@@ -16,23 +20,29 @@ const Page: NextPage<{
 
     user?: User,
     experience?: UserExperience,
-    project?: UserProject,
+    project?: UserProjectWithSources,
     skill?: UserSkill
-}> = ({
+} & GlobalPropsType> = ({
     authed,
     view,
 
     user,
     experience,
     project,
-    skill
+    skill,
+
+    footerServices,
+    footerPartners
 }) => {
     return (
         <>
             <Meta
                 title={`${view.charAt(0).toUpperCase() + view.slice(1)} Profile - Deaconn`}
             />
-            <Wrapper>
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
                 {authed ? (
                     <div className="content-item"> 
                         <UserSettingsPanel
@@ -72,7 +82,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     let user: User | null = null;
     let experience: UserExperience | null = null;
     let skill: UserSkill | null = null;
-    let project: UserProject | null = null;
+    let project: UserProjectWithSources | null = null;
 
     if (authed) {
         if (lookup_id) {
@@ -97,6 +107,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                     where: {
                         userId: session?.user?.id,
                         id: id
+                    },
+                    include: {
+                        sources: true
                     }
                 });
             }
@@ -110,8 +123,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 
+    const globalProps = await GlobalProps();
+
     return {
         props: {
+            ...globalProps,
             authed: authed,
             view: view,
 

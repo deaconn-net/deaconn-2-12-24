@@ -12,7 +12,7 @@ import { ScrollToTop } from "@utils/scroll";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@components/markdown";
 
 const Form: React.FC<{
     experience?: UserExperience
@@ -77,6 +77,7 @@ const Form: React.FC<{
             endDate: new Date(experience?.endDate ?? Date.now()),
             title: experience?.title ?? "",
             desc: experience?.desc ?? "",
+            details: experience?.details ?? ""
         },
         enableReinitialize: false,
 
@@ -90,10 +91,11 @@ const Form: React.FC<{
 
             experienceMut.mutate({
                 id: experience?.id,
-                startDate: values.startDate,
-                endDate: values.endDate,
+                startDate: values.startDate || null,
+                endDate: values.endDate || null,
                 title: values.title,
-                desc: values.desc
+                desc: values.desc,
+                details: values.details
             });
         }
     });
@@ -147,15 +149,29 @@ const Form: React.FC<{
                 )}
             </div>
             <div className="form-div">
-                <label className="form-label">Details</label>
+                <label className="form-label">Short Description</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
-                        {form.values.desc}
-                    </ReactMarkdown>
+                    <p className="italic">{form.values.desc}</p>
                 ) : (
                     <Field
                         as="textarea"
                         name="desc"
+                        className="form-input"
+                        rows="16"
+                        cols="32"
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Details</label>
+                {preview ? (
+                    <Markdown className="p-4 bg-gray-800">
+                        {form.values.details}
+                    </Markdown>
+                ) : (
+                    <Field
+                        as="textarea"
+                        name="details"
                         className="form-input"
                         rows="16"
                         cols="32"

@@ -12,7 +12,7 @@ import { type Request, type Service } from "@prisma/client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@components/markdown";
 
 const Form: React.FC<{
     request?: Request,
@@ -194,9 +194,9 @@ const Form: React.FC<{
             <div className="form-div">
                 <label className="form-label">Details</label>
                 {preview ? (
-                    <ReactMarkdown className="markdown p-4 bg-gray-800">
+                    <Markdown className="p-4 bg-gray-800">
                         {form.values.content}
-                    </ReactMarkdown>
+                    </Markdown>
                 ) : (
                     <Field
                         name="content"
