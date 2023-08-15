@@ -23,12 +23,13 @@
 }
 
 .markdown pre {
-    @apply p-4;
+    @apply bg-[#011627];
     @apply rounded-sm;
     @apply text-white;
+    @apply p-4;
 }
 
-.markdown-code-line {
+.markdown-code-inline {
     @apply bg-gray-950;
     @apply p-1;
     @apply rounded-sm;

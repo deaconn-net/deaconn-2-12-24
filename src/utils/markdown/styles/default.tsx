@@ -34,10 +34,8 @@ const DefaultTheme: { [key: string]: React.CSSProperties } = {
         "MozHyphens": "none",
         "msHyphens": "none",
         "hyphens": "none",
-        "padding": "1em",
         "margin": "0.5em 0",
         "overflow": "auto",
-        "background": "#011627"
     },
     "pre[class*=\"language-\"]::-moz-selection": {
         "textShadow": "none",
