@@ -12,7 +12,7 @@
         /* Primary background */
         @apply bg-gradient-to-b;
         @apply from-zinc-900;
-        @apply to-gray-900;
+        @apply to-neutral-900;
 
         @apply flex;
         @apply flex-col;

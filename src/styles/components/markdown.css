@@ -23,7 +23,7 @@
 }
 
 .markdown pre {
-    @apply bg-[#011627];
+    @apply bg-gray-900;
     @apply rounded-sm;
     @apply text-white;
     @apply p-4;
