@@ -29,7 +29,7 @@ type statsType = {
     purchases: number
 
     requests: number
-    requestComments: number
+    requestReplies: number
 
     partners: number
 
@@ -110,7 +110,7 @@ const Page: NextPage<{
                                                 <li><span className="font-bold">{stats.services.toString()}</span> Total Services</li>
                                                 <li><span className="font-bold">{stats.purchases.toString()}</span> Total Service Purchases</li>
                                                 <li><span className="font-bold">{stats.requests.toString()}</span> Total Requests</li>
-                                                <li><span className="font-bold">{stats.requestComments.toString()}</span> Total Request Comments</li>
+                                                <li><span className="font-bold">{stats.requestReplies.toString()}</span> Total Request Replies</li>
                                                 <li><span className="font-bold">{stats.partners.toString()}</span> Total Partners</li>
                                                 <li><span className="font-bold">{stats.roles.toString()}</span> Total Roles</li>
                                                 <li><span className="font-bold">{stats.users.toString()}</span> Total Users</li>
@@ -344,7 +344,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         const purchaseCnt = await prisma.purchase.count();
 
         const requestCnt = await prisma.request.count();
-        const requestCommentCnt = await prisma.requestComment.count();
+        const requestRepliesCnt = await prisma.requestReply.count();
 
         const partnerCnt = await prisma.partner.count();
 
@@ -363,7 +363,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             purchases: purchaseCnt,
 
             requests: requestCnt,
-            requestComments: requestCommentCnt,
+            requestReplies: requestRepliesCnt,
 
             partners: partnerCnt,
 
