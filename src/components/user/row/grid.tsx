@@ -5,11 +5,20 @@ import { useSession } from "next-auth/react";
 import { type User } from "@prisma/client"
 
 import { has_role } from "@utils/user/auth";
+import { UserLink } from "../link";
 
 const UserGridRow: React.FC<{
-    user: User
+    user: User,
+    showBanner?: boolean,
+    showTitle?: boolean,
+    showEmail?: boolean,
+    showActions?: boolean
 }> = ({
-    user
+    user,
+    showBanner = true,
+    showTitle = true,
+    showEmail,
+    showActions
 }) => {
     const { data: session } = useSession();
 
@@ -17,34 +26,38 @@ const UserGridRow: React.FC<{
     const editUrl = `/admin/user/edit/${user.id}`;
 
     return (
-        <div className="flex flex-col gap-2">
-            <div className="user-browser-grid-avatar">
-                {user.image && (
+        <div className="flex flex-col gap-2 items-center">
+            {showBanner && user.image && (
+                <div className="user-browser-grid-avatar">
                     <Image
+                        className="rounded-full"
                         src={user.image}
-                        width={32}
-                        height={32}
+                        width={72}
+                        height={72}
                         alt="Avatar"
                     />
-                )}
-            </div>
-            {user.name && (
-                <div className="user-browser-grid-name">
-                    <h3>{user.name}</h3>
                 </div>
             )}
-            <div className="user-browser-grid-email">
-                {user.email}
-            </div>
-            <div className="user-browser-grid-main">
-                {user.url && (
-                    <>{user.url}</>
-                )}
-                {user.title && (
-                    <>{user.title}</>
-                )}
-            </div>
-            {session && has_role(session, "admin") && (
+            {user.name && (
+                <div className="user-browser-grid-name">
+                    <h3>
+                        <UserLink
+                            user={user}
+                        />
+                    </h3>
+                </div>
+            )}
+            {showTitle && user.title && (
+                <div className="user-browser-title">
+                    <p>{user.title}</p>
+                </div>
+            )}
+            {showEmail && (
+                <div className="user-browser-grid-email">
+                    {user.email}
+                </div>
+            )}
+            {showActions && session && has_role(session, "admin") && (
                 <div className="flex flex-wrap gap-2">
                     <Link
                         href={editUrl}
