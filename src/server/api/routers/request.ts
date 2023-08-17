@@ -1,6 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { has_role } from "@utils/user/auth";
 
 export const requestRouter = createTRPCRouter({
     getAll: protectedProcedure
@@ -84,16 +85,37 @@ export const requestRouter = createTRPCRouter({
             if (!res)
                 throw new TRPCError({ code: "BAD_REQUEST" });
         }),
-    addComment: protectedProcedure
+    addReply: protectedProcedure
         .input(z.object({
-            id: z.number().nullable(),
+            id: z.number().optional(),
 
             requestId: z.number(),
             content: z.string().max(32768)
         }))
         .mutation(async ({ ctx, input }) => {
-            // Make sure we either own the request or are 
-            await ctx.prisma.requestComment.upsert({
+            // Make sure we either own the request or are an admin.
+            let authed = false;
+
+            if (ctx.session && (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator")))
+                authed = true;
+
+            if (!authed && ctx.session?.user) {
+                try {
+                    await ctx.prisma.request.findFirstOrThrow({
+                        where: {
+                            id: input.requestId,
+                            userId: ctx.session.user.id
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({ code: "UNAUTHORIZED" });
+                }
+
+                // If we got here, it was found!
+                authed = true;
+            }
+
+            await ctx.prisma.requestReply.upsert({
                 where: {
                     id: input.id ?? 0
                 },
