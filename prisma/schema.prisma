@@ -101,10 +101,10 @@ model Request {
   accepted Boolean @default(false)
   closed   Boolean @default(false)
 
-  requestComments RequestComment[]
+  replies RequestReply[]
 }
 
-model RequestComment {
+model RequestReply {
   id Int @id @default(autoincrement())
 
   requestId Int
@@ -188,7 +188,7 @@ model User {
   Article        Article[]
   Request        Request[]
   ArticleComment ArticleComment[]
-  RequestComment RequestComment[]
+  RequestReply   RequestReply[]
   Purchase       Purchase[]
 }
 
