@@ -6,7 +6,8 @@ import { has_role } from "@utils/user/auth";
 export const requestRouter = createTRPCRouter({
     getAll: protectedProcedure
         .input(z.object({
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
+            viewAll: z.boolean().default(false),
 
             sort: z.string().default("updatedAt"),
             sortDir: z.string().default("desc"),
@@ -15,13 +16,23 @@ export const requestRouter = createTRPCRouter({
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
+            // If view all or user ID is set, make sure we have access.
+            if (input.viewAll || input.userId) {
+                if (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")) {
+                    return {
+                        items: [],
+                        nextCur: undefined
+                    };
+                }
+            }
+            
             const items = await ctx.prisma.request.findMany({
                 include: {
                     service: true
                 },
                 where: {
-                    ...(input.userId && {
-                        userId: input.userId
+                    ...(!input.viewAll && {
+                        userId: input.userId ?? ctx.session.user.id
                     })
                 },
                 orderBy: {

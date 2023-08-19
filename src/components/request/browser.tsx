@@ -18,6 +18,14 @@ const RequestBrowser: React.FC = () => {
     // Retrieve session.
     const { data: session } = useSession();
 
+    const [viewAll, setViewAll] = useState(false);
+
+    // Check if we can view all.
+    let canViewAll = false;
+
+    if (session && (has_role(session, "admin") || has_role(session, "moderator")))
+        canViewAll = true;
+
     // Filters.
     const [oldest, setOldest] = useState(false);
 
@@ -32,6 +40,7 @@ const RequestBrowser: React.FC = () => {
     const limit = 10;
     const { data, fetchNextPage } = api.request.getAll.useInfiniteQuery({
         limit: limit,
+        viewAll: viewAll,
 
         sort: sort,
         sortDir: sortDir
@@ -58,19 +67,30 @@ const RequestBrowser: React.FC = () => {
     return (
         <div className="request-browser">
             <div className="request-browser-buttons">
-                <Link
-                    className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
-                    href="#"
-                    onClick={(e) => {
-                        e.preventDefault();
+                <div className="flex flex-wrap gap-2">
+                    <button
+                        className={`button ${oldest ? " !bg-cyan-600" : ""}`}
+                        onClick={(e) => {
+                            e.preventDefault();
 
-                        if (oldest)
-                            setOldest(false);
-                        else
-                            setOldest(true);
-                    }}
-                >Oldest</Link>
-                {session && (has_role(session, "moderator") || has_role(session, "admin")) && (
+                            if (oldest)
+                                setOldest(false);
+                            else
+                                setOldest(true);
+                        }}
+                    >Oldest</button>
+                    {canViewAll && (
+                        <button
+                            className={`button ${viewAll ? "!bg-cyan-600" : ""}`}
+                            onClick={(e) => {
+                                e.preventDefault();
+
+                                setViewAll(!viewAll);
+                            }}
+                        >View All</button>
+                    )}
+                </div>
+                {session && (
                     <Link
                         className="button button-primary flex"
                         href="/request/new"
