@@ -12,11 +12,12 @@ import Meta from "@components/meta";
 import NoPermissions from "@components/errors/no_permissions";
 import NotFound from "@components/errors/not_found";
 import Markdown from "@components/markdown";
-
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-import { has_role } from "@utils/user/auth";
 import RequestReplyForm from "@components/forms/request/reply";
 import UserGridRow from "@components/user/row/grid";
+
+import { api } from "@utils/api";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { has_role } from "@utils/user/auth";
 
 const Page: NextPage<{
     authed: boolean,
@@ -33,6 +34,8 @@ const Page: NextPage<{
     footerPartners
 }) => {
     const { data: session } = useSession();
+
+    const deleteReplyMut = api.request.delReply.useMutation();
 
     return (
         <>

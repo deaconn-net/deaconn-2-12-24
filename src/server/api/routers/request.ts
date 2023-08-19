@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { has_role } from "@utils/user/auth";
+import { prisma } from "@server/db";
 
 export const requestRouter = createTRPCRouter({
     getAll: protectedProcedure
@@ -145,6 +146,7 @@ export const requestRouter = createTRPCRouter({
             id: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
+
             const res = await ctx.prisma.request.update({
                 data: {
                     closed: true
@@ -159,6 +161,48 @@ export const requestRouter = createTRPCRouter({
                     code: "BAD_REQUEST",
                     message: "Unable to close request #" + input.id.toString()
                 })
+            }
+        }),
+    delReply: protectedProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            let authed = false;
+
+            if (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator"))
+                authed = true;
+
+            // Do lookup on request to see if we have access.
+            if (!authed) {
+                const reply = await ctx.prisma.requestReply.count({
+                    where: {
+                        id: input.id,
+                        userId: ctx.session.user.id
+                    }
+                });
+
+                if (reply > 0)
+                    authed = true;
+            }
+
+            // Check if we're authorized.
+            if (!authed)
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            try {
+                await ctx.prisma.requestReply.delete({
+                    where: {
+                        id: input.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to delete reply. Error => ${typeof err == "string" ? err : "Check console"}.`
+                });
             }
         })
 });
