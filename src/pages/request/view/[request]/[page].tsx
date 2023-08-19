@@ -1,5 +1,5 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { type RequestWithAll } from "~/types/request";
@@ -32,6 +32,8 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    const { data: session } = useSession();
+
     return (
         <>
             <Meta
@@ -62,6 +64,20 @@ const Page: NextPage<{
                             <div className="flex flex-col gap-2">
                                 <h2>Replies ({repliesCnt.toString()})</h2>
                                 {request.replies.map((reply) => {
+                                    const editUrl = `/request/reply/edit/${reply.id.toString()}`;
+
+                                    let canEdit = false;
+                                    let canDelete = false;
+
+                                    // Check if we can edit and delete reply.
+                                    if (session && (has_role(session, "admin") || has_role(session, "moderator"))) {
+                                        canEdit = true;
+                                        canDelete = true;
+                                    }
+
+                                    if (!canEdit && session?.user && reply.userId == session.user.id)
+                                        canEdit = true;
+
                                     return (
                                         <div
                                             key={`request-reply-${reply.id.toString()}`}
@@ -72,10 +88,32 @@ const Page: NextPage<{
                                                     user={request.user}
                                                 />
                                             </div>
-                                            <div className="grow p-4 bg-gray-800 rounded-sm">
+                                            <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4">
                                                 <Markdown>
                                                     {reply.content}
                                                 </Markdown>
+                                                {canEdit && (
+                                                    <div className="flex flex-wrap gap-2">
+                                                        <Link
+                                                            href={editUrl}
+                                                            className="button button-primary sm:w-auto"
+                                                        >Edit</Link>
+                                                        {canDelete && (
+                                                            <button
+                                                                className="button button-danger sm:w-auto"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+
+                                                                    const yes = confirm("Are you sure you want to delete this reply?");
+
+                                                                    if (yes) {
+
+                                                                    }
+                                                                }}
+                                                            >Delete</button>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div> 
                                     );
@@ -132,8 +170,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     // Retrieve request ID and page number if any.
     const { params } = ctx;
-    const lookupId = params?.request?.[0]?.toString();
-    const lookupPageNum = params?.request?.[1]?.toString();
+    const lookupId = params?.request?.toString();
+    const lookupPageNum = params?.page?.toString();
 
     // Retrieve page number for replies if any.
     const repliesPerPage = 10;

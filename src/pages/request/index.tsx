@@ -14,7 +14,7 @@ const Page: NextPage<GlobalPropsType> = ({
     footerServices,
     footerPartners
 }) => {
-    // Session
+    // Retrieve session.
     const { data: session } = useSession();
 
     return (
