@@ -95,7 +95,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         props: {
             ...globalProps,
             authed: authed,
-            request: request,
+            request: JSON.parse(JSON.stringify(request)),
             services: JSON.parse(JSON.stringify(services))
         }
     };

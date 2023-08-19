@@ -82,7 +82,7 @@ const Form: React.FC<{
         initialValues: {
             service: request?.serviceId ?? 0,
             title: request?.title ?? "",
-            startDate: request?.startDate ?? new Date(),
+            startDate: new Date(request?.startDate ?? Date.now()),
             timeframe: request?.timeframe ?? 5,
             price: request?.price ?? 50.0,
             content: request?.content ?? ""
