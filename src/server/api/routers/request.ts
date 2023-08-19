@@ -146,21 +146,44 @@ export const requestRouter = createTRPCRouter({
             id: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
+            let authed = false;
 
-            const res = await ctx.prisma.request.update({
-                data: {
-                    closed: true
-                },
-                where: {
-                    id: input.id
-                }
-            });
+            if (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator"))
+                authed = true;
 
-            if (!res.id) {
+            // Do lookup on request to see if we have access.
+            if (!authed) {
+                const request = await ctx.prisma.request.count({
+                    where: {
+                        id: input.id,
+                        userId: ctx.session.user.id
+                    }
+                });
+
+                if (request > 0)
+                    authed = true;
+            }
+
+            // Check if we're authorized.
+            if (!authed)
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            try {
+                await ctx.prisma.request.update({
+                    data: {
+                        closed: true
+                    },
+                    where: {
+                        id: input.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to close request #" + input.id.toString()
-                })
+                    message: `Failed to close request. Error => ${typeof err == "string" ? err : "Check console"}.`
+                });
             }
         }),
     delReply: protectedProcedure
