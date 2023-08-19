@@ -35,7 +35,19 @@ const Page: NextPage<{
 }) => {
     const { data: session } = useSession();
 
+    const editUrl = `/request/edit/${request?.id ?? ""}`;
+
+    const closeRequestMut = api.request.close.useMutation();
     const deleteReplyMut = api.request.delReply.useMutation();
+
+    // Check if we can edit and close request.
+    let canEditAndClose = false;
+
+    if (session && (has_role(session, "admin") || has_role(session, "moderator")))
+        canEditAndClose = true;
+
+    if (!canEditAndClose && session?.user && request && session.user.id == request.userId)
+        canEditAndClose = true;
 
     return (
         <>
@@ -58,10 +70,33 @@ const Page: NextPage<{
                                     <p><span className="text-lg font-bold text-white">Price</span> ${request.price.toString()}</p>
                                     <p><span className="text-lg font-bold text-white">Timeframe</span> {request.timeframe.toString()} Hours</p>
                                 </div>
-                                <div className="grow p-4 bg-gray-800 rounded-sm">
+                                <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4">
                                     <Markdown>
                                         {request.content}
                                     </Markdown>
+                                    {canEditAndClose && (
+                                        <div className="flex flex-wrap gap-2">
+                                            <Link
+                                                href={editUrl}
+                                                className="button sm:w-auto"
+                                            >Edit</Link>
+                                            <button
+                                                className="button sm:w-auto"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+
+                                                    const yes = confirm("Are you sure you want to close this request?");
+
+                                                    if (yes) {
+                                                        closeRequestMut.mutate({
+                                                            id: request.id
+                                                        });
+                                                    }
+                                                }}
+                                            >Close</button>
+                                        </div>
+                                    )}
+
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -110,7 +145,9 @@ const Page: NextPage<{
                                                                     const yes = confirm("Are you sure you want to delete this reply?");
 
                                                                     if (yes) {
-
+                                                                        deleteReplyMut.mutate({
+                                                                            id: reply.id
+                                                                        });
                                                                     }
                                                                 }}
                                                             >Delete</button>
@@ -174,7 +211,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve request ID and page number if any.
     const { params } = ctx;
     const lookupId = params?.request?.toString();
-    const lookupPageNum = params?.page?.toString();
+    const lookupPageNum = params?.page?.[0]?.toString();
 
     // Retrieve page number for replies if any.
     const repliesPerPage = 10;
@@ -223,7 +260,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (request) {
         repliesCnt = await prisma.requestReply.count({
             where: {
-                id: request.id
+                requestId: request.id
             }
         });
 
