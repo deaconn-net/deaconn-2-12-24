@@ -10,6 +10,7 @@ import Meta from "@components/meta";
 import ServiceBrowser from "@components/service/browser";
 import CategoryTabs from "@components/category/tabs";
 import TabMenuWithData from "@components/tabs/menu_with_data";
+import NotFound from "@components/errors/not_found";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
@@ -56,10 +57,7 @@ const Page: NextPage<{
                             />
                         </>
                     ) : (
-                        <>
-                            <h1>No Category</h1>
-                            <p>No service category specified. Please check the URL.</p>
-                        </>
+                        <NotFound item="Category" />
                     )}
                 </div>
             </Wrapper>

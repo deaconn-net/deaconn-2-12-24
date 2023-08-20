@@ -30,30 +30,32 @@ const Page: NextPage<{
     return (
         <>
             <Meta
-                title={`Editing Request ${request ? `#${request.id.toString()}` : `N/A`} - Requests - Deaconn`}
+                title={`Editing Request ${request?.title ?? "N/A"} - Requests - Deaconn`}
                 description="Edit a request with Deaconn."
             />
             <Wrapper
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {(authed && request) ? (
-                    <div className="content-item">
-                        <h1>Edit Request</h1>
-                        <RequestForm
-                            request={request}
-                            services={services}
-                        />
-                    </div>
-                ) : (
-                    <div className="content-item">
-                        {request ? (
-                            <NoPermissions />
-                        ) : (
-                            <NotFound item="Request" />
-                        )}
-                    </div>
-                )}
+                <div className="content-item">
+                    {(authed && request) ? (
+                        <>
+                            <h1>Edit Request</h1>
+                            <RequestForm
+                                request={request}
+                                services={services}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            {!authed ? (
+                                <NoPermissions />
+                            ) : (
+                                <NotFound item="Request" />
+                            )}
+                        </>
+                    )}
+                </div>
             </Wrapper>
         </>
     );

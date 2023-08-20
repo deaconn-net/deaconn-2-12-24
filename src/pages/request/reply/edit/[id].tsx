@@ -28,30 +28,32 @@ const Page: NextPage<{
     return (
         <>
             <Meta
-                title={`Editing Reply ${reply ? `#${reply.id.toString()}` : `N/A`} - Requests - Deaconn`}
+                title={`Editing Reply #${reply?.id?.toString() ?? "N/A"} - Requests - Deaconn`}
                 description="Create or edit reply with Deaconn."
             />
             <Wrapper
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {(authed && reply) ? (
-                    <div className="content-item">
-                        <h1>Edit Reply</h1>
-                        <RequestReplyForm
-                            requestId={reply.requestId}
-                            reply={reply}
-                        />
-                    </div>
-                ) : (
-                    <div className="content-item">
-                        {reply ? (
-                            <NoPermissions />
-                        ) : (
-                            <NotFound item="Reply" />
-                        )}
-                    </div>
-                )}
+                <div className="content-item">
+                    {(authed && reply) ? (
+                        <>
+                            <h1>Edit Reply</h1>
+                            <RequestReplyForm
+                                requestId={reply.requestId}
+                                reply={reply}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            {!authed ? (
+                                <NoPermissions />
+                            ) : (
+                                <NotFound item="Reply" />
+                            )}
+                        </>
+                    )}
+                </div>
             </Wrapper>
         </>
     );

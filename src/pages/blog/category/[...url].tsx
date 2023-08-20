@@ -10,6 +10,7 @@ import Meta from "@components/meta";
 import ArticleBrowser from "@components/blog/article/browser";
 import CategoryTabs from "@components/category/tabs";
 import TabMenuWithData from "@components/tabs/menu_with_data";
+import NotFound from "@components/errors/not_found";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
@@ -56,8 +57,7 @@ const Page: NextPage<{
                         </>
                     ) : (
                         <>
-                            <h1>No Category</h1>
-                            <p>No article category specified. Please check the URL.</p>
+                            <NotFound item="Category" />
                         </>
                     )}
                 </div>

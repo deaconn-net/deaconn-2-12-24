@@ -38,23 +38,25 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {(authed && service) ? (
-                    <div className="content-item">
-                        <h1>Edit Service</h1>
-                        <ServiceForm
-                            service={service}
-                            categories={categories}
-                        />
-                    </div>
-                ) : (
-                    <div className="content-item">
-                        {service ? (
-                            <NoPermissions />
-                        ) : (
-                            <NotFound item="Service" />
-                        )}
-                    </div>
-                )}
+                <div className="content-item">
+                    {(authed && service) ? (
+                        <>
+                            <h1>Edit Service</h1>
+                            <ServiceForm
+                                service={service}
+                                categories={categories}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            {!authed ? (
+                                <NoPermissions />
+                            ) : (
+                                <NotFound item="Service" />
+                            )}
+                        </>
+                    )}
+                </div>
             </Wrapper>
         </>
     );
