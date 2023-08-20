@@ -18,7 +18,8 @@ import UserGridRow from "@components/user/row/grid";
 import { api } from "@utils/api";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { has_role } from "@utils/user/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/date";
 
 const Page: NextPage<{
     authed: boolean,
@@ -79,6 +80,25 @@ const Page: NextPage<{
     if (request?.status == 2)
         isCompleted = true;
 
+    // Dates    
+    const [reqUpdatedAt, setReqUpdatedAt] = useState<string | undefined>(undefined);
+    const [reqCreatedAt, setReqCreatedAt] = useState<string | undefined>(undefined);
+    const [reqStartDate, setReqStartDate] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        if (!request)
+            return;
+
+        if (!reqUpdatedAt)
+            setReqUpdatedAt(dateFormat(request.updatedAt, dateFormatFour));
+
+        if (!reqCreatedAt)
+            setReqCreatedAt(dateFormat(request.createdAt, dateFormatFour));
+
+        if (!reqStartDate && request.startDate)
+            setReqStartDate(dateFormat(request.startDate, dateFormatThree));
+    }, [request, reqUpdatedAt, reqCreatedAt, reqStartDate])
+
     return (
         <>
             <Meta
@@ -89,7 +109,7 @@ const Page: NextPage<{
                 successMsgOverride={sucMsg}
                 errorTitleOverride={errTitle}
                 errorMsgOverride={errMsg}
-                
+
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
@@ -98,36 +118,58 @@ const Page: NextPage<{
                         <h1>{request?.title ?? `Request #${request.id.toString()}`}</h1>
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-wrap gap-2">
-                                <div className="p-4 flex flex-col gap-2 items-center">
+                                <div className="p-4 flex flex-col gap-1 items-center">
                                     <UserGridRow
                                         user={request.user}
                                     />
-                                    <p><span className="text-lg font-bold text-white">Price</span> ${request.price.toString()}</p>
-                                    <p><span className="text-lg font-bold text-white">Timeframe</span> {request.timeframe.toString()} Hours</p>
+                                    <p className="text-xl font-bold"><span className="text-green-500">$</span>{request.price.toString()}</p>
+                                    <p className="text-lg font-bold">{request.timeframe.toString()} Hours</p>
+                                    {reqStartDate && (
+                                        <p className="text-lg font-bold">On {reqStartDate}</p>
+                                    )}
                                 </div>
                                 <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4">
-                                    <Markdown>
-                                        {request.content}
-                                    </Markdown>
+                                    <div className="flex flex-wrap gap-2">
+                                        <Markdown className="grow">
+                                            {request.content}
+                                        </Markdown>
+                                        <div>
+                                            <p className="text-xl font-bold">
+                                                {request.accepted ? (
+                                                    <span className="text-green-300">Accepted</span>
+                                                ) : (
+                                                    <span className="text-red-400">Not Accepted</span>
+                                                )}
+
+                                            </p>
+                                        </div>
+                                    </div>
+
                                     {canEditAndStatus && (
-                                        <div className="flex flex-wrap gap-2">
-                                            <Link
-                                                href={editUrl}
-                                                className="button sm:w-auto"
-                                            >Edit</Link>
-                                            <button
-                                                className={`button sm:w-auto ${isCompleted ? "button-danger" : "button-primary"}`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
+                                        <div className="flex flex-wrap gap-2 justify-between items-center">
+                                            <div className="flex flex-wrap gap-2">
+                                                <Link
+                                                    href={editUrl}
+                                                    className="button button-primary sm:w-auto"
+                                                >Edit</Link>
+                                                <button
+                                                    className={`button sm:w-auto ${isCompleted ? "button-secondary" : "button-primary"}`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
 
-                                                    const newStatus = isCompleted ? 0 : 2;
+                                                        const newStatus = isCompleted ? 0 : 2;
 
-                                                    statusMut.mutate({
-                                                        id: request.id,
-                                                        status: newStatus
-                                                    });
-                                                }}
-                                            >{isCompleted ? "Reopen" : "Mark As Completed"}</button>
+                                                        statusMut.mutate({
+                                                            id: request.id,
+                                                            status: newStatus
+                                                        });
+                                                    }}
+                                                >{isCompleted ? "Reopen" : "Mark As Completed"}</button>
+                                            </div>
+                                            <div className="flex flex-col text-sm">
+                                                <p>Created On <span className="italic">{reqCreatedAt}</span></p>
+                                                <p>Last Updated On <span className="italic">{reqUpdatedAt}</span></p>
+                                            </div>
                                         </div>
                                     )}
 
@@ -150,6 +192,10 @@ const Page: NextPage<{
                                     if (!canEdit && session?.user && reply.userId == session.user.id)
                                         canEdit = true;
 
+                                    // Dates.
+                                    const repCreatedAt = dateFormat(reply.createdAt, dateFormatFour);
+                                    const repUpdatedAt = dateFormat(reply.updatedAt, dateFormatFour);
+
                                     return (
                                         <div
                                             key={`request-reply-${reply.id.toString()}`}
@@ -165,27 +211,33 @@ const Page: NextPage<{
                                                     {reply.content}
                                                 </Markdown>
                                                 {canEdit && (
-                                                    <div className="flex flex-wrap gap-2">
-                                                        <Link
-                                                            href={editUrl}
-                                                            className="button button-primary sm:w-auto"
-                                                        >Edit</Link>
-                                                        {canDelete && (
-                                                            <button
-                                                                className="button button-danger sm:w-auto"
-                                                                onClick={(e) => {
-                                                                    e.preventDefault();
+                                                    <div className="flex flex-wrap gap-2 justify-between items-center">
+                                                        <div className="flex flex-wrap gap-2">
+                                                            <Link
+                                                                href={editUrl}
+                                                                className="button button-primary sm:w-auto"
+                                                            >Edit</Link>
+                                                            {canDelete && (
+                                                                <button
+                                                                    className="button button-danger sm:w-auto"
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
 
-                                                                    const yes = confirm("Are you sure you want to delete this reply?");
+                                                                        const yes = confirm("Are you sure you want to delete this reply?");
 
-                                                                    if (yes) {
-                                                                        deleteReplyMut.mutate({
-                                                                            id: reply.id
-                                                                        });
-                                                                    }
-                                                                }}
-                                                            >Delete</button>
-                                                        )}
+                                                                        if (yes) {
+                                                                            deleteReplyMut.mutate({
+                                                                                id: reply.id
+                                                                            });
+                                                                        }
+                                                                    }}
+                                                                >Delete</button>
+                                                            )}
+                                                        </div>
+                                                        <div className="flex flex-col text-sm">
+                                                            <p>Created On <span className="italic">{repCreatedAt}</span></p>
+                                                            <p>Last Updated On <span className="italic">{repUpdatedAt}</span></p>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>
