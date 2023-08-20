@@ -14,12 +14,15 @@ import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import NotFound from "@components/errors/not_found";
 
 const Page: NextPage<{
     authed: boolean,
+    service?: Service,
     categories: CategoryWithChildren[]
 } & GlobalPropsType> = ({
     authed,
+    service,
     categories,
 
     footerServices,
@@ -28,21 +31,29 @@ const Page: NextPage<{
     return (
         <>
             <Meta
-                title="New Service - Services - Deaconn"
+                title={`Editing Service ${service?.name ?? "N/A"} - Services - Deaconn`}
+                robots="noindex"
             />
             <Wrapper
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {authed ? (
+                {(authed && service) ? (
                     <div className="content-item">
-                        <h1>Add Service</h1>
+                        <h1>Edit Service</h1>
                         <ServiceForm
+                            service={service}
                             categories={categories}
                         />
                     </div>
                 ) : (
-                    <NoPermissions />
+                    <div className="content-item">
+                        {service ? (
+                            <NoPermissions />
+                        ) : (
+                            <NotFound item="Service" />
+                        )}
+                    </div>
                 )}
             </Wrapper>
         </>
@@ -53,17 +64,29 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
     const session = await getSession(ctx);
 
-    // Make sure we're authenticated.
+    // Check if we're authenticated.
     let authed = false;
 
     if (session && (has_role(session, "contributor") || has_role(session, "admin")))
         authed = true;
 
-    // Intitialize categories.
+    // Retrieve lookup ID.
+    const { params } = ctx;
+
+    const lookupId = params?.id?.toString();
+
+    // Initialize service and categories.
+    let service: Service | null = null;
     let categories: CategoryWithChildren[] = [];
 
-    // Retrieve categories if authenticated.
-    if (authed) {
+    // If lookup ID and authenticated, retrieve service and categories.
+    if (authed && lookupId) {
+        service = await prisma.service.findFirst({
+            where: {
+                id: Number(lookupId)
+            }
+        });
+
         categories = await prisma.category.findMany({
             where: {
                 parent: null
@@ -81,6 +104,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         props: {
             ...globalProps,
             authed: authed,
+            service: JSON.parse(JSON.stringify(service, (_, v) => typeof v === "bigint" ? v.toString() : v)),
             categories: categories
         }
     };
