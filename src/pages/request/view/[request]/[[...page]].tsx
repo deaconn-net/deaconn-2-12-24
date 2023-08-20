@@ -1,5 +1,6 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { type RequestWithAll } from "~/types/request";
@@ -18,7 +19,6 @@ import UserGridRow from "@components/user/row/grid";
 import { api } from "@utils/api";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { has_role } from "@utils/user/auth";
-import { useEffect, useState } from "react";
 import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/date";
 
 const Page: NextPage<{
@@ -49,24 +49,34 @@ const Page: NextPage<{
     // Handle mutations.
     const statusMut = api.request.setStatus.useMutation();
     const deleteReplyMut = api.request.delReply.useMutation();
+    const acceptReqMut = api.request.setAccept.useMutation();
 
     if (statusMut.isSuccess) {
         sucTitle = "Updated Status!";
         sucMsg = "Updated request status successfully!";
     } else if (statusMut.isError) {
+        console.error(statusMut.error.message);
+
         errTitle = "Failed To Update Status";
-        errMsg = "Failed to update request status. Please contact administrator.";
+        errMsg = "Failed to update request status. Please contact administrator or check your console for more details.";
     }
 
     if (deleteReplyMut.isSuccess) {
         sucTitle = "Deleted Reply!";
         sucMsg = "Deleted reply successfully!";
     } else if (deleteReplyMut.isError) {
+        console.error(deleteReplyMut.error.message);
+
         errTitle = "Failed To Delete Reply";
-        errMsg = "Failed to delete reply. Please contact administrator.";
+        errMsg = "Failed to delete reply. Please contact administrator or check your console for more details.";
     }
 
-    // Check if we can edit and set status
+    // Check if we can edit, set status, or accept/reject request.
+    let isAdmin = false;
+
+    if (session && has_role(session, "admin"))
+        isAdmin = true;
+
     let canEditAndStatus = false;
 
     if (session && (has_role(session, "admin") || has_role(session, "moderator")))
@@ -75,10 +85,20 @@ const Page: NextPage<{
     if (!canEditAndStatus && session?.user && request && session.user.id == request.userId)
         canEditAndStatus = true;
 
-    let isCompleted = false;
+    const [isCompleted, setIsCompleted] = useState(request?.status == 2 ?? false);
 
-    if (request?.status == 2)
-        isCompleted = true;
+    // Accept or reject request.
+    const [accept, setAccept] = useState(request?.accepted ?? false);
+
+    if (acceptReqMut.isSuccess) {
+        sucTitle = `${accept ? "Accepted" : "Rejected"} Request!`;
+        sucMsg = `Successfully ${accept ? "accepted" : "rejected"} this request!`;
+    } else if (acceptReqMut.isError) {
+        console.error(acceptReqMut.error.message);
+
+        errTitle = `Failed To ${accept ? "Accept" : "Reject"} Request`;
+        errMsg = `Failed to ${accept ? "accept" : "reject"} request. Look at console for more details.`;
+    }
 
     // Dates    
     const [reqUpdatedAt, setReqUpdatedAt] = useState<string | undefined>(undefined);
@@ -117,8 +137,8 @@ const Page: NextPage<{
                     <div className="content-item">
                         <h1>{request?.title ?? `Request #${request.id.toString()}`}</h1>
                         <div className="flex flex-col gap-4">
-                            <div className="flex flex-wrap gap-2">
-                                <div className="p-4 flex flex-col gap-1 items-center">
+                            <div className="flex flex-wrap">
+                                <div className="p-4 flex flex-col gap-1 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
                                     <UserGridRow
                                         user={request.user}
                                     />
@@ -128,7 +148,7 @@ const Page: NextPage<{
                                         <p className="text-lg font-bold">On {reqStartDate}</p>
                                     )}
                                 </div>
-                                <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4">
+                                <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
                                     <div className="flex flex-wrap gap-2">
                                         <Markdown className="grow">
                                             {request.content}
@@ -140,14 +160,26 @@ const Page: NextPage<{
                                                 ) : (
                                                     <span className="text-red-400">Not Accepted</span>
                                                 )}
-
                                             </p>
                                         </div>
                                     </div>
-
                                     {canEditAndStatus && (
                                         <div className="flex flex-wrap gap-2 justify-between items-center">
                                             <div className="flex flex-wrap gap-2">
+                                                {isAdmin && (
+                                                    <button
+                                                        className={`button sm:w-auto ${accept ? "button-danger" : "button-primary"}`}
+                                                        onClick={(e) => {
+                                                            // Update request.
+                                                            acceptReqMut.mutate({
+                                                                requestId: request.id,
+                                                                accepted: !accept
+                                                            });
+
+                                                            setAccept(!accept);
+                                                        }}
+                                                    >{accept ? "Reject" : "Accept"}</button>
+                                                )}
                                                 <Link
                                                     href={editUrl}
                                                     className="button button-primary sm:w-auto"
@@ -163,6 +195,8 @@ const Page: NextPage<{
                                                             id: request.id,
                                                             status: newStatus
                                                         });
+
+                                                        setIsCompleted(!isCompleted);
                                                     }}
                                                 >{isCompleted ? "Reopen" : "Mark As Completed"}</button>
                                             </div>
@@ -199,14 +233,14 @@ const Page: NextPage<{
                                     return (
                                         <div
                                             key={`request-reply-${reply.id.toString()}`}
-                                            className="flex flex-wrap gap-2"
+                                            className="flex flex-wrap"
                                         >
-                                            <div className="p-4 flex flex-col gap-2 items-center">
+                                            <div className="p-4 flex flex-col gap-2 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
                                                 <UserGridRow
                                                     user={request.user}
                                                 />
                                             </div>
-                                            <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4">
+                                            <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
                                                 <Markdown>
                                                     {reply.content}
                                                 </Markdown>
