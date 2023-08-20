@@ -31,7 +31,7 @@
 
 .markdown-code-inline {
     @apply bg-gray-950;
-    @apply p-1;
+    @apply px-1;
     @apply rounded-sm;
     @apply text-cyan-300;
 }

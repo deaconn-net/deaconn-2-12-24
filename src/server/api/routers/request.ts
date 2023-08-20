@@ -1,11 +1,15 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { has_role } from "@utils/user/auth";
+import { prisma } from "@server/db";
 
 export const requestRouter = createTRPCRouter({
     getAll: protectedProcedure
         .input(z.object({
-            userId: z.string().nullable().default(null),
+            userId: z.string().optional(),
+            viewAll: z.boolean().default(false),
+            statuses: z.array(z.number()).default([0]),
 
             sort: z.string().default("updatedAt"),
             sortDir: z.string().default("desc"),
@@ -14,14 +18,27 @@ export const requestRouter = createTRPCRouter({
             cursor: z.number().nullish()
         }))
         .query(async ({ ctx, input }) => {
+            // If view all or user ID is set, make sure we have access.
+            if (input.viewAll || input.userId) {
+                if (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")) {
+                    return {
+                        items: [],
+                        nextCur: undefined
+                    };
+                }
+            }
+            
             const items = await ctx.prisma.request.findMany({
                 include: {
                     service: true
                 },
                 where: {
-                    ...(input.userId && {
-                        userId: input.userId
-                    })
+                    ...(!input.viewAll && {
+                        userId: input.userId ?? ctx.session.user.id
+                    }),
+                    status: {
+                        in: input.statuses
+                    }
                 },
                 orderBy: {
                     [input.sort]: input.sortDir
@@ -84,16 +101,49 @@ export const requestRouter = createTRPCRouter({
             if (!res)
                 throw new TRPCError({ code: "BAD_REQUEST" });
         }),
-    addComment: protectedProcedure
+    addReply: protectedProcedure
         .input(z.object({
-            id: z.number().nullable(),
+            id: z.number().optional(),
 
             requestId: z.number(),
             content: z.string().max(32768)
         }))
         .mutation(async ({ ctx, input }) => {
-            // Make sure we either own the request or are 
-            await ctx.prisma.requestComment.upsert({
+            // Make sure we either own the request or are an admin.
+            let isMod = false;
+
+            if (ctx.session && (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator")))
+                isMod = true;
+
+            if (!isMod) {
+                try {
+                    await ctx.prisma.request.findFirstOrThrow({
+                        where: {
+                            id: input.requestId,
+                            userId: ctx.session.user.id
+                        }
+                    });
+                } catch (err) {
+                    throw new TRPCError({ code: "UNAUTHORIZED" });
+                }
+            } else {
+                // If we're an admin or moderator, set request to pending.
+                try {
+                    await ctx.prisma.request.update({
+                        data: {
+                            status: 1
+                        },
+                        where: {
+                            id: input.requestId
+                        }
+                    });
+                } catch (err) {
+                    console.error(`Error setting request #${input.requestId.toString()} to pending.`);
+                    console.error(err);
+                }
+            }
+
+            await ctx.prisma.requestReply.upsert({
                 where: {
                     id: input.id ?? 0
                 },
@@ -107,25 +157,116 @@ export const requestRouter = createTRPCRouter({
                 }
             });
         }),
-    close: protectedProcedure
+    setStatus: protectedProcedure
+        .input(z.object({
+            id: z.number(),
+            status: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            let authed = false;
+
+            if (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator"))
+                authed = true;
+
+            // Do lookup on request to see if we have access.
+            if (!authed) {
+                const request = await ctx.prisma.request.count({
+                    where: {
+                        id: input.id,
+                        userId: ctx.session.user.id
+                    }
+                });
+
+                if (request > 0)
+                    authed = true;
+            }
+
+            // Check if we're authorized.
+            if (!authed)
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            try {
+                await ctx.prisma.request.update({
+                    data: {
+                        status: input.status
+                    },
+                    where: {
+                        id: input.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to close request. Error => ${typeof err == "string" ? err : "Check console"}.`
+                });
+            }
+        }),
+    setAccept: adminProcedure
+        .input(z.object({
+            requestId: z.number(),
+            accepted: z.boolean().default(false)
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.request.update({
+                    data: {
+                        accepted: input.accepted 
+                    },
+                    where: {
+                        id: input.requestId
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to accept/deny request (#${input.requestId.toString()}). Error => ${typeof err == "string" ? err : "Check console"}.`
+                });
+            }
+        }),
+    delReply: protectedProcedure
         .input(z.object({
             id: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
-            const res = await ctx.prisma.request.update({
-                data: {
-                    closed: true
-                },
-                where: {
-                    id: input.id
-                }
-            });
+            let authed = false;
 
-            if (!res.id) {
+            if (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator"))
+                authed = true;
+
+            // Do lookup on request to see if we have access.
+            if (!authed) {
+                const reply = await ctx.prisma.requestReply.count({
+                    where: {
+                        id: input.id,
+                        userId: ctx.session.user.id
+                    }
+                });
+
+                if (reply > 0)
+                    authed = true;
+            }
+
+            // Check if we're authorized.
+            if (!authed)
+                throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            try {
+                await ctx.prisma.requestReply.delete({
+                    where: {
+                        id: input.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: "Unable to close request #" + input.id.toString()
-                })
+                    message: `Failed to delete reply. Error => ${typeof err == "string" ? err : "Check console"}.`
+                });
             }
         })
 });

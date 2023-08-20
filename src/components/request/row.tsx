@@ -31,7 +31,15 @@ const RequestRow: React.FC<{
                 {updatedAt ?? "Not Set"}
             </td>
             <td className="request-row-data">
-                {request.closed ? "Closed" : "Open"}
+                {request.status == 0 && (
+                    <>Open</>
+                )}
+                {request.status == 1 && (
+                    <>Pending</>
+                )}
+                {request.status == 2 && (
+                    <>Completed</>
+                )}
             </td>
             <td className="request-row-data">
                 {request.accepted ? "Yes" : "No"}
