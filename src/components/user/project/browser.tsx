@@ -9,7 +9,7 @@ import Row from "@components/user/project/row";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const Browser: React.FC<{
+const UserProjectBrowser: React.FC<{
     sort?: string,
     sortDir?: string,
     userId?: string,
@@ -78,4 +78,4 @@ const Browser: React.FC<{
     );
 }
 
-export default Browser;
+export default UserProjectBrowser;

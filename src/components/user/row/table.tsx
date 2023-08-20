@@ -6,7 +6,7 @@ import { type User } from "@prisma/client"
 
 import { has_role } from "@utils/user/auth";
 
-const UserTableRow: React.FC<{
+const UserRowTable: React.FC<{
     user: User
 }> = ({
     user
@@ -58,4 +58,4 @@ const UserTableRow: React.FC<{
     );
 }
 
-export default UserTableRow;
+export default UserRowTable;

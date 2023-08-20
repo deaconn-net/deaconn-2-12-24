@@ -8,7 +8,7 @@ import { type Service } from "@prisma/client";
 
 import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
-import TabMenuWithData from "@components/tabs/tab_menu_with_data";
+import TabMenuWithData from "@components/tabs/menu_with_data";
 import IconAndText from "@components/containers/icon_and_text";
 import Markdown from "@components/markdown";
 

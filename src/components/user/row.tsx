@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { type User } from "@prisma/client";
 
-const Row: React.FC<{
+const UserRow: React.FC<{
     user: User
 }> = ({
     user
@@ -32,4 +32,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default UserRow;

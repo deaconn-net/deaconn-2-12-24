@@ -7,7 +7,7 @@ import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 
-const Row: React.FC<{
+const UserSkillRow: React.FC<{
     skill: UserSkill
 }> = ({
     skill
@@ -78,4 +78,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default UserSkillRow;

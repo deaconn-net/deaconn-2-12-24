@@ -9,7 +9,7 @@ import Meta from "@components/meta";
 
 import ServiceBrowser from "@components/service/browser";
 import CategoryTabs from "@components/category/tabs";
-import TabMenuWithData from "@components/tabs/tab_menu_with_data";
+import TabMenuWithData from "@components/tabs/menu_with_data";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 

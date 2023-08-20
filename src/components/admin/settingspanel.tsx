@@ -1,4 +1,4 @@
-import TabMenuWithData from "@components/tabs/tab_menu_with_data";
+import TabMenuWithData from "@components/tabs/menu_with_data";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 const AdminSettingsPanel: React.FC<{

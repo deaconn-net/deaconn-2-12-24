@@ -9,7 +9,7 @@ import Row from "@components/user/skill/row";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const Browser: React.FC<{
+const UserSkillBrowser: React.FC<{
     sort?: string,
     sortDir?: string,
     userId?: string,
@@ -78,4 +78,4 @@ const Browser: React.FC<{
     );
 }
 
-export default Browser;
+export default UserSkillBrowser;

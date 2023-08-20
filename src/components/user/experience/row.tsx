@@ -7,7 +7,7 @@ import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 
-const Row: React.FC<{
+const UserExperienceRow: React.FC<{
     experience: UserExperience
 }> = ({
     experience
@@ -84,4 +84,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default UserExperienceRow;
