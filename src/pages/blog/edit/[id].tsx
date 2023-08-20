@@ -9,7 +9,7 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import Form from '@components/forms/article/new';
+import ArticleForm from '@components/forms/article/new';
 import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
@@ -41,7 +41,7 @@ const Page: NextPage<{
                 {(authed && article) ? (
                     <div className="content-item">
                         <h1>Edit Article</h1>
-                        <Form
+                        <ArticleForm
                             article={article}
                             categories={categories}
                         />
@@ -73,19 +73,17 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve lookup ID.
     const { params } = ctx;
 
-    const lookup_id = params?.id?.toString();
+    const lookupId = params?.id?.toString();
 
     // Initialize article and categories.
     let article: Article | null = null;
     let categories: CategoryWithChildren[] = [];
 
-    if (lookup_id && authed) {
+    if (lookupId && authed) {
         // Retrieve article and categories.
         article = await prisma.article.findFirst({
             where: {
-                ...(lookup_id && {
-                    id: Number(lookup_id.toString())
-                })
+                id: Number(lookupId)
             }
         });
 

@@ -9,7 +9,7 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import Form from '@components/forms/article/new';
+import ArticleForm from '@components/forms/article/new';
 import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
@@ -38,7 +38,7 @@ const Page: NextPage<{
                 {authed ? (
                     <div className="content-item">
                         <h1>New Article</h1>
-                        <Form
+                        <ArticleForm
                             categories={categories}
                         />
                     </div>
