@@ -54,19 +54,20 @@ const Page: NextPage<{
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    // Retrieve parameters.
+    // Retrieve user ID.
     const { params } = ctx;
 
     const userId = params?.user?.toString();
 
+    // Initialize user.
     let user: User | null = null;
 
+    // if user ID is found, retrieve user.
     if (userId) {
         let lookup_url = true;
 
-        if (userId[0] == "$") {
+        if (userId[0] == "$")
             lookup_url = false;
-        }
 
         user = await prisma.user.findFirst({
             where: {
@@ -80,6 +81,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    // Retrieve global props.
     const globalProps = await GlobalProps();
 
     return {

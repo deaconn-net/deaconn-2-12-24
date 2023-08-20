@@ -1,19 +1,17 @@
-import { type User } from "@prisma/client";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { type User } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
+import ExperienceBrowser from "@components/user/experience/browser";
 import NotFound from "@components/errors/not_found";
 import UserView from "@components/user/view";
 
-import { dateFormat, dateFormatTwo } from "@utils/date";
-
-import Markdown from "@components/markdown";
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     user?: User
@@ -23,12 +21,10 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
-    const birthday = (user?.birthday) ? dateFormat(user?.birthday, dateFormatTwo) : null;
-
     return (
         <>
             <Meta
-                title={`${user?.name ?? "Not Found"} - Users - Deaconn`}
+                title={`Experiences - ${user?.name ?? "Not Found"} - Users - Deaconn`}
             />
             <Wrapper
                 footerServices={footerServices}
@@ -38,33 +34,14 @@ const Page: NextPage<{
                     {user ? (
                         <UserView
                             user={user}
-                            view="general"
+                            view="experiences"
                         >
                             <div className="content-item">
-                                <h1>General</h1>
-                                {!user.aboutMe && !user.showEmail && !birthday && (
-                                    <p>No general information to show.</p>
-                                )}
-                                {user.aboutMe && (
-                                    <div className="p-6">
-                                        <h3>About Me</h3>
-                                        <Markdown>
-                                            {user.aboutMe}
-                                        </Markdown>
-                                    </div>
-                                )}
-                                {user.showEmail && user.email && (
-                                    <div className="p-6">
-                                        <h3>Email</h3>
-                                        <p className="italic">{user.email}</p>
-                                    </div>
-                                )}
-                                {birthday && (
-                                    <div className="p-6">
-                                        <h3>Birthday</h3>
-                                        <p className="italic">{birthday}</p>
-                                    </div>
-                                )}
+                                <h1>Experiences</h1>
+                                <ExperienceBrowser
+                                    userId={user.id}
+                                    small={true}
+                                />
                             </div>
                         </UserView>
                     ) : (
@@ -77,7 +54,7 @@ const Page: NextPage<{
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    // Retrieve user ID.
+    // Retrieve user ID or URL.
     const { params } = ctx;
 
     const userId = params?.user?.toString();
@@ -85,7 +62,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Initialize user.
     let user: User | null = null;
 
-    // If user ID is found, retrieve user.
+    // If user ID or URL is found, retrieve user.
     if (userId) {
         let lookupUrl = true;
 
