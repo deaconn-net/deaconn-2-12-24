@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { has_role } from "@utils/user/auth";
@@ -200,6 +200,30 @@ export const requestRouter = createTRPCRouter({
                 throw new TRPCError({
                     code: "BAD_REQUEST",
                     message: `Failed to close request. Error => ${typeof err == "string" ? err : "Check console"}.`
+                });
+            }
+        }),
+    setAccept: adminProcedure
+        .input(z.object({
+            requestId: z.number(),
+            accepted: z.boolean().default(false)
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.request.update({
+                    data: {
+                        accepted: input.accepted 
+                    },
+                    where: {
+                        id: input.requestId
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to accept/deny request (#${input.requestId.toString()}). Error => ${typeof err == "string" ? err : "Check console"}.`
                 });
             }
         }),
