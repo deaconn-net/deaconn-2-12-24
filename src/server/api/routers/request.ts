@@ -110,12 +110,12 @@ export const requestRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             // Make sure we either own the request or are an admin.
-            let authed = false;
+            let isMod = false;
 
             if (ctx.session && (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator")))
-                authed = true;
+                isMod = true;
 
-            if (!authed && ctx.session?.user) {
+            if (!isMod) {
                 try {
                     await ctx.prisma.request.findFirstOrThrow({
                         where: {
@@ -126,9 +126,21 @@ export const requestRouter = createTRPCRouter({
                 } catch (err) {
                     throw new TRPCError({ code: "UNAUTHORIZED" });
                 }
-
-                // If we got here, it was found!
-                authed = true;
+            } else {
+                // If we're an admin or moderator, set request to pending.
+                try {
+                    await ctx.prisma.request.update({
+                        data: {
+                            status: 1
+                        },
+                        where: {
+                            id: input.requestId
+                        }
+                    });
+                } catch (err) {
+                    console.error(`Error setting request #${input.requestId.toString()} to pending.`);
+                    console.error(err);
+                }
             }
 
             await ctx.prisma.requestReply.upsert({
