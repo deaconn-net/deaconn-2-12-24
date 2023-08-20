@@ -9,6 +9,7 @@ export const requestRouter = createTRPCRouter({
         .input(z.object({
             userId: z.string().optional(),
             viewAll: z.boolean().default(false),
+            statuses: z.array(z.number()).default([0]),
 
             sort: z.string().default("updatedAt"),
             sortDir: z.string().default("desc"),
@@ -34,7 +35,10 @@ export const requestRouter = createTRPCRouter({
                 where: {
                     ...(!input.viewAll && {
                         userId: input.userId ?? ctx.session.user.id
-                    })
+                    }),
+                    status: {
+                        in: input.statuses
+                    }
                 },
                 orderBy: {
                     [input.sort]: input.sortDir
@@ -141,9 +145,10 @@ export const requestRouter = createTRPCRouter({
                 }
             });
         }),
-    close: protectedProcedure
+    setStatus: protectedProcedure
         .input(z.object({
-            id: z.number()
+            id: z.number(),
+            status: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
             let authed = false;
@@ -171,7 +176,7 @@ export const requestRouter = createTRPCRouter({
             try {
                 await ctx.prisma.request.update({
                     data: {
-                        closed: true
+                        status: input.status
                     },
                     where: {
                         id: input.id

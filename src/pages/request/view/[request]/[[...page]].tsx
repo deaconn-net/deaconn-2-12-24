@@ -18,6 +18,7 @@ import UserGridRow from "@components/user/row/grid";
 import { api } from "@utils/api";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { has_role } from "@utils/user/auth";
+import { useState } from "react";
 
 const Page: NextPage<{
     authed: boolean,
@@ -35,19 +36,48 @@ const Page: NextPage<{
 }) => {
     const { data: session } = useSession();
 
+    // Success and error management.
+    let sucTitle: string | undefined = undefined;
+    let sucMsg: string | undefined = undefined;
+    let errTitle: string | undefined = undefined;
+    let errMsg: string | undefined = undefined;
+
+    // Compile URLs.
     const editUrl = `/request/edit/${request?.id ?? ""}`;
 
-    const closeRequestMut = api.request.close.useMutation();
+    // Handle mutations.
+    const statusMut = api.request.setStatus.useMutation();
     const deleteReplyMut = api.request.delReply.useMutation();
 
-    // Check if we can edit and close request.
-    let canEditAndClose = false;
+    if (statusMut.isSuccess) {
+        sucTitle = "Updated Status!";
+        sucMsg = "Updated request status successfully!";
+    } else if (statusMut.isError) {
+        errTitle = "Failed To Update Status";
+        errMsg = "Failed to update request status. Please contact administrator.";
+    }
+
+    if (deleteReplyMut.isSuccess) {
+        sucTitle = "Deleted Reply!";
+        sucMsg = "Deleted reply successfully!";
+    } else if (deleteReplyMut.isError) {
+        errTitle = "Failed To Delete Reply";
+        errMsg = "Failed to delete reply. Please contact administrator.";
+    }
+
+    // Check if we can edit and set status
+    let canEditAndStatus = false;
 
     if (session && (has_role(session, "admin") || has_role(session, "moderator")))
-        canEditAndClose = true;
+        canEditAndStatus = true;
 
-    if (!canEditAndClose && session?.user && request && session.user.id == request.userId)
-        canEditAndClose = true;
+    if (!canEditAndStatus && session?.user && request && session.user.id == request.userId)
+        canEditAndStatus = true;
+
+    let isCompleted = false;
+
+    if (request?.status == 2)
+        isCompleted = true;
 
     return (
         <>
@@ -55,6 +85,11 @@ const Page: NextPage<{
                 title="View Request - Requests - Deaconn"
             />
             <Wrapper
+                successTitleOverride={sucTitle}
+                successMsgOverride={sucMsg}
+                errorTitleOverride={errTitle}
+                errorMsgOverride={errMsg}
+                
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
@@ -74,26 +109,25 @@ const Page: NextPage<{
                                     <Markdown>
                                         {request.content}
                                     </Markdown>
-                                    {canEditAndClose && (
+                                    {canEditAndStatus && (
                                         <div className="flex flex-wrap gap-2">
                                             <Link
                                                 href={editUrl}
                                                 className="button sm:w-auto"
                                             >Edit</Link>
                                             <button
-                                                className="button sm:w-auto"
+                                                className={`button sm:w-auto ${isCompleted ? "button-danger" : "button-primary"}`}
                                                 onClick={(e) => {
                                                     e.preventDefault();
 
-                                                    const yes = confirm("Are you sure you want to close this request?");
+                                                    const newStatus = isCompleted ? 0 : 2;
 
-                                                    if (yes) {
-                                                        closeRequestMut.mutate({
-                                                            id: request.id
-                                                        });
-                                                    }
+                                                    statusMut.mutate({
+                                                        id: request.id,
+                                                        status: newStatus
+                                                    });
                                                 }}
-                                            >Close</button>
+                                            >{isCompleted ? "Reopen" : "Mark As Completed"}</button>
                                         </div>
                                     )}
 

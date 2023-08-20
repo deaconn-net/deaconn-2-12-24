@@ -99,7 +99,7 @@ model Request {
   price     Float
 
   accepted Boolean @default(false)
-  closed   Boolean @default(false)
+  status   Int     @default(0)
 
   replies RequestReply[]
 }

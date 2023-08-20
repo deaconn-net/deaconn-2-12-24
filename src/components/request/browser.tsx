@@ -18,15 +18,30 @@ const RequestBrowser: React.FC = () => {
     // Retrieve session.
     const { data: session } = useSession();
 
-    const [viewAll, setViewAll] = useState(false);
+    const statuses: number[] = [];
 
+    // Status filters.
+    const [showOpen, setShowOpen] = useState(true);
+    const [showPending, setShowPending] = useState(true);
+    const [showCompleted, setShowCompleted] = useState(false);
+    const [showAllAdmin, setShowAllAdmin] = useState(false);
+
+    if (showOpen)
+        statuses.push(0);
+
+    if (showPending)
+        statuses.push(1);
+
+    if (showCompleted)
+        statuses.push(2);
+    
     // Check if we can view all.
     let canViewAll = false;
 
     if (session && (has_role(session, "admin") || has_role(session, "moderator")))
         canViewAll = true;
 
-    // Filters.
+    // Oldest filter.
     const [oldest, setOldest] = useState(false);
 
     const sort = "updatedAt";
@@ -40,7 +55,8 @@ const RequestBrowser: React.FC = () => {
     const limit = 10;
     const { data, fetchNextPage } = api.request.getAll.useInfiniteQuery({
         limit: limit,
-        viewAll: viewAll,
+        viewAll: showAllAdmin,
+        statuses: statuses,
 
         sort: sort,
         sortDir: sortDir
@@ -73,21 +89,42 @@ const RequestBrowser: React.FC = () => {
                         onClick={(e) => {
                             e.preventDefault();
 
-                            if (oldest)
-                                setOldest(false);
-                            else
-                                setOldest(true);
+                            setOldest(!oldest);
                         }}
-                    >Oldest</button>
+                    >{oldest ? "Newest" : "Oldest"}</button>
+                    <button
+                        className={`button ${showOpen ? "!bg-cyan-600" : ""}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+
+                            setShowOpen(!showOpen);
+                        }}
+                    >{showOpen ? "Hide Open" : "Show Open"}</button>
+                    <button
+                        className={`button ${showPending ? "!bg-cyan-600" : ""}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+
+                            setShowPending(!showPending);
+                        }}
+                    >{showPending ? "Hide Pending" : "Show Pending"}</button>
+                    <button
+                        className={`button ${showCompleted ? "!bg-cyan-600" : ""}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+
+                            setShowCompleted(!showCompleted);
+                        }}
+                    >{showCompleted ? "Hide Competed" : "Show Completed"}</button>
                     {canViewAll && (
                         <button
-                            className={`button ${viewAll ? "!bg-cyan-600" : ""}`}
+                            className={`button ${showAllAdmin ? "!bg-cyan-600" : ""}`}
                             onClick={(e) => {
                                 e.preventDefault();
 
-                                setViewAll(!viewAll);
+                                setShowAllAdmin(!showAllAdmin);
                             }}
-                        >View All</button>
+                        >{showAllAdmin ? "Only Me" : "All Users"}</button>
                     )}
                 </div>
                 {session && (
