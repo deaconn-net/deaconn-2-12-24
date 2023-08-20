@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-import { type Article, type User } from "@prisma/client";
+import { type ArticleWithUser } from "~/types/blog/article";
 
 import { prisma } from "@server/db";
 
@@ -15,7 +15,7 @@ import { UserLink } from "@components/user/link";
 import NotFound from "@components/errors/not_found";
 
 import { api } from "@utils/api";
-import { dateFormat, dateFormatOne } from "@utils/date";
+import { dateFormat, dateFormatFour } from "@utils/date";
 import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 import TwitterIcon from "@utils/icons/social/twitter";
@@ -25,18 +25,10 @@ import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 import Markdown from "@components/markdown";
 
-type ArticleType = Article & {
-    user: User | null;
-};
-
 const Page: NextPage<{
-    article: ArticleType | null,
-    createdAtDate: string | null,
-    updatedAtDate: string | null
+    article?: ArticleWithUser,
 } & GlobalPropsType> = ({
     article,
-    createdAtDate,
-    updatedAtDate,
 
     footerServices,
     footerPartners
@@ -49,14 +41,13 @@ const Page: NextPage<{
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
 
     // Compile links.
-    const editUrl = "/blog/new?id=" + (article?.id?.toString() ?? "");
+    const editUrl = `/blog/edit/${article?.id?.toString() ?? ""}`;
 
     // Retrieve banner.
     let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE ?? "");
 
-    if (article?.banner) {
+    if (article?.banner)
         banner = cdn + uploadUrl + article.banner;
-    }
 
     // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation();
@@ -73,6 +64,21 @@ const Page: NextPage<{
     const shareUrl = `${baseUrl}/blog/view/${article?.url ?? ""}`;
     const shareText = `I'm sharing this article! ${encodeURI(shareUrl)}`;
     const encodedText = encodeURI(shareText);
+
+    // Dates.
+    const [articleCreatedAt, setArticleCreatedAt] = useState<string | undefined>(undefined);
+    const [articleUpdatedAt, setArticleUpdatedAt] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        if (!article)
+            return;
+
+        if (!articleCreatedAt)
+            setArticleCreatedAt(dateFormat(article.createdAt, dateFormatFour));
+
+        if (!articleUpdatedAt)
+            setArticleUpdatedAt(dateFormat(article.updatedAt, dateFormatFour));
+    }, [article, articleCreatedAt, articleUpdatedAt]);
 
     return (
         <>
@@ -113,11 +119,11 @@ const Page: NextPage<{
                                         )}
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        {createdAtDate && (
-                                            <p>Created On <span className="font-bold">{createdAtDate}</span></p>
+                                        {articleCreatedAt && (
+                                            <p>Created On <span className="font-bold">{articleCreatedAt}</span></p>
                                         )}
-                                        {updatedAtDate && (
-                                            <p>Updated On <span className="font-bold">{updatedAtDate}</span></p>
+                                        {articleUpdatedAt && (
+                                            <p>Updated On <span className="font-bold">{articleUpdatedAt}</span></p>
                                         )}
                                     </div>
                                 </div>
@@ -202,10 +208,15 @@ const Page: NextPage<{
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    let article: ArticleType | null = null;
+    // Retrieve URL.
+    const { params } = ctx;
 
-    const url = (ctx?.params?.article) ? ctx.params.article[0] ?? null : null;
+    const url = params?.url?.toString();
 
+    // Initialize article.
+    let article: ArticleWithUser | null = null;
+
+    // If URL exists, retrieve URL.
     if (url) {
         article = await prisma.article.findFirst({
             where: {
@@ -216,17 +227,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             }
         });
     }
-
-    // We need to parse the dates now, on the server-side.
-    let createdAtDate: string | null = null;
-
-    if (article)
-        createdAtDate = dateFormat(article.createdAt, dateFormatOne);
-
-    let updatedAtDate: string | null = null;
-
-    if (article)
-        updatedAtDate = dateFormat(article.updatedAt, dateFormatOne);
 
     // Increment view count.
     if (article) {
@@ -247,9 +247,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return { 
         props: {
             ...globalProps,
-            article: JSON.parse(JSON.stringify(article)),
-            createdAtDate: createdAtDate,
-            updatedAtDate: updatedAtDate
+            article: JSON.parse(JSON.stringify(article))
         }
     };
 }
