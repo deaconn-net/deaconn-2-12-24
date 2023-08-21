@@ -64,7 +64,6 @@ const ArticleBrowser: React.FC<{
                 setRequireItems(false);
         });
     }
-    
     return (
         <div className="article-browser">
             <div className="article-browser-buttons">
@@ -111,15 +110,14 @@ const ArticleBrowser: React.FC<{
                     </Link>
                 )}
             </div>
-            {data && articles.length > 0 ? (
+            {!data || articles.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={"grid-view grid-view-sm"}
                 >
-                    <>
+                    <div className="grid-view grid-view-sm">
                         {articles.map((article: Article) => {
                             return (
                                 <ArticleRow
@@ -128,7 +126,7 @@ const ArticleBrowser: React.FC<{
                                 />
                             )
                         })}
-                    </>
+                    </div>
                 </InfiniteScroll>
             ) : (
                 <p>No articles found.</p>

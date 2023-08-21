@@ -145,7 +145,7 @@ const RequestBrowser: React.FC = () => {
                 )}
 
             </div>
-            {data && requests.length > 0 ? (
+            {!data || requests.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={loadMore}

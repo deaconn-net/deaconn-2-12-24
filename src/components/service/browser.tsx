@@ -59,8 +59,7 @@ const ServiceBrowser: React.FC<{
             if (!pg.nextCur && requireItems)
                 setRequireItems(false);
         });
-    }
-    
+    }    
     return (
         <div className="service-browser">
             <div className="service-browser-buttons w-full sm:w-auto">
@@ -94,22 +93,23 @@ const ServiceBrowser: React.FC<{
                 )}
 
             </div>
-            {data && services.length > 0 ? (
+            {!data || services.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={"grid-view grid-view-sm"}
                 >
-                    {services.map((service: Service) => {
-                        return (
-                            <ServiceRow
-                                key={"service-" + service.id.toString()}
-                                service={service}
-                            />
-                        )
-                    })}
+                    <div className="grid-view grid-view-sm">
+                        {services.map((service: Service) => {
+                            return (
+                                <ServiceRow
+                                    key={"service-" + service.id.toString()}
+                                    service={service}
+                                />
+                            )
+                        })}
+                    </div>
                 </InfiniteScroll>        
             ) : (
                 <p>No services found.</p>

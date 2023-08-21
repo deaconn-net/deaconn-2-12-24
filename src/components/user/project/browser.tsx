@@ -52,15 +52,14 @@ const UserProjectBrowser: React.FC<{
 
     return (
         <>
-            {data && projects.length > 0 ? (
+            {!data || projects.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}
                 >
-                    <>
+                    <div className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}>
                         {projects.map((project) => {
                             return (
                                 <ProjectRow
@@ -69,7 +68,7 @@ const UserProjectBrowser: React.FC<{
                                 />
                             )
                         })}
-                    </>
+                    </div>
                 </InfiniteScroll>
             ) : (
                 <p>No projects found.</p>

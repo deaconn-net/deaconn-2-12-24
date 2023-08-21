@@ -52,15 +52,14 @@ const UserExperienceBrowser: React.FC<{
 
     return (
         <>
-            {data && experiences.length > 0 ? (
+            {!data || experiences.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}
                 >
-                    <>
+                    <div className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}>
                         {experiences.map((experience) => {
                             return (
                                 <UserExperienceRow
@@ -69,7 +68,7 @@ const UserExperienceBrowser: React.FC<{
                                 />
                             )
                         })}
-                    </>
+                    </div>
                 </InfiniteScroll>
             ) : (
                 <p>No experiences found.</p>

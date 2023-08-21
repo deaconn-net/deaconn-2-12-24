@@ -89,15 +89,14 @@ const UserBrowser: React.FC<{
             </div>
             {grid ? (
                 <>
-                    {requireItems || users.length > 0 ? (
+                    {!data || users.length > 0 ? (
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={loadMore}
                             loader={<Loader key="loader" />}
                             hasMore={requireItems}
-                            className="user-browser-grid"
                         >
-                            <>
+                            <div className="user-browser-grid">
                                 {users.length > 0 ? (
                                     <>
                                         {users.map((user) => {
@@ -112,7 +111,7 @@ const UserBrowser: React.FC<{
                                 ) : (
                                     <p>No users found.</p>
                                 )}
-                            </>
+                            </div>
                         </InfiniteScroll>
                     ) : (
                         <p>No users found!</p>
@@ -120,7 +119,7 @@ const UserBrowser: React.FC<{
                 </>
             ) : (
                 <>
-                    {data && users.length > 0 ? (
+                    {!data || users.length > 0 ? (
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={loadMore}

@@ -52,15 +52,14 @@ const UserSkillBrowser: React.FC<{
 
     return (
         <>
-            {data && skills.length > 0 ? (
+            {!data || skills.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={loadMore}
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
-                    className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}
                 >
-                    <>
+                    <div className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}>
                         {skills.map((skill) => {
                             return (
                                 <SkillRow
@@ -69,7 +68,7 @@ const UserSkillBrowser: React.FC<{
                                 />
                             )
                         })}
-                    </>
+                    </div>
                 </InfiniteScroll>
             ) : (
                 <p>No skills found.</p>
