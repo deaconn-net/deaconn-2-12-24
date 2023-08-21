@@ -4,10 +4,10 @@
 
 This is [Deaconn's](https://deaconn.net/) rebuilt website which uses the T3 stack, [Create T3 App](https://create.t3.gg/), and is completely **open source**! This stack comes with TypeScript, Next.js, React, tRPC, Prisma, and Tailwind CSS.
 
-## Currently Under Development!
+## Under Development!
 This website is still under development and **not yet public**. There is currently no ETA on when this website will be released publicly, but we're hoping to have it up by **mid-Fall of 2023**.
 
-## Current Features
+## Features
 * Login through Discord.
 * Role-based permissions.
 * A simple admin panel.
@@ -17,6 +17,8 @@ This website is still under development and **not yet public**. There is current
 * A request system
 * User profiles including about me, experiences, projects, and skills that act as a resume.
 * A Sitemap that generates URLs to static and dynamic content that should come up on search engines.
+
+**Note** - We are adding additional features quite often since the website is actively under development.
 
 ## Contributing
 If you'd like to contribute to this project, please contact [Christian Deacon](https://github.com/gamemann) by [email](mailto://christianmdeacon@gmail.com).
