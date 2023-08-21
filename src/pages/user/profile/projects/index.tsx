@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type NextPage } from "next";
 
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
@@ -39,7 +39,7 @@ const Page: NextPage<GlobalPropsType> = ({
     );
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export async function getServerSideProps() {
     // Retrieve global props.
     const globalProps = await GlobalProps();
 

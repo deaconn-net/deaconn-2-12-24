@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import { type User } from "@prisma/client";
 import { type UserExperienceWithUser } from "~/types/user/experience";
 
 import { api } from "@utils/api";

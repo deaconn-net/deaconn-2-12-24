@@ -6,6 +6,12 @@ export type UserProjectWithSources = Prisma.UserProjectGetPayload<{
     }
 }>
 
+export type UserProjectWithUser = Prisma.UserProjectGetPayload<{
+    include: {
+        user: true
+    }
+}>
+
 export type UserProjectWithSourcesAndUser = Prisma.UserProjectGetPayload<{
     include: {
         user: true,

@@ -1,7 +1,6 @@
 import { getSession } from "next-auth/react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import { type User } from "@prisma/client";
 import { type UserProjectWithSourcesAndUser } from "~/types/user/project";
 
 import { prisma } from "@server/db";
@@ -80,7 +79,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            
+
             project: JSON.parse(JSON.stringify(project))
         }
     };

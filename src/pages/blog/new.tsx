@@ -1,7 +1,6 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-import { type Article } from "@prisma/client";
 import { type CategoryWithChildren } from "~/types/category";
 
 import { prisma } from "@server/db";
@@ -63,7 +62,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         authed = true;
 
     // Initialize article and categories.
-    let article: Article | null = null;
     let categories: CategoryWithChildren[] = [];
 
     // Retrieve categories if authenticated.
@@ -85,7 +83,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         props: {
             ...globalProps,
             authed: authed,
-            article: JSON.parse(JSON.stringify(article)),
             categories: categories
         }
     }

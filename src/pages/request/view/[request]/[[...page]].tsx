@@ -171,6 +171,8 @@ const Page: NextPage<{
                                                         <button
                                                             className={`button sm:w-auto ${accept ? "button-danger" : "button-primary"}`}
                                                             onClick={(e) => {
+                                                                e.preventDefault();
+                                                                
                                                                 // Update request.
                                                                 acceptReqMut.mutate({
                                                                     requestId: request.id,

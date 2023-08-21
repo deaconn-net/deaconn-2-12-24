@@ -1,7 +1,7 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-import { Service } from "@prisma/client";
+import { type Service } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
