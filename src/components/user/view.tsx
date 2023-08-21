@@ -7,11 +7,11 @@ import { type User } from "@prisma/client"
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 import { FormatSocialUrl } from "@utils/social";
-import WebsiteIcon from "@utils/icons/social/website";
-import TwitterIcon from "@utils/icons/social/twitter";
-import GithubIcon from "@utils/icons/social/github";
-import LinkedinIcon from "@utils/icons/social/linkedin";
-import FacebookIcon from "@utils/icons/social/facebook";
+import WebsiteIcon from "@components/icons/social/website";
+import TwitterIcon from "@components/icons/social/twitter";
+import GithubIcon from "@components/icons/social/github";
+import LinkedinIcon from "@components/icons/social/linkedin";
+import FacebookIcon from "@components/icons/social/facebook";
 
 const UserView: React.FC<{
     user: User,

@@ -2,9 +2,10 @@ import { useState } from "react";
 
 import { type UserExperienceWithUser } from "~/types/user/experience";
 
-import { api } from "@utils/api";
-import Loader from "@utils/loader";
 import UserExperienceRow from "@components/user/experience/row";
+import Loader from "@components/loader";
+
+import { api } from "@utils/api";
 
 import InfiniteScroll from "react-infinite-scroller";
 

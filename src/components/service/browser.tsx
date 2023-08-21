@@ -6,11 +6,11 @@ import { type Service } from "@prisma/client";
 
 import IconAndText from "@components/containers/icon_and_text";
 import ServiceRow from "@components/service/row";
+import Loader from "@components/loader";
 
 import { api } from "@utils/api";
-import AddIcon from "@utils/icons/add";
+import AddIcon from "@components/icons/add";
 import { has_role } from "@utils/user/auth";
-import Loader from "@utils/loader";
 
 import InfiniteScroll from "react-infinite-scroller";
 

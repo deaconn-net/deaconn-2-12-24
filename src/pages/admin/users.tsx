@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 
 import Wrapper from "@components/wrapper";
 import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/errors/no_permissions";
+import NoPermissions from "@components/error/no_permissions";
 import UserBrowser from "@components/user/browser";
 
 import { has_role } from "@utils/user/auth";

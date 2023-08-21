@@ -10,7 +10,7 @@ import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
 import SkillForm from "@components/forms/user/skill";
-import NotSignedIn from "@components/errors/not_signed_in";
+import NotSignedIn from "@components/error/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 

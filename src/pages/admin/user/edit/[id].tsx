@@ -8,13 +8,11 @@ import { prisma } from "@server/db";
 
 import Wrapper from "@components/wrapper";
 import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/errors/no_permissions";
-import NotFound from "@components/errors/not_found";
+import NoPermissions from "@components/error/no_permissions";
+import NotFound from "@components/error/not_found";
 import UserForm from "@components/forms/user/general";
 
 import { api } from "@utils/api";
-import SuccessBox from "@utils/success";
-import ErrorBox from "@utils/error";
 import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -75,17 +73,14 @@ const Page: NextPage<{
 
     return (
         <Wrapper
+            errorTitleOverride={errTitle}
+            errorMsgOverride={errMsg}
+            successTitleOverride={sucTitle}
+            successMsgOverride={sucMsg}
+
             footerServices={footerServices}
             footerPartners={footerPartners}
         >
-            <SuccessBox
-                title={sucTitle}
-                msg={sucMsg}
-            />
-            <ErrorBox
-                title={errTitle}
-                msg={errMsg}
-            />
             <div className="content-item">
                 {(authed && user) ? (
                     <AdminSettingsPanel view="users">

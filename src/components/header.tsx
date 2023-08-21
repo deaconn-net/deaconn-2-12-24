@@ -7,13 +7,13 @@ import Image from "next/image";
 
 import IconAndText from "@components/containers/icon_and_text";
 
-import ServicesIcon from "@utils/icons/header/services";
-import BlogIcon from "@utils/icons/header/blog";
-import AboutUsIcon from "@utils/icons/header/aboutus";
-import AccountIcon from "@utils/icons/header/account";
-import SignInIcon from "@utils/icons/header/signinicon";
-import MobileMenuIcon from "@utils/icons/header/mobile_menu";
-import MobileMenuCollapseIcon from "@utils/icons/header/mobile_menu_collapse";
+import ServicesIcon from "@components/icons/header/services";
+import BlogIcon from "@components/icons/header/blog";
+import AboutUsIcon from "@components/icons/header/aboutus";
+import AccountIcon from "@components/icons/header/account";
+import SignInIcon from "@components/icons/header/signinicon";
+import MobileMenuIcon from "@components/icons/header/mobile_menu";
+import MobileMenuCollapseIcon from "@components/icons/header/mobile_menu_collapse";
 
 const Header: React.FC = () => {
     const { data: session } = useSession();

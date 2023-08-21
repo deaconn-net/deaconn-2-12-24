@@ -7,10 +7,11 @@ import { type Article } from "@prisma/client";
 import IconAndText from "@components/containers/icon_and_text";
 import ArticleRow from "@components/blog/article/row";
 
+import Loader from "@components/loader";
+
 import { api } from "@utils/api";
-import AddIcon from "@utils/icons/add";
+import AddIcon from "@components/icons/add";
 import { has_role } from "@utils/user/auth";
-import Loader from "@utils/loader";
 
 import InfiniteScroll from "react-infinite-scroller";
 

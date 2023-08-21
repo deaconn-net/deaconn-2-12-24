@@ -9,7 +9,7 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import RequestForm from "@components/forms/request/new";
-import NoPermissions from "@components/errors/no_permissions";
+import NoPermissions from "@components/error/no_permissions";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{

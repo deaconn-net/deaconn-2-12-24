@@ -8,7 +8,7 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import ServiceView from "@components/service/view";
-import NotFound from "@components/errors/not_found";
+import NotFound from "@components/error/not_found";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 

@@ -2,10 +2,10 @@ import { useState } from "react";
 
 import { type UserProjectWithUser } from "~/types/user/project";
 
-import { api } from "@utils/api";
-import Loader from "@utils/loader";
-
+import Loader from "@components/loader";
 import ProjectRow from "@components/user/project/row";
+
+import { api } from "@utils/api";
 
 import InfiniteScroll from "react-infinite-scroller";
 

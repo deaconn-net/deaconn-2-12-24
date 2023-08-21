@@ -9,8 +9,8 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import RequestForm from "@components/forms/request/new";
-import NoPermissions from "@components/errors/no_permissions";
-import NotFound from "@components/errors/not_found";
+import NoPermissions from "@components/error/no_permissions";
+import NotFound from "@components/error/not_found";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { has_role } from "@utils/user/auth";

@@ -1,15 +1,17 @@
+import { useContext } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
 import { type Article } from "@prisma/client";
 
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
+
 import IconAndText from "@components/containers/icon_and_text";
 
 import { api } from "@utils/api";
-import SuccessBox from "@utils/success";
-import CommentIcon from "@utils/icons/comment";
-import ViewIcon from "@utils/icons/view";
+import CommentIcon from "@components/icons/comment";
+import ViewIcon from "@components/icons/view";
 import { has_role } from "@utils/user/auth";
 
 const ArticleRow: React.FC<{
@@ -17,7 +19,13 @@ const ArticleRow: React.FC<{
 }> = ({
     article
 }) => {
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
+
+    // Retrieve session.
     const { data: session } = useSession();
+
     // Retrieve some environmental variables.
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
@@ -35,90 +43,91 @@ const ArticleRow: React.FC<{
     // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation();
 
+    if (deleteMut.isError && errorCtx) {
+        console.error(deleteMut.error.message);
+
+        errorCtx.setTitle("Failed To Delete Article");
+        errorCtx.setMsg("Failed to delete article. Check your console for more details.");
+    } else if (deleteMut.isSuccess && successCtx) {
+        successCtx.setTitle("Successfully Deleted Article!");
+        successCtx.setMsg("Successfully deleted article! Please refresh the page.");
+    }
+
     return (
-        <>
-            {deleteMut.isSuccess ? (
-                <SuccessBox
-                    title={"Successfully Deleted!"}
-                    msg={"Successfully deleted article #" + article.id.toString() + "."}
+        <div className="article-row">
+            <div className="grid-view-image">
+                <Link href={viewUrl}>
+                    <Image
+                        src={banner}
+                        width={600}
+                        height={400}
+                        alt="Article Banner"
+                    />
+                </Link>
+            </div>
+            <div className="article-row-title">
+                <h3>
+                    <Link href={viewUrl}>{article.title}</Link>
+                </h3>
+            </div>
+            <div className="article-row-description">
+                <p>{article.desc}</p>
+            </div>
+            <div className="article-row-stats">
+                <IconAndText
+                    icon={
+                        <ViewIcon
+                            classes={["w-6", "h-6", "fill-white"]}
+                        />
+                    }
+                    text={<>{article.views}</>}
+                    inline={true}
                 />
-            ) : (
-                <div className="article-row">
-                    <div className="grid-view-image">
-                        <Link href={viewUrl}>
-                            <Image
-                                src={banner}
-                                width={600}
-                                height={400}
-                                alt="Article Banner"
-                            />
-                        </Link>
-                    </div>
-                    <div className="article-row-title">
-                        <h3>
-                            <Link href={viewUrl}>{article.title}</Link>
-                        </h3>
-                    </div>
-                    <div className="article-row-description">
-                        <p>{article.desc}</p>
-                    </div>
-                    <div className="article-row-stats">
-                        <IconAndText
-                            icon={
-                                <ViewIcon
-                                    classes={["w-6", "h-6", "fill-white"]}
-                                />
-                            }
-                            text={<>{article.views}</>}
-                            inline={true}
+                <IconAndText
+                    icon={
+                        <CommentIcon 
+                            classes={["w-6", "h-6", "fill-white", "stroke-white"]}
                         />
-                        <IconAndText
-                            icon={
-                                <CommentIcon 
-                                    classes={["w-6", "h-6", "fill-white", "stroke-white"]}
-                                />
-                            }
-                            text={<>{article.comments}</>}
-                            inline={true}
-                        />
-                    </div>
-                    <div className="article-row-read-more">
+                    }
+                    text={<>{article.comments}</>}
+                    inline={true}
+                />
+            </div>
+            <div className="article-row-read-more">
+                <Link
+                    className="button"
+                    href={viewUrl}
+                >Read More</Link>
+            </div>
+            {session && (
+                <div className="article-row-actions">
+                    {(has_role(session, "contributor") || has_role(session, "admin")) && (
                         <Link
-                            className="button"
-                            href={viewUrl}
-                        >Read More</Link>
-                    </div>
-                    {session && (
-                        <div className="article-row-actions">
-                            {(has_role(session, "contributor") || has_role(session, "admin")) && (
-                                <Link
-                                    className="button button-primary"
-                                    href={editUrl}
-                                >Edit</Link>
-                            )}
+                            className="button button-primary"
+                            href={editUrl}
+                        >Edit</Link>
+                    )}
 
-                            {(has_role(session, "moderator") || has_role(session, "admin")) && (
-                                <Link
-                                    className="button button-danger"
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
+                    {(has_role(session, "moderator") || has_role(session, "admin")) && (
+                        <Link
+                            className="button button-danger"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                                        const yes = confirm("Are you sure you want to delete this article?");
+                                const yes = confirm("Are you sure you want to delete this article?");
 
-                                        if (yes) {
-                                            deleteMut.mutate({
-                                                id: article.id
-                                            });
-                                        }
-                                    }}
-                                >Delete</Link>
-                            )}
-                        </div>
+                                if (yes) {
+                                    deleteMut.mutate({
+                                        id: article.id
+                                    });
+                                }
+                            }}
+                        >Delete</Link>
                     )}
                 </div>
             )}
-        </>
+        </div>
     );
 }
 

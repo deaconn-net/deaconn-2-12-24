@@ -10,14 +10,14 @@ import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 import TabMenuWithData from "@components/tabs/menu_with_data";
 import IconAndText from "@components/containers/icon_and_text";
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
 
-import ViewIcon from "@utils/icons/view";
-import DownloadIcon from "@utils/icons/download";
-import PurchaseIcon from "@utils/icons/purchase";
+import ViewIcon from "@components/icons/view";
+import DownloadIcon from "@components/icons/download";
+import PurchaseIcon from "@components/icons/purchase";
 
 const ServiceView: React.FC<{
     service: Service,

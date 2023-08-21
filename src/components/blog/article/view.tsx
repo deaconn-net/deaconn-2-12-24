@@ -7,15 +7,15 @@ import { type ArticleWithUser } from "~/types/blog/article";
 
 import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import { UserLink } from "@components/user/link";
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 import { api } from "@utils/api";
 import { dateFormat, dateFormatFour } from "@utils/date";
 import { has_role } from "@utils/user/auth";
 
-import TwitterIcon from "@utils/icons/social/twitter";
-import FacebookIcon from "@utils/icons/social/facebook";
-import LinkedinIcon from "@utils/icons/social/linkedin";
+import TwitterIcon from "@components/icons/social/twitter";
+import FacebookIcon from "@components/icons/social/facebook";
+import LinkedinIcon from "@components/icons/social/linkedin";
 
 const ArticleView: React.FC<{
     article: ArticleWithUser

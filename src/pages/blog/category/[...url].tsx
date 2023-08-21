@@ -10,7 +10,7 @@ import Meta from "@components/meta";
 import ArticleBrowser from "@components/blog/article/browser";
 import CategoryTabs from "@components/category/tabs";
 import TabMenuWithData from "@components/tabs/menu_with_data";
-import NotFound from "@components/errors/not_found";
+import NotFound from "@components/error/not_found";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 

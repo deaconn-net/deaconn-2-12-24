@@ -3,10 +3,10 @@ import Link from "next/link";
 import { type ServiceFooter } from "~/types/service";
 import { type PartnerFooter } from "~/types/partner";
 
-import TwitterIcon from "@utils/icons/social/twitter";
-import GithubIcon from "@utils/icons/social/github";
-import FacebookIcon from "@utils/icons/social/facebook";
-import LinkedinIcon from "@utils/icons/social/linkedin";
+import TwitterIcon from "@components/icons/social/twitter";
+import GithubIcon from "@components/icons/social/github";
+import FacebookIcon from "@components/icons/social/facebook";
+import LinkedinIcon from "@components/icons/social/linkedin";
 
 const Footer: React.FC<{
     services?: ServiceFooter[],

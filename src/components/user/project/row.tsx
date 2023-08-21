@@ -1,10 +1,12 @@
+import { useContext } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import { type UserProjectWithSourcesAndUser, type UserProjectWithUser } from "~/types/user/project";
 
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
+
 import { api } from "@utils/api";
-import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 
 const UserProjectRow: React.FC<{
@@ -12,8 +14,12 @@ const UserProjectRow: React.FC<{
 }> = ({
     project
 }) => {
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
+
+    // Retrieve session.
     const { data: session } = useSession();
-    const deleteMut = api.user.deleteProject.useMutation();
 
     // Retrieve user URL or ID for compiling URLs.
     const user = project.user;
@@ -38,52 +44,56 @@ const UserProjectRow: React.FC<{
             canEdit = true;
     }
 
+    // Prepare mutations.
+    const deleteMut = api.user.deleteProject.useMutation();
+
+    if (deleteMut.isError && errorCtx) {
+        console.error(deleteMut.error.message);
+
+        errorCtx.setTitle("Failed To Delete Project");
+        errorCtx.setMsg("Failed to delete project. Check your console for more details.");
+    } else if (deleteMut.isSuccess && successCtx) {
+        successCtx.setTitle("Successfully Deleted Project!");
+        successCtx.setMsg("Successfully deleted project! Please reload the page.");
+    }
+
     return (
-        <>
-            {deleteMut.isSuccess ? (
-                <SuccessBox
-                    title={"Successfully Deleted!"}
-                    msg={"Successfully deleted project ID #" + project.id.toString() + "."}
-                />
-            ) : (
-                <div className="project-row">
-                    <div className="project-row-name">
-                        <h3>{project.name}</h3>
-                    </div>
-                    <div className="project-row-description">
-                        <p>{project.desc ?? ""}</p>
-                    </div>
-                    <div className="project-row-actions">
+        <div className="project-row">
+            <div className="project-row-name">
+                <h3>{project.name}</h3>
+            </div>
+            <div className="project-row-description">
+                <p>{project.desc ?? ""}</p>
+            </div>
+            <div className="project-row-actions">
+                <Link
+                    href={viewUrl}
+                    className="button"
+                >View</Link>
+                {canEdit && (
+                    <>
                         <Link
-                            href={viewUrl}
-                            className="button"
-                        >View</Link>
-                        {canEdit && (
-                            <>
-                                <Link
-                                    href={editUrl}
-                                    className="button button-primary"
-                                >Edit</Link>
-                                <button
-                                    className="button button-danger"
-                                    onClick={(e) => {
-                                        e.preventDefault();
+                            href={editUrl}
+                            className="button button-primary"
+                        >Edit</Link>
+                        <button
+                            className="button button-danger"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                                        const yes = confirm("Are you sure you want to delete this experience?");
+                                const yes = confirm("Are you sure you want to delete this experience?");
 
-                                        if (yes) {
-                                            deleteMut.mutate({
-                                                id: project.id
-                                            });
-                                        }
-                                    }}
-                                >Delete</button>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
-        </>
+                                if (yes) {
+                                    deleteMut.mutate({
+                                        id: project.id
+                                    });
+                                }
+                            }}
+                        >Delete</button>
+                    </>
+                )}
+            </div>
+        </div>
     );
 }
 

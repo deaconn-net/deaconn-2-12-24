@@ -9,8 +9,8 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 
 import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/errors/no_permissions";
-import NotFound from "@components/errors/not_found";
+import NoPermissions from "@components/error/no_permissions";
+import NotFound from "@components/error/not_found";
 import CategoryForm from "@components/forms/category/new";
 
 import { has_role } from "@utils/user/auth";

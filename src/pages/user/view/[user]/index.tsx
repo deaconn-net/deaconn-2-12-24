@@ -8,12 +8,12 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import NotFound from "@components/errors/not_found";
+import NotFound from "@components/error/not_found";
 import UserView from "@components/user/view";
 
 import { dateFormat, dateFormatTwo } from "@utils/date";
 
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 const Page: NextPage<{
     user?: User

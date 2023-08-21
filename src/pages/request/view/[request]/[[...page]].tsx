@@ -10,9 +10,9 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import NoPermissions from "@components/errors/no_permissions";
-import NotFound from "@components/errors/not_found";
-import Markdown from "@components/markdown";
+import NoPermissions from "@components/error/no_permissions";
+import NotFound from "@components/error/not_found";
+import Markdown from "@components/markdown/markdown";
 import RequestReplyForm from "@components/forms/request/reply";
 import UserGridRow from "@components/user/row/grid";
 

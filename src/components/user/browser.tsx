@@ -4,9 +4,9 @@ import { type User } from "@prisma/client";
 
 import UserTableRow from "@components/user/row/table";
 import UserGridRow from "@components/user/row/grid";
+import Loader from "@components/loader";
 
 import { api } from "@utils/api";
-import Loader from "@utils/loader";
 
 import InfiniteScroll from "react-infinite-scroller";
 

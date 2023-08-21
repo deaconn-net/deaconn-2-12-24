@@ -5,7 +5,7 @@ import { type NextPage } from "next";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import NotSignedIn from "@components/errors/not_signed_in";
+import NotSignedIn from "@components/error/not_signed_in";
 import RequestBrowser from "@components/request/browser";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";

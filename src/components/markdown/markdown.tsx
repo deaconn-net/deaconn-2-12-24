@@ -1,7 +1,7 @@
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
-import DefaultTheme from "@utils/markdown/styles/default";
+import DefaultTheme from "@components/markdown/styles/default";
 
 const Markdown: React.FC<{
     className?: string

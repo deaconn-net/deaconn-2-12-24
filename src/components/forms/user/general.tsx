@@ -12,7 +12,7 @@ import { ScrollToTop } from "@utils/scroll";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 const Form: React.FC<{
     user?: User

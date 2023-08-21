@@ -4,8 +4,8 @@ import { type GlobalPropsType } from "@utils/global_props";
 
 import Header from "@components/header";
 import Footer from "@components/footer";
-import ErrorBox from "@utils/error";
-import SuccessBox from "@utils/success";
+import ErrorBox from "@components/error/box";
+import SuccessBox from "@components/success/box";
 
 interface successInt {
     setTitle: React.Dispatch<React.SetStateAction<string | undefined>>

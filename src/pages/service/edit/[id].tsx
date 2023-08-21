@@ -10,11 +10,11 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import ServiceForm from '@components/forms/service/new';
-import NoPermissions from "@components/errors/no_permissions";
+import NoPermissions from "@components/error/no_permissions";
 
 import { has_role } from "@utils/user/auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-import NotFound from "@components/errors/not_found";
+import NotFound from "@components/error/not_found";
 
 const Page: NextPage<{
     authed: boolean,

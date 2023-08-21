@@ -12,7 +12,7 @@ import { type Request, type Service } from "@prisma/client";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 const Form: React.FC<{
     request?: Request,

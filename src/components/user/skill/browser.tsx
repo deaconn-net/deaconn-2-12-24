@@ -2,10 +2,10 @@ import { useState } from "react";
 
 import { type UserSkillWithUser } from "~/types/user/skill";
 
-import { api } from "@utils/api";
-import Loader from "@utils/loader";
-
 import SkillRow from "@components/user/skill/row";
+import Loader from "@components/loader";
+
+import { api } from "@utils/api";
 
 import InfiniteScroll from "react-infinite-scroller";
 

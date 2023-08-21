@@ -9,16 +9,16 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import NotFound from "@components/errors/not_found";
+import NotFound from "@components/error/not_found";
 import UserView from "@components/user/view";
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { dateFormat, dateFormatThree } from "@utils/date";
 
 import IconAndText from "@components/containers/icon_and_text";
 import Link from "next/link";
-import SourceIcon from "@utils/icons/source";
+import SourceIcon from "@components/icons/source";
 
 const Page: NextPage<{
     user?: User,

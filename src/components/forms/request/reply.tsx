@@ -9,7 +9,7 @@ import { ScrollToTop } from '@utils/scroll';
 
 import { type RequestReply } from "@prisma/client";
 
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 const RequestReplyForm: React.FC<{
     requestId: number,

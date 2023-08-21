@@ -9,7 +9,7 @@ import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
 
-import Markdown from "@components/markdown";
+import Markdown from "@components/markdown/markdown";
 
 const Form: React.FC<{
     role?: Role

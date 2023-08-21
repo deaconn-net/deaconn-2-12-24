@@ -1,10 +1,12 @@
+import { useContext } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import { type UserExperienceWithUser } from "~/types/user/experience";
 
+import { ErrorCtx, SuccessCtx } from "@components/wrapper";
+
 import { api } from "@utils/api";
-import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 
 const UserExperienceRow: React.FC<{
@@ -12,8 +14,12 @@ const UserExperienceRow: React.FC<{
 }> = ({
     experience
 }) => {
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
+
+    // Retrieve session.
     const { data: session } = useSession();
-    const deleteMut = api.user.deleteExperience.useMutation();
 
     // Retrieve user URL or ID for compiling URLs.
     const user = experience.user;
@@ -38,53 +44,57 @@ const UserExperienceRow: React.FC<{
             canEdit = true;
     }
 
+    // Prepare mutations.
+    const deleteMut = api.user.deleteExperience.useMutation();
+
+    if (deleteMut.isError && errorCtx) {
+        console.error(deleteMut.error.message);
+
+        errorCtx.setTitle("Failed To Delete Experience");
+        errorCtx.setMsg("Failed to delete experience. Please check your console for more details.");
+    } else if (deleteMut.isSuccess && successCtx) {
+        successCtx.setTitle("Successfully Deleted Experience!");
+        successCtx.setMsg("Successfully deleted experience! Please reload the page.");
+    }
+
     return (
-        <>
-            {deleteMut.isSuccess ? (
-                <SuccessBox
-                    title={"Successfully Deleted!"}
-                    msg={"Successfully deleted experience ID #" + experience.id.toString() + "."}
-                />
-            ) : (
-                <div className={"experience-row"}>
-                    <div className="experience-row-title">
-                        <h3>{experience.title}</h3>
-                    </div>
-                    <div className="experience-row-description">
-                        <p>{experience.desc ?? ""}</p>
-                    </div>
+        <div className={"experience-row"}>
+            <div className="experience-row-title">
+                <h3>{experience.title}</h3>
+            </div>
+            <div className="experience-row-description">
+                <p>{experience.desc ?? ""}</p>
+            </div>
 
-                    <div className="experience-row-actions">
+            <div className="experience-row-actions">
+                <Link
+                    href={viewUrl}
+                    className="button"
+                >View</Link>
+                {canEdit && (
+                    <>
                         <Link
-                            href={viewUrl}
-                            className="button"
-                        >View</Link>
-                        {canEdit && (
-                            <>
-                                <Link
-                                    href={editUrl}
-                                    className="button button-primary"
-                                >Edit</Link>
-                                <button
-                                    className="button button-danger"
-                                    onClick={(e) => {
-                                        e.preventDefault();
+                            href={editUrl}
+                            className="button button-primary"
+                        >Edit</Link>
+                        <button
+                            className="button button-danger"
+                            onClick={(e) => {
+                                e.preventDefault();
 
-                                        const yes = confirm("Are you sure you want to delete this experience?");
+                                const yes = confirm("Are you sure you want to delete this experience?");
 
-                                        if (yes) {
-                                            deleteMut.mutate({
-                                                id: experience.id
-                                            });
-                                        }
-                                    }}
-                                >Delete</button>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
-        </>
+                                if (yes) {
+                                    deleteMut.mutate({
+                                        id: experience.id
+                                    });
+                                }
+                            }}
+                        >Delete</button>
+                    </>
+                )}
+            </div>
+        </div>
     );
 }
 
