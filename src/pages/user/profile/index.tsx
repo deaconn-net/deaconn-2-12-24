@@ -8,6 +8,7 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
+import GeneralForm from "@components/forms/user/general";
 import NotSignedIn from "@components/errors/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -31,11 +32,14 @@ const Page: NextPage<{
             >
                 <div className="content-item"> 
                     {user ? (
-                            <UserSettingsPanel
-                                view="general"
-                                user={user}
-                            />
-                        
+                        <UserSettingsPanel view="general">
+                            <div className="content-item">
+                                <h2>General</h2>
+                                <GeneralForm
+                                    user={user}
+                                />
+                            </div>
+                        </UserSettingsPanel>
                     ) : (
                         <NotSignedIn />
                     )}

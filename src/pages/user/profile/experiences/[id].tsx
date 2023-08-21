@@ -9,6 +9,7 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
+import ExperienceForm from "@components/forms/user/experience";
 import NotSignedIn from "@components/errors/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -32,10 +33,12 @@ const Page: NextPage<{
             >
                 <div className="content-item"> 
                     {experience ? (
-                            <UserSettingsPanel
-                                view="experiences"
-                                experience={experience}
-                            />
+                        <UserSettingsPanel view="experiences">
+                            <div className="content-item">
+                                <h2>Edit Experience {experience.title}</h2>
+                                <ExperienceForm experience={experience} />
+                            </div>
+                        </UserSettingsPanel>
                     ) : (
                         <NotSignedIn />
                     )}

@@ -9,6 +9,7 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
+import ProjectForm from "@components/forms/user/project";
 import NotSignedIn from "@components/errors/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -32,11 +33,12 @@ const Page: NextPage<{
             >
                 <div className="content-item"> 
                     {project ? (
-                            <UserSettingsPanel
-                                view="projects"
-                                project={project}
-                            />
-                        
+                        <UserSettingsPanel view="projects">
+                            <div className="content-item">
+                                <h2>Edit Project {project.name}</h2>
+                                <ProjectForm project={project} />
+                            </div>
+                        </UserSettingsPanel>
                     ) : (
                         <NotSignedIn />
                     )}

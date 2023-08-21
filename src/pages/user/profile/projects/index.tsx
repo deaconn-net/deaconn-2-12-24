@@ -5,6 +5,8 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
+import ProjectBrowser from "@components/user/project/browser";
+import ProjectForm from "@components/forms/user/project";
 import NotSignedIn from "@components/errors/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -26,10 +28,19 @@ const Page: NextPage<GlobalPropsType> = ({
             >
                 <div className="content-item"> 
                     {session?.user ? (
-                            <UserSettingsPanel
-                                view="projects"
-                            />
-                        
+                        <UserSettingsPanel view="projects">
+                            <div className="content-item">
+                                <h2>Add Project</h2>
+                                <ProjectForm />
+                            </div>
+                            <div className="content-item">
+                                <h2>Existing Projects</h2>
+                                <ProjectBrowser
+                                    userId={session.user.id}
+                                    small={true}
+                                />
+                            </div>
+                        </UserSettingsPanel>
                     ) : (
                         <NotSignedIn />
                     )}

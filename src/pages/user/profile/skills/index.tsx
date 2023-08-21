@@ -5,6 +5,8 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
+import SkillBrowser from "@components/user/skill/browser";
+import SkillForm from "@components/forms/user/skill";
 import NotSignedIn from "@components/errors/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -26,10 +28,19 @@ const Page: NextPage<GlobalPropsType> = ({
             >
                 <div className="content-item"> 
                     {session?.user ? (
-                            <UserSettingsPanel
-                                view="skills"
-                            />
-                        
+                        <UserSettingsPanel view="skills">
+                            <div className="content-item">
+                                <h2>Add Skill</h2>
+                                <SkillForm />
+                            </div>
+                            <div className="content-item">
+                                <h2>Existing Skills</h2>
+                                <SkillBrowser
+                                    userId={session.user.id}
+                                    small={true}
+                                />
+                            </div>
+                        </UserSettingsPanel>
                     ) : (
                         <NotSignedIn />
                     )}

@@ -5,6 +5,8 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
+import ExperienceBrowser from "@components/user/experience/browser";
+import ExperienceForm from "@components/forms/user/experience";
 import NotSignedIn from "@components/errors/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -26,10 +28,19 @@ const Page: NextPage<GlobalPropsType> = ({
             >
                 <div className="content-item"> 
                     {session?.user ? (
-                            <UserSettingsPanel
-                                view="experiences"
-                            />
-                        
+                        <UserSettingsPanel view="experiences">
+                            <div className="content-item">
+                                <h2>Add Experience</h2>
+                                <ExperienceForm />
+                            </div>
+                            <div className="content-item">
+                                <h2>Existing Experiences</h2>
+                                <ExperienceBrowser
+                                    userId={session.user.id}
+                                    small={true}
+                                />
+                            </div>
+                        </UserSettingsPanel>
                     ) : (
                         <NotSignedIn />
                     )}

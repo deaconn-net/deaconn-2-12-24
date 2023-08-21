@@ -9,6 +9,7 @@ import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import UserSettingsPanel from "@components/user/settings_panel";
+import SkillForm from "@components/forms/user/skill";
 import NotSignedIn from "@components/errors/not_signed_in";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
@@ -32,12 +33,12 @@ const Page: NextPage<{
             >
                 <div className="content-item"> 
                     {skill ? (
-                            <UserSettingsPanel
-                                view="skills"
-
-                                skill={skill}
-                            />
-                        
+                        <UserSettingsPanel view="skills">
+                            <div className="content-item">
+                                <h2>Edit Skill {skill.title}</h2>
+                                <SkillForm skill={skill} />
+                            </div>
+                        </UserSettingsPanel>
                     ) : (
                         <NotSignedIn />
                     )}
