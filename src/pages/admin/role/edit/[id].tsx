@@ -16,7 +16,7 @@ import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Edit: NextPage<{
     authed: boolean,
-    role: Role | null
+    role?: Role
 } & GlobalPropsType> = ({
     authed,
     role,
@@ -24,45 +24,34 @@ const Edit: NextPage<{
     footerServices,
     footerPartners
 }) => {
-    if (!authed) {
-        return (
-            <Wrapper
-                footerServices={footerServices}
-                footerPartners={footerPartners}
-            >
-                <NoPermissions />
-            </Wrapper>
-        );
-    }
-
-    if (!role) {
-        return (
-            <Wrapper
-                footerServices={footerServices}
-                footerPartners={footerPartners}
-            >
-                <NotFound item="Role" />
-            </Wrapper>
-        );
-    }
-
     return (
         <Wrapper
             footerServices={footerServices}
             footerPartners={footerPartners}
         >
             <div className="content-item">
-                <AdminSettingsPanel view="roles">
-                    <RoleForm
-                        role={role}
-                    />
-                </AdminSettingsPanel>
+                {(authed && role) ? (
+                    <AdminSettingsPanel view="roles">
+                        <RoleForm
+                            role={role}
+                        />
+                    </AdminSettingsPanel>
+                ) : (
+                    <>
+                        {!authed ? (
+                            <NoPermissions />
+                        ) : (
+                            <NotFound item="Role" />
+                        )}
+                    </>
+                )}
             </div>
         </Wrapper>
     );
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+    // Retrieve session.
     const session = await getSession(ctx);
 
     // Check if we have permissions.
@@ -71,14 +60,16 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (session && has_role(session, "admin"))
         authed = true;
 
-    // Retrieve role we're editing.
+    // Retrieve role ID.
     const { params } = ctx;
 
-    const roleId = params?.role?.[0];
+    const roleId = params?.id?.toString();
 
+    // Initialize role.
     let role: Role | null = null;
 
-    if (roleId) {
+    // If we're authenticated and have a role ID, retrieve role.
+    if (authed && roleId) {
         role = await prisma.role.findFirst({
             where: {
                 id: roleId
@@ -86,6 +77,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         })
     }
 
+    // Retrieve global props.
     const globalProps = await GlobalProps();
 
     return {

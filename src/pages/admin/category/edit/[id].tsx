@@ -18,7 +18,7 @@ import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
-    category: Category | null,
+    category?: Category,
     categories: CategoryWithChildren[]
 } & GlobalPropsType> = ({
     authed,
@@ -28,46 +28,35 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
-    if (!authed) {
-        return (
-            <Wrapper
-                footerServices={footerServices}
-                footerPartners={footerPartners}
-            >
-                <NoPermissions />
-            </Wrapper>
-        );
-    }
-
-    if (!category) {
-        return (
-            <Wrapper
-                footerServices={footerServices}
-                footerPartners={footerPartners}
-            >
-                <NotFound item="Category" />
-            </Wrapper>
-        );
-    }
-
     return (
         <Wrapper
             footerServices={footerServices}
             footerPartners={footerPartners}
         >
             <div className="content-item">
-                <AdminSettingsPanel view="categories">
-                    <CategoryForm
-                        category={category}
-                        categories={categories}
-                    />
-                </AdminSettingsPanel>
+                {(authed && category) ? (
+                    <AdminSettingsPanel view="categories">
+                        <CategoryForm
+                            category={category}
+                            categories={categories}
+                        />
+                    </AdminSettingsPanel>
+                ) : (
+                    <>
+                        {!authed ? (
+                            <NoPermissions />
+                        ) : (
+                            <NotFound item="Category" />
+                        )}
+                    </>
+                )}
             </div>
         </Wrapper>
     );
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+    // Retrieve session.
     const session = await getSession(ctx);
 
     // Check if we have permissions.
@@ -79,12 +68,14 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve role we're editing.
     const { params } = ctx;
 
-    const categoryId = params?.category?.[0];
+    const categoryId = params?.id?.toString();
 
+    // Initialize category and categories.
     let category: Category | null = null;
     let categories: CategoryWithChildren[] = [];
 
-    if (categoryId) {
+    // If we're authenticated and have a category ID, retrieve our categories.
+    if (authed && categoryId) {
         category = await prisma.category.findFirst({
             where: {
                 id: Number(categoryId)
@@ -101,6 +92,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    // Retrieve global props.
     const globalProps = await GlobalProps();
 
     return {
