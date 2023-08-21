@@ -23,6 +23,10 @@ This website is still under development and **not yet public**. There is current
 ## Contributing
 If you'd like to contribute to this project, please contact [Christian Deacon](https://github.com/gamemann) by [email](mailto://christianmdeacon@gmail.com).
 
+## Credits
+* [Christian Deacon](https://github.com/gamemann) - Wrote all code
+* [Cally](https://github.com/CallyPalladin) - Designed Deaconn's logo and icon
+
 ## Preview (As Of August 21st, 2023)
 ![Preview 1](./preview/preview01.png)
 ![Preview 2](./preview/preview02.png)
@@ -44,7 +48,3 @@ If you'd like to contribute to this project, please contact [Christian Deacon](h
 ![Preview 18](./preview/preview18.png)
 ![Preview 19](./preview/preview19.png)
 ![Preview 20](./preview/preview20.png)
-
-## Credits
-* [Christian Deacon](https://github.com/gamemann) - Wrote all code
-* [Cally](https://github.com/CallyPalladin) - Designed Deaconn's logo and icon
