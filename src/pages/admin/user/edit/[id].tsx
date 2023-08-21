@@ -82,6 +82,7 @@ const Page: NextPage<{
             footerPartners={footerPartners}
         >
             <div className="content-item">
+                <h2>Admin Panel</h2>
                 {(authed && user) ? (
                     <AdminSettingsPanel view="users">
                         <div className="flex flex-col gap-2">

@@ -48,6 +48,7 @@ const Page: NextPage<{
         >
             {authed ? (
                 <div className="content-item">
+                    <h2>Admin Panel</h2>
                     <AdminSettingsPanel view="general">
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-wrap justify-center gap-4">

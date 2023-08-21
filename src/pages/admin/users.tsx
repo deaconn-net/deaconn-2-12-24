@@ -24,6 +24,7 @@ const Page: NextPage<{
         >
             {authed ? (
                 <div className="content-item">
+                    <h2>Admin Panel</h2>
                     <AdminSettingsPanel view="users">
                         <div className="content-item">
                             <UserBrowser />

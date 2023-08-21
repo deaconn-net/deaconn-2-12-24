@@ -34,6 +34,7 @@ const Page: NextPage<{
             footerPartners={footerPartners}
         >
             <div className="content-item">
+                <h2>Admin Panel</h2>
                 {(authed && category) ? (
                     <AdminSettingsPanel view="categories">
                         <CategoryForm

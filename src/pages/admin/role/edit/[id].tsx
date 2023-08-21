@@ -30,6 +30,7 @@ const Edit: NextPage<{
             footerPartners={footerPartners}
         >
             <div className="content-item">
+                <h2>Admin Panel</h2>
                 {(authed && role) ? (
                     <AdminSettingsPanel view="roles">
                         <RoleForm

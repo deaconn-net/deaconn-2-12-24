@@ -58,6 +58,7 @@ const Page: NextPage<{
         >
             {authed ? (
                 <div className="content-item">
+                    <h2>Admin Panel</h2>
                     <AdminSettingsPanel view="roles">
                         <div className="flex flex-col gap-4">
                             <div className="content-item">
