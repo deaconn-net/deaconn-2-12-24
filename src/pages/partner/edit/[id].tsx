@@ -1,48 +1,56 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-import { type CategoryWithChildren } from "~/types/category";
+import { type Partner } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import ServiceForm from '@components/forms/service/new';
+import PartnerForm from '@components/forms/partner/new';
 import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import NotFound from "@components/errors/not_found";
 
 const Page: NextPage<{
     authed: boolean,
-    categories: CategoryWithChildren[]
+    partner?: Partner
 } & GlobalPropsType> = ({
     authed,
-    categories,
-
+    partner,
+    
     footerServices,
     footerPartners
 }) => {
     return (
         <>
             <Meta
-                title="New Service - Services - Deaconn"
+                title={`Editing Partner ${partner?.name ?? "N/A"} - Partners - Deaconn`}
+                robots="noindex"
             />
             <Wrapper
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
                 <div className="content-item">
-                    {authed ? (
+                    {(authed && partner) ? (
                         <>
-                            <h1>Add Service</h1>
-                            <ServiceForm
-                                categories={categories}
+                            <h1>Edit Partner</h1>
+                            <PartnerForm
+                                partner={partner}
                             />
                         </>
                     ) : (
-                        <NoPermissions />
+                        <>
+                            {partner ? (
+                                <NoPermissions />
+                            ) : (
+                                <NotFound item="Partner" />
+                            )}
+                        </>
                     )}
                 </div>
             </Wrapper>
@@ -54,23 +62,25 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
     const session = await getSession(ctx);
 
-    // Make sure we're authenticated.
+    // Check if we're authenticated.
     let authed = false;
 
     if (session && (has_role(session, "contributor") || has_role(session, "admin")))
         authed = true;
 
-    // Intitialize categories.
-    let categories: CategoryWithChildren[] = [];
+    // Retrieve lookup ID.
+    const { params } = ctx;
 
-    // Retrieve categories if authenticated.
-    if (authed) {
-        categories = await prisma.category.findMany({
+    const lookupId = params?.id?.toString();
+
+    // Initialize partner.
+    let partner: Partner | null = null;
+
+    // Retrieve partner if we have a lookup ID and are authenticated.
+    if (lookupId && authed) {
+        partner = await prisma.partner.findFirst({
             where: {
-                parent: null
-            },
-            include: {
-                children: true
+                id: Number(lookupId)
             }
         });
     }
@@ -78,11 +88,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve global props.
     const globalProps = await GlobalProps();
 
-    return {
+    return { 
         props: {
             ...globalProps,
             authed: authed,
-            categories: categories
+            partner: partner
         }
     };
 }

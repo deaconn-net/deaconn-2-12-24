@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
 import { type UserSkill } from "@prisma/client";
+import { type UserSkillWithUser } from "~/types/user/skill";
 
 import FormMain from "@components/forms/main";
 import { ErrorCtx, SuccessCtx } from "@components/wrapper";
@@ -10,7 +11,7 @@ import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
 
 const Form: React.FC<{
-    skill?: UserSkill
+    skill?: UserSkill | UserSkillWithUser
 }> = ({
     skill
 }) => {

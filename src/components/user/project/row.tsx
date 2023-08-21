@@ -1,23 +1,27 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import { type UserProject } from "@prisma/client";
+import { type UserProjectWithSourcesAndUser, type UserProjectWithUser } from "~/types/user/project";
 
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 
-const Row: React.FC<{
-    project: UserProject
+const UserProjectRow: React.FC<{
+    project: UserProjectWithSourcesAndUser | UserProjectWithUser
 }> = ({
     project
 }) => {
     const { data: session } = useSession();
     const deleteMut = api.user.deleteProject.useMutation();
 
+    // Retrieve user URL or ID for compiling URLs.
+    const user = project.user;
+    const userId = (user.url) ? user.url : `$${user.id.toString()}`;
+
     // Compile URLs.
-    const viewUrl = `/user/view/$${project.userId}/projects/${project.id.toString()}`;
-    const editUrl = `/user/profile/projects?id=${project.id.toString()}`;
+    const viewUrl = `/user/view/${userId}/projects/${project.id.toString()}`;
+    const editUrl = `/user/profile/projects/${project.id.toString()}`;
 
     // See if we have permissions.
     let canEdit = false;
@@ -83,4 +87,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default UserProjectRow;

@@ -7,7 +7,7 @@ import { type User } from "@prisma/client"
 import { has_role } from "@utils/user/auth";
 import { UserLink } from "../link";
 
-const UserGridRow: React.FC<{
+const UserRowGrid: React.FC<{
     user: User,
     showBanner?: boolean,
     showTitle?: boolean,
@@ -69,4 +69,4 @@ const UserGridRow: React.FC<{
     );
 }
 
-export default UserGridRow;
+export default UserRowGrid;

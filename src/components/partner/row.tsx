@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { type Partner } from "@prisma/client";
 
-const Row: React.FC<{
+const PartnerRow: React.FC<{
     partner: Partner
 }> = ({
     partner
@@ -33,4 +33,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default PartnerRow;

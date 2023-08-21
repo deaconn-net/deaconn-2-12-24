@@ -1,7 +1,6 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-import { type Article } from "@prisma/client";
 import { type CategoryWithChildren } from "~/types/category";
 
 import { prisma } from "@server/db";
@@ -9,7 +8,7 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import Form from '@components/forms/article/new';
+import ArticleForm from '@components/forms/article/new';
 import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
@@ -17,11 +16,9 @@ import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 
 const Page: NextPage<{
     authed: boolean,
-    article?: Article,
     categories: CategoryWithChildren[]
 } & GlobalPropsType> = ({
     authed,
-    article,
     categories,
 
     footerServices,
@@ -37,26 +34,25 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {authed ? (
-                    <div className="content-item">
-                        <h1>{article ? "Save" : "Create"} Article</h1>
-                        <Form
-                            article={article}
-                            categories={categories}
-                        />
-                    </div>
-                ) : (
-                    <NoPermissions />
-                )}
-
+                <div className="content-item">
+                    {authed ? (
+                        <>
+                            <h1>New Article</h1>
+                            <ArticleForm
+                                categories={categories}
+                            />
+                        </>
+                    ) : (
+                        <NoPermissions />
+                    )}
+                </div>
             </Wrapper>
         </>
     );
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    const { query } = ctx;
-
+    // Retrieve session.
     const session = await getSession(ctx);
 
     // Check if we're authenticated.
@@ -65,26 +61,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (session && (has_role(session, "contributor") || has_role(session, "admin")))
         authed = true;
 
-    const lookup_id = query?.id;
-    const lookup_url = query?.url;
-
-    let article: Article | null = null;
+    // Initialize article and categories.
     let categories: CategoryWithChildren[] = [];
 
+    // Retrieve categories if authenticated.
     if (authed) {
-        if (lookup_id || lookup_url) {
-            article = await prisma.article.findFirst({
-                where: {
-                    ...(lookup_id && {
-                        id: Number(lookup_id.toString())
-                    }),
-                    ...(lookup_url && {
-                        url: lookup_url.toString()
-                    })
-                }
-            });
-        }
-
         categories = await prisma.category.findMany({
             where: {
                 parent: null
@@ -95,13 +76,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    // Retrieve global props.
     const globalProps = await GlobalProps();
 
     return {
         props: {
             ...globalProps,
             authed: authed,
-            article: JSON.parse(JSON.stringify(article)),
             categories: categories
         }
     }

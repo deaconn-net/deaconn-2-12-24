@@ -95,6 +95,9 @@ export const userRouter = createTRPCRouter({
                 orderBy: {
                     [input.sort]: input.sortDir
                 },
+                include: {
+                    user: true
+                },
                 where: {
                     ...(input.userId && {
                         userId: input.userId
@@ -131,6 +134,9 @@ export const userRouter = createTRPCRouter({
                 orderBy: {
                     [input.sort]: input.sortDir
                 },
+                include: {
+                    user: true
+                },
                 where: {
                     ...(input.userId && {
                         userId: input.userId
@@ -166,6 +172,9 @@ export const userRouter = createTRPCRouter({
                 cursor: (input.cursor) ? { id: input.cursor } : undefined,
                 orderBy: {
                     [input.sort]: input.sortDir
+                },
+                include: {
+                    user: true
                 },
                 where: {
                     ...(input.userId && {

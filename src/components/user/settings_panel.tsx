@@ -1,7 +1,9 @@
 import { signOut, useSession } from "next-auth/react";
 
-import { type UserExperience, type User, type UserSkill } from "@prisma/client";
-import { type UserProjectWithSources } from "~/types/user/project";
+import { type User } from "@prisma/client";
+import { type UserProjectWithSourcesAndUser } from "~/types/user/project";
+import { type UserExperienceWithUser } from "~/types/user/experience";
+import { type UserSkillWithUser } from "~/types/user/skill";
 
 import ExperienceBrowser from "@components/user/experience/browser";
 import ProjectBrowser from "@components/user/project/browser";
@@ -11,16 +13,16 @@ import GeneralForm from "@components/forms/user/general";
 import ExperienceForm from "@components/forms/user/experience";
 import ProjectForm from "@components/forms/user/project";
 import SkillForm from "@components/forms/user/skill";
-import TabMenuWithData from "@components/tabs/tab_menu_with_data";
+import TabMenuWithData from "@components/tabs/menu_with_data";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
 const SettingsPanel: React.FC<{
     view?: string,
     
     user?: User,
-    experience?: UserExperience,
-    skill?: UserSkill,
-    project?: UserProjectWithSources
+    experience?: UserExperienceWithUser,
+    skill?: UserSkillWithUser,
+    project?: UserProjectWithSourcesAndUser
 }> = ({
     view = "general",
 
@@ -86,61 +88,62 @@ const SettingsPanel: React.FC<{
                     {view == "experiences" && (
                         <>
                             <div className="content-item">
-                                <h2>Add Experience</h2>
+                                <h2>{experience ? "Edit" : "Add"} Experience{experience && ` ${experience.title}`}</h2>
                                 <ExperienceForm
                                     key={`experience-${experience?.id?.toString() ?? "new"}`}
                                     experience={experience}
                                 />
                             </div>
-                            <div className="content-item">
-                                <h2>Existing Experiences</h2>
-                                {!experience && (
+                            {!experience && (
+                                <div className="content-item">
+                                    <h2>Existing Experiences</h2>
                                     <ExperienceBrowser
                                         userId={session?.user?.id}
                                         small={true}
                                     />
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </>
                     )}
                     {view == "skills" && (
                         <>
                             <div className="content-item">
-                                <h2>Add Skill</h2>
+                                <h2>{skill ? "Edit" : "Add"} Skill{skill && ` ${skill.title}`}</h2>
                                 <SkillForm
                                     key={`skill-${skill?.id?.toString() ?? "new"}`}
                                     skill={skill}
                                 />
                             </div>
-                            <div className="content-item">
-                                <h2>Existing Skills</h2>
-                                {!skill && (
+                            {!skill && (
+                                <div className="content-item">
+                                    <h2>Existing Skills</h2>
                                     <SkillBrowser
                                         userId={session?.user?.id}
                                         small={true}
                                     />
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </>
                     )}
                     {view == "projects" && (
                         <>
                             <div className="content-item">
-                                <h2>Add Project</h2>
+                                <h2>{project ? "Edit" : "Add"} Project{project && ` ${project.name}`}</h2>
                                 <ProjectForm
                                     key={`project-${project?.id?.toString() ?? "new"}`}
                                     project={project}
                                 />
                             </div>
-                            <div className="content-item">
-                                <h2>Existing Projects</h2>
-                                {!project && (
+                            {!project && (
+                                <div className="content-item">
+                                    <h2>Existing Projects</h2>
                                     <ProjectBrowser
                                         userId={session?.user?.id}
                                         small={true}
                                     />
-                                )}
-                            </div>
+                                </div>
+                            )}
+
                         </>
                     )}
                 </>

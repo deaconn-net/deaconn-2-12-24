@@ -23,8 +23,8 @@ const ArticleRow: React.FC<{
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
 
     // Compile links.
-    const viewUrl = "/blog/view/" + article.url;
-    const editUrl = "/blog/new?id=" + article.id.toString();
+    const viewUrl = `/blog/view/${article.url}`;
+    const editUrl = `/blog/edit/${article.id.toString()}`;
 
     // Retrieve banner.
     let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE ?? "");

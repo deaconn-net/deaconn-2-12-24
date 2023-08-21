@@ -7,7 +7,7 @@ import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 
-const Row: React.FC<{
+const UserSkillRow: React.FC<{
     skill: UserSkill
 }> = ({
     skill
@@ -16,7 +16,7 @@ const Row: React.FC<{
     const deleteMut = api.user.deleteSkill.useMutation();
 
     // Compile URLs.
-    const editUrl = `/user/profile/skills?id=${skill.id.toString()}`;
+    const editUrl = `/user/profile/skills/${skill.id.toString()}`;
 
     // See if we have permissions.
     let canEdit = false;
@@ -78,4 +78,4 @@ const Row: React.FC<{
     );
 }
 
-export default Row;
+export default UserSkillRow;

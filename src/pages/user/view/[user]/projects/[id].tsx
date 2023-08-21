@@ -9,7 +9,6 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import ProjectBrowser from "@components/user/project/browser";
 import NotFound from "@components/errors/not_found";
 import UserView from "@components/user/view";
 import Markdown from "@components/markdown";
@@ -114,13 +113,7 @@ const Page: NextPage<{
                                         )}
                                     </>
                                 ) : (
-                                    <>
-                                        <h1>Projects</h1>
-                                        <ProjectBrowser
-                                            userId={user.id}
-                                            small={true}
-                                        />
-                                    </>
+                                    <NotFound item="Project" />
                                 )}
                             </div>
                         </UserView>
@@ -134,42 +127,44 @@ const Page: NextPage<{
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    // Retrieve parameters.
+    // Retrieve user and project IDs.
     const { params } = ctx;
 
     const userId = params?.user?.toString();
-    const projectId = params?.id?.[0]?.toString();
+    const projectId = params?.id?.toString();
 
+    // Initialize user and project.
     let user: User | null = null;
     let project: UserProjectWithSources | null = null;
 
+    // If user ID is found, retrieve user.
     if (userId) {
-        let lookup_url = true;
+        let lookupUrl = true;
 
-        if (userId[0] == "$") {
-            lookup_url = false;
-        }
+        if (userId[0] == "$")
+            lookupUrl = false;
 
         user = await prisma.user.findFirst({
             where: {
-                ...(lookup_url && {
+                ...(lookupUrl && {
                     url: userId
                 }),
-                ...(!lookup_url && {
+                ...(!lookupUrl && {
                     id: userId.substring(1)
                 })
             }
         });
 
+        // If project ID is found, retrieve project.
         if (projectId) {
             project = await prisma.userProject.findFirst({
                 where: {
                     id: Number(projectId),
                     user: {
-                        ...(lookup_url && {
+                        ...(lookupUrl && {
                             url: userId
                         }),
-                        ...(!lookup_url && {
+                        ...(!lookupUrl && {
                             id: userId.substring(1)
                         })
                     }
@@ -181,6 +176,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 
+    // Retrieve global props.
     const globalProps = await GlobalProps();
 
     return {

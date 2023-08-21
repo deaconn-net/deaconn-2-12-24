@@ -2,6 +2,7 @@ import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
 import { type UserExperience } from "@prisma/client";
+import { type UserExperienceWithUser } from "~/types/user/experience";
 
 import FormMain from "@components/forms/main";
 import { ErrorCtx, SuccessCtx } from "@components/wrapper";
@@ -15,7 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Markdown from "@components/markdown";
 
 const Form: React.FC<{
-    experience?: UserExperience
+    experience?: UserExperience | UserExperienceWithUser
 }> = ({
     experience,
 }) => {

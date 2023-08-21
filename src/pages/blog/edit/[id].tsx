@@ -1,6 +1,7 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
+import { type Article } from "@prisma/client";
 import { type CategoryWithChildren } from "~/types/category";
 
 import { prisma } from "@server/db";
@@ -8,17 +9,20 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import ServiceForm from '@components/forms/service/new';
+import ArticleForm from '@components/forms/article/new';
 import NoPermissions from "@components/errors/no_permissions";
 
 import { has_role } from "@utils/user/auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import NotFound from "@components/errors/not_found";
 
 const Page: NextPage<{
     authed: boolean,
+    article?: Article,
     categories: CategoryWithChildren[]
 } & GlobalPropsType> = ({
     authed,
+    article,
     categories,
 
     footerServices,
@@ -27,22 +31,30 @@ const Page: NextPage<{
     return (
         <>
             <Meta
-                title="New Service - Services - Deaconn"
+                title="New Article - Blog - Deaconn"
+                robots="noindex"
             />
             <Wrapper
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
                 <div className="content-item">
-                    {authed ? (
+                    {(authed && article) ? (
                         <>
-                            <h1>Add Service</h1>
-                            <ServiceForm
+                            <h1>Edit Article</h1>
+                            <ArticleForm
+                                article={article}
                                 categories={categories}
                             />
                         </>
                     ) : (
-                        <NoPermissions />
+                        <>
+                            {!authed ? (
+                                <NoPermissions />
+                            ) : (
+                                <NotFound item="Article" />
+                            )}
+                        </>
                     )}
                 </div>
             </Wrapper>
@@ -54,17 +66,29 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
     const session = await getSession(ctx);
 
-    // Make sure we're authenticated.
+    // Check if we're authenticated.
     let authed = false;
 
     if (session && (has_role(session, "contributor") || has_role(session, "admin")))
         authed = true;
 
-    // Intitialize categories.
+    // Retrieve lookup ID.
+    const { params } = ctx;
+
+    const lookupId = params?.id?.toString();
+
+    // Initialize article and categories.
+    let article: Article | null = null;
     let categories: CategoryWithChildren[] = [];
 
-    // Retrieve categories if authenticated.
-    if (authed) {
+    if (lookupId && authed) {
+        // Retrieve article and categories.
+        article = await prisma.article.findFirst({
+            where: {
+                id: Number(lookupId)
+            }
+        });
+
         categories = await prisma.category.findMany({
             where: {
                 parent: null
@@ -82,9 +106,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         props: {
             ...globalProps,
             authed: authed,
+            article: JSON.parse(JSON.stringify(article)),
             categories: categories
         }
-    };
+    }
 }
 
 export default Page;

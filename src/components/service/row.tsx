@@ -28,8 +28,8 @@ const ServiceRow: React.FC<{
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
     
     // Compile links.
-    const viewUrl = "/service/view/" + service.url;
-    const editUrl = "/service/new?id=" + service.id.toString();
+    const viewUrl = `/service/view/${service.url}`;
+    const editUrl = `/service/edit/${service.id.toString()}`;
 
     // Retrieve banner.
     let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE ?? "");

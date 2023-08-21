@@ -8,7 +8,6 @@ import { prisma } from "@server/db";
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
-import ExperienceBrowser from "@components/user/experience/browser";
 import NotFound from "@components/errors/not_found";
 import UserView from "@components/user/view";
 
@@ -74,13 +73,7 @@ const Page: NextPage<{
                                         </Markdown>
                                     </>
                                 ) : (
-                                    <>
-                                        <h1>Experiences</h1>
-                                        <ExperienceBrowser
-                                            userId={user.id}
-                                            small={true}
-                                        />
-                                    </>
+                                    <NotFound item="Experience" />
                                 )}
                             </div>
                         </UserView>
@@ -94,42 +87,44 @@ const Page: NextPage<{
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    // Retrieve parameters.
+    // Retrieve user ID and experience ID.
     const { params } = ctx;
 
     const userId = params?.user?.toString();
-    const experienceId = params?.id?.[0]?.toString();
+    const experienceId = params?.id?.toString();
 
+    // Initialize user and experience.
     let user: User | null = null;
     let experience: UserExperience | null = null;
 
+    // If user ID is found, retrieve user and others.
     if (userId) {
-        let lookup_url = true;
+        let lookupUrl = true;
 
-        if (userId[0] == "$") {
-            lookup_url = false;
-        }
+        if (userId[0] == "$")
+            lookupUrl = false;
 
         user = await prisma.user.findFirst({
             where: {
-                ...(lookup_url && {
+                ...(lookupUrl && {
                     url: userId
                 }),
-                ...(!lookup_url && {
+                ...(!lookupUrl && {
                     id: userId.substring(1)
                 })
             }
         });
 
+        // If experience ID is found, retrieve experience.
         if (experienceId) {
             experience = await prisma.userExperience.findFirst({
                 where: {
                     id: Number(experienceId),
                     user: {
-                        ...(lookup_url && {
+                        ...(lookupUrl && {
                             url: userId
                         }),
-                        ...(!lookup_url && {
+                        ...(!lookupUrl && {
                             id: userId.substring(1)
                         })
                     }
@@ -138,6 +133,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 
+    // Retrieve global props.
     const globalProps = await GlobalProps();
 
     return {

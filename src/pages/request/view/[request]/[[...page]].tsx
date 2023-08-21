@@ -133,186 +133,190 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {(request && authed) ? (
-                    <div className="content-item">
-                        <h1>{request?.title ?? `Request #${request.id.toString()}`}</h1>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-wrap">
-                                <div className="p-4 flex flex-col gap-1 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
-                                    <UserGridRow
-                                        user={request.user}
-                                    />
-                                    <p className="text-xl font-bold"><span className="text-green-500">$</span>{request.price.toString()}</p>
-                                    <p className="text-lg font-bold">{request.timeframe.toString()} Hours</p>
-                                    {reqStartDate && (
-                                        <p className="text-lg font-bold">On {reqStartDate}</p>
-                                    )}
-                                </div>
-                                <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
-                                    <div className="flex flex-wrap gap-2">
-                                        <Markdown className="grow">
-                                            {request.content}
-                                        </Markdown>
-                                        <div>
-                                            <p className="text-xl font-bold">
-                                                {request.accepted ? (
-                                                    <span className="text-green-300">Accepted</span>
-                                                ) : (
-                                                    <span className="text-red-400">Not Accepted</span>
-                                                )}
-                                            </p>
-                                        </div>
+                <div className="content-item">
+                    {(request && authed) ? (
+                        <>
+                            <h1>{request?.title ?? `Request #${request.id.toString()}`}</h1>
+                            <div className="flex flex-col gap-4">
+                                <div className="flex flex-wrap">
+                                    <div className="p-4 flex flex-col gap-1 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
+                                        <UserGridRow
+                                            user={request.user}
+                                        />
+                                        <p className="text-xl font-bold"><span className="text-green-500">$</span>{request.price.toString()}</p>
+                                        <p className="text-lg font-bold">{request.timeframe.toString()} Hours</p>
+                                        {reqStartDate && (
+                                            <p className="text-lg font-bold">On {reqStartDate}</p>
+                                        )}
                                     </div>
-                                    {canEditAndStatus && (
-                                        <div className="flex flex-wrap gap-2 justify-between items-center">
-                                            <div className="flex flex-wrap gap-2">
-                                                {isAdmin && (
+                                    <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
+                                        <div className="flex flex-wrap gap-2">
+                                            <Markdown className="grow">
+                                                {request.content}
+                                            </Markdown>
+                                            <div>
+                                                <p className="text-xl font-bold">
+                                                    {request.accepted ? (
+                                                        <span className="text-green-300">Accepted</span>
+                                                    ) : (
+                                                        <span className="text-red-400">Not Accepted</span>
+                                                    )}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {canEditAndStatus && (
+                                            <div className="flex flex-wrap gap-2 justify-between items-center">
+                                                <div className="flex flex-wrap gap-2">
+                                                    {isAdmin && (
+                                                        <button
+                                                            className={`button sm:w-auto ${accept ? "button-danger" : "button-primary"}`}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                
+                                                                // Update request.
+                                                                acceptReqMut.mutate({
+                                                                    requestId: request.id,
+                                                                    accepted: !accept
+                                                                });
+
+                                                                setAccept(!accept);
+                                                            }}
+                                                        >{accept ? "Reject" : "Accept"}</button>
+                                                    )}
+                                                    <Link
+                                                        href={editUrl}
+                                                        className="button button-primary sm:w-auto"
+                                                    >Edit</Link>
                                                     <button
-                                                        className={`button sm:w-auto ${accept ? "button-danger" : "button-primary"}`}
+                                                        className={`button sm:w-auto ${isCompleted ? "button-secondary" : "button-primary"}`}
                                                         onClick={(e) => {
-                                                            // Update request.
-                                                            acceptReqMut.mutate({
-                                                                requestId: request.id,
-                                                                accepted: !accept
+                                                            e.preventDefault();
+
+                                                            const newStatus = isCompleted ? 0 : 2;
+
+                                                            statusMut.mutate({
+                                                                id: request.id,
+                                                                status: newStatus
                                                             });
 
-                                                            setAccept(!accept);
+                                                            setIsCompleted(!isCompleted);
                                                         }}
-                                                    >{accept ? "Reject" : "Accept"}</button>
-                                                )}
-                                                <Link
-                                                    href={editUrl}
-                                                    className="button button-primary sm:w-auto"
-                                                >Edit</Link>
-                                                <button
-                                                    className={`button sm:w-auto ${isCompleted ? "button-secondary" : "button-primary"}`}
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-
-                                                        const newStatus = isCompleted ? 0 : 2;
-
-                                                        statusMut.mutate({
-                                                            id: request.id,
-                                                            status: newStatus
-                                                        });
-
-                                                        setIsCompleted(!isCompleted);
-                                                    }}
-                                                >{isCompleted ? "Reopen" : "Mark As Completed"}</button>
+                                                    >{isCompleted ? "Reopen" : "Mark As Completed"}</button>
+                                                </div>
+                                                <div className="flex flex-col text-sm">
+                                                    <p>Created On <span className="italic">{reqCreatedAt}</span></p>
+                                                    <p>Last Updated On <span className="italic">{reqUpdatedAt}</span></p>
+                                                </div>
                                             </div>
-                                            <div className="flex flex-col text-sm">
-                                                <p>Created On <span className="italic">{reqCreatedAt}</span></p>
-                                                <p>Last Updated On <span className="italic">{reqUpdatedAt}</span></p>
-                                            </div>
-                                        </div>
+                                        )}
+
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <h2>Replies ({repliesCnt.toString()})</h2>
+                                    {request.replies.map((reply) => {
+                                        const editUrl = `/request/reply/edit/${reply.id.toString()}`;
+
+                                        let canEdit = false;
+                                        let canDelete = false;
+
+                                        // Check if we can edit and delete reply.
+                                        if (session && (has_role(session, "admin") || has_role(session, "moderator"))) {
+                                            canEdit = true;
+                                            canDelete = true;
+                                        }
+
+                                        if (!canEdit && session?.user && reply.userId == session.user.id)
+                                            canEdit = true;
+
+                                        // Dates.
+                                        const repCreatedAt = dateFormat(reply.createdAt, dateFormatFour);
+                                        const repUpdatedAt = dateFormat(reply.updatedAt, dateFormatFour);
+
+                                        return (
+                                            <div
+                                                key={`request-reply-${reply.id.toString()}`}
+                                                className="flex flex-wrap"
+                                            >
+                                                <div className="p-4 flex flex-col gap-2 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
+                                                    <UserGridRow
+                                                        user={request.user}
+                                                    />
+                                                </div>
+                                                <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
+                                                    <Markdown>
+                                                        {reply.content}
+                                                    </Markdown>
+                                                    {canEdit && (
+                                                        <div className="flex flex-wrap gap-2 justify-between items-center">
+                                                            <div className="flex flex-wrap gap-2">
+                                                                <Link
+                                                                    href={editUrl}
+                                                                    className="button button-primary sm:w-auto"
+                                                                >Edit</Link>
+                                                                {canDelete && (
+                                                                    <button
+                                                                        className="button button-danger sm:w-auto"
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+
+                                                                            const yes = confirm("Are you sure you want to delete this reply?");
+
+                                                                            if (yes) {
+                                                                                deleteReplyMut.mutate({
+                                                                                    id: reply.id
+                                                                                });
+                                                                            }
+                                                                        }}
+                                                                    >Delete</button>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex flex-col text-sm">
+                                                                <p>Created On <span className="italic">{repCreatedAt}</span></p>
+                                                                <p>Last Updated On <span className="italic">{repUpdatedAt}</span></p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div> 
+                                        );
+                                    })}
+                                    {nextPages.length > 0 && (
+                                        <ul className="list-none flex flex-wrap gap-2">
+                                            {nextPages.map((pageNum) => {
+                                                const url = `/request/view/${request.id.toString()}/${pageNum.toString()}`;
+
+                                                return (
+                                                    <Link
+                                                        key={`page-number-${pageNum.toString()}`}
+                                                        href={url}
+                                                        className="hover:text-white"
+                                                    >
+                                                        <li>{pageNum.toString()}</li>
+                                                    </Link>
+                                                );
+                                            })}
+                                        </ul>
                                     )}
-
+                                    <div className="p-4 bg-gray-800 flex flex-col gap-2">
+                                        <h3>Add Reply</h3>
+                                        <RequestReplyForm
+                                            requestId={request.id}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <h2>Replies ({repliesCnt.toString()})</h2>
-                                {request.replies.map((reply) => {
-                                    const editUrl = `/request/reply/edit/${reply.id.toString()}`;
-
-                                    let canEdit = false;
-                                    let canDelete = false;
-
-                                    // Check if we can edit and delete reply.
-                                    if (session && (has_role(session, "admin") || has_role(session, "moderator"))) {
-                                        canEdit = true;
-                                        canDelete = true;
-                                    }
-
-                                    if (!canEdit && session?.user && reply.userId == session.user.id)
-                                        canEdit = true;
-
-                                    // Dates.
-                                    const repCreatedAt = dateFormat(reply.createdAt, dateFormatFour);
-                                    const repUpdatedAt = dateFormat(reply.updatedAt, dateFormatFour);
-
-                                    return (
-                                        <div
-                                            key={`request-reply-${reply.id.toString()}`}
-                                            className="flex flex-wrap"
-                                        >
-                                            <div className="p-4 flex flex-col gap-2 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
-                                                <UserGridRow
-                                                    user={request.user}
-                                                />
-                                            </div>
-                                            <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
-                                                <Markdown>
-                                                    {reply.content}
-                                                </Markdown>
-                                                {canEdit && (
-                                                    <div className="flex flex-wrap gap-2 justify-between items-center">
-                                                        <div className="flex flex-wrap gap-2">
-                                                            <Link
-                                                                href={editUrl}
-                                                                className="button button-primary sm:w-auto"
-                                                            >Edit</Link>
-                                                            {canDelete && (
-                                                                <button
-                                                                    className="button button-danger sm:w-auto"
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-
-                                                                        const yes = confirm("Are you sure you want to delete this reply?");
-
-                                                                        if (yes) {
-                                                                            deleteReplyMut.mutate({
-                                                                                id: reply.id
-                                                                            });
-                                                                        }
-                                                                    }}
-                                                                >Delete</button>
-                                                            )}
-                                                        </div>
-                                                        <div className="flex flex-col text-sm">
-                                                            <p>Created On <span className="italic">{repCreatedAt}</span></p>
-                                                            <p>Last Updated On <span className="italic">{repUpdatedAt}</span></p>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div> 
-                                    );
-                                })}
-                                {nextPages.length > 0 && (
-                                    <ul className="list-none flex flex-wrap gap-2">
-                                        {nextPages.map((pageNum) => {
-                                            const url = `/request/view/${request.id.toString()}/${pageNum.toString()}`;
-
-                                            return (
-                                                <Link
-                                                    key={`page-number-${pageNum.toString()}`}
-                                                    href={url}
-                                                    className="hover:text-white"
-                                                >
-                                                    <li>{pageNum.toString()}</li>
-                                                </Link>
-                                            );
-                                        })}
-                                    </ul>
-                                )}
-                                <div className="p-4 bg-gray-800 flex flex-col gap-2">
-                                    <h3>Add Reply</h3>
-                                    <RequestReplyForm
-                                        requestId={request.id}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="content-item">
-                        {!authed ? (
-                            <NoPermissions />
-                        ) : (
-                            <NotFound item="Request" />
-                        )}
-                    </div>
-                )}
+                        </>
+                    ) : (
+                        <>
+                            {!authed ? (
+                                <NoPermissions />
+                            ) : (
+                                <NotFound item="Request" />
+                            )}
+                        </>
+                    )}
+                </div>
             </Wrapper>
         </>
     );

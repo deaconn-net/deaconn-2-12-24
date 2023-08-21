@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-import { type UserSkill } from "@prisma/client";
+import { type UserSkillWithUser } from "~/types/user/skill";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
 
-import Row from "@components/user/skill/row";
+import SkillRow from "@components/user/skill/row";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const Browser: React.FC<{
+const UserSkillBrowser: React.FC<{
     sort?: string,
     sortDir?: string,
     userId?: string,
@@ -39,7 +39,7 @@ const Browser: React.FC<{
         void fetchNextPage();
     }
 
-    const skills: UserSkill[] = [];
+    const skills: UserSkillWithUser[] = [];
 
     if (data) {
         data.pages.forEach((pg) => {
@@ -61,9 +61,9 @@ const Browser: React.FC<{
                     className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}
                 >
                     <>
-                        {skills.map((skill: UserSkill) => {
+                        {skills.map((skill) => {
                             return (
-                                <Row
+                                <SkillRow
                                     key={"skill-" + skill.id.toString()}
                                     skill={skill}
                                 />
@@ -78,4 +78,4 @@ const Browser: React.FC<{
     );
 }
 
-export default Browser;
+export default UserSkillBrowser;

@@ -1,7 +1,7 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-import { Service } from "@prisma/client";
+import { type Service } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
@@ -32,16 +32,18 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {authed ? (
-                    <div className="content-item">
-                        <h1>New Request</h1>
-                        <RequestForm
-                            services={services}
-                        />
-                    </div>
-                ) : (
-                    <NoPermissions />
-                )}
+                <div className="content-item">
+                    {authed ? (
+                        <>
+                            <h1>New Request</h1>
+                            <RequestForm
+                                services={services}
+                            />
+                        </>
+                    ) : (
+                        <NoPermissions />
+                    )}
+                </div>
             </Wrapper>
         </>
     );

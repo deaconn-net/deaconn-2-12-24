@@ -2,7 +2,6 @@ import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { has_role } from "@utils/user/auth";
-import { prisma } from "@server/db";
 
 export const requestRouter = createTRPCRouter({
     getAll: protectedProcedure

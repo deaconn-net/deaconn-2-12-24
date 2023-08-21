@@ -1,4 +1,4 @@
-const TabMenuWithData: React.FC<{
+const TabsMenuWithData: React.FC<{
     menu: JSX.Element,
     data: JSX.Element,
     data_background?: boolean
@@ -19,4 +19,4 @@ const TabMenuWithData: React.FC<{
     );
 }
 
-export default  TabMenuWithData;
+export default TabsMenuWithData;
