@@ -1,23 +1,28 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import { type UserExperience } from "@prisma/client";
+import { type User } from "@prisma/client";
+import { type UserExperienceWithUser } from "~/types/user/experience";
 
 import { api } from "@utils/api";
 import SuccessBox from "@utils/success";
 import { has_role } from "@utils/user/auth";
 
 const UserExperienceRow: React.FC<{
-    experience: UserExperience
+    experience: UserExperienceWithUser
 }> = ({
     experience
 }) => {
     const { data: session } = useSession();
     const deleteMut = api.user.deleteExperience.useMutation();
 
+    // Retrieve user URL or ID for compiling URLs.
+    const user = experience.user;
+    const userId = (user.url) ? user.url : `$${user.id.toString()}`;
+
     // Compile URLs.
-    const viewUrl = `/user/view/$${experience.userId}/experiences/${experience.id.toString()}`;
-    const editUrl = `/user/profile/experiences?id=${experience.id.toString()}`;
+    const viewUrl = `/user/view/${userId}/experiences/${experience.id.toString()}`;
+    const editUrl = `/user/profile/experiences/${experience.id.toString()}`;
 
     // See if we have permissions.
     let canEdit = false;

@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import { type UserProject } from "@prisma/client";
+import { type UserProjectWithUser } from "~/types/user/project";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
 
-import Row from "@components/user/project/row";
+import ProjectRow from "@components/user/project/row";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -39,7 +39,7 @@ const UserProjectBrowser: React.FC<{
         void fetchNextPage();
     }
 
-    const projects: UserProject[] = [];
+    const projects: UserProjectWithUser[] = [];
 
     if (data) {
         data.pages.forEach((pg) => {
@@ -61,9 +61,9 @@ const UserProjectBrowser: React.FC<{
                     className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}
                 >
                     <>
-                        {projects.map((project: UserProject) => {
+                        {projects.map((project) => {
                             return (
-                                <Row
+                                <ProjectRow
                                     key={`project-${project.id.toString()}`}
                                     project={project}
                                 />

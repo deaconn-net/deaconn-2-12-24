@@ -5,3 +5,10 @@ export type UserProjectWithSources = Prisma.UserProjectGetPayload<{
         sources: true
     }
 }>
+
+export type UserProjectWithSourcesAndUser = Prisma.UserProjectGetPayload<{
+    include: {
+        user: true,
+        sources: true
+    }
+}>

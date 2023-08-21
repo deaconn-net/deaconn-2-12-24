@@ -1,0 +1,53 @@
+import { useSession } from "next-auth/react";
+import { type GetServerSidePropsContext, type NextPage } from "next";
+
+import Wrapper from "@components/wrapper";
+import Meta from "@components/meta";
+
+import UserSettingsPanel from "@components/user/settings_panel";
+import NotSignedIn from "@components/errors/not_signed_in";
+
+import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+
+const Page: NextPage<GlobalPropsType> = ({
+    footerServices,
+    footerPartners
+}) => {
+    const { data: session } = useSession();
+    
+    return (
+        <>
+            <Meta
+                title="My Skills - Deaconn"
+            />
+            <Wrapper
+                footerServices={footerServices}
+                footerPartners={footerPartners}
+            >
+                <div className="content-item"> 
+                    {session?.user ? (
+                            <UserSettingsPanel
+                                view="skills"
+                            />
+                        
+                    ) : (
+                        <NotSignedIn />
+                    )}
+                </div>
+            </Wrapper>
+        </>
+    );
+}
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+    // Retrieve global props.
+    const globalProps = await GlobalProps();
+
+    return {
+        props: {
+            ...globalProps
+        }
+    };
+}
+
+export default Page;

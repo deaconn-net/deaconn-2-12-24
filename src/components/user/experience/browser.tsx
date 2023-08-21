@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { type UserExperience } from "@prisma/client";
+import { type UserExperienceWithUser } from "~/types/user/experience";
 
 import { api } from "@utils/api";
 import Loader from "@utils/loader";
-import Row from "@components/user/experience/row";
+import UserExperienceRow from "@components/user/experience/row";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -38,7 +38,7 @@ const UserExperienceBrowser: React.FC<{
         void fetchNextPage();
     }
 
-    const experiences: UserExperience[] = [];
+    const experiences: UserExperienceWithUser[] = [];
 
     if (data) {
         data.pages.forEach((pg) => {
@@ -60,9 +60,9 @@ const UserExperienceBrowser: React.FC<{
                     className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}
                 >
                     <>
-                        {experiences.map((experience: UserExperience) => {
+                        {experiences.map((experience) => {
                             return (
-                                <Row
+                                <UserExperienceRow
                                     key={`experience-${experience.id.toString()}`}
                                     experience={experience}
                                 />

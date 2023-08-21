@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
-import { type UserProjectWithSources } from "~/types/user/project";
+import { type UserProjectWithSourcesAndUser, type UserProjectWithSources } from "~/types/user/project";
 
 import FormMain from "@components/forms/main";
 import { ErrorCtx, SuccessCtx } from "@components/wrapper";
@@ -21,7 +21,7 @@ const DEFAULT_SOURCE = {
 };
 
 const UserProjectForm: React.FC<{
-    project?: UserProjectWithSources
+    project?: UserProjectWithSources | UserProjectWithSourcesAndUser
 }> = ({
     project
 }) => {

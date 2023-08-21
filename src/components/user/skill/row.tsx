@@ -16,7 +16,7 @@ const UserSkillRow: React.FC<{
     const deleteMut = api.user.deleteSkill.useMutation();
 
     // Compile URLs.
-    const editUrl = `/user/profile/skills?id=${skill.id.toString()}`;
+    const editUrl = `/user/profile/skills/${skill.id.toString()}`;
 
     // See if we have permissions.
     let canEdit = false;
