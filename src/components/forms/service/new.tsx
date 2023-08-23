@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Field, useFormik } from "formik";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
@@ -25,34 +25,34 @@ const Form: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Service mutations.
-    const serviceMut = api.service.add.useMutation();
+    const serviceMut = api.service.add.useMutation({
+        onError: (opts) => {
+            const { message, data } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (serviceMut.isError && errorCtx) {
-            const errMsg = serviceMut.error.message;
-    
-            console.error(errMsg);
-    
-            errorCtx.setTitle(`Error ${service ? "Saving" : "Creating"} Service!`);
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${service ? "Saving" : "Creating"} Service!`);
             
-            if (serviceMut.error.data?.code == "UNAUTHORIZED")
-                errorCtx.setMsg("You are not signed in or have permissions to create services.")
-            else
-                errorCtx.setMsg(`Error ${service ? "saving" : "creating"} service.`);
-    
-            // Scroll to top.
-            ScrollToTop();
+                if (data?.code == "UNAUTHORIZED")
+                    errorCtx.setMsg("You are not signed in or have permissions to create services.")
+                else
+                    errorCtx.setMsg(`Error ${service ? "saving" : "creating"} service.`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${service ? "Saved" : "Created"} Service!`);
+                successCtx.setMsg(`Service successfully ${service ? "saved" : "created"}!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-
-        if (serviceMut.isSuccess && successCtx) {
-            successCtx.setTitle(`Successfully ${service ? "Saved" : "Created"} Service!`);
-            successCtx.setMsg(`Service successfully ${service ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [service, serviceMut, errorCtx, successCtx])
+    });
 
     // Setup banner and icons.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);

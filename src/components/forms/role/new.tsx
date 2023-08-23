@@ -1,5 +1,5 @@
 import { Field, useFormik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -22,31 +22,34 @@ const Form: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Role mutations.
-    const roleMut = api.admin.addRole.useMutation();
+    const roleMut = api.admin.addRole.useMutation({
+        onError: (opts) => {
+            const { message, data } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (roleMut.isError && errorCtx) {    
-            console.error(roleMut.error.message);
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${role ? "Saving" : "Creating"} Role`);
     
-            errorCtx.setTitle(`Error ${role ? "Saving" : "Creating"} Role`);
-    
-            if (roleMut.error.data?.code == "UNAUTHORIZED")
-                errorCtx.setMsg("You are not signed in or have permissions to create roles.")
-            else
-                errorCtx.setMsg(`Error ${role ? "saving" : "creating"} role.`);
-    
-            // Scroll to top.
-            ScrollToTop();
+                if (data?.code == "UNAUTHORIZED")
+                    errorCtx.setMsg("You are not signed in or have permissions to create roles.")
+                else
+                    errorCtx.setMsg(`Error ${role ? "saving" : "creating"} role.`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${role ? "Saved" : "Created"} Role!`);
+                successCtx.setMsg(`Role successfully ${role ? "saved" : "created"}!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-        if (roleMut.isSuccess && successCtx) {    
-            successCtx.setTitle(`Successfully ${role ? "Saved" : "Created"} Role!`);
-            successCtx.setMsg(`Role successfully ${role ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [role, roleMut, errorCtx, successCtx])
+    });
 
     // Setup preview.
     const [preview, setPreview] = useState(false);

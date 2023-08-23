@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Field, useFormik } from "formik";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
@@ -31,28 +31,30 @@ const UserProjectForm: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
-    const projectMut = api.user.addProject.useMutation();
+    const projectMut = api.user.addProject.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (projectMut.isError && errorCtx) {
-            console.error(projectMut.error.message);
-    
-            errorCtx.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
-            errorCtx.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
-    
-            // Scroll to top.
-            ScrollToTop();
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
+                errorCtx.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${project ? "Saved" : "Created"} Project!`);
+                successCtx.setMsg(`Your project was ${project ? "saved" : "created"} successfully!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-    
-        if (projectMut.isSuccess && successCtx) {   
-            successCtx.setTitle(`Successfully ${project ? "Saved" : "Created"} Project!`);
-            successCtx.setMsg(`Your project was ${project ? "saved" : "created"} successfully!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [project, projectMut, errorCtx, successCtx])
+    });
 
     // Setup preview.
     const [preview, setPreview] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Field, useFormik } from "formik";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
@@ -25,28 +25,30 @@ const Form: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // User mutations.
-    const userMut = api.user.update.useMutation();
+    const userMut = api.user.update.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (userMut.isError && errorCtx) {
-            console.error(userMut.error.message);
-    
-            errorCtx.setTitle("Error Saving Profile");
-            errorCtx.setMsg("Error saving profile. Read developer console for more information.");
-    
-            // Scroll to top.
-            ScrollToTop();
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Error Saving Profile");
+                errorCtx.setMsg("Error saving profile. Read developer console for more information.");
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Profile Saved!");
+                successCtx.setMsg("Your profile information was save successfully!");
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-    
-        if (userMut.isSuccess && successCtx) {
-            successCtx.setTitle("Profile Saved!");
-            successCtx.setMsg("Your profile information was save successfully!");
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [user, userMut, errorCtx, successCtx])
+    });
 
     // Setup preview.
     const [preview, setPreview] = useState(false);

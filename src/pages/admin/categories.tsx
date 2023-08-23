@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
@@ -36,17 +36,28 @@ const Page: NextPage<{
     const successCtx = useContext(SuccessCtx);
 
     // Prepare mutations.
-    const categoryDeleteMut = api.category.delete.useMutation();
+    const categoryDeleteMut = api.category.delete.useMutation({
+        onError: (opts) => {
+            const { message } =  opts;
 
-    useEffect(() => {
-        if (categoryDeleteMut.isError && errorCtx) {
-            errorCtx.setTitle("Category Not Deleted");
-            errorCtx.setMsg("Category not deleted successfully.");
-        } else if (categoryDeleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Category Deleted!");
-            successCtx.setMsg("Category deleted successfully.");
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Category Not Deleted");
+                errorCtx.setMsg("Category not deleted successfully.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Category Deleted!");
+                successCtx.setMsg("Category deleted successfully.");
+
+                ScrollToTop();
+            }
         }
-    }, [categoryDeleteMut, errorCtx, successCtx])
+    });
 
     return (
         <Wrapper

@@ -1,6 +1,6 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -45,34 +45,51 @@ const Page: NextPage<{
     const userRoles = userRolesQuery.data;
 
     // Prepare mutations.
-    const addRoleMut = api.admin.addUserRole.useMutation();
-    const delRoleMut = api.admin.delUserRole.useMutation();
+    const addRoleMut = api.admin.addUserRole.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    // Handle errors and success messages.
-    useEffect(() => {
-        if (errorCtx) {
-            if (addRoleMut.isError) {
+            console.error(message);
+
+            if (errorCtx) {
                 errorCtx.setTitle("Role Not Added");
                 errorCtx.setMsg("Role was not added successfully.");
+                
+                ScrollToTop();
             }
-
-            if (delRoleMut.isError) {
-                errorCtx.setTitle("Role Not Deleted");
-                errorCtx.setMsg("Role was not deleted successfully.");
-            }
-        }
-        if (successCtx) {
-            if (addRoleMut.isSuccess) {
+        },
+        onSuccess: () => {
+            if (successCtx) {
                 successCtx.setTitle("Role Added!");
                 successCtx.setMsg("Role added successfully!");
-            } 
-            
-            if (delRoleMut.isSuccess) {
+
+                ScrollToTop();
+            }
+        }
+    });
+
+    const delRoleMut = api.admin.delUserRole.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Role Not Deleted");
+                errorCtx.setMsg("Role was not deleted successfully.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
                 successCtx.setTitle("Role Deleted!");
                 successCtx.setMsg("Role was deleted successfully!");
-            } 
+
+                ScrollToTop();
+            }
         }
-    }, [addRoleMut, delRoleMut, errorCtx, successCtx])
+    });
 
     return (
         <Wrapper

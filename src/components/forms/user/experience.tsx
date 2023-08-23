@@ -1,5 +1,5 @@
 import { Field, useFormik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -26,28 +26,30 @@ const Form: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
-    const experienceMut = api.user.addExperience.useMutation();
+    const experienceMut = api.user.addExperience.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (experienceMut.isError && errorCtx) {
-            console.error(experienceMut.error.message);
-    
-            errorCtx.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
-            errorCtx.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
+                errorCtx.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
         
-        if (experienceMut.isSuccess && successCtx) {
-            successCtx.setTitle(`Successfully ${experience ? "Saved" : "Created"} Experience!`);
-            successCtx.setMsg(`Your experience was ${experience ? "saved" : "created"} successfully!`);
-    
-            // Scroll to top.
-            ScrollToTop();
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${experience ? "Saved" : "Created"} Experience!`);
+                successCtx.setMsg(`Your experience was ${experience ? "saved" : "created"} successfully!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-    }, [experience, experienceMut, errorCtx, successCtx])
+    });
 
     // Setup preview.
     const [preview, setPreview] = useState(false);

@@ -5,17 +5,17 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 
-type CodeType = {
+type CtxType = {
     title?: string,
     msg?: string,
     setTitle: React.Dispatch<React.SetStateAction<string | undefined>>,
     setMsg: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-export const ErrorCtx = createContext<CodeType | undefined>(undefined);
-export const SuccessCtx = createContext<CodeType | undefined>(undefined);
+export const ErrorCtx = createContext<CtxType | undefined>(undefined);
+export const SuccessCtx = createContext<CtxType | undefined>(undefined);
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,

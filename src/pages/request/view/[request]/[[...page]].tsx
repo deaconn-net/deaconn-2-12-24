@@ -22,6 +22,7 @@ import { api } from "@utils/api";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import { has_role } from "@utils/user/auth";
 import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/date";
+import { ScrollToTop } from "@utils/scroll";
 
 const Page: NextPage<{
     authed: boolean,
@@ -47,55 +48,78 @@ const Page: NextPage<{
     // Compile URLs.
     const editUrl = `/request/edit/${request?.id ?? ""}`;
 
-    // Handle mutations.
-    const statusMut = api.request.setStatus.useMutation();
-    const deleteReplyMut = api.request.delReply.useMutation();
-    const acceptReqMut = api.request.setAccept.useMutation();
-
     // Accept or reject request.
     const [accept, setAccept] = useState(request?.accepted ?? false);
 
-    useEffect(() => {
-        if (errorCtx) {
-            if (statusMut.isError) {
-                console.error(statusMut.error.message);
-        
+    // Handle mutations.
+    const statusMut = api.request.setStatus.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            console.error(message);
+
+            if (errorCtx) {
                 errorCtx.setTitle("Failed To Update Status");
                 errorCtx.setMsg("Failed to update request status. Please contact administrator or check your console for more details.");
-            }
 
-            if (deleteReplyMut.isError) {
-                console.error(deleteReplyMut.error.message);
-        
-                errorCtx.setTitle("Failed To Delete Reply");
-                errorCtx.setMsg("Failed to delete reply. Please contact administrator or check your console for more details.");
+                ScrollToTop();
             }
-
-            if (acceptReqMut.isError) {
-                console.error(acceptReqMut.error.message);
-        
-                errorCtx.setTitle(`Failed To ${accept ? "Accept" : "Reject"} Request`);
-                errorCtx.setMsg(`Failed to ${accept ? "accept" : "reject"} request. Look at console for more details.`);
-            }
-        }
-
-        if (successCtx) {
-            if (statusMut.isSuccess) {
+        },
+        onSuccess: () => {
+            if (successCtx) {
                 successCtx.setTitle("Updated Status!");
                 successCtx.setMsg("Updated request status successfully!");
-            }
-        
-            if (deleteReplyMut.isSuccess) {
-                successCtx.setTitle("Deleted Reply!");
-                successCtx.setMsg("Deleted reply successfully!");
-            }
-            if (acceptReqMut.isSuccess) {
-                successCtx.setTitle(`${accept ? "Accepted" : "Rejected"} Request!`);
-                successCtx.setMsg(`Successfully ${accept ? "accepted" : "rejected"} this request!`);
+
+                ScrollToTop();
             }
         }
-    }, [statusMut, deleteReplyMut, acceptReqMut, accept, errorCtx, successCtx])
+    });
 
+    const deleteReplyMut = api.request.delReply.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Reply");
+                errorCtx.setMsg("Failed to delete reply. Please contact administrator or check your console for more details.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Deleted Reply!");
+                successCtx.setMsg("Deleted reply successfully!");
+
+                ScrollToTop();
+            }
+        }
+    });
+
+    const acceptReqMut = api.request.setAccept.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
+
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle(`Failed To ${accept ? "Accept" : "Reject"} Request`);
+                errorCtx.setMsg(`Failed to ${accept ? "accept" : "reject"} request. Look at console for more details.`);
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`${accept ? "Accepted" : "Rejected"} Request!`);
+                successCtx.setMsg(`Successfully ${accept ? "accepted" : "rejected"} this request!`);
+
+                ScrollToTop();
+            }
+        }
+    });
 
     // Check if we can edit, set status, or accept/reject request.
     let isAdmin = false;

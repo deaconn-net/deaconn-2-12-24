@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
@@ -8,6 +8,7 @@ import { type UserProjectWithSourcesAndUser, type UserProjectWithUser } from "~/
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
+import { ScrollToTop } from "@utils/scroll";
 
 const UserProjectRow: React.FC<{
     project: UserProjectWithSourcesAndUser | UserProjectWithUser
@@ -45,19 +46,28 @@ const UserProjectRow: React.FC<{
     }
 
     // Prepare mutations.
-    const deleteMut = api.user.deleteProject.useMutation();
+    const deleteMut = api.user.deleteProject.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    useEffect(() => {
-        if (deleteMut.isError && errorCtx) {
-            console.error(deleteMut.error.message);
-    
-            errorCtx.setTitle("Failed To Delete Project");
-            errorCtx.setMsg("Failed to delete project. Check your console for more details.");
-        } else if (deleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Successfully Deleted Project!");
-            successCtx.setMsg("Successfully deleted project! Please reload the page.");
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Project");
+                errorCtx.setMsg("Failed to delete project. Check your console for more details.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Successfully Deleted Project!");
+                successCtx.setMsg("Successfully deleted project! Please reload the page.");
+
+                ScrollToTop();
+            }
         }
-    }, [deleteMut, errorCtx, successCtx])
+    });
 
     return (
         <div className="project-row">

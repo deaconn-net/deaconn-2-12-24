@@ -1,5 +1,5 @@
 import { Field, useFormik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -24,33 +24,34 @@ const RequestReplyForm: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
-    const requestReplyMut = api.request.addReply.useMutation();
+    const requestReplyMut = api.request.addReply.useMutation({
+        onError: (opts) => {
+            const { message, data } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (requestReplyMut.isError && errorCtx) {
-            console.error(requestReplyMut.error.message);
-    
-            errorCtx.setTitle("Error Creating Or Editing Reply");
-    
-            if (requestReplyMut.error.data?.code == "UNAUTHORIZED")
-                errorCtx.setMsg("You are not signed in or have permissions to create replies.")
-            else
-                errorCtx.setMsg(`Error ${reply ? "saving" : "creating"} reply.`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    
-        if (requestReplyMut.isSuccess && successCtx) {    
-            successCtx.setTitle(`Successfully ${reply ? "Saved" : "Created"} Reply!`);
-            successCtx.setMsg(`Reply successfully ${reply ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [reply, requestReplyMut, errorCtx, successCtx])
+            console.error(message);
 
+            if (errorCtx) {
+                errorCtx.setTitle("Error Creating Or Editing Reply");
+    
+                if (data?.code == "UNAUTHORIZED")
+                    errorCtx.setMsg("You are not signed in or have permissions to create replies.")
+                else
+                    errorCtx.setMsg(`Error ${reply ? "saving" : "creating"} reply.`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${reply ? "Saved" : "Created"} Reply!`);
+                successCtx.setMsg(`Reply successfully ${reply ? "saved" : "created"}!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        }
+    });
 
     // Setup preview.
     const [preview, setPreview] = useState(false);

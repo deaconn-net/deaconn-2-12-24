@@ -2,11 +2,13 @@ import { useContext } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type UserSkill } from "@prisma/client";
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
+import { ScrollToTop } from "@utils/scroll";
 
 const UserSkillRow: React.FC<{
     skill: UserSkill
@@ -39,17 +41,28 @@ const UserSkillRow: React.FC<{
     }
 
     // Prepare mutations.
-    const deleteMut = api.user.deleteSkill.useMutation();
+    const deleteMut = api.user.deleteSkill.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    if (deleteMut.isError && errorCtx) {
-        console.error(deleteMut.error.message);
+            console.error(message);
 
-        errorCtx.setTitle("Failed To Delete Skill");
-        errorCtx.setMsg("Failed to delete skill. Check your console for more details.");
-    } else if (deleteMut.isSuccess && successCtx) {
-        successCtx.setTitle("Successfully Deleted Skill!");
-        successCtx.setMsg("Successfully deleted skill! Please reload the page.");
-    }
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Skill");
+                errorCtx.setMsg("Failed to delete skill. Check your console for more details.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Successfully Deleted Skill!");
+                successCtx.setMsg("Successfully deleted skill! Please reload the page.");
+
+                ScrollToTop();
+            }
+        }
+    });
 
     return (
         <div className="skill-row">

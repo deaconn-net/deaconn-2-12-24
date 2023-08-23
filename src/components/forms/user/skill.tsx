@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Field, useFormik } from "formik";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
@@ -21,29 +21,30 @@ const Form: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
-    const skillMut = api.user.addSkill.useMutation();
+    const skillMut = api.user.addSkill.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (skillMut.isError && errorCtx) {
-            console.error(skillMut.error.message);
-    
-            errorCtx.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
-            errorCtx.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    
-        if (skillMut.isSuccess && successCtx) {    
-            successCtx.setTitle(`Successfully ${skill ? "Saved" : "Created"} Skill!`);
-            successCtx.setMsg(`Your skill was ${skill ? "saved" : "created"} successfully!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [skill, skillMut, errorCtx, successCtx])
+            console.error(message);
 
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
+                errorCtx.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${skill ? "Saved" : "Created"} Skill!`);
+                successCtx.setMsg(`Your skill was ${skill ? "saved" : "created"} successfully!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
+        }
+    });
 
     // Setup preview.
     const [preview, setPreview] = useState(false);

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
@@ -8,6 +8,7 @@ import { type UserExperienceWithUser } from "~/types/user/experience";
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
+import { ScrollToTop } from "@utils/scroll";
 
 const UserExperienceRow: React.FC<{
     experience: UserExperienceWithUser
@@ -45,19 +46,28 @@ const UserExperienceRow: React.FC<{
     }
 
     // Prepare mutations.
-    const deleteMut = api.user.deleteExperience.useMutation();
+    const deleteMut = api.user.deleteExperience.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    useEffect(() => {
-        if (deleteMut.isError && errorCtx) {
-            console.error(deleteMut.error.message);
-    
-            errorCtx.setTitle("Failed To Delete Experience");
-            errorCtx.setMsg("Failed to delete experience. Please check your console for more details.");
-        } else if (deleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Successfully Deleted Experience!");
-            successCtx.setMsg("Successfully deleted experience! Please reload the page.");
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Experience");
+                errorCtx.setMsg("Failed to delete experience. Please check your console for more details.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Successfully Deleted Experience!");
+                successCtx.setMsg("Successfully deleted experience! Please reload the page.");
+
+                ScrollToTop();
+            }
         }
-    }, [deleteMut, errorCtx, successCtx])
+    });
 
     return (
         <div className={"experience-row"}>

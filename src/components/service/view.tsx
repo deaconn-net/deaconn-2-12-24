@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,12 +13,14 @@ import TabMenuWithData from "@components/tabs/menu_with_data";
 import IconAndText from "@components/containers/icon_and_text";
 import Markdown from "@components/markdown/markdown";
 
-import { api } from "@utils/api";
-import { has_role } from "@utils/user/auth";
-
 import ViewIcon from "@components/icons/view";
 import DownloadIcon from "@components/icons/download";
 import PurchaseIcon from "@components/icons/purchase";
+
+import { api } from "@utils/api";
+import { has_role } from "@utils/user/auth";
+import { ScrollToTop } from "@utils/scroll";
+
 
 const ServiceView: React.FC<{
     service: Service,
@@ -49,19 +51,28 @@ const ServiceView: React.FC<{
         banner = cdn + uploadUrl + service.banner;
 
     // Prepare delete mutation.
-    const deleteMut = api.service.delete.useMutation();
+    const deleteMut = api.service.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    useEffect(() => {
-        if (deleteMut.isError && errorCtx) {
-            console.error(deleteMut.error.message);
-    
-            errorCtx.setTitle("Failed To Delete Service");
-            errorCtx.setMsg("Failed to delete service. Please check your console for more details.");
-        } else if (deleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Successfully Deleted Service!");
-            successCtx.setMsg("Successfully deleted service. Please reload the page.");
-        } 
-    }, [deleteMut, errorCtx, successCtx])
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Service");
+                errorCtx.setMsg("Failed to delete service. Please check your console for more details.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Successfully Deleted Service!");
+                successCtx.setMsg("Successfully deleted service. Please reload the page.");
+
+                ScrollToTop();
+            }
+        }
+    });
 
     // Compile tabs.
     const tabs: TabItemType[] = [

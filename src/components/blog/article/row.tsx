@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,6 +13,7 @@ import { api } from "@utils/api";
 import CommentIcon from "@components/icons/comment";
 import ViewIcon from "@components/icons/view";
 import { has_role } from "@utils/user/auth";
+import { ScrollToTop } from "@utils/scroll";
 
 const ArticleRow: React.FC<{
     article: Article,
@@ -41,19 +42,28 @@ const ArticleRow: React.FC<{
         banner =  cdn + uploadUrl + article.banner;
 
     // Prepare delete mutation.
-    const deleteMut = api.blog.delete.useMutation();
+    const deleteMut = api.blog.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    useEffect(() => {
-        if (deleteMut.isError && errorCtx) {
-            console.error(deleteMut.error.message);
-    
-            errorCtx.setTitle("Failed To Delete Article");
-            errorCtx.setMsg("Failed to delete article. Check your console for more details.");
-        } else if (deleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Successfully Deleted Article!");
-            successCtx.setMsg("Successfully deleted article! Please refresh the page.");
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Article");
+                errorCtx.setMsg("Failed to delete article. Check your console for more details.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Successfully Deleted Article!");
+                successCtx.setMsg("Successfully deleted article! Please refresh the page.");
+
+                ScrollToTop();
+            }
         }
-    }, [deleteMut, errorCtx, successCtx])
+    });
 
     return (
         <div className="article-row">

@@ -1,5 +1,5 @@
 import { Field, useFormik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -25,32 +25,33 @@ const CategoryForm: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Role mutations.
-    const categoryMut = api.category.add.useMutation();
+    const categoryMut = api.category.add.useMutation({
+        onError: (opts) => {
+            const { message, data } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (categoryMut.isError && errorCtx) {    
-            console.error(categoryMut.error.message);
-    
-            errorCtx.setTitle(`Error ${category ? "Saving" : "Creating"} Role`);
-    
-            if (categoryMut.error.data?.code == "UNAUTHORIZED")
-                errorCtx.setMsg("You are not signed in or have permissions to create categories.")
-            else
-                errorCtx.setMsg(`Error ${category ? "saving" : "creating"} category.`);
-    
-            // Scroll to top.
-            ScrollToTop();
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${category ? "Saving" : "Creating"} Category`);
+
+                if (data?.code == "UNAUTHORIZED")
+                    errorCtx.setMsg("You are not signed in or have permissions to create categories.")
+                else
+                    errorCtx.setMsg(`Error ${category ? "saving" : "creating"} category.`);
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${category ? "Saved" : "Created"} Category!`);
+                successCtx.setMsg(`Category successfully ${category ? "saved" : "created"}!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-    
-        if (categoryMut.isSuccess && successCtx) {    
-            successCtx.setTitle(`Successfully ${category ? "Saved" : "Created"} Category!`);
-            successCtx.setMsg(`Category successfully ${category ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [category, categoryMut, errorCtx, successCtx])
+    });
 
     // Setup preview.
     const [preview, setPreview] = useState(false);

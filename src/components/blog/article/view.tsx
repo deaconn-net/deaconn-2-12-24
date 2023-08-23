@@ -17,6 +17,7 @@ import { has_role } from "@utils/user/auth";
 import TwitterIcon from "@components/icons/social/twitter";
 import FacebookIcon from "@components/icons/social/facebook";
 import LinkedinIcon from "@components/icons/social/linkedin";
+import { ScrollToTop } from "@utils/scroll";
 
 const ArticleView: React.FC<{
     article: ArticleWithUser
@@ -44,19 +45,28 @@ const ArticleView: React.FC<{
         banner = cdn + uploadUrl + article.banner;
 
     // Prepare delete mutation.
-    const deleteMut = api.blog.delete.useMutation();
+    const deleteMut = api.blog.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    useEffect(() => {
-        if (deleteMut.isError && errorCtx) {
-            console.error(deleteMut.error.message);
-    
-            errorCtx.setTitle("Failed To Delete Article");
-            errorCtx.setMsg("Failed to delete article. Please check your console for more details.");
-        } else if (deleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Successfully Deleted Article!");
-            successCtx.setMsg("Successfully deleted article! Please reload the page.");
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Article");
+                errorCtx.setMsg("Failed to delete article. Please check your console for more details.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Successfully Deleted Article!");
+                successCtx.setMsg("Successfully deleted article! Please reload the page."); 
+
+                ScrollToTop();
+            }
         }
-    }, [deleteMut, errorCtx, successCtx])
+    });
 
     // Retrieve base URL.
     const [baseUrl, setBaseUrl] = useState("");

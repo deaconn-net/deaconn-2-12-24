@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
@@ -36,18 +36,28 @@ const Page: NextPage<{
     const successCtx = useContext(SuccessCtx);
 
     // Prepare mutations.
-    const roleDeleteMut = api.admin.delRole.useMutation();
+    const roleDeleteMut = api.admin.delRole.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    useEffect(() => {
-        if (roleDeleteMut.isError && errorCtx) {
-            errorCtx.setTitle("Role Not Deleted");
-            errorCtx.setMsg("Role not deleted successfully.");
-        } else if (roleDeleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Role Deleted!");
-            successCtx.setMsg("Role deleted successfully.");
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Role Not Deleted");
+                errorCtx.setMsg("Role not deleted successfully.");
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Role Deleted!");
+                successCtx.setMsg("Role deleted successfully.");
+
+                ScrollToTop();
+            }
         }
-    }, [roleDeleteMut, errorCtx, successCtx])
-
+    });
 
     return (
         <Wrapper

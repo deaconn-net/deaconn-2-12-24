@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 
 import { type GlobalPropsType } from "@utils/global_props";
 
@@ -20,8 +20,19 @@ const Wrapper: React.FC<{
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
 
-    // Reset error and success titles and messages every time this wrapper is remounted.
+    const firstRender = useRef(true);
+    
+    // Reset error and success titles and messages on first render.
+    // This ensures titles and messages don't persist between page loads.
     useEffect(() => {
+        // If this isn't the first render, return.
+        if (!firstRender.current)
+            return;
+
+        // If this is the first render, set to false and reset titles/messages.
+        if (firstRender.current)
+            firstRender.current = false;
+
         if (errorCtx) {
             errorCtx.setTitle(undefined);
             errorCtx.setMsg(undefined);
@@ -31,7 +42,7 @@ const Wrapper: React.FC<{
             successCtx.setTitle(undefined);
             successCtx.setMsg(undefined);
         }
-    }, []);
+    }, [errorCtx, successCtx]);
 
     return (
         <main>

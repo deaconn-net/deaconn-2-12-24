@@ -1,5 +1,5 @@
 import { Field, useFormik } from "formik";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -20,33 +20,33 @@ const Form: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Partner mutations.
-    const partnerMut = api.partner.add.useMutation();
+    const partnerMut = api.partner.add.useMutation({
+        onError: (opts) => {
+            const { message, data } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (partnerMut.isError && errorCtx) {
-            console.error(partnerMut.error.message);
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${partner ? "Saving" : "Creating"} Partner`);
     
-            errorCtx.setTitle(`Error ${partner ? "Saving" : "Creating"} Partner`);
-    
-            if (partnerMut.error.data?.code == "UNAUTHORIZED")
-                errorCtx.setMsg("You are not signed in or have permissions to create partners.")
-            else
-                errorCtx.setMsg(`Error ${partner ? "saving" : "creating"} partner.`);
-    
-            // Scroll to top.
-            ScrollToTop();
+                if (data?.code == "UNAUTHORIZED")
+                    errorCtx.setMsg("You are not signed in or have permissions to create partners.")
+                else
+                    errorCtx.setMsg(`Error ${partner ? "saving" : "creating"} partner.`);
+
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${partner ? "Saved" : "Created"} Partner!`);
+                successCtx.setMsg(`Partner successfully ${partner ? "saved" : "created"}!`);
+        
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-    
-        if (partnerMut.isSuccess && successCtx) {
-    
-            successCtx.setTitle(`Successfully ${partner ? "Saved" : "Created"} Partner!`);
-            successCtx.setMsg(`Partner successfully ${partner ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-    }, [partner, partnerMut, errorCtx, successCtx])
+    });
 
     // Setup banner image.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);

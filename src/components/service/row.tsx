@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,14 +8,15 @@ import { ErrorCtx, SuccessCtx } from "@pages/_app";
 import { type Service } from "@prisma/client";
 
 import IconAndText from "@components/containers/icon_and_text";
-
-import { api } from "@utils/api";
 import ViewIcon from "@components/icons/view";
 import PurchaseIcon from "@components/icons/purchase";
 import DownloadIcon from "@components/icons/download";
+import Markdown from "@components/markdown/markdown";
+
+import { api } from "@utils/api";
 
 import { has_role } from "@utils/user/auth";
-import Markdown from "@components/markdown/markdown";
+import { ScrollToTop } from "@utils/scroll";
 
 const ServiceRow: React.FC<{
     service: Service
@@ -44,19 +45,28 @@ const ServiceRow: React.FC<{
         banner = cdn + uploadUrl + service.banner;
 
     // Prepare delete mutation.
-    const deleteMut = api.service.delete.useMutation();
+    const deleteMut = api.service.delete.useMutation({
+        onError: (opts) => {
+            const { message } = opts;
 
-    useEffect(() => {
-        if (deleteMut.isError && errorCtx) {
-            console.error(deleteMut.error.message);
-    
-            errorCtx.setTitle("Failed To Delete Service");
-            errorCtx.setMsg("Failed to delete service. Please check your console for more details.");
-        } else if (deleteMut.isSuccess && successCtx) {
-            successCtx.setTitle("Successfully Deleted Service!");
-            successCtx.setMsg("Successfully deleted service! Please refresh the page.");
+            console.error(message);
+
+            if (errorCtx) {
+                errorCtx.setTitle("Failed To Delete Service");
+                errorCtx.setMsg("Failed to delete service. Please check your console for more details.");
+                
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle("Successfully Deleted Service!");
+                successCtx.setMsg("Successfully deleted service! Please refresh the page.");
+
+                ScrollToTop();
+            }
         }
-    }, [deleteMut, errorCtx, successCtx])
+    });
 
     return (
         <div className="service-row">

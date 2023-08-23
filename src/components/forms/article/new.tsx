@@ -1,7 +1,7 @@
 import { Field, useFormik } from 'formik';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { ErrorCtx, SuccessCtx } from '@pages/_app';
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type Article } from '@prisma/client';
 import { type CategoryWithChildren } from '~/types/category';
@@ -25,36 +25,36 @@ const Form: React.FC<{
     const successCtx = useContext(SuccessCtx);
 
     // Article mutations.
-    const articleMut = api.blog.add.useMutation();
+    const articleMut = api.blog.add.useMutation({
+        onError: (opts) => {
+            const { message, data } = opts;
 
-    // Check for errors or successes.
-    useEffect(() => {
-        if (articleMut.isError && errorCtx) {
-            const errorMsg = articleMut.error.message;
-    
-            console.error(errorMsg);
-    
-            errorCtx.setTitle(`Error ${article ? "Saving" : "Creating"} Article`);
-    
-            if (articleMut.error.data?.code == "UNAUTHORIZED")
-            errorCtx.setMsg("You are not signed in or have permissions to create articles on our blog.");
-            else if (errorMsg.includes("constraint"))
-            errorCtx.setMsg("URL is already in use. Please choose a different URL or modify the existing article properly.");
-            else
-            errorCtx.setMsg(`Error ${article ? "saving" : "creating"} article.`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
+            console.error(message);
 
-        if (articleMut.isSuccess && successCtx) {
-            successCtx.setTitle(`Successfully ${article ? "Saved" : "Created"} Article`);
-            successCtx.setMsg(`Article successfully ${article ? "saved" : "created"}!`);
+            if (errorCtx) {
+                errorCtx.setTitle(`Error ${article ? "Saving" : "Creating"} Article`);
     
-            // Scroll to top.
-            ScrollToTop();
+                if (data?.code == "UNAUTHORIZED")
+                    errorCtx.setMsg("You are not signed in or have permissions to create articles on our blog.");
+                else if (message.includes("constraint"))
+                    errorCtx.setMsg("URL is already in use. Please choose a different URL or modify the existing article properly.");
+                else
+                    errorCtx.setMsg(`Error ${article ? "saving" : "creating"} article.`);
+
+                // Scroll to top.
+                ScrollToTop();
+            }
+        },
+        onSuccess: () => {
+            if (successCtx) {
+                successCtx.setTitle(`Successfully ${article ? "Saved" : "Created"} Article`);
+                successCtx.setMsg(`Article successfully ${article ? "saved" : "created"}!`);
+
+                // Scroll to top.
+                ScrollToTop();
+            }
         }
-    }, [article, articleMut, errorCtx, successCtx])
+    });
 
     // Setup banner image.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
