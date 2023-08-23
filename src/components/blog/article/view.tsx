@@ -3,9 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type ArticleWithUser } from "~/types/blog/article";
 
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import { UserLink } from "@components/user/link";
 import Markdown from "@components/markdown/markdown";
 
@@ -45,15 +46,17 @@ const ArticleView: React.FC<{
     // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation();
 
-    if (deleteMut.isError && errorCtx) {
-        console.error(deleteMut.error.message);
-
-        errorCtx.setTitle("Failed To Delete Article");
-        errorCtx.setMsg("Failed to delete article. Please check your console for more details.");
-    } else if (deleteMut.isSuccess && successCtx) {
-        successCtx.setTitle("Successfully Deleted Article!");
-        successCtx.setMsg("Successfully deleted article! Please reload the page.");
-    }
+    useEffect(() => {
+        if (deleteMut.isError && errorCtx) {
+            console.error(deleteMut.error.message);
+    
+            errorCtx.setTitle("Failed To Delete Article");
+            errorCtx.setMsg("Failed to delete article. Please check your console for more details.");
+        } else if (deleteMut.isSuccess && successCtx) {
+            successCtx.setTitle("Successfully Deleted Article!");
+            successCtx.setMsg("Successfully deleted article! Please reload the page.");
+        }
+    }, [deleteMut, errorCtx, successCtx])
 
     // Retrieve base URL.
     const [baseUrl, setBaseUrl] = useState("");

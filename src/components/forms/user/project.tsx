@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type UserProjectWithSourcesAndUser, type UserProjectWithSources } from "~/types/user/project";
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
@@ -26,33 +27,32 @@ const UserProjectForm: React.FC<{
     project
 }) => {
     // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
     const projectMut = api.user.addProject.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (projectMut.isSuccess && success) {   
-            success.setTitle(`Successfully ${project ? "Saved" : "Created"} Project!`);
-            success.setMsg(`Your project was ${project ? "saved" : "created"} successfully!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (projectMut.isError && error) {
+        if (projectMut.isError && errorCtx) {
             console.error(projectMut.error.message);
-
-            error.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
-            error.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
+    
+            errorCtx.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
+            errorCtx.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-
-    }, [projectMut, success, error, project])
+    
+        if (projectMut.isSuccess && successCtx) {   
+            successCtx.setTitle(`Successfully ${project ? "Saved" : "Created"} Project!`);
+            successCtx.setMsg(`Your project was ${project ? "saved" : "created"} successfully!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [project, projectMut, errorCtx, successCtx])
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -92,11 +92,11 @@ const UserProjectForm: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             projectMut.mutate({
                 id: project?.id,

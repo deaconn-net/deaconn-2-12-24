@@ -1,11 +1,12 @@
 import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type UserExperience } from "@prisma/client";
 import { type UserExperienceWithUser } from "~/types/user/experience";
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
@@ -21,33 +22,32 @@ const Form: React.FC<{
     experience,
 }) => {
     // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
     const experienceMut = api.user.addExperience.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (experienceMut.isSuccess && success) {
-            success.setTitle(`Successfully ${experience ? "Saved" : "Created"} Experience!`);
-            success.setMsg(`Your experience was ${experience ? "saved" : "created"} successfully!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (experienceMut.isError && error) {
+        if (experienceMut.isError && errorCtx) {
             console.error(experienceMut.error.message);
-
-            error.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
-            error.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
+    
+            errorCtx.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
+            errorCtx.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [experienceMut, success, error, experience])
-
+        
+        if (experienceMut.isSuccess && successCtx) {
+            successCtx.setTitle(`Successfully ${experience ? "Saved" : "Created"} Experience!`);
+            successCtx.setMsg(`Your experience was ${experience ? "saved" : "created"} successfully!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [experience, experienceMut, errorCtx, successCtx])
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -83,12 +83,12 @@ const Form: React.FC<{
         enableReinitialize: false,
 
         onSubmit: (values) => {
-            // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            // Reset error and success.
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             experienceMut.mutate({
                 id: experience?.id,

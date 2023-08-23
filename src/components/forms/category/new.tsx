@@ -1,11 +1,12 @@
 import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type Category } from "@prisma/client";
 import { type CategoryWithChildren } from "~/types/category";
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
@@ -19,39 +20,37 @@ const CategoryForm: React.FC<{
     category,
     categories = []
 }) => {
-    // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    // Success and error handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Role mutations.
     const categoryMut = api.category.add.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (categoryMut.isSuccess && success) {    
-            success.setTitle(`Successfully ${category ? "Saved" : "Created"} Category!`);
-            success.setMsg(`Category successfully ${category ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (categoryMut.isError && error) {    
+        if (categoryMut.isError && errorCtx) {    
             console.error(categoryMut.error.message);
-
-            error.setTitle(`Error ${category ? "Saving" : "Creating"} Role`);
+    
+            errorCtx.setTitle(`Error ${category ? "Saving" : "Creating"} Role`);
     
             if (categoryMut.error.data?.code == "UNAUTHORIZED")
-                error.setMsg("You are not signed in or have permissions to create categories.")
+                errorCtx.setMsg("You are not signed in or have permissions to create categories.")
             else
-                error.setMsg(`Error ${category ? "saving" : "creating"} category.`);
+                errorCtx.setMsg(`Error ${category ? "saving" : "creating"} category.`);
     
             // Scroll to top.
             ScrollToTop();
         }
     
-    }, [categoryMut, success, error, category])
-
+        if (categoryMut.isSuccess && successCtx) {    
+            successCtx.setTitle(`Successfully ${category ? "Saved" : "Created"} Category!`);
+            successCtx.setMsg(`Category successfully ${category ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [category, categoryMut, errorCtx, successCtx])
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -88,11 +87,11 @@ const CategoryForm: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             // Create category.
             categoryMut.mutate({

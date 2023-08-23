@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { type GlobalPropsType } from "@utils/global_props";
 
@@ -6,88 +6,53 @@ import Header from "@components/header";
 import Footer from "@components/footer";
 import ErrorBox from "@components/error/box";
 import SuccessBox from "@components/success/box";
-
-interface successInt {
-    setTitle: React.Dispatch<React.SetStateAction<string | undefined>>
-    setMsg: React.Dispatch<React.SetStateAction<string | undefined>>
-}
-
-interface errorInt {
-    setTitle: React.Dispatch<React.SetStateAction<string | undefined>>
-    setMsg: React.Dispatch<React.SetStateAction<string | undefined>>
-}
-
-export const SuccessCtx = createContext<successInt | undefined>(undefined);
-export const ErrorCtx = createContext<errorInt | undefined>(undefined);
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 const Wrapper: React.FC<{
-    successTitleOverride?: string,
-    successMsgOverride?: string
-    errorTitleOverride?: string,
-    errorMsgOverride?: string,
-
     children: React.ReactNode,
 } & GlobalPropsType> = ({
-    successTitleOverride,
-    successMsgOverride,
-    errorTitleOverride,
-    errorMsgOverride,
-
     footerServices,
     footerPartners,
 
     children
 }) => {
     // Success and error messages.
-    const [successTitle, setSuccessTitle] = useState<string | undefined>(undefined);
-    const [successMsg, setSuccessMsg] = useState<string | undefined>(undefined);
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
-    const [errorTitle, setErrorTitle] = useState<string | undefined>(undefined);
-    const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
+    // Reset error and success titles and messages every time this wrapper is remounted.
+    useEffect(() => {
+        if (errorCtx) {
+            errorCtx.setTitle(undefined);
+            errorCtx.setMsg(undefined);
+        }
 
-    // Overrides
-    if (successTitleOverride && !successTitle)
-        setSuccessTitle(successTitleOverride);
-
-    if (successMsgOverride && !successMsg)
-        setSuccessMsg(successMsgOverride);
-
-    if (errorTitleOverride && !errorTitle)
-        setErrorTitle(errorTitleOverride);
-
-    if (errorMsgOverride && !errorMsg)
-        setErrorMsg(errorMsgOverride);
+        if (successCtx) {
+            successCtx.setTitle(undefined);
+            successCtx.setMsg(undefined);
+        }
+    }, []);
 
     return (
-        <SuccessCtx.Provider value={{
-            setTitle: setSuccessTitle,
-            setMsg: setSuccessMsg
-        }}>
-            <ErrorCtx.Provider value={{
-                setTitle: setErrorTitle,
-                setMsg: setErrorMsg
-            }}>
-                <main>
-                    <Header />
-                    <div className="content">
-                        <SuccessBox
-                            title={successTitle}
-                            msg={successMsg}
-                        />
-                        <ErrorBox
-                            title={errorTitle}
-                            msg={errorMsg}
-                        />
-                        
-                        {children}
-                    </div>
-                    <Footer
-                        services={footerServices}
-                        partners={footerPartners}
-                    />
-                </main>
-            </ErrorCtx.Provider>
-        </SuccessCtx.Provider>
+        <main>
+            <Header />
+            <div className="content">
+                <ErrorBox
+                    title={errorCtx?.title}
+                    msg={errorCtx?.msg}
+                />
+                <SuccessBox
+                    title={successCtx?.title}
+                    msg={successCtx?.msg}
+                />
+
+                {children}
+            </div>
+            <Footer
+                services={footerServices}
+                partners={footerPartners}
+            />
+        </main>
     );
 }
 

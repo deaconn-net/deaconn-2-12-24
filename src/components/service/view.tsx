@@ -1,12 +1,13 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { useSession } from "next-auth/react";
 
 import { type Service } from "@prisma/client";
 
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 import TabMenuWithData from "@components/tabs/menu_with_data";
 import IconAndText from "@components/containers/icon_and_text";
@@ -27,8 +28,8 @@ const ServiceView: React.FC<{
     view
 }) => {
     // Success and error handling.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
     
     // Retrieve session.
     const { data: session } = useSession();
@@ -50,15 +51,17 @@ const ServiceView: React.FC<{
     // Prepare delete mutation.
     const deleteMut = api.service.delete.useMutation();
 
-    if (deleteMut.isSuccess && success) {
-        success.setTitle("Successfully Deleted Service!");
-        success.setMsg("Successfully deleted service. Please reload the page.");
-    } else if (deleteMut.isError && error) {
-        console.error(deleteMut.error.message);
-
-        error.setTitle("Failed To Delete Service");
-        error.setMsg("Failed to delete service. Please check your console for more details.");
-    }
+    useEffect(() => {
+        if (deleteMut.isError && errorCtx) {
+            console.error(deleteMut.error.message);
+    
+            errorCtx.setTitle("Failed To Delete Service");
+            errorCtx.setMsg("Failed to delete service. Please check your console for more details.");
+        } else if (deleteMut.isSuccess && successCtx) {
+            successCtx.setTitle("Successfully Deleted Service!");
+            successCtx.setMsg("Successfully deleted service. Please reload the page.");
+        } 
+    }, [deleteMut, errorCtx, successCtx])
 
     // Compile tabs.
     const tabs: TabItemType[] = [

@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
-import { type Article } from "@prisma/client";
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
+import { type Article } from "@prisma/client";
 
 import IconAndText from "@components/containers/icon_and_text";
 
@@ -43,15 +43,17 @@ const ArticleRow: React.FC<{
     // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation();
 
-    if (deleteMut.isError && errorCtx) {
-        console.error(deleteMut.error.message);
-
-        errorCtx.setTitle("Failed To Delete Article");
-        errorCtx.setMsg("Failed to delete article. Check your console for more details.");
-    } else if (deleteMut.isSuccess && successCtx) {
-        successCtx.setTitle("Successfully Deleted Article!");
-        successCtx.setMsg("Successfully deleted article! Please refresh the page.");
-    }
+    useEffect(() => {
+        if (deleteMut.isError && errorCtx) {
+            console.error(deleteMut.error.message);
+    
+            errorCtx.setTitle("Failed To Delete Article");
+            errorCtx.setMsg("Failed to delete article. Check your console for more details.");
+        } else if (deleteMut.isSuccess && successCtx) {
+            successCtx.setTitle("Successfully Deleted Article!");
+            successCtx.setMsg("Successfully deleted article! Please refresh the page.");
+        }
+    }, [deleteMut, errorCtx, successCtx])
 
     return (
         <div className="article-row">

@@ -1,6 +1,9 @@
+import { useContext, useEffect } from "react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
+
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type Role } from "@prisma/client";
 
@@ -28,31 +31,26 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
+
     // Prepare mutations.
     const roleDeleteMut = api.admin.delRole.useMutation();
 
-    // Success and error management.
-    let sucTitle: string | undefined = undefined;
-    let sucMsg: string | undefined = undefined;
+    useEffect(() => {
+        if (roleDeleteMut.isError && errorCtx) {
+            errorCtx.setTitle("Role Not Deleted");
+            errorCtx.setMsg("Role not deleted successfully.");
+        } else if (roleDeleteMut.isSuccess && successCtx) {
+            successCtx.setTitle("Role Deleted!");
+            successCtx.setMsg("Role deleted successfully.");
+        }
+    }, [roleDeleteMut, errorCtx, successCtx])
 
-    let errTitle: string | undefined = undefined;
-    let errMsg: string | undefined = undefined;
-
-    if (roleDeleteMut.isError) {
-        errTitle = "Role Not Deleted";
-        errMsg = "Role not deleted successfully.";
-    } else if (roleDeleteMut.isSuccess) {
-        sucTitle = "Role Deleted!";
-        sucMsg = "Role deleted successfully.";
-    }
 
     return (
         <Wrapper
-            successTitleOverride={sucTitle}
-            successMsgOverride={sucMsg}
-            errorTitleOverride={errTitle}
-            errorMsgOverride={errMsg}
-
             footerServices={footerServices}
             footerPartners={footerPartners}
         >

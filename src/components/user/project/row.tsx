@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import { type UserProjectWithSourcesAndUser, type UserProjectWithUser } from "~/types/user/project";
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
+import { type UserProjectWithSourcesAndUser, type UserProjectWithUser } from "~/types/user/project";
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
@@ -47,15 +47,17 @@ const UserProjectRow: React.FC<{
     // Prepare mutations.
     const deleteMut = api.user.deleteProject.useMutation();
 
-    if (deleteMut.isError && errorCtx) {
-        console.error(deleteMut.error.message);
-
-        errorCtx.setTitle("Failed To Delete Project");
-        errorCtx.setMsg("Failed to delete project. Check your console for more details.");
-    } else if (deleteMut.isSuccess && successCtx) {
-        successCtx.setTitle("Successfully Deleted Project!");
-        successCtx.setMsg("Successfully deleted project! Please reload the page.");
-    }
+    useEffect(() => {
+        if (deleteMut.isError && errorCtx) {
+            console.error(deleteMut.error.message);
+    
+            errorCtx.setTitle("Failed To Delete Project");
+            errorCtx.setMsg("Failed to delete project. Check your console for more details.");
+        } else if (deleteMut.isSuccess && successCtx) {
+            successCtx.setTitle("Successfully Deleted Project!");
+            successCtx.setMsg("Successfully deleted project! Please reload the page.");
+        }
+    }, [deleteMut, errorCtx, successCtx])
 
     return (
         <div className="project-row">

@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 
-import { type Service } from "@prisma/client";
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
+import { type Service } from "@prisma/client";
 
 import IconAndText from "@components/containers/icon_and_text";
 
@@ -46,15 +46,17 @@ const ServiceRow: React.FC<{
     // Prepare delete mutation.
     const deleteMut = api.service.delete.useMutation();
 
-    if (deleteMut.isError && errorCtx) {
-        console.error(deleteMut.error.message);
-
-        errorCtx.setTitle("Failed To Delete Service");
-        errorCtx.setMsg("Failed to delete service. Please check your console for more details.");
-    } else if (deleteMut.isSuccess && successCtx) {
-        successCtx.setTitle("Successfully Deleted Service!");
-        successCtx.setMsg("Successfully deleted service! Please refresh the page.");
-    }
+    useEffect(() => {
+        if (deleteMut.isError && errorCtx) {
+            console.error(deleteMut.error.message);
+    
+            errorCtx.setTitle("Failed To Delete Service");
+            errorCtx.setMsg("Failed to delete service. Please check your console for more details.");
+        } else if (deleteMut.isSuccess && successCtx) {
+            successCtx.setTitle("Successfully Deleted Service!");
+            successCtx.setMsg("Successfully deleted service! Please refresh the page.");
+        }
+    }, [deleteMut, errorCtx, successCtx])
 
     return (
         <div className="service-row">

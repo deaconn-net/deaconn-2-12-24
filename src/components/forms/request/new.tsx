@@ -1,8 +1,9 @@
 import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
@@ -21,38 +22,37 @@ const Form: React.FC<{
     request,
     services = []
 }) => {
-    // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    // Error and success handling.
+    const errorCtx= useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
     const requestMut = api.request.add.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (requestMut.isSuccess && success) {    
-            success.setTitle(`Successfully ${request ? "Saved" : "Created"} Request!`);
-            success.setMsg(`Request successfully ${request ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (requestMut.isError && error) {
+        if (requestMut.isError && errorCtx) {
             console.error(requestMut.error.message);
-
-            error.setTitle("Error Creating Or Editing Request");
+    
+            errorCtx.setTitle("Error Creating Or Editing Request");
     
             if (requestMut.error.data?.code == "UNAUTHORIZED")
-                error.setMsg("You are not signed in or have permissions to create requests.")
+                errorCtx.setMsg("You are not signed in or have permissions to create requests.")
             else
-                error.setMsg(`Error ${request ? "saving" : "creating"} request.`);
+                errorCtx.setMsg(`Error ${request ? "saving" : "creating"} request.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [requestMut, success, error, request])
-
+    
+        if (requestMut.isSuccess && successCtx) {    
+            successCtx.setTitle(`Successfully ${request ? "Saved" : "Created"} Request!`);
+            successCtx.setMsg(`Request successfully ${request ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [request, requestMut, errorCtx, successCtx])
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -91,11 +91,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
             requestMut.mutate({
                 id: request?.id,

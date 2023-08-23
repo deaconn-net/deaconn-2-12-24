@@ -1,11 +1,12 @@
 import { Field, useFormik } from 'formik';
 import React, { useContext, useEffect, useState } from 'react';
 
+import { ErrorCtx, SuccessCtx } from '@pages/_app';
+
 import { type Article } from '@prisma/client';
 import { type CategoryWithChildren } from '~/types/category';
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from '@components/wrapper';
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
@@ -19,42 +20,41 @@ const Form: React.FC<{
     article,
     categories = []
 }) => {
-    // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    // Success and error handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Article mutations.
     const articleMut = api.blog.add.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (articleMut.isSuccess && success) {
-            success.setTitle(`Successfully ${article ? "Saved" : "Created"} Article`);
-            success.setMsg(`Article successfully ${article ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (articleMut.isError && error) {
+        if (articleMut.isError && errorCtx) {
             const errorMsg = articleMut.error.message;
-
+    
             console.error(errorMsg);
-
-            error.setTitle(`Error ${article ? "Saving" : "Creating"} Article`);
+    
+            errorCtx.setTitle(`Error ${article ? "Saving" : "Creating"} Article`);
     
             if (articleMut.error.data?.code == "UNAUTHORIZED")
-                error.setMsg("You are not signed in or have permissions to create articles on our blog.");
+            errorCtx.setMsg("You are not signed in or have permissions to create articles on our blog.");
             else if (errorMsg.includes("constraint"))
-                error.setMsg("URL is already in use. Please choose a different URL or modify the existing article properly.");
+            errorCtx.setMsg("URL is already in use. Please choose a different URL or modify the existing article properly.");
             else
-                error.setMsg(`Error ${article ? "saving" : "creating"} article.`);
+            errorCtx.setMsg(`Error ${article ? "saving" : "creating"} article.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [articleMut, success, error, article]);
 
+        if (articleMut.isSuccess && successCtx) {
+            successCtx.setTitle(`Successfully ${article ? "Saved" : "Created"} Article`);
+            successCtx.setMsg(`Article successfully ${article ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [article, articleMut, errorCtx, successCtx])
 
     // Setup banner image.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
@@ -96,11 +96,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             // Create article.
             articleMut.mutate({

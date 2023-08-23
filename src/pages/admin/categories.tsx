@@ -1,6 +1,9 @@
+import { useContext, useEffect } from "react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
+
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type CategoryWithChildren } from "~/types/category";
 
@@ -28,31 +31,25 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
+
     // Prepare mutations.
     const categoryDeleteMut = api.category.delete.useMutation();
 
-    // Success and error management.
-    let sucTitle: string | undefined = undefined;
-    let sucMsg: string | undefined = undefined;
-
-    let errTitle: string | undefined = undefined;
-    let errMsg: string | undefined = undefined;
-
-    if (categoryDeleteMut.isError) {
-        errTitle = "Category Not Deleted";
-        errMsg = "Category not deleted successfully.";
-    } else if (categoryDeleteMut.isSuccess) {
-        sucTitle = "Category Deleted!";
-        sucMsg = "Category deleted successfully.";
-    }
+    useEffect(() => {
+        if (categoryDeleteMut.isError && errorCtx) {
+            errorCtx.setTitle("Category Not Deleted");
+            errorCtx.setMsg("Category not deleted successfully.");
+        } else if (categoryDeleteMut.isSuccess && successCtx) {
+            successCtx.setTitle("Category Deleted!");
+            successCtx.setMsg("Category deleted successfully.");
+        }
+    }, [categoryDeleteMut, errorCtx, successCtx])
 
     return (
         <Wrapper
-            successTitleOverride={sucTitle}
-            successMsgOverride={sucMsg}
-            errorTitleOverride={errTitle}
-            errorMsgOverride={errMsg}
-
             footerServices={footerServices}
             footerPartners={footerPartners}
         >

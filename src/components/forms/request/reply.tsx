@@ -1,8 +1,9 @@
 import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
@@ -18,37 +19,37 @@ const RequestReplyForm: React.FC<{
     requestId,
     reply
 }) => {
-    // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    // Error and success handling
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
     const requestReplyMut = api.request.addReply.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (requestReplyMut.isSuccess && success) {    
-            success.setTitle(`Successfully ${reply ? "Saved" : "Created"} Reply!`);
-            success.setMsg(`Reply successfully ${reply ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (requestReplyMut.isError && error) {
+        if (requestReplyMut.isError && errorCtx) {
             console.error(requestReplyMut.error.message);
-
-            error.setTitle("Error Creating Or Editing Reply");
+    
+            errorCtx.setTitle("Error Creating Or Editing Reply");
     
             if (requestReplyMut.error.data?.code == "UNAUTHORIZED")
-                error.setMsg("You are not signed in or have permissions to create replies.")
+                errorCtx.setMsg("You are not signed in or have permissions to create replies.")
             else
-                error.setMsg(`Error ${reply ? "saving" : "creating"} reply.`);
+                errorCtx.setMsg(`Error ${reply ? "saving" : "creating"} reply.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [requestReplyMut, success, error, reply])
+    
+        if (requestReplyMut.isSuccess && successCtx) {    
+            successCtx.setTitle(`Successfully ${reply ? "Saved" : "Created"} Reply!`);
+            successCtx.setMsg(`Reply successfully ${reply ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [reply, requestReplyMut, errorCtx, successCtx])
 
 
     // Setup preview.
@@ -83,11 +84,11 @@ const RequestReplyForm: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             requestReplyMut.mutate({
                 id: reply?.id,

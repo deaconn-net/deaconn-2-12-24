@@ -1,10 +1,11 @@
 import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type Role } from "@prisma/client";
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
@@ -16,39 +17,36 @@ const Form: React.FC<{
 }> = ({
     role
 }) => {
-    // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    // Error and success handling
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Role mutations.
     const roleMut = api.admin.addRole.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (roleMut.isSuccess && success) {    
-            success.setTitle(`Successfully ${role ? "Saved" : "Created"} Role!`);
-            success.setMsg(`Role successfully ${role ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (roleMut.isError && error) {    
+        if (roleMut.isError && errorCtx) {    
             console.error(roleMut.error.message);
-
-            error.setTitle(`Error ${role ? "Saving" : "Creating"} Role`);
+    
+            errorCtx.setTitle(`Error ${role ? "Saving" : "Creating"} Role`);
     
             if (roleMut.error.data?.code == "UNAUTHORIZED")
-                error.setMsg("You are not signed in or have permissions to create roles.")
+                errorCtx.setMsg("You are not signed in or have permissions to create roles.")
             else
-                error.setMsg(`Error ${role ? "saving" : "creating"} role.`);
+                errorCtx.setMsg(`Error ${role ? "saving" : "creating"} role.`);
     
             // Scroll to top.
             ScrollToTop();
         }
+        if (roleMut.isSuccess && successCtx) {    
+            successCtx.setTitle(`Successfully ${role ? "Saved" : "Created"} Role!`);
+            successCtx.setMsg(`Role successfully ${role ? "saved" : "created"}!`);
     
-    }, [roleMut, success, error, role])
-
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [role, roleMut, errorCtx, successCtx])
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -84,11 +82,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             // Create article.
             roleMut.mutate({

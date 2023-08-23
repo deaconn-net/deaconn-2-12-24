@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
@@ -5,8 +6,7 @@ import { type UserSkill } from "@prisma/client";
 
 import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
-import { useContext } from "react";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 const UserSkillRow: React.FC<{
     skill: UserSkill

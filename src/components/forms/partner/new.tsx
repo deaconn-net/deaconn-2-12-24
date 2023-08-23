@@ -1,8 +1,9 @@
 import { Field, useFormik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
@@ -14,39 +15,38 @@ const Form: React.FC<{
 }> = ({
     partner
 }) => {
-    // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Partner mutations.
     const partnerMut = api.partner.add.useMutation();
 
     // Check for errors or successes.
-    
     useEffect(() => {
-        if (partnerMut.isSuccess && success) {
-    
-            success.setTitle(`Successfully ${partner ? "Saved" : "Created"} Partner!`);
-            success.setMsg(`Partner successfully ${partner ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (partnerMut.isError && error) {
+        if (partnerMut.isError && errorCtx) {
             console.error(partnerMut.error.message);
-
-            error.setTitle(`Error ${partner ? "Saving" : "Creating"} Partner`);
+    
+            errorCtx.setTitle(`Error ${partner ? "Saving" : "Creating"} Partner`);
     
             if (partnerMut.error.data?.code == "UNAUTHORIZED")
-                error.setMsg("You are not signed in or have permissions to create partners.")
+                errorCtx.setMsg("You are not signed in or have permissions to create partners.")
             else
-                error.setMsg(`Error ${partner ? "saving" : "creating"} partner.`);
+                errorCtx.setMsg(`Error ${partner ? "saving" : "creating"} partner.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [partnerMut, success, error, partner])
+    
+        if (partnerMut.isSuccess && successCtx) {
+    
+            successCtx.setTitle(`Successfully ${partner ? "Saved" : "Created"} Partner!`);
+            successCtx.setMsg(`Partner successfully ${partner ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [partner, partnerMut, errorCtx, successCtx])
 
     // Setup banner image.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
@@ -85,11 +85,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             // Create article.
             partnerMut.mutate({

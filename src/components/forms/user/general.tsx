@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type User } from "@prisma/client";
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
@@ -20,31 +21,32 @@ const Form: React.FC<{
     user
 }) => {
     // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // User mutations.
     const userMut = api.user.update.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (userMut.isSuccess && success) {
-            success.setTitle("Profile Saved!");
-            success.setMsg("Your profile information was save successfully!");
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-        if (userMut.isError && error) {
+        if (userMut.isError && errorCtx) {
             console.error(userMut.error.message);
-
-            error.setTitle("Error Saving Profile");
-            error.setMsg("Error saving profile. Read developer console for more information.");
+    
+            errorCtx.setTitle("Error Saving Profile");
+            errorCtx.setMsg("Error saving profile. Read developer console for more information.");
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [userMut, success, error, user])
+    
+        if (userMut.isSuccess && successCtx) {
+            successCtx.setTitle("Profile Saved!");
+            successCtx.setMsg("Your profile information was save successfully!");
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [user, userMut, errorCtx, successCtx])
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -88,16 +90,17 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
+
+            if (successCtx)
+                successCtx.setTitle(undefined);
             
-            if (error)
-                error.setTitle(undefined);
 
             if (!user?.id) {
-                if (error) {
-                    error.setTitle("User Not Found!");
-                    error.setMsg("User not found when saving profile information.");
+                if (errorCtx) {
+                    errorCtx.setTitle("User Not Found!");
+                    errorCtx.setMsg("User not found when saving profile information.");
                 }
 
                 return;

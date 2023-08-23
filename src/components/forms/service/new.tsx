@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type Service } from "@prisma/client";
 import { type CategoryWithChildren } from "~/types/category";
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from '@utils/scroll';
@@ -19,38 +20,39 @@ const Form: React.FC<{
     service,
     categories
 }) => {
-    // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Service mutations.
     const serviceMut = api.service.add.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (serviceMut.isSuccess && success) {
-            success.setTitle(`Successfully ${service ? "Saved" : "Created"} Service!`);
-            success.setMsg(`Service successfully ${service ? "saved" : "created"}!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-        if (serviceMut.isError && error) {
+        if (serviceMut.isError && errorCtx) {
             const errMsg = serviceMut.error.message;
-
+    
             console.error(errMsg);
-
-            error.setTitle(`Error ${service ? "Saving" : "Creating"} Service!`);
+    
+            errorCtx.setTitle(`Error ${service ? "Saving" : "Creating"} Service!`);
             
             if (serviceMut.error.data?.code == "UNAUTHORIZED")
-                error.setMsg("You are not signed in or have permissions to create services.")
+                errorCtx.setMsg("You are not signed in or have permissions to create services.")
             else
-                error.setMsg(`Error ${service ? "saving" : "creating"} service.`);
+                errorCtx.setMsg(`Error ${service ? "saving" : "creating"} service.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [serviceMut, success, error, service])
+
+        if (serviceMut.isSuccess && successCtx) {
+            successCtx.setTitle(`Successfully ${service ? "Saved" : "Created"} Service!`);
+            successCtx.setMsg(`Service successfully ${service ? "saved" : "created"}!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [service, serviceMut, errorCtx, successCtx])
 
     // Setup banner and icons.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
@@ -99,11 +101,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             serviceMut.mutate({
                 id: service?.id,

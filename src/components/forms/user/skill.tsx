@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Field, useFormik } from "formik";
 
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
+
 import { type UserSkill } from "@prisma/client";
 import { type UserSkillWithUser } from "~/types/user/skill";
 
 import FormMain from "@components/forms/main";
-import { ErrorCtx, SuccessCtx } from "@components/wrapper";
 
 import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
@@ -16,32 +17,33 @@ const Form: React.FC<{
     skill
 }) => {
     // Success and error messages.
-    const success = useContext(SuccessCtx);
-    const error = useContext(ErrorCtx);
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Request mutations.
     const skillMut = api.user.addSkill.useMutation();
 
     // Check for errors or successes.
     useEffect(() => {
-        if (skillMut.isSuccess && success) {    
-            success.setTitle(`Successfully ${skill ? "Saved" : "Created"} Skill!`);
-            success.setMsg(`Your skill was ${skill ? "saved" : "created"} successfully!`);
-    
-            // Scroll to top.
-            ScrollToTop();
-        }
-
-        if (skillMut.isError && error) {
+        if (skillMut.isError && errorCtx) {
             console.error(skillMut.error.message);
-
-            error.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
-            error.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
+    
+            errorCtx.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
+            errorCtx.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
     
             // Scroll to top.
             ScrollToTop();
         }
-    }, [skillMut, success, error, skill])
+    
+        if (skillMut.isSuccess && successCtx) {    
+            successCtx.setTitle(`Successfully ${skill ? "Saved" : "Created"} Skill!`);
+            successCtx.setMsg(`Your skill was ${skill ? "saved" : "created"} successfully!`);
+    
+            // Scroll to top.
+            ScrollToTop();
+        }
+    }, [skill, skillMut, errorCtx, successCtx])
+
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -76,11 +78,11 @@ const Form: React.FC<{
 
         onSubmit: (values) => {
             // Reset error and success.
-            if (success)
-                success.setTitle(undefined);
+            if (errorCtx)
+                errorCtx.setTitle(undefined);
 
-            if (error)
-                error.setTitle(undefined);
+            if (successCtx)
+                successCtx.setTitle(undefined);
 
             skillMut.mutate({
                 id: skill?.id,

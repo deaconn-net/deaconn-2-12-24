@@ -1,7 +1,9 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
+
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type RequestWithAll } from "~/types/request";
 
@@ -35,13 +37,12 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    // Retrieve session.
     const { data: session } = useSession();
 
-    // Success and error management.
-    let sucTitle: string | undefined = undefined;
-    let sucMsg: string | undefined = undefined;
-    let errTitle: string | undefined = undefined;
-    let errMsg: string | undefined = undefined;
+    // Error and success handling.
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Compile URLs.
     const editUrl = `/request/edit/${request?.id ?? ""}`;
@@ -51,25 +52,50 @@ const Page: NextPage<{
     const deleteReplyMut = api.request.delReply.useMutation();
     const acceptReqMut = api.request.setAccept.useMutation();
 
-    if (statusMut.isSuccess) {
-        sucTitle = "Updated Status!";
-        sucMsg = "Updated request status successfully!";
-    } else if (statusMut.isError) {
-        console.error(statusMut.error.message);
+    // Accept or reject request.
+    const [accept, setAccept] = useState(request?.accepted ?? false);
 
-        errTitle = "Failed To Update Status";
-        errMsg = "Failed to update request status. Please contact administrator or check your console for more details.";
-    }
+    useEffect(() => {
+        if (errorCtx) {
+            if (statusMut.isError) {
+                console.error(statusMut.error.message);
+        
+                errorCtx.setTitle("Failed To Update Status");
+                errorCtx.setMsg("Failed to update request status. Please contact administrator or check your console for more details.");
+            }
 
-    if (deleteReplyMut.isSuccess) {
-        sucTitle = "Deleted Reply!";
-        sucMsg = "Deleted reply successfully!";
-    } else if (deleteReplyMut.isError) {
-        console.error(deleteReplyMut.error.message);
+            if (deleteReplyMut.isError) {
+                console.error(deleteReplyMut.error.message);
+        
+                errorCtx.setTitle("Failed To Delete Reply");
+                errorCtx.setMsg("Failed to delete reply. Please contact administrator or check your console for more details.");
+            }
 
-        errTitle = "Failed To Delete Reply";
-        errMsg = "Failed to delete reply. Please contact administrator or check your console for more details.";
-    }
+            if (acceptReqMut.isError) {
+                console.error(acceptReqMut.error.message);
+        
+                errorCtx.setTitle(`Failed To ${accept ? "Accept" : "Reject"} Request`);
+                errorCtx.setMsg(`Failed to ${accept ? "accept" : "reject"} request. Look at console for more details.`);
+            }
+        }
+
+        if (successCtx) {
+            if (statusMut.isSuccess) {
+                successCtx.setTitle("Updated Status!");
+                successCtx.setMsg("Updated request status successfully!");
+            }
+        
+            if (deleteReplyMut.isSuccess) {
+                successCtx.setTitle("Deleted Reply!");
+                successCtx.setMsg("Deleted reply successfully!");
+            }
+            if (acceptReqMut.isSuccess) {
+                successCtx.setTitle(`${accept ? "Accepted" : "Rejected"} Request!`);
+                successCtx.setMsg(`Successfully ${accept ? "accepted" : "rejected"} this request!`);
+            }
+        }
+    }, [statusMut, deleteReplyMut, acceptReqMut, accept, errorCtx, successCtx])
+
 
     // Check if we can edit, set status, or accept/reject request.
     let isAdmin = false;
@@ -86,19 +112,6 @@ const Page: NextPage<{
         canEditAndStatus = true;
 
     const [isCompleted, setIsCompleted] = useState(request?.status == 2 ?? false);
-
-    // Accept or reject request.
-    const [accept, setAccept] = useState(request?.accepted ?? false);
-
-    if (acceptReqMut.isSuccess) {
-        sucTitle = `${accept ? "Accepted" : "Rejected"} Request!`;
-        sucMsg = `Successfully ${accept ? "accepted" : "rejected"} this request!`;
-    } else if (acceptReqMut.isError) {
-        console.error(acceptReqMut.error.message);
-
-        errTitle = `Failed To ${accept ? "Accept" : "Reject"} Request`;
-        errMsg = `Failed to ${accept ? "accept" : "reject"} request. Look at console for more details.`;
-    }
 
     // Dates    
     const [reqUpdatedAt, setReqUpdatedAt] = useState<string | undefined>(undefined);
@@ -125,11 +138,6 @@ const Page: NextPage<{
                 title="View Request - Requests - Deaconn"
             />
             <Wrapper
-                successTitleOverride={sucTitle}
-                successMsgOverride={sucMsg}
-                errorTitleOverride={errTitle}
-                errorMsgOverride={errMsg}
-
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

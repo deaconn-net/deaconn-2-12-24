@@ -1,6 +1,8 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type Role, type User } from "@prisma/client";
 
@@ -16,7 +18,6 @@ import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-
 const Page: NextPage<{
     authed: boolean,
     user?: User,
@@ -30,11 +31,8 @@ const Page: NextPage<{
     footerPartners
 }) => {
     // Error and success handling.
-    let errTitle: string | undefined = undefined;
-    let errMsg: string | undefined = undefined;
-
-    let sucTitle: string | undefined = undefined;
-    let sucMsg: string | undefined = undefined;
+    const errorCtx = useContext(ErrorCtx);
+    const successCtx = useContext(SuccessCtx);
 
     // Role name to add.
     const [roleName, setRoleName] = useState(roles?.[0]?.id ?? "");
@@ -51,33 +49,33 @@ const Page: NextPage<{
     const delRoleMut = api.admin.delUserRole.useMutation();
 
     // Handle errors and success messages.
-    if (addRoleMut.isSuccess) {
-        sucTitle = "Role Added!";
-        sucMsg = "Role added successfully!";
-    } 
-    
-    if (addRoleMut.isError) {
-        errTitle = "Role Not Added";
-        errMsg = "Role was not added successfully.";
-    }
+    useEffect(() => {
+        if (errorCtx) {
+            if (addRoleMut.isError) {
+                errorCtx.setTitle("Role Not Added");
+                errorCtx.setMsg("Role was not added successfully.");
+            }
 
-    if (delRoleMut.isSuccess) {
-        sucTitle = "Role Deleted!";
-        sucMsg = "Role was deleted successfully!";
-    } 
-    
-    if (delRoleMut.isError) {
-        errTitle = "Role Not Deleted";
-        errMsg = "Role was not deleted successfully.";
-    }
+            if (delRoleMut.isError) {
+                errorCtx.setTitle("Role Not Deleted");
+                errorCtx.setMsg("Role was not deleted successfully.");
+            }
+        }
+        if (successCtx) {
+            if (addRoleMut.isSuccess) {
+                successCtx.setTitle("Role Added!");
+                successCtx.setMsg("Role added successfully!");
+            } 
+            
+            if (delRoleMut.isSuccess) {
+                successCtx.setTitle("Role Deleted!");
+                successCtx.setMsg("Role was deleted successfully!");
+            } 
+        }
+    }, [addRoleMut, delRoleMut, errorCtx, successCtx])
 
     return (
         <Wrapper
-            errorTitleOverride={errTitle}
-            errorMsgOverride={errMsg}
-            successTitleOverride={sucTitle}
-            successMsgOverride={sucMsg}
-
             footerServices={footerServices}
             footerPartners={footerPartners}
         >
