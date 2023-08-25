@@ -1,10 +1,13 @@
 import { type GetServerSidePropsContext } from "next";
-import { getServerSession, type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import { type DefaultSession, getServerSession, type NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 import { type UserRole } from "@prisma/client";
+
+import DiscordProvider from "next-auth/providers/discord";
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -12,25 +15,14 @@ import { type UserRole } from "@prisma/client";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
-/*
 declare module "next-auth" {
     interface Session extends DefaultSession {
-        user: {
-            id: string;
-            isAdmin: boolean;
-            roles: string[];
-
-            // ...other properties
-            // role: UserRole;
-        } & DefaultSession["user"];
-    }
-
-    interface User {
-        isAdmin: boolean;
-        roles: string[];
+        user: DefaultSession["user"] & {
+            id: string
+            roles: string[]
+        };
     }
 }
-*/
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -59,6 +51,7 @@ export const authOptions: NextAuthOptions = {
                 if (roles)
                     session.user.roles = roles.map(role => role.roleId);
             }
+
             return session;
         },
     },
@@ -67,8 +60,16 @@ export const authOptions: NextAuthOptions = {
         DiscordProvider({
             clientId: env.DISCORD_CLIENT_ID,
             clientSecret: env.DISCORD_CLIENT_SECRET,
+        }),
+        GithubProvider({
+            clientId: env.GITHUB_CLIENT_ID,
+            clientSecret: env.GITHUB_CLIENT_SECRET
+        }),
+        GoogleProvider({
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET
         })
-    ],
+    ]
 };
 
 /**

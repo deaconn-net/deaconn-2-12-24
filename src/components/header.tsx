@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -151,13 +151,8 @@ const Header: React.FC = () => {
                         </>
                     ) : (
                         <Link
-                            href="#"
+                            href="/login"
                             className="nav-link" 
-                            onClick={(e) => {
-                                e.preventDefault();
-
-                                void signIn("discord");
-                            }}
                         >
                             <li className="nav-item">
                                 <IconAndText
