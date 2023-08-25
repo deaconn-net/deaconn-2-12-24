@@ -23,7 +23,11 @@ const config = {
 
   /* Images */
   images: {
-    domains: ["cdn.discordapp.com"]
+    domains: [
+        "cdn.discordapp.com",
+        "lh3.googleusercontent.com",
+        "avatars.githubusercontent.com"
+    ]
   }
 };
 export default config;
