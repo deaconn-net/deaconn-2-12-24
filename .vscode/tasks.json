@@ -1,16 +1,10 @@
 {
     "version": "2.0.0",
-    "options": {
-        "env": {
-            "HOST": "0.0.0.0",
-            "PORT": "3001"
-        }
-    },
     "tasks": [
         {
             "label": "startdev",
             "type": "shell",
-            "command": "npm run dev"
+            "command": "npm run dev -- --hostname 0.0.0.0 --port 3001"
         }
     ]
 }
