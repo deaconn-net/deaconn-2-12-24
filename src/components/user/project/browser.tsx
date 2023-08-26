@@ -9,19 +9,19 @@ import { api } from "@utils/api";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const UserProjectBrowser: React.FC<{
-    sort?: string,
-    sortDir?: string,
-    userId?: string,
-    limit?: number,
-    small?: boolean
-}> = ({
+export default function UserProjectBrowser ({
     sort,
     sortDir,
     userId,
     limit = 10,
     small = false
-}) => {
+} : {
+    sort?: string,
+    sortDir?: string,
+    userId?: string,
+    limit?: number,
+    small?: boolean
+}) {
     const [requireItems, setRequireItems] = useState(true);
 
     const { data, fetchNextPage } = api.user.getAllProjects.useInfiniteQuery({
@@ -76,5 +76,3 @@ const UserProjectBrowser: React.FC<{
         </>
     );
 }
-
-export default UserProjectBrowser;

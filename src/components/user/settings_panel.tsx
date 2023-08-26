@@ -3,13 +3,13 @@ import { signOut } from "next-auth/react";
 import TabMenuWithData from "@components/tabs/menu_with_data";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
-const SettingsPanel: React.FC<{
-    view?: string,
-    children: React.ReactNode
-}> = ({
+export default function SettingsPanel ({
     view = "general",
     children
-}) => {
+} : {
+    view?: string,
+    children: React.ReactNode
+}) {
     // Compile tabs.
     const tabs: TabItemType[] = [
         {
@@ -56,5 +56,3 @@ const SettingsPanel: React.FC<{
         />
     );
 }
-
-export default SettingsPanel;

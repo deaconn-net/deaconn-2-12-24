@@ -2,17 +2,17 @@ import React from "react";
 
 import { FormikProvider } from "formik";
 
-const Main: React.FC<{
-    form: any,
-    children: React.ReactNode,
-    submitBtn: JSX.Element,
-    type?: string
-}> = ({
+export default function MainForm ({
     form,
     children,
     submitBtn,
     type="POST"
-}) => {
+} : {
+    form: any,
+    children: React.ReactNode,
+    submitBtn: JSX.Element,
+    type?: string
+}) {
     return (
         <FormikProvider value={form}>
             <form method={type} onSubmit={form.handleSubmit}>
@@ -22,5 +22,3 @@ const Main: React.FC<{
         </FormikProvider>
     );
 }
-
-export default Main;

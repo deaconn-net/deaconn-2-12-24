@@ -1,7 +1,7 @@
 import IconAndText from "./containers/icon_and_text";
 import LoadingIcon from "./icons/loading";
 
-const Loader: React.FC = () => {
+export default function Loader () {
     return (
         <div className="w-full flex justify-center">
             <IconAndText
@@ -21,5 +21,3 @@ const Loader: React.FC = () => {
         </div>
     );
 }
-
-export default Loader;

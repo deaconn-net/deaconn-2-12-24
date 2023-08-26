@@ -1,4 +1,8 @@
-export default function DiscordIcon({ classes } : { classes?: string[] }) {
+export default function DiscordIcon({
+    classes
+} : {
+    classes?: string[]
+}) {
     return (
         <svg className={classes?.join(" ") ?? ""} viewBox="0 -28.5 256 256" >
             <g>

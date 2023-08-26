@@ -11,11 +11,11 @@ import FormMain from "@components/forms/main";
 import { api } from "@utils/api";
 import { ScrollToTop } from "@utils/scroll";
 
-const Form: React.FC<{
-    skill?: UserSkill | UserSkillWithUser
-}> = ({
+export default function SkillForm ({
     skill
-}) => {
+} : {
+    skill?: UserSkill | UserSkillWithUser
+}) {
     // Success and error messages.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -126,5 +126,3 @@ const Form: React.FC<{
         </FormMain>
     );
 }
-
-export default Form;

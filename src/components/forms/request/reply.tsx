@@ -12,13 +12,13 @@ import { type RequestReply } from "@prisma/client";
 
 import Markdown from "@components/markdown/markdown";
 
-const RequestReplyForm: React.FC<{
-    requestId: number,
-    reply?: RequestReply,
-}> = ({
+export default function RequestReplyForm ({
     requestId,
     reply
-}) => {
+} : {
+    requestId: number,
+    reply?: RequestReply
+}) {
     // Error and success handling
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -123,5 +123,3 @@ const RequestReplyForm: React.FC<{
         </FormMain>
     );
 }
-
-export default RequestReplyForm;

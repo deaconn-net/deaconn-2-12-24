@@ -14,7 +14,7 @@ import { has_role } from "@utils/user/auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const RequestBrowser: React.FC = () => {
+export default function RequestBrowser () {
     // Retrieve session.
     const { data: session } = useSession();
 
@@ -185,5 +185,3 @@ const RequestBrowser: React.FC = () => {
         </div>
     );
 }
-
-export default RequestBrowser;

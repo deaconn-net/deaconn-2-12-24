@@ -1,8 +1,8 @@
-const MobileMenuCollapseIcon: React.FC<{
-    classes?: string[]
-}> = ({
+export default function MobileMenuCollapseIcon ({
     classes
-}) => {
+} : {
+    classes?: string[]
+}) {
     return (
         <svg className={classes?.join(" ") ?? ""} viewBox="0 0 32 32">
             <g stroke="none" strokeWidth="1" fillRule="evenodd">
@@ -13,5 +13,3 @@ const MobileMenuCollapseIcon: React.FC<{
         </svg>
     );
 }
-
-export default MobileMenuCollapseIcon;

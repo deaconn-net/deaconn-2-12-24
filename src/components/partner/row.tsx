@@ -3,11 +3,11 @@ import Link from "next/link";
 
 import { type Partner } from "@prisma/client";
 
-const PartnerRow: React.FC<{
-    partner: Partner
-}> = ({
+export default function PartnerRow ({
     partner
-}) => {
+} : {
+    partner: Partner
+}) {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
     const banner = cdn + upload_url + (partner?.banner ?? "");
@@ -32,5 +32,3 @@ const PartnerRow: React.FC<{
         </Link>
     );
 }
-
-export default PartnerRow;

@@ -1,8 +1,8 @@
-const TwitterIcon: React.FC<{
-    classes?: string[]
-}> = ({
+export default function TwitterIcon ({
     classes
-}) => {
+} : {
+    classes?: string[]
+}) {
     return (
         <svg className={classes?.join(" ") ?? ""} viewBox="0 -2 20 20">
             <g stroke="none" strokeWidth="1" fillRule="evenodd">
@@ -15,5 +15,3 @@ const TwitterIcon: React.FC<{
         </svg>
     );
 }
-
-export default TwitterIcon;

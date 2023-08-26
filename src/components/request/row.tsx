@@ -5,9 +5,11 @@ import { type RequestWithService } from "~/types/request";
 //import { api } from "@utils/api";
 import { dateFormat, dateFormatOne } from "@utils/date";
 
-const RequestRow: React.FC<{
+export default function RequestRow ({
+    request
+} : {
     request: RequestWithService
-}> = ({ request }) => {
+}) {
     const viewUrl = "/request/view/" + request.id.toString();
     //const editUrl = "/request/new?id=" + request.id.toString();
 
@@ -50,5 +52,3 @@ const RequestRow: React.FC<{
         </tr>
     );
 }
-
-export default RequestRow;

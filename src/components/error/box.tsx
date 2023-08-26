@@ -1,10 +1,10 @@
-const ErrorBox: React.FC<{
-    title?: string,
-    msg?: string
-}> = ({
+export default function ErrorBox ({
     title,
     msg
-}) => {
+} : {
+    title?: string,
+    msg?: string
+}) {
     return (
         <>
             {title && msg && (
@@ -16,5 +16,3 @@ const ErrorBox: React.FC<{
         </>
     );
 }
-
-export default ErrorBox;

@@ -1,8 +1,8 @@
-const BlogIcon: React.FC<{
-    classes?: string[]
-}> = ({
+export default function BlogIcon ({
     classes
-}) => {
+} : {
+    classes?: string[]
+}) {
     return (
         <svg className={classes?.join(" ") ?? ""} viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -12,5 +12,3 @@ const BlogIcon: React.FC<{
         </svg>
     );
 }
-
-export default BlogIcon;

@@ -13,13 +13,13 @@ import { ScrollToTop } from '@utils/scroll';
 
 import Markdown from "@components/markdown/markdown";
 
-const CategoryForm: React.FC<{
-    category?: Category,
-    categories: CategoryWithChildren[]
-}> = ({
+export default function CategoryForm ({
     category,
     categories = []
-}) => {
+} : {
+    category?: Category,
+    categories: CategoryWithChildren[]
+}) {
     // Success and error handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -183,5 +183,3 @@ const CategoryForm: React.FC<{
         </FormMain>
     );
 }
-
-export default CategoryForm;

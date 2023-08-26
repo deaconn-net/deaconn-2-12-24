@@ -15,11 +15,11 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Markdown from "@components/markdown/markdown";
 
-const Form: React.FC<{
-    user?: User
-}> = ({
+export default function GeneralForm ({
     user
-}) => {
+} : {
+    user?: User
+}) {
     // Success and error messages.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -258,5 +258,3 @@ const Form: React.FC<{
         </FormMain>
     );
 }
-
-export default Form;

@@ -8,13 +8,13 @@ import GithubIcon from "@components/icons/social/github";
 import FacebookIcon from "@components/icons/social/facebook";
 import LinkedinIcon from "@components/icons/social/linkedin";
 
-const Footer: React.FC<{
-    services?: ServiceFooter[],
-    partners?: PartnerFooter[]
-}> = ({
+export default function Footer ({
     services,
     partners
-}) => {
+} : {
+    services?: ServiceFooter[],
+    partners?: PartnerFooter[]
+}) {
     return (
         <footer>
             <div className="footer-content">
@@ -120,5 +120,3 @@ const Footer: React.FC<{
         </footer>
     );
 }
-
-export default Footer;

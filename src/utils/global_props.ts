@@ -8,7 +8,7 @@ export type GlobalPropsType = {
     footerPartners?: PartnerFooter[]
 }
 
-const GlobalProps = async () => {
+export async function GlobalProps (): Promise<GlobalPropsType> {
     const services = await prisma.service.findMany({
         select: {
             id: true,

@@ -10,11 +10,11 @@ import { api } from "@utils/api";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const UserBrowser: React.FC<{
-    grid?: boolean
-}> = ({
+export default function UserBrowser ({
     grid
-}) => {
+} : {
+    grid?: boolean
+}) {
     // Set limit of users per page.
     const limit = 10;
 
@@ -159,5 +159,3 @@ const UserBrowser: React.FC<{
         </>
     );
 }
-
-export default UserBrowser;

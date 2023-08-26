@@ -22,13 +22,13 @@ import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 
 
-const ServiceView: React.FC<{
-    service: Service,
-    view: string
-}> = ({
+export default function ServiceView ({
     service,
     view
-}) => {
+} : {
+    service: Service,
+    view: string
+}) {
     // Success and error handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -202,5 +202,3 @@ const ServiceView: React.FC<{
         </div>
     );
 }
-
-export default ServiceView;

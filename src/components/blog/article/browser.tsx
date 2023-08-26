@@ -15,11 +15,11 @@ import { has_role } from "@utils/user/auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const ArticleBrowser: React.FC<{
-    categories?: number[]
-}> = ({
+export default function ArticleBrowser({
     categories
-}) => {
+} : {
+    categories?: number[]
+}) {
     // Retrieve session.
     const { data: session } = useSession();
 
@@ -134,5 +134,3 @@ const ArticleBrowser: React.FC<{
         </div>
     );
 }
-
-export default ArticleBrowser;

@@ -14,11 +14,11 @@ import { has_role } from "@utils/user/auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 
-const ServiceBrowser: React.FC<{
-    categories?: number[]
-}> = ({
+export default function ServiceBrowser ({
     categories
-}) => {
+} : {
+    categories?: number[]
+}) {
     // Retrieve session.
     const { data: session } = useSession();
 
@@ -117,5 +117,3 @@ const ServiceBrowser: React.FC<{
         </div>
     );
 }
-
-export default ServiceBrowser;

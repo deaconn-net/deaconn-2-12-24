@@ -8,14 +8,14 @@ import ErrorBox from "@components/error/box";
 import SuccessBox from "@components/success/box";
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
-const Wrapper: React.FC<{
-    children: React.ReactNode,
-} & GlobalPropsType> = ({
+export default function Wrapper ({
     footerServices,
     footerPartners,
 
     children
-}) => {
+} : {
+    children: React.ReactNode
+} & GlobalPropsType) {
     // Success and error messages.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -66,5 +66,3 @@ const Wrapper: React.FC<{
         </main>
     );
 }
-
-export default Wrapper;

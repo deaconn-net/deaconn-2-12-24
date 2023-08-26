@@ -3,15 +3,15 @@ import React from "react";
 import { type CategoryWithAllAndServiceCount, type CategoryWithAllAndAricleCount } from "~/types/category";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
-const CategoryTabs: React.FC<{
-    categories_with_articles?: CategoryWithAllAndAricleCount[],
-    categories_with_services?: CategoryWithAllAndServiceCount[]
-    active?: number
-}> = ({
+export default function CategoryTabs ({
     categories_with_articles,
     categories_with_services,
     active
-}) => {
+} : {
+    categories_with_articles?: CategoryWithAllAndAricleCount[],
+    categories_with_services?: CategoryWithAllAndServiceCount[]
+    active?: number
+}) {
     const categories = categories_with_articles ?? categories_with_services;
 
     if (!categories)
@@ -73,5 +73,3 @@ const CategoryTabs: React.FC<{
         />
     );
 }
-
-export default CategoryTabs;

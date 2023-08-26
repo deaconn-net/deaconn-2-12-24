@@ -10,11 +10,11 @@ import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 
-const UserSkillRow: React.FC<{
-    skill: UserSkill
-}> = ({
+export default function SkillRow ({
     skill
-}) => {
+} : {
+    skill: UserSkill
+}) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -99,5 +99,3 @@ const UserSkillRow: React.FC<{
         </div>
     );
 }
-
-export default UserSkillRow;

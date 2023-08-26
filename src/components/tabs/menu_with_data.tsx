@@ -1,12 +1,12 @@
-const TabsMenuWithData: React.FC<{
-    menu: JSX.Element,
-    data: JSX.Element,
-    data_background?: boolean
-}> = ({
+export default function TabsMenuWithData ({
     menu,
     data,
     data_background
-}) => {
+} : {
+    menu: JSX.Element,
+    data: JSX.Element,
+    data_background?: boolean
+}) {
     return (
         <div className="tab-menu-with-data">
             <div>
@@ -18,5 +18,3 @@ const TabsMenuWithData: React.FC<{
         </div>
     );
 }
-
-export default TabsMenuWithData;

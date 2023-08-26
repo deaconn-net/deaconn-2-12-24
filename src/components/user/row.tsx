@@ -2,11 +2,11 @@ import Image from "next/image";
 
 import { type User } from "@prisma/client";
 
-const UserRow: React.FC<{
-    user: User
-}> = ({
+export default function UserRow ({
     user
-}) => {
+} : {
+    user: User
+}) {
     const avatar = (user.image) ? user.image : "/images/user/default.png";
 
     const link = "/user/view/" + ((user.url) ? user.url : "$" + user.id);
@@ -31,5 +31,3 @@ const UserRow: React.FC<{
         </a>
     );
 }
-
-export default UserRow;

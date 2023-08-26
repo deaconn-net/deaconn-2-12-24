@@ -1,13 +1,11 @@
-const NotFound: React.FC<{
+export default function NotFound ({
+    item = "user"
+} : {
     item?: string
-}> = ({
-    item = "User"
-}) => {
+}) {
     return (
         <div className="error error-not-found">
-            <p>{item} not found. Please check the URL.</p>
+            <p>{item.charAt(0).toUpperCase() + item.slice(1)} not found. Please check the URL.</p>
         </div>
     );
 }
-
-export default NotFound;

@@ -3,13 +3,13 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 import DefaultTheme from "@components/markdown/styles/default";
 
-const Markdown: React.FC<{
-    className?: string
-    children: string
-}> = ({
+export default function Markdown ({
     className,
     children
-}) => {
+} : {
+    className?: string
+    children: string
+}) {
     return (
         <ReactMarkdown
             className={`markdown ${className ?? ""}`}
@@ -44,5 +44,3 @@ const Markdown: React.FC<{
         </ReactMarkdown>
     );
 }
-
-export default Markdown;

@@ -2,11 +2,11 @@ import Link from "next/link";
 
 import { type User } from "@prisma/client";
 
-export const UserLink: React.FC<{
-    user: User
-}> = ({
+export default function UserLink ({
     user
-}) => {
+} : {
+    user: User
+}) {
     const link = `/user/view/${user.url ? user.url : "$" + user.id}`;
 
     return (

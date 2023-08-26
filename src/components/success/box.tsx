@@ -1,10 +1,10 @@
-const SuccessBox: React.FC<{
-    title?: string,
-    msg?: string
-}> = ({
+export default function SuccessBox ({
     title,
     msg
-}) => {
+} : {
+    title?: string,
+    msg?: string
+}) {
     return (
         <>
             {title && msg && (
@@ -16,5 +16,3 @@ const SuccessBox: React.FC<{
         </>
     );
 }
-
-export default SuccessBox;

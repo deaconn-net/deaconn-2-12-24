@@ -15,7 +15,7 @@ import SignInIcon from "@components/icons/header/signinicon";
 import MobileMenuIcon from "@components/icons/header/mobile_menu";
 import MobileMenuCollapseIcon from "@components/icons/header/mobile_menu_collapse";
 
-const Header: React.FC = () => {
+export default function Header () {
     const { data: session } = useSession();
 
     const router = useRouter();
@@ -177,5 +177,3 @@ const Header: React.FC = () => {
         </header>
     );
 }
-
-export default Header;

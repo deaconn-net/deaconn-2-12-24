@@ -11,13 +11,13 @@ export type TabItemType = {
     onMouseLeave?: MouseEventHandler<HTMLAnchorElement>
 };
 
-const Tabs: React.FC<{
-    items: TabItemType[]
-    classes?: string[]
-}> = ({
+export default function Tabs ({
     items,
     classes
-}) => {
+} : {
+    items: TabItemType[]
+    classes?: string[]
+}) {
     const [tabOpen, setTabOpen] = useState(false);
 
     return (
@@ -64,5 +64,3 @@ const Tabs: React.FC<{
         </ul>
     );
 }
-
-export default Tabs;

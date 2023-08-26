@@ -6,11 +6,11 @@ import { type User } from "@prisma/client"
 
 import { has_role } from "@utils/user/auth";
 
-const UserRowTable: React.FC<{
-    user: User
-}> = ({
+export default function UserRowTable ({
     user
-}) => {
+} : {
+    user: User
+}) {
     const { data: session } = useSession();
 
     // Compile links.
@@ -57,5 +57,3 @@ const UserRowTable: React.FC<{
         </tr>
     );
 }
-
-export default UserRowTable;

@@ -1,4 +1,4 @@
-const FileType = (str: string): string => {
+export default function FileType (str: string): string {
     let fileType = "unknown";
 
     switch (str[0]) {
@@ -33,5 +33,3 @@ const FileType = (str: string): string => {
 
     return fileType;
 }
-
-export default FileType;

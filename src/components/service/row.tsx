@@ -18,11 +18,11 @@ import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 
-const ServiceRow: React.FC<{
-    service: Service
-}> = ({
+export default function ServiceRow ({
     service
-}) => {
+} : {
+    service: Service
+}) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -162,5 +162,3 @@ const ServiceRow: React.FC<{
         </div>
     );
 }
-
-export default ServiceRow;

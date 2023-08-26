@@ -12,11 +12,11 @@ import { ScrollToTop } from '@utils/scroll';
 
 import Markdown from "@components/markdown/markdown";
 
-const Form: React.FC<{
-    role?: Role
-}> = ({
+export default function RoleForm ({
     role
-}) => {
+} : {
+    role?: Role
+}) {
     // Error and success handling
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -146,5 +146,3 @@ const Form: React.FC<{
         </FormMain>
     );
 }
-
-export default Form;

@@ -10,11 +10,11 @@ import { ScrollToTop } from '@utils/scroll';
 
 import { type Partner } from "@prisma/client";
 
-const Form: React.FC<{
-    partner?: Partner
-}> = ({
+export default function PartnerForm ({
     partner
-}) => {
+} : {
+    partner?: Partner
+}) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -171,5 +171,3 @@ const Form: React.FC<{
         </FormMain>
     );
 }
-
-export default Form;

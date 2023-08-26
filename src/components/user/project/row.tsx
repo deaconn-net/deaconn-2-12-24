@@ -10,11 +10,11 @@ import { api } from "@utils/api";
 import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 
-const UserProjectRow: React.FC<{
-    project: UserProjectWithSourcesAndUser | UserProjectWithUser
-}> = ({
+export default function UserProjectRow ({
     project
-}) => {
+} : {
+    project: UserProjectWithSourcesAndUser | UserProjectWithUser
+}) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -108,5 +108,3 @@ const UserProjectRow: React.FC<{
         </div>
     );
 }
-
-export default UserProjectRow;

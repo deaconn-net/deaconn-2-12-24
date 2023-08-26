@@ -1,8 +1,8 @@
-const GithubIcon: React.FC<{
-    classes?: string[]
-}> = ({
+export default function GithubIcon ({
     classes
-}) => {
+} : {
+    classes?: string[]
+}) {
     return (
         <svg className={classes?.join(" ") ?? ""} viewBox="0 0 20 20">
             <g stroke="none" strokeWidth="1" fillRule="evenodd">
@@ -15,5 +15,3 @@ const GithubIcon: React.FC<{
         </svg>
     );
 }
-
-export default GithubIcon;

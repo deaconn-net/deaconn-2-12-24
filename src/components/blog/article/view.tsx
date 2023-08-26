@@ -7,7 +7,7 @@ import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type ArticleWithUser } from "~/types/blog/article";
 
-import { UserLink } from "@components/user/link";
+import UserLink from "@components/user/link";
 import Markdown from "@components/markdown/markdown";
 
 import { api } from "@utils/api";
@@ -19,11 +19,11 @@ import FacebookIcon from "@components/icons/social/facebook";
 import LinkedinIcon from "@components/icons/social/linkedin";
 import { ScrollToTop } from "@utils/scroll";
 
-const ArticleView: React.FC<{
-    article: ArticleWithUser
-}> = ({
+export default function ArticleView ({
     article
-}) => {
+} : {
+    article: ArticleWithUser
+}) {
     // Error and success handling handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -197,5 +197,3 @@ const ArticleView: React.FC<{
         </div>
     );
 }
-
-export default ArticleView;

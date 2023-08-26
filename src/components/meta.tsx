@@ -18,7 +18,7 @@ export type MetaType = {
     include_cdn?: boolean
 };
 
-const Meta: React.FC<MetaType> = ({
+export default function Meta ({
     title = "Deaconn",
     description = "A software developer and community with the goal to bring together and empower as many software, security, and network engineers and developers as possible.",
     robots = "index, follow",
@@ -34,7 +34,7 @@ const Meta: React.FC<MetaType> = ({
     article_tags,
     
     include_cdn
-}) => {
+} : MetaType) {
     // Retrieve URLs.
     let base_url;
     let full_url;
@@ -143,5 +143,3 @@ const Meta: React.FC<MetaType> = ({
         </Head>
     );
 }
-
-export default Meta;

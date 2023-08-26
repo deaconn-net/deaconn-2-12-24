@@ -13,17 +13,17 @@ import GithubIcon from "@components/icons/social/github";
 import LinkedinIcon from "@components/icons/social/linkedin";
 import FacebookIcon from "@components/icons/social/facebook";
 
-const UserView: React.FC<{
-    user: User,
-    view: string,
-
-    children: React.ReactNode
-}> = ({
+export default function UserView ({
     user,
     view,
 
     children
-}) => {
+} : {
+    user: User,
+    view: string,
+
+    children: React.ReactNode
+}) {
     const baseUrl = `/user/view/${user?.url ? user.url : "$" + (user?.id ?? "")}`;
 
     // Compile tabs.
@@ -136,5 +136,3 @@ const UserView: React.FC<{
         </div>
     );
 }
-
-export default UserView;

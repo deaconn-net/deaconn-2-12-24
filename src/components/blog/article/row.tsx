@@ -15,11 +15,11 @@ import ViewIcon from "@components/icons/view";
 import { has_role } from "@utils/user/auth";
 import { ScrollToTop } from "@utils/scroll";
 
-const ArticleRow: React.FC<{
-    article: Article,
-}> = ({
+export default function ArticleRow ({
     article
-}) => {
+} : {
+    article: Article
+}) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -142,5 +142,3 @@ const ArticleRow: React.FC<{
         </div>
     );
 }
-
-export default ArticleRow;

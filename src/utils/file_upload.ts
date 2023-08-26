@@ -19,13 +19,13 @@ export const getContents = (file: File) => {
     });
 };
 
-export const upload_file = (
+export function upload_file (
     path: string,
     contents: string,
     allowed_types?: string | string[],
     no_append_file_type?: boolean,
     prepend_upload_url?: boolean
-): [boolean, string | null, string | null] => {
+): [boolean, string | null, string | null] {
     // Split by comma if there is any.
     contents = contents.split(",")?.[1] ?? contents;
 

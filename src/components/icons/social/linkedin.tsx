@@ -1,8 +1,8 @@
-const LinkedinIcon: React.FC<{
-    classes?: string[]
-}> = ({
+export default function LinkedinIcon ({
     classes
-}) => {
+} : {
+    classes?: string[]
+}) {
     return (
         <svg className={classes?.join(" ") ?? ""} viewBox="0 0 24 24" fill="none">
             <path d="M6.5 8C7.32843 8 8 7.32843 8 6.5C8 5.67157 7.32843 5 6.5 5C5.67157 5 5 5.67157 5 6.5C5 7.32843 5.67157 8 6.5 8Z"/>
@@ -12,5 +12,3 @@ const LinkedinIcon: React.FC<{
         </svg>
     );
 }
-
-export default LinkedinIcon;

@@ -21,11 +21,11 @@ const DEFAULT_SOURCE = {
     url: ""
 };
 
-const UserProjectForm: React.FC<{
-    project?: UserProjectWithSources | UserProjectWithSourcesAndUser
-}> = ({
+export default function UserProjectForm({
     project
-}) => {
+} : { 
+    project?: UserProjectWithSources | UserProjectWithSourcesAndUser
+}) {
     // Success and error messages.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -264,5 +264,3 @@ const UserProjectForm: React.FC<{
         </FormMain>
     );
 }
-
-export default UserProjectForm;

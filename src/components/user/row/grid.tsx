@@ -5,21 +5,21 @@ import { useSession } from "next-auth/react";
 import { type User } from "@prisma/client"
 
 import { has_role } from "@utils/user/auth";
-import { UserLink } from "../link";
+import UserLink from "../link";
 
-const UserRowGrid: React.FC<{
-    user: User,
-    showBanner?: boolean,
-    showTitle?: boolean,
-    showEmail?: boolean,
-    showActions?: boolean
-}> = ({
+export default function UserRowGrid ({
     user,
     showBanner = true,
     showTitle = true,
     showEmail,
     showActions
-}) => {
+} : {
+    user: User,
+    showBanner?: boolean,
+    showTitle?: boolean,
+    showEmail?: boolean,
+    showActions?: boolean
+}) {
     const { data: session } = useSession();
 
     // Compile links.
@@ -68,5 +68,3 @@ const UserRowGrid: React.FC<{
         </div>
     );
 }
-
-export default UserRowGrid;

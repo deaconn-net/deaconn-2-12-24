@@ -1,13 +1,13 @@
 import TabMenuWithData from "@components/tabs/menu_with_data";
 import Tabs, { type TabItemType } from "@components/tabs/tabs";
 
-const AdminSettingsPanel: React.FC<{
-    view: string,
-    children: React.ReactNode
-}> = ({
+export default function AdminSettingsPanel({
     view,
     children
-}) => {
+} : {
+    view: string,
+    children: React.ReactNode
+}) {
     // Compile tabs.
     const tabs: TabItemType[] = [
         {
@@ -49,5 +49,3 @@ const AdminSettingsPanel: React.FC<{
         />
     );
 }
-
-export default AdminSettingsPanel;
