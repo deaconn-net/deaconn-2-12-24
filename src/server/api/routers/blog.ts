@@ -4,6 +4,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 import { upload_file } from "@utils/file_upload";
+import { has_role } from "@utils/user/auth";
 
 export const blogRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -55,7 +56,7 @@ export const blogRouter = createTRPCRouter({
             createdAt: z.date().optional(),
             updatedAt: z.date().optional(),
 
-            hasUser: z.boolean().default(true),
+            userId: z.string().optional(),
 
             category: z.number().nullable().optional(),
             url: z.string().max(128),
@@ -66,6 +67,17 @@ export const blogRouter = createTRPCRouter({
             bannerRemove: z.boolean().default(false)
         }))
         .mutation(async ({ ctx, input }) => {
+            // Check if we're admin
+            let isAdmin = false;
+
+            if (ctx.session && has_role(ctx.session, "admin"))
+                isAdmin = true;
+
+            let userId = ctx.session.user.id;
+
+            if (isAdmin && input.userId)
+                userId = input.userId;
+
             const article = await ctx.prisma.article.upsert({
                 where: {
                     id: input.id ?? 0
@@ -75,9 +87,7 @@ export const blogRouter = createTRPCRouter({
                     url: input.url,
                     createdAt: input.createdAt,
                     updatedAt: input.updatedAt,
-                    ...(input.hasUser && {
-                        userId: ctx.session.user.id
-                    }),
+                    userId: userId,
                     title: input.title,
                     desc: input.desc,
                     content: input.content,
@@ -90,8 +100,8 @@ export const blogRouter = createTRPCRouter({
                     url: input.url,
                     createdAt: input.createdAt,
                     updatedAt: input.updatedAt,
-                    ...(input.hasUser && {
-                        userId: ctx.session.user.id
+                    ...(isAdmin && input.userId && {
+                        userId: userId
                     }),
                     title: input.title,
                     desc: input.desc,
