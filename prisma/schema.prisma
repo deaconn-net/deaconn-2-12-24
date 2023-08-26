@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -25,7 +25,7 @@ model Article {
 
   title   String
   desc    String?
-  content String // @db.Text
+  content String  @db.Text
 
   banner String?
 
@@ -62,9 +62,9 @@ model Service {
   name     String
   price    Float   @default(0)
   desc     String?
-  install  String? // @db.Text
-  features String? // @db.Text
-  content  String // @db.Text
+  install  String? @db.Text
+  features String? @db.Text
+  content  String  @db.Text
 
   views     Int @default(0)
   purchases Int @default(0)
@@ -94,7 +94,7 @@ model Request {
 
   title     String?
   timeframe Int
-  content   String // @db.Text
+  content   String    @db.Text
   startDate DateTime?
   price     Float
 
@@ -116,7 +116,7 @@ model RequestReply {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  content String // @db.Text
+  content String @db.Text
 }
 
 model Partner {
@@ -169,7 +169,7 @@ model User {
   url       String?   @unique
   name      String?
   title     String?
-  aboutMe   String? // @db.Text
+  aboutMe   String?   @db.Text
   birthday  DateTime?
   showEmail Boolean   @default(false)
   isTeam    Boolean   @default(false)
@@ -204,7 +204,7 @@ model UserExperience {
 
   title   String
   desc    String?
-  details String?
+  details String? @db.Text
 }
 
 model UserSkill {
@@ -228,7 +228,7 @@ model UserProject {
 
   name       String
   desc       String?
-  details    String?
+  details    String? @db.Text
   openSource Boolean @default(true)
 
   sources ProjectSource[]
