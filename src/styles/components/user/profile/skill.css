@@ -21,6 +21,7 @@
 /* Description */
 .skill-row-description {
     @apply pb-6;
+    @apply grow;
 }
 
 /* Actions */
