@@ -33,20 +33,24 @@ const Page: NextPage<{
             >
                 <div className="content-item">
                     <h1>Services</h1>
-                    <TabMenuWithData
-                        menu={
-                            <>
-                                {categories && (
-                                    <CategoryTabs
-                                        categories_with_services={categories}
-                                    />
-                                )}
-                            </>
-                        }
-                        data={
-                            <ServiceBrowser />
-                        }
-                    />
+                    {categories && categories.length > 0 ? (
+                        <TabMenuWithData
+                            menu={
+                                <>
+                                    {categories && (
+                                        <CategoryTabs
+                                            categories_with_services={categories}
+                                        />
+                                    )}
+                                </>
+                            }
+                            data={
+                                <ServiceBrowser />
+                            }
+                        />
+                    ) : (
+                        <ServiceBrowser />
+                    )}
                 </div>
             </Wrapper>
         </>

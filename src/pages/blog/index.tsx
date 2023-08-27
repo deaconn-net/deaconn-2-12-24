@@ -34,18 +34,22 @@ const Page: NextPage<{
             >
                 <div className="content-item">
                     <h1>Blog</h1>
-                    <TabMenuWithData
-                        menu={
-                            <>
-                                {categories && (
-                                    <CategoryTabs categories_with_articles={categories} />
-                                )}
-                            </>
-                        }
-                        data={
-                            <ArticleBrowser />
-                        }
-                    />
+                    {categories && categories.length > 0 ? (
+                        <TabMenuWithData
+                            menu={
+                                <>
+                                    {categories && (
+                                        <CategoryTabs categories_with_articles={categories} />
+                                    )}
+                                </>
+                            }
+                            data={
+                                <ArticleBrowser />
+                            }
+                        />
+                    ) : (
+                        <ArticleBrowser />
+                    )}
                 </div>
             </Wrapper>
         </>
