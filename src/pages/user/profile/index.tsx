@@ -66,6 +66,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
+    console.log(`Doing it with session ID ${session?.user.id ?? "N/A"}`)
+
     // Retrieve global props.
     const globalProps = await GlobalProps();
 
