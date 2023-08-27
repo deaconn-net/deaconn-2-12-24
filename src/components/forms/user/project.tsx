@@ -33,13 +33,22 @@ export default function UserProjectForm({
     // Request mutations.
     const projectMut = api.user.addProject.useMutation({
         onError: (opts) => {
-            const { message } = opts;
+            const { message, data } = opts;
 
             console.error(message);
 
             if (errorCtx) {
-                errorCtx.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
-                errorCtx.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
+                switch (data?.code) {
+                    case "PAYLOAD_TOO_LARGE":
+                        errorCtx.setTitle("Too Many Projects!");
+                        errorCtx.setMsg("You have too many existing projects. Please delete one!");
+                        
+                        break;
+                    
+                    default:
+                        errorCtx.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
+                        errorCtx.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
+                }
         
                 // Scroll to top.
                 ScrollToTop();

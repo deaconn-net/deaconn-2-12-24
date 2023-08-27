@@ -31,7 +31,12 @@ const server = z.object({
     GITHUB_CLIENT_SECRET: z.string(),
 
     GOOGLE_CLIENT_ID: z.string(),
-    GOOGLE_CLIENT_SECRET: z.string()
+    GOOGLE_CLIENT_SECRET: z.string(),
+
+    // Limits
+    LIMIT_EXPERIENCES_MAX: z.string().optional(),
+    LIMIT_SKILLS_MAX: z.string().optional(),
+    LIMIT_PROJECTS_MAX: z.string().optional(),
 
 });
 
@@ -68,6 +73,11 @@ const processEnv = {
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+
+    // Limits
+    LIMIT_EXPERIENCES_MAX: process.env.LIMIT_EXPERIENCES_MAX,
+    LIMIT_SKILLS_MAX: process.env.LIMIT_SKILLS_MAX,
+    LIMIT_PROJECTS_MAX: process.env.LIMIT_PROJECTS_MAX,
 
     /* Client */
     NEXT_PUBLIC_UPLOADS_PRE_URL: process.env.NEXT_PUBLIC_UPLOADS_PRE_URL,

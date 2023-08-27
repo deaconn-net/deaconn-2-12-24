@@ -28,13 +28,22 @@ export default function ExperienceForm ({
     // Request mutations.
     const experienceMut = api.user.addExperience.useMutation({
         onError: (opts) => {
-            const { message } = opts;
+            const { message, data } = opts;
 
             console.error(message);
 
             if (errorCtx) {
-                errorCtx.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
-                errorCtx.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
+                switch (data?.code) {
+                    case "PAYLOAD_TOO_LARGE":
+                        errorCtx.setTitle("Too Many Experiences!");
+                        errorCtx.setMsg("You have too many existing experiences. Please delete one!");
+
+                        break;
+
+                    default:
+                        errorCtx.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
+                        errorCtx.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
+                }
         
                 // Scroll to top.
                 ScrollToTop();

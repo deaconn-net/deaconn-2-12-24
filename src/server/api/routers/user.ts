@@ -343,10 +343,10 @@ export const userRouter = createTRPCRouter({
             details: z.string().max(32768).optional()
         }))
         .mutation(async ({ ctx, input }) => {
+            const userId = input.userId ?? ctx.session.user.id;
+
             // Check if user owns item if ID is set (indicating they're editing).
             if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
-                const userId = ctx.session.user.id;
-
                 // Check if user owns experience.
                 try {
                     await ctx.prisma.userExperience.findFirstOrThrow({
@@ -365,6 +365,18 @@ export const userRouter = createTRPCRouter({
             if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
 
+            // Make sure we don't hit the maximum limit of experiences.
+            const limitMax = Number(process.env.LIMIT_EXPERIENCES_MAX ?? 64);
+
+            const cnt = await ctx.prisma.userExperience.count({
+                where: {
+                    userId: userId
+                }
+            });
+
+            if (cnt > limitMax)
+                throw new TRPCError({ code: "PAYLOAD_TOO_LARGE" });
+
             // Attempt to create or update experience.
             try {
                 await ctx.prisma.userExperience.upsert({
@@ -372,7 +384,7 @@ export const userRouter = createTRPCRouter({
                         id: input.id ?? 0
                     },
                     create: {
-                        userId: input.userId ?? ctx.session.user.id,
+                        userId: userId,
                         startDate: input.startDate,
                         endDate: input.endDate,
                         title: input.title,
@@ -380,7 +392,7 @@ export const userRouter = createTRPCRouter({
                         details: input.details
                     },
                     update: {
-                        userId: input.userId ?? ctx.session.user.id,
+                        userId: userId,
                         startDate: input.startDate,
                         endDate: input.endDate,
                         title: input.title,
@@ -407,10 +419,10 @@ export const userRouter = createTRPCRouter({
             desc: z.string().max(512).optional()
         }))
         .mutation(async ({ ctx, input }) => {
+            const userId = input.userId ?? ctx.session.user.id;
+
             // Check if user owns item if ID is set (indicating they're editing).
             if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
-                const userId = ctx.session.user.id;
-
                 // Check if user owns skill.
                 try {
                     await ctx.prisma.userSkill.findFirstOrThrow({
@@ -429,18 +441,30 @@ export const userRouter = createTRPCRouter({
             if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
 
+            // Make sure we don't hit the maximum limit of experiences.
+            const limitMax = Number(process.env.LIMIT_EXPERIENCES_MAX ?? 64);
+
+            const cnt = await ctx.prisma.userExperience.count({
+                where: {
+                    userId: userId
+                }
+            });
+
+            if (cnt > limitMax)
+                throw new TRPCError({ code: "PAYLOAD_TOO_LARGE" });
+
             try {
                 await ctx.prisma.userSkill.upsert({
                     where: {
                         id: input.id ?? 0
                     },
                     create: {
-                        userId: input.userId ?? ctx.session.user.id,
+                        userId: userId,
                         title: input.title,
                         desc: input.desc
                     },
                     update: {
-                        userId: input.userId ?? ctx.session.user.id,
+                        userId: userId,
                         title: input.title,
                         desc: input.desc
                     }
@@ -476,6 +500,8 @@ export const userRouter = createTRPCRouter({
             sourcesToDelete: z.array(z.number()).optional()
         }))
         .mutation(async ({ ctx, input }) => {
+            const userId = input.userId ?? ctx.session.user.id;
+
             // Check if user owns item if ID is set (indicating they're saving).
             if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
                 const userId = ctx.session.user.id;
@@ -498,13 +524,25 @@ export const userRouter = createTRPCRouter({
             if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
 
+            // Make sure we don't hit the maximum limit of experiences.
+            const limitMax = Number(process.env.LIMIT_EXPERIENCES_MAX ?? 64);
+
+            const cnt = await ctx.prisma.userExperience.count({
+                where: {
+                    userId: userId
+                }
+            });
+
+            if (cnt > limitMax)
+                throw new TRPCError({ code: "PAYLOAD_TOO_LARGE" });
+
             try {
                 await ctx.prisma.userProject.upsert({
                     where: {
                         id: input.id ?? 0
                     },
                     create: {
-                        userId: input.userId ?? ctx.session.user.id,
+                        userId: userId,
                         startDate: input.startDate,
                         endDate: input.endDate,
                         name: input.name,
@@ -519,7 +557,7 @@ export const userRouter = createTRPCRouter({
                         }
                     },
                     update: {
-                        userId: input.userId ?? ctx.session.user.id,
+                        userId: userId,
                         startDate: input.startDate,
                         endDate: input.endDate,
                         name: input.name,

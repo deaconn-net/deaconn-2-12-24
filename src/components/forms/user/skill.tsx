@@ -23,14 +23,23 @@ export default function SkillForm ({
     // Request mutations.
     const skillMut = api.user.addSkill.useMutation({
         onError: (opts) => {
-            const { message } = opts;
+            const { message, data } = opts;
 
             console.error(message);
 
             if (errorCtx) {
-                errorCtx.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
-                errorCtx.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
-        
+                switch (data?.code) {
+                    case "PAYLOAD_TOO_LARGE":
+                        errorCtx.setTitle("Too Many Skills!");
+                        errorCtx.setMsg("You have too many existing skills. Please delete one!");
+
+                        break;
+
+                    default:
+                        errorCtx.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
+                        errorCtx.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
+                }
+
                 // Scroll to top.
                 ScrollToTop();
             }
