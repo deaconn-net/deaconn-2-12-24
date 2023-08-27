@@ -97,7 +97,7 @@ export default function ServiceRow ({
                 <IconAndText
                     icon={
                         <ViewIcon
-                            classes={["w-6", "h-6", "fill-white"]}
+                            className="w-6 h-6 fill-white"
                         />
                     }
                     text={<>{service.views}</>}
@@ -105,7 +105,7 @@ export default function ServiceRow ({
                 <IconAndText
                     icon={
                         <DownloadIcon
-                            classes={["w-6", "h-6", "fill-white"]}
+                            className="w-6 h-6 fill-white"
                         />
                     }
                     text={<>{service.downloads}</>}
@@ -113,7 +113,7 @@ export default function ServiceRow ({
                 <IconAndText
                     icon={
                         <PurchaseIcon
-                            classes={["w-6", "h-6", "fill-white"]}
+                            className="w-6 h-6 fill-white"
                         />
                     }
                     text={<>{service.purchases}</>}

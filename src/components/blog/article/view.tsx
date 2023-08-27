@@ -135,12 +135,7 @@ export default function ArticleView ({
                             target="_blank"
                         >
                             <TwitterIcon
-                                classes={[
-                                    "h-6",
-                                    "w-6",
-                                    "fill-gray-400",
-                                    "hover:fill-white"
-                                ]}
+                                className="h-6 w-6 fill-gray-400 hover:fill-white"
                             />
                         </Link>
                         <Link
@@ -148,12 +143,7 @@ export default function ArticleView ({
                             target="_blank"
                         >
                             <FacebookIcon
-                                classes={[
-                                    "h-6",
-                                    "w-6",
-                                    "fill-gray-400",
-                                    "hover:fill-white"
-                                ]}
+                                className="h-6 w-6 fill-gray-400 hover:fill-white"
                             />
                         </Link>
                         <Link
@@ -161,12 +151,7 @@ export default function ArticleView ({
                             target="_blank"
                         >
                             <LinkedinIcon
-                                classes={[
-                                    "h-6",
-                                    "w-6",
-                                    "fill-gray-400",
-                                    "hover:fill-white"
-                                ]}
+                                className="h-6 w-6 fill-gray-400 hover:fill-white"
                             />
                         </Link>
                     </div>

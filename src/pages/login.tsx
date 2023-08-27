@@ -51,16 +51,12 @@ const Page: NextPage<GlobalPropsType> = ({
                                         <IconAndText
                                             icon={
                                                 <DiscordIcon
-                                                    classes={[
-                                                        "w-10",
-                                                        "h-10",
-                                                        "fill-white"
-                                                    ]}
+                                                    className="w-10 h-10 fill-white"
                                                 />
                                             }
                                             text={<span className="text-lg text-center">Discord</span>}
                                             inline={true}
-                                            classes={["gap-3", "justify-center"]}
+                                            className="gap-3 justify-center"
                                         />
                                     </button>
                                     <button
@@ -72,17 +68,13 @@ const Page: NextPage<GlobalPropsType> = ({
                                         <IconAndText
                                             icon={
                                                 <GithubIcon
-                                                    classes={[
-                                                        "w-10",
-                                                        "h-10",
-                                                        "fill-white"
-                                                    ]}
+                                                    className="w-10 h-10 fill-white"
                                                 />
                                             }
 
                                             text={<span className="text-lg">GitHub</span>}
                                             inline={true}
-                                            classes={["gap-3", "justify-center"]}
+                                            className="gap-3 justify-center"
                                         />
                                     </button>
                                     <button
@@ -94,16 +86,12 @@ const Page: NextPage<GlobalPropsType> = ({
                                         <IconAndText
                                             icon={
                                                 <GoogleIcon
-                                                    classes={[
-                                                        "w-10",
-                                                        "h-10",
-                                                        "fill-white"
-                                                    ]}
+                                                    className="w-10 h-10 fill-white"
                                                 />
                                             }
                                             text={<span className="text-lg">Google</span>}
                                             inline={true}
-                                            classes={["gap-3", "justify-center"]}
+                                            className="gap-3 justify-center"
                                         />
                                     </button>
                                 </>

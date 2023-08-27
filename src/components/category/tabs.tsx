@@ -61,7 +61,7 @@ export default function CategoryTabs ({
                         <span>({cntChild})</span>
                     </div>,
                 active: active == categoryChild.id,
-                classes: ["sm:ml-4"]
+                className: "sm:ml-4"
             })
         })
     })
@@ -69,7 +69,7 @@ export default function CategoryTabs ({
     return (
         <Tabs
             items={tabs}
-            classes={["sm:w-64"]}
+            className="sm:w-64"
         />
     );
 }

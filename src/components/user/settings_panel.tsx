@@ -49,7 +49,7 @@ export default function SettingsPanel ({
             menu={
                 <Tabs
                     items={tabs}
-                    classes={["sm:w-64"]}
+                    className="sm:w-64"
                 />
             }
             data={<>{children}</>}

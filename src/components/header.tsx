@@ -35,17 +35,11 @@ export default function Header () {
             >
                 {mobileOpen ? (
                     <MobileMenuCollapseIcon
-                        classes={[
-                            "nav-item-icon",
-                            "fill-white"
-                        ]}
+                        className="nav-item-icon fill-white"
                     />
                 ) : (
                     <MobileMenuIcon
-                        classes={[
-                            "nav-item-icon",
-                            "fill-white"
-                        ]}
+                        className="nav-item-icon fill-white"
                     />
                 )}
             </button>
@@ -73,10 +67,7 @@ export default function Header () {
                             <IconAndText
                                 icon={
                                     <ServicesIcon
-                                        classes={[
-                                            "nav-item-icon",
-                                            "fill-white"
-                                        ]}
+                                        className="nav-item-icon fill-white"
                                     />
                                 }
                                 text={
@@ -93,10 +84,7 @@ export default function Header () {
                             <IconAndText
                                 icon={
                                     <BlogIcon
-                                        classes={[
-                                            "nav-item-icon",
-                                            "fill-white"
-                                        ]}
+                                        className="nav-item-icon fill-white"
                                     />
                                 }
                                 text={
@@ -113,10 +101,7 @@ export default function Header () {
                             <IconAndText
                                 icon={
                                     <AboutUsIcon
-                                        classes={[
-                                            "nav-item-icon",
-                                            "fill-white"
-                                        ]}
+                                        className="nav-item-icon fill-white"
                                     />
                                 }
                                 text={
@@ -136,10 +121,7 @@ export default function Header () {
                                     <IconAndText
                                         icon={
                                             <AccountIcon
-                                                classes={[
-                                                    "nav-item-icon",
-                                                    "fill-white"
-                                                ]}
+                                                className="nav-item-icon fill-white"
                                             />
                                         }
                                         text={
@@ -158,11 +140,7 @@ export default function Header () {
                                 <IconAndText
                                     icon={
                                         <SignInIcon
-                                            classes={[
-                                                "nav-item-icon",
-                                                "fill-none",
-                                                "stroke-white"
-                                            ]}
+                                            className="nav-item-icon fill-white"
                                         />
                                     }
                                     text={

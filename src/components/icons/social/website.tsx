@@ -1,10 +1,10 @@
 export default function WebsiteIcon ({
-    classes
+    className
 } : {
-    classes?: string[]
+    className?: string
 }) {
     return (
-        <svg className={classes?.join(" ") ?? ""} viewBox="0 0 24 24">
+        <svg className={className ?? ""} viewBox="0 0 24 24">
             <path d="M21 12C21 16.9706 16.9706 21 12 21M21 12C21 7.02944 16.9706 3 12 3M21 12C21 13.6569 16.9706 15 12 15C7.02944 15 3 13.6569 3 12M21 12C21 10.3431 16.9706 9 12 9C7.02944 9 3 10.3431 3 12M12 21C7.02944 21 3 16.9706 3 12M12 21C10.3431 21 9 16.9706 9 12C9 7.02944 10.3431 3 12 3M12 21C13.6569 21 15 16.9706 15 12C15 7.02944 13.6569 3 12 3M3 12C3 7.02944 7.02944 3 12 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
     );

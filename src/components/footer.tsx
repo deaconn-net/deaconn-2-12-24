@@ -85,7 +85,7 @@ export default function Footer ({
                                     target="_blank"
                                 >
                                     <TwitterIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                                 <Link
@@ -93,7 +93,7 @@ export default function Footer ({
                                     target="_blank"
                                 >
                                     <GithubIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                                 <Link
@@ -101,7 +101,7 @@ export default function Footer ({
                                     target="_blank"
                                 >
                                     <FacebookIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                                 <Link
@@ -109,7 +109,7 @@ export default function Footer ({
                                     target="_blank"
                                 >
                                     <LinkedinIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                             </div>

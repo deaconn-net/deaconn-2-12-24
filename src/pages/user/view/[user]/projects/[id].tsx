@@ -82,11 +82,7 @@ const Page: NextPage<{
                                                             <IconAndText
                                                                 icon={
                                                                     <SourceIcon
-                                                                        classes={[
-                                                                            "w-10",
-                                                                            "h-10",
-                                                                            "fill-white"
-                                                                        ]}
+                                                                        className="w-10 h-10 fill-white"
                                                                     />
                                                                 }
                                                                 text={

@@ -7,13 +7,7 @@ export default function Loader () {
             <IconAndText
                 icon={
                     <LoadingIcon
-                        classes={[
-                            "w-8",
-                            "h-8",
-                            "mr-2",
-                            "animate-spin",
-                            "fill-blue-600"
-                        ]}
+                        className="w-8 h-8 mr-2 animate-spin fill-blue-600"
                     />
                 }
                 text={<>Loading...</>}

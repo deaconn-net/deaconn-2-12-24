@@ -38,7 +38,7 @@ export default function AdminSettingsPanel({
             menu={
                 <Tabs
                     items={tabs}
-                    classes={["sm:w-64"]}
+                    className="sm:w-64"
                 />
             }
             data={

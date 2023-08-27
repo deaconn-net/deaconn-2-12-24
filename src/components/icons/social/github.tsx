@@ -1,10 +1,10 @@
 export default function GithubIcon ({
-    classes
+    className
 } : {
-    classes?: string[]
+    className?: string
 }) {
     return (
-        <svg className={classes?.join(" ") ?? ""} viewBox="0 0 20 20">
+        <svg className={className ?? ""} viewBox="0 0 20 20">
             <g stroke="none" strokeWidth="1" fillRule="evenodd">
                 <g transform="translate(-140.000000, -7559.000000)">
                     <g transform="translate(56.000000, 160.000000)">

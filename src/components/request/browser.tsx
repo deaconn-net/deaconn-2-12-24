@@ -135,7 +135,7 @@ export default function RequestBrowser () {
                         <IconAndText
                             icon={
                                 <AddIcon 
-                                    classes={["w-6", "h-6", "fill-none"]}
+                                    className="w-6 h-6 fill-none"
                                 />
                             }
                             text={<>New Request</>}

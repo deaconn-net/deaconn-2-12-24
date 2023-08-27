@@ -110,7 +110,7 @@ export default function ServiceView ({
                 menu={
                     <Tabs
                         items={tabs}
-                        classes={["sm:w-64"]}
+                        className="sm:w-64"
                     />
                 }
                 data={
@@ -124,7 +124,7 @@ export default function ServiceView ({
                                     <IconAndText
                                         icon={
                                             <ViewIcon
-                                                classes={["w-6", "h-6", "fill-white"]}
+                                                className="w-6 h-6 fill-white"
                                             />
                                         }
                                         text={<>{service.views}</>}
@@ -132,7 +132,7 @@ export default function ServiceView ({
                                     <IconAndText
                                         icon={
                                             <DownloadIcon
-                                                classes={["w-6", "h-6", "fill-white"]}
+                                                className="w-6 h-6 fill-white"
                                             />
                                         }
                                         text={<>{service.downloads}</>}
@@ -140,7 +140,7 @@ export default function ServiceView ({
                                     <IconAndText
                                         icon={
                                             <PurchaseIcon
-                                                classes={["w-6", "h-6", "fill-white"]}
+                                                className="w-6 h-6 fill-white"
                                             />
                                         }
                                         text={<>{service.purchases}</>}

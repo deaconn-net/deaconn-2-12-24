@@ -77,7 +77,7 @@ export default function UserView ({
                                     target="_blank"
                                 >
                                     <WebsiteIcon
-                                        classes={["w-6", "h-6", "stroke-gray-400", "hover:stroke-white"]}
+                                        className="w-6 h-6 stroke-gray-400 hover:stroke-white"
                                     />
                                 </Link>
                             )}
@@ -87,7 +87,7 @@ export default function UserView ({
                                     target="_blank"
                                 >
                                     <TwitterIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                             )}
@@ -97,7 +97,7 @@ export default function UserView ({
                                     target="_blank"
                                 >
                                     <GithubIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                             )}
@@ -107,7 +107,7 @@ export default function UserView ({
                                     target="_blank"
                                 >
                                     <LinkedinIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                             )}
@@ -117,7 +117,7 @@ export default function UserView ({
                                     target="_blank"
                                 >
                                     <FacebookIcon
-                                        classes={["w-6", "h-6", "fill-gray-400", "hover:fill-white"]}
+                                        className="w-6 h-6 fill-gray-400 hover:fill-white"
                                     />
                                 </Link>
                             )}
@@ -126,7 +126,7 @@ export default function UserView ({
                 </div>
                 <Tabs
                     items={tabs}
-                    classes={["sm:w-64"]}
+                    className="sm:w-64"
                 />
             </div>
 

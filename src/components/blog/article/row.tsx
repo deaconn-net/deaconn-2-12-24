@@ -89,7 +89,7 @@ export default function ArticleRow ({
                 <IconAndText
                     icon={
                         <ViewIcon
-                            classes={["w-6", "h-6", "fill-white"]}
+                            className="w-6 h-6 fill-white"
                         />
                     }
                     text={<>{article.views}</>}
@@ -98,7 +98,7 @@ export default function ArticleRow ({
                 <IconAndText
                     icon={
                         <CommentIcon 
-                            classes={["w-6", "h-6", "fill-white", "stroke-white"]}
+                            className="w-6 h-6 fill-white stroke-white"
                         />
                     }
                     text={<>{article.comments}</>}

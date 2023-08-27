@@ -4,7 +4,7 @@ import { type MouseEventHandler, useState } from "react";
 export type TabItemType = {
     url: string,
     text: JSX.Element,
-    classes?: string[],
+    className?: string,
     active?: boolean,
     onClick?: MouseEventHandler<HTMLAnchorElement>,
     onMouseEnter?: MouseEventHandler<HTMLAnchorElement>,
@@ -13,15 +13,15 @@ export type TabItemType = {
 
 export default function Tabs ({
     items,
-    classes
+    className
 } : {
     items: TabItemType[]
-    classes?: string[]
+    className?: string
 }) {
     const [tabOpen, setTabOpen] = useState(false);
 
     return (
-        <ul className={`tab-container ${classes?.join(" ") ?? ""}`}>
+        <ul className={`tab-container ${className ?? ""}`}>
             <Link
                 href="#"
                 className="tab-link sm:hidden"
@@ -50,7 +50,7 @@ export default function Tabs ({
                     <Link
                         key={`tab-item-${item.url}`}
                         href={item.url}
-                        className={`tab-link tab-item ${item.active ? "tab-active" : ""} ${item.classes?.join(" ") ?? ""}`}
+                        className={`tab-link tab-item ${item.active ? "tab-active" : ""} ${className ?? ""}`}
                         onClick={item.onClick}
                         onMouseEnter={item.onMouseEnter}
                         onMouseLeave={item.onMouseLeave}
