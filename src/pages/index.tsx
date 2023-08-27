@@ -25,6 +25,8 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    const discordServerId = process.env.NEXT_PUBLIC_DISCORD_SERVER_ID || undefined;
+
     return (
         <>
             <Meta
@@ -83,10 +85,19 @@ const Page: NextPage<{
                                 </div>
                             </div>
                         )}
+                        {discordServerId && (
                         <div className="content-item">
                             <h1>Our Discord Server!</h1>
-                            <iframe src="https://discord.com/widget?id=1040578472315191368&theme=dark" width="350" height="500" allowTransparency={true} sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-                        </div>
+                            <iframe
+                                src={`https://discord.com/widget?id=${discordServerId}&theme=dark`}
+                                width="350"
+                                height="500"
+                                allowTransparency={true}
+                                sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                            ></iframe>
+                    </div>
+                        )}
+
                     </div>
                 </div>
                 <div className="content-item">
