@@ -14,6 +14,8 @@ import AccountIcon from "@components/icons/header/account";
 import SignInIcon from "@components/icons/header/signinicon";
 import MobileMenuIcon from "@components/icons/header/mobile_menu";
 import MobileMenuCollapseIcon from "@components/icons/header/mobile_menu_collapse";
+import HomeIcon from "./icons/header/home";
+import Home2Icon from "./icons/header/home2";
 
 export default function Header () {
     const { data: session } = useSession();
@@ -56,6 +58,21 @@ export default function Header () {
                                 width={200}
                                 height={72}
                                 alt="Deaconn Banner"
+                            />
+                        </li>
+                    </Link>
+                    <Link
+                        href="/"
+                        className={`nav-link ${location == "/" ? "nav-active" : ""}`}
+                    >
+                        <li className="nav-item">
+                            <IconAndText
+                                icon={
+                                    <Home2Icon
+                                        className="nav-item-icon fill-white"
+                                    />
+                                }
+                                text={<>Home</>}
                             />
                         </li>
                     </Link>
