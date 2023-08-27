@@ -85,11 +85,11 @@ export default function ServiceRow ({
                     <Link href={viewUrl}>{service.name}</Link>
                 </h3>
             </div>
-            <div className="service-row-description">
-                <Markdown>
-                    {service.desc ?? ""}
-                </Markdown>
-            </div>
+            {service.desc && (
+                <div className="service-row-description">
+                    <p>{service.desc}</p>
+                </div>
+            )}
             <div className="service-row-price">
                 <p>{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>
             </div>

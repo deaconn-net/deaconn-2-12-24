@@ -44,6 +44,10 @@
     @apply p-6;
 }
 
+.service-row-description > p {
+    @apply text-sm;
+}
+
 /* Price */
 .service-row-price {
     @apply pb-6;
