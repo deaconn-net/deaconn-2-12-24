@@ -42,7 +42,6 @@
 /* Description */
 .service-row-description {
     @apply p-6;
-    @apply grow;
 }
 
 /* Price */
@@ -68,6 +67,7 @@
     
     @apply text-white;
     @apply text-sm;
+    @apply grow;
 }
 
 .service-row-stats-stat {
