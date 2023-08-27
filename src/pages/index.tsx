@@ -63,23 +63,29 @@ const Page: NextPage<{
                                 })}
                             </div>
                         </div>
-                        <div className="content-item">
-                            <h1>Partners</h1>
-                            <div className="flex flex-col gap-4">
-                                {footerPartners?.map((partner) => {
-                                    const partnerFull: Partner = {
-                                        ...partner,
-                                        banner: null
-                                    };
+                        {footerPartners && footerPartners.length > 0 && (
+                            <div className="content-item">
+                                <h1>Our Partners</h1>
+                                <div className="flex flex-col gap-4">
+                                    {footerPartners?.map((partner) => {
+                                        const partnerFull: Partner = {
+                                            ...partner,
+                                            banner: null
+                                        };
 
-                                    return (
-                                        <PartnerRow
-                                            key={"partner-" + partner.id.toString()}
-                                            partner={partnerFull}
-                                        />
-                                    );
-                                })}
+                                        return (
+                                            <PartnerRow
+                                                key={"partner-" + partner.id.toString()}
+                                                partner={partnerFull}
+                                            />
+                                        );
+                                    })}
+                                </div>
                             </div>
+                        )}
+                        <div className="content-item">
+                            <h1>Our Discord Server!</h1>
+                            <iframe src="https://discord.com/widget?id=1040578472315191368&theme=dark" width="350" height="500" allowTransparency={true} sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
                         </div>
                     </div>
                 </div>
