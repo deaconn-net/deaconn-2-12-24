@@ -16,6 +16,7 @@ import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import UpdateBox from "@components/log/UpdateBox";
 import GitLogBox from "@components/log/GitLogBox";
 import DiscordWidget from "@components/DiscordWidget";
+import UserRowGrid from "@components/user/row/grid";
 
 const Page: NextPage<{
     articles: Article[],
@@ -64,12 +65,15 @@ const Page: NextPage<{
                     <div className="content-col-small">
                         <div className="content-item">
                             <h1>Our Team</h1>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-4 bg-gradient-to-b from-gray-950 to-black ring-8 ring-cyan-950 p-6 rounded-md">
                                 {team.map((user) => {
                                     return (
-                                        <UserRow
+                                        <UserRowGrid
                                             key={"team-" + user.id}
                                             user={user}
+                                            showInline={true}
+                                            avatarWidth={50}
+                                            avatarHeight={50}
                                         />
                                     );
                                 })}
