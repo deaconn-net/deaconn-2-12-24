@@ -4,7 +4,7 @@ export default function TwitterIcon ({
     className?: string
 }) {
     return (
-        <svg className={className ?? ""} viewBox="0 -2 20 20">
+        <svg className={className} viewBox="0 -2 20 20">
             <g stroke="none" strokeWidth="1" fillRule="evenodd">
                 <g transform="translate(-60.000000, -7521.000000)">
                     <g transform="translate(56.000000, 160.000000)">
