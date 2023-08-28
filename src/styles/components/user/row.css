@@ -11,6 +11,12 @@
     @apply ring-4;
     @apply ring-gray-800;
     @apply hover:ring-gray-600;
+
+    @apply p-2;
+
+    & img {
+        @apply rounded-full;
+    }
 }
 
 /* Image */

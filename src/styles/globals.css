@@ -116,4 +116,5 @@
     @import "components/containers.css";
     @import "components/tabs.css";
     @import "components/login.css";
+    @import "components/gitlog.css";
 }

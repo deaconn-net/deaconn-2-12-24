@@ -14,7 +14,6 @@ import AccountIcon from "@components/icons/header/account";
 import SignInIcon from "@components/icons/header/signinicon";
 import MobileMenuIcon from "@components/icons/header/mobile_menu";
 import MobileMenuCollapseIcon from "@components/icons/header/mobile_menu_collapse";
-import HomeIcon from "./icons/header/home";
 import Home2Icon from "./icons/header/home2";
 
 export default function Header () {

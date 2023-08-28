@@ -38,6 +38,9 @@ const server = z.object({
     LIMIT_SKILLS_MAX: z.string().optional(),
     LIMIT_PROJECTS_MAX: z.string().optional(),
 
+    // GitHub
+    GITHUB_API_KEY: z.string().optional()
+
 });
 
 /**
@@ -49,7 +52,8 @@ const client = z.object({
     NEXT_PUBLIC_CDN_URL: z.string().optional(),
     NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: z.string().default("/images/blog/default.jpg"),
     NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: z.string().default("/images/service/default.png"),
-    NEXT_PUBLIC_DISCORD_SERVER_ID: z.string().optional()
+    NEXT_PUBLIC_DISCORD_SERVER_ID: z.string().optional(),
+    NEXT_PUBLIC_GITHUB_ORG_URL: z.string().optional()
 });
 
 /**
@@ -80,12 +84,16 @@ const processEnv = {
     LIMIT_SKILLS_MAX: process.env.LIMIT_SKILLS_MAX,
     LIMIT_PROJECTS_MAX: process.env.LIMIT_PROJECTS_MAX,
 
+    // GitHub
+    GITHUB_API_KEY: process.env.GITHUB_API_KEY,
+
     /* Client */
     NEXT_PUBLIC_UPLOADS_PRE_URL: process.env.NEXT_PUBLIC_UPLOADS_PRE_URL,
     NEXT_PUBLIC_CDN_URL: process.env.CDN_URL,
     NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
     NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE,
-    NEXT_PUBLIC_DISCORD_SERVER_ID: process.env.NEXT_PUBLIC_DISCORD_SERVER_ID
+    NEXT_PUBLIC_DISCORD_SERVER_ID: process.env.NEXT_PUBLIC_DISCORD_SERVER_ID,
+    NEXT_PUBLIC_GITHUB_ORG_URL: process.env.NEXT_PUBLIC_GITHUB_ORG_URL
 };
 
 // Don't touch the part below

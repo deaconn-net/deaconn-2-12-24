@@ -318,8 +318,10 @@ model GitLog {
 
   createdAt DateTime @default(now())
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId   String?
+  user     User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name     String?
+  username String?
 
   repoName   String
   repoBranch String

@@ -11,7 +11,6 @@ import IconAndText from "@components/containers/icon_and_text";
 import ViewIcon from "@components/icons/view";
 import PurchaseIcon from "@components/icons/purchase";
 import DownloadIcon from "@components/icons/download";
-import Markdown from "@components/markdown/markdown";
 
 import { api } from "@utils/api";
 
