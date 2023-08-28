@@ -88,7 +88,7 @@ const Page: NextPage<{
                                                     <h2 className="text-center">{partner.name}</h2>
                                                     <p className="italic">
                                                         <Link
-                                                            href={partner.url}
+                                                            href={`https://${partner.url}`}
                                                             target="_blank"
                                                         >
                                                             {partner.url}
