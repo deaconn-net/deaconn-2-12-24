@@ -63,22 +63,24 @@ const Page: NextPage<{
                         </div>
                     </div>
                     <div className="content-col-small">
-                        <div className="content-item">
-                            <h1>Our Team</h1>
-                            <div className="flex flex-col gap-4 bg-gradient-to-b from-gray-950 to-black ring-8 ring-cyan-950 p-6 rounded-md">
-                                {team.map((user) => {
-                                    return (
-                                        <UserRowGrid
-                                            key={"team-" + user.id}
-                                            user={user}
-                                            showInline={true}
-                                            avatarWidth={50}
-                                            avatarHeight={50}
-                                        />
-                                    );
-                                })}
+                        {team.length > 0 && (
+                            <div className="content-item">
+                                <h1>Our Team</h1>
+                                <div className="flex flex-col gap-4 bg-gradient-to-b from-gray-950 to-black ring-8 ring-cyan-950 p-6 rounded-md">
+                                    {team.map((user) => {
+                                        return (
+                                            <UserRowGrid
+                                                key={"team-" + user.id}
+                                                user={user}
+                                                showInline={true}
+                                                avatarWidth={50}
+                                                avatarHeight={50}
+                                            />
+                                        );
+                                    })}
+                                </div>
                             </div>
-                        </div>
+                        )}
                         {footerPartners && footerPartners.length > 0 && (
                             <div className="content-item">
                                 <h1>Our Partners</h1>
@@ -152,7 +154,7 @@ export async function getServerSideProps() {
     const team = await prisma.user.findMany({
         take: 10,
         where: {
-            //isTeam: true
+            isTeam: true
         }
     });
 
