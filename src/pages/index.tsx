@@ -2,13 +2,12 @@ import Link from "next/link";
 import { type NextPage } from "next";
 
 import { prisma } from "@server/db";
-import { type Article, type Partner, type Service, type User } from "@prisma/client";
+import { type Article, type Service, type User } from "@prisma/client";
 
 import Wrapper from "@components/wrapper";
 import Meta from "@components/meta";
 
 import ArticleRow from "@components/blog/article/row";
-import UserRow from "@components/user/row";
 import ServiceRow from "@components/service/row";
 import PartnerRow from "@components/partner/row";
 
