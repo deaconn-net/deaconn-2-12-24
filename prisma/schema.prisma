@@ -191,6 +191,8 @@ model User {
   ArticleComment ArticleComment[]
   RequestReply   RequestReply[]
   Purchase       Purchase[]
+  UpdateLog      UpdateLog[]
+  GitLog         GitLog[]
 }
 
 model UserExperience {
@@ -297,4 +299,30 @@ model Purchase {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model UpdateLog {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  msg String
+}
+
+model GitLog {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  repoName   String
+  repoBranch String
+  commitId   String
+  commitMsg  String
 }
