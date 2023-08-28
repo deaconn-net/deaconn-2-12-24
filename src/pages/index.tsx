@@ -15,6 +15,7 @@ import PartnerRow from "@components/partner/row";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import UpdateBox from "@components/log/UpdateBox";
 import GitLogBox from "@components/log/GitLogBox";
+import DiscordWidget from "@components/discord";
 
 const Page: NextPage<{
     articles: Article[],
@@ -95,17 +96,13 @@ const Page: NextPage<{
                             </div>
                         )}
                         {discordServerId && (
-                        <div className="content-item">
-                            <h1>Our Discord Server!</h1>
-                            <iframe
-                                src={`https://discord.com/widget?id=${discordServerId}&theme=dark`}
-                                width="350"
-                                height="500"
-                                sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-                            ></iframe>
-                    </div>
+                            <div className="content-item">
+                                <h1>Our Discord Server!</h1>
+                                <DiscordWidget
+                                    id={discordServerId}
+                                />
+                            </div>
                         )}
-
                     </div>
                 </div>
                 <div className="content-item">
