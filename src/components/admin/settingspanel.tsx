@@ -29,6 +29,11 @@ export default function AdminSettingsPanel({
             url: "/admin/users",
             text: <>Users</>,
             active: view == "users"
+        },
+        {
+            url: "/admin/partners",
+            text: <>Partners</>,
+            active: view == "partners"
         }
     ];
     
