@@ -12,13 +12,19 @@ export default function UserRowGrid ({
     showBanner = true,
     showTitle = true,
     showEmail,
-    showActions
+    showActions,
+    showInline,
+    avatarWidth = 72,
+    avatarHeight = 72
 } : {
     user: User,
     showBanner?: boolean,
     showTitle?: boolean,
     showEmail?: boolean,
-    showActions?: boolean
+    showActions?: boolean,
+    showInline?: boolean,
+    avatarWidth?: number,
+    avatarHeight?: number
 }) {
     const { data: session } = useSession();
 
@@ -26,25 +32,23 @@ export default function UserRowGrid ({
     const editUrl = `/admin/user/edit/${user.id}`;
 
     return (
-        <div className="flex flex-col gap-2 items-center">
+        <div className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}>
             {showBanner && user.image && (
                 <div className="user-browser-grid-avatar">
                     <Image
                         className="rounded-full"
                         src={user.image}
-                        width={72}
-                        height={72}
+                        width={avatarWidth}
+                        height={avatarHeight}
                         alt="Avatar"
                     />
                 </div>
             )}
             {user.name && (
                 <div className="user-browser-grid-name">
-                    <h3>
-                        <UserLink
-                            user={user}
-                        />
-                    </h3>
+                    <UserLink
+                        user={user}
+                    />
                 </div>
             )}
             {showTitle && user.title && (

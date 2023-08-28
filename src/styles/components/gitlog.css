@@ -1,0 +1,58 @@
+.gitlog {
+    @apply w-full;
+    @apply overflow-y-scroll;
+    @apply h-96;
+
+    @apply rounded-md;
+    @apply bg-gradient-to-b;
+    @apply from-gray-950;
+    @apply to-black;
+    @apply ring-8;
+    @apply ring-cyan-950;
+}
+
+.gitlog::-webkit-scrollbar {
+    @apply w-2;
+    @apply rounded;
+}
+
+.gitlog::-webkit-scrollbar-track {
+    @apply bg-black/20;
+}
+
+.gitlog::-webkit-scrollbar-thumb {
+    @apply bg-gray-800/50;
+    
+    @apply rounded-lg;
+}
+
+.gitlog::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-700/50;
+}
+
+.gitlog .gitlog-table {
+    @apply table-auto;
+    @apply w-full;
+
+    & tr {
+        @apply p-2;
+    }
+
+    & td {
+        @apply p-2;
+        @apply text-sm;
+        @apply font-mono;
+    }
+
+    & .gl-actions > button {
+        @apply p-2;
+
+        @apply bg-cyan-900/50;
+        @apply hover:bg-cyan-800/50;
+        @apply rounded-full;
+    }
+
+    & .gl-msg {
+        @apply max-w-sm;
+    }
+}

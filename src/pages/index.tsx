@@ -13,6 +13,8 @@ import ServiceRow from "@components/service/row";
 import PartnerRow from "@components/partner/row";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import UpdateBox from "@components/log/UpdateBox";
+import GitLogBox from "@components/log/GitLogBox";
 
 const Page: NextPage<{
     articles: Article[],
@@ -36,6 +38,9 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
+                <div className="flex justify-center">
+                    <UpdateBox />
+                </div>
                 <div className="flex flex-wrap">
                     <div className="content-col-large">
                         <div className="content-item">
@@ -49,6 +54,10 @@ const Page: NextPage<{
                             <div className="flex py-6">
                                 <Link href="/request/new" className="button">New Request</Link>
                             </div>
+                        </div>
+                        <div className="content-item">
+                            <h1>Git Log</h1>
+                            <GitLogBox />
                         </div>
                     </div>
                     <div className="content-col-small">
