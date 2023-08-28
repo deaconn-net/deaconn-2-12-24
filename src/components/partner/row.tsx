@@ -26,17 +26,19 @@ export default function PartnerRow ({
     return (
         <>
             {partner.banner ? (
-                <Link
-                    href={partner.url}
-                    target="_blank"
-                >
-                    <Image
-                        src={banner}
-                        width={bannerWidth}
-                        height={bannerHeight}
-                        alt="Banner"
-                    />
-                </Link>
+                <div className="flex justify-center">
+                    <Link
+                        href={partner.url}
+                        target="_blank"
+                    >
+                        <Image
+                            src={banner}
+                            width={bannerWidth}
+                            height={bannerHeight}
+                            alt="Banner"
+                        />
+                    </Link>
+                </div>
             ) : (
                 <div>
                     <Link
