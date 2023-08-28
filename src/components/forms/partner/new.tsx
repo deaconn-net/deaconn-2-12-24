@@ -48,8 +48,9 @@ export default function PartnerForm ({
         }
     });
 
-    // Setup banner image.
+    // Setup banner and icon images.
     const [banner, setBanner] = useState<string | ArrayBuffer | null>(null);
+    const [icon, setIcon] = useState<string | ArrayBuffer | null>(null);
 
     // Setup preview.
     const [preview, setPreview] = useState(false);
@@ -79,7 +80,8 @@ export default function PartnerForm ({
         initialValues: {
             name: partner?.name ?? "",
             url: partner?.url ?? "",
-            bannerRemove: false
+            bannerRemove: false,
+            iconRemove: false
         },
         enableReinitialize: false,
 
@@ -97,7 +99,9 @@ export default function PartnerForm ({
                 name: values.name,
                 url: values.url,
                 banner: banner?.toString(),
-                bannerRemove: values.bannerRemove
+                bannerRemove: values.bannerRemove,
+                icon: icon?.toString(),
+                iconRemove: values.iconRemove
             });
         }
     });
@@ -144,7 +148,44 @@ export default function PartnerForm ({
                         )}
                     </>
                 )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Icon</label>
+                <input
+                    name="icon"
+                    type="file"
+                    className="form-input"
+                    onChange={(e) => {
+                        const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
 
+                        if (file) {
+                            const reader = new FileReader();
+
+                            reader.onloadend = () => {
+                                setIcon(reader.result);
+                            };
+                            
+                            reader.readAsDataURL(file);
+                        }
+                    }}
+                />
+                {partner?.icon && (
+                    <>
+                        {preview ? (
+                            <>
+                                <label>Remove Icon</label>
+                                <p className="italic">{form.values.iconRemove ? "Yes" : "No"}</p>
+                            </>
+                        ) : (
+                            <div className="form-checkbox">
+                                <Field
+                                    name="iconRemove"
+                                    type="checkbox"
+                                /> <span>Remove Icon</span>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
             <div className="form-div">
                 <label className="form-label">Name</label>

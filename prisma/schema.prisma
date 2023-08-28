@@ -122,9 +122,11 @@ model RequestReply {
 model Partner {
   id Int @id @default(autoincrement())
 
-  name   String
-  url    String
+  name String
+  url  String
+
   banner String?
+  icon   String?
 }
 
 // Necessary for Next auth

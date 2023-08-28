@@ -84,17 +84,13 @@ const Page: NextPage<{
                         {footerPartners && footerPartners.length > 0 && (
                             <div className="content-item">
                                 <h1>Our Partners</h1>
-                                <div className="flex flex-col gap-4">
+                                <div className="flex flex-col gap-4 bg-gradient-to-b from-gray-950 to-black ring-8 ring-cyan-950 p-6 rounded-md">
                                     {footerPartners?.map((partner) => {
-                                        const partnerFull: Partner = {
-                                            ...partner,
-                                            banner: null
-                                        };
-
                                         return (
                                             <PartnerRow
                                                 key={"partner-" + partner.id.toString()}
-                                                partner={partnerFull}
+                                                partner={partner}
+                                                showInline={true}
                                             />
                                         );
                                     })}

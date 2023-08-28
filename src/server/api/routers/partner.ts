@@ -37,7 +37,10 @@ export const partnerRouter = createTRPCRouter({
             name: z.string().max(64),
 
             banner: z.string().optional(),
-            bannerRemove: z.boolean().default(false)
+            bannerRemove: z.boolean().default(false),
+
+            icon: z.string().optional(),
+            iconRemove: z.boolean().default(false)
         }))
         .mutation(async ({ ctx, input }) => {
             const partner = await ctx.prisma.partner.upsert({
@@ -53,6 +56,9 @@ export const partnerRouter = createTRPCRouter({
                     url: input.url,
                     ...(input.bannerRemove && {
                         banner: null
+                    }),
+                    ...(input.iconRemove && {
+                        icon: null
                     })
                 }
             });
@@ -60,35 +66,67 @@ export const partnerRouter = createTRPCRouter({
             if (!partner)
                 throw new TRPCError({ code: "BAD_REQUEST" });
 
-            // Check for banner.
-            if (input.banner && !input.bannerRemove) {
-                // We only need to compile path name without file type.
-                const path = `${process.env.UPLOADS_PRE_URL ?? ""}/partners/${partner.id}`;
+            // Check for banners and icons.
+            const hasBanner = Boolean(input.banner && !input.bannerRemove);
+            const hasIcon = Boolean(input.icon && !input.iconRemove);
 
-                // Upload file and retrieve full path.
-                const [success, err, full_path] = upload_file(path, input.banner);
+            if (hasBanner || hasIcon) {
+                let bannerFullPath: string | undefined = undefined;
+                let iconFullPath: string | undefined = undefined;
+                
+                // Handle banner.
+                if (hasBanner) {
+                    // We only need to compile path name without file type.
+                    const path = `${process.env.UPLOADS_PRE_URL ?? ""}/partners/${partner.id}`;
 
-               if (!success || !full_path) {
-                    throw new TRPCError({
-                        code: "PARSE_ERROR",
-                        message: `Failed to upload banner for partner #${partner.id.toString()}. Error => ${err ? err : ""}.`
-                    });
+                    // Upload file and retrieve full path.
+                    const [success, err, full_path] = upload_file(path, input.banner ?? "");
+
+                    if (!success || !full_path) {
+                        throw new TRPCError({
+                            code: "PARSE_ERROR",
+                            message: `Failed to upload banner for partner #${partner.id.toString()}. Error => ${err ? err : ""}.`
+                        });
+                    }
+
+                    bannerFullPath = full_path;
+                }
+
+                // Handle icon.
+                if (hasIcon) {
+                    // We only need to compile path name without file type.
+                    const path = `${process.env.UPLOADS_PRE_URL ?? ""}/partners/${partner.id}_icon`;
+
+                    // Upload file and retrieve full path.
+                    const [success, err, full_path] = upload_file(path, input.icon ?? "");
+
+                    if (!success || !full_path) {
+                        throw new TRPCError({
+                            code: "PARSE_ERROR",
+                            message: `Failed to upload icon for partner #${partner.id.toString()}. Error => ${err ? err : ""}.`
+                        });
+                    }
+
+                    iconFullPath = full_path;
                 }
 
                 // Now reupdate.
-                const update = await ctx.prisma.partner.update({
-                    where: {
-                        id: partner.id
-                    },
-                    data: {
-                        banner: full_path
-                    }
-                });
+                try {
+                    await ctx.prisma.partner.update({
+                        where: {
+                            id: partner.id
+                        },
+                        data: {
+                            banner: bannerFullPath,
+                            icon: iconFullPath
+                        }
+                    });
+                } catch (err) {
+                    console.error(err);
 
-                if (update.id < 1) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
-                        message: "Failed to update partner with banner information."
+                        message: `Failed to update partner #${partner.id.toString()} with banners and icons. Error => ${typeof err == "string" ? err : "Check console"}.`
                     });
                 }
             }

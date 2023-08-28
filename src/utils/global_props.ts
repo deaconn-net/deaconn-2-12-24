@@ -1,11 +1,11 @@
-import { type PartnerFooter } from "~/types/partner";
 import { type ServiceFooter } from "~/types/service";
+import { type Partner } from "@prisma/client";
 
 import { prisma } from "~/server/db"
 
 export type GlobalPropsType = {
     footerServices?: ServiceFooter[],
-    footerPartners?: PartnerFooter[]
+    footerPartners?: Partner[]
 }
 
 export async function GlobalProps (): Promise<GlobalPropsType> {
@@ -17,14 +17,7 @@ export async function GlobalProps (): Promise<GlobalPropsType> {
         }
     });
 
-    const partners = await prisma.partner.findMany({
-        select: {
-            id: true,
-            banner: true,
-            name: true,
-            url: true
-        }
-    });
+    const partners = await prisma.partner.findMany();
 
     const props: GlobalPropsType = {
         footerServices: services,
