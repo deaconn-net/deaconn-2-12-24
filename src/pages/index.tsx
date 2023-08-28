@@ -15,7 +15,7 @@ import PartnerRow from "@components/partner/row";
 import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
 import UpdateBox from "@components/log/UpdateBox";
 import GitLogBox from "@components/log/GitLogBox";
-import DiscordWidget from "@components/discord";
+import DiscordWidget from "@components/DiscordWidget";
 
 const Page: NextPage<{
     articles: Article[],
