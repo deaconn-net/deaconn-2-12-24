@@ -122,6 +122,8 @@ model RequestReply {
 model Partner {
   id Int @id @default(autoincrement())
 
+  priority Int @default(0)
+
   name String
   url  String
 

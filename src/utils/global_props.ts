@@ -17,7 +17,11 @@ export async function GlobalProps (): Promise<GlobalPropsType> {
         }
     });
 
-    const partners = await prisma.partner.findMany();
+    const partners = await prisma.partner.findMany({
+        orderBy: {
+            priority: "asc"
+        }
+    });
 
     const props: GlobalPropsType = {
         footerServices: services,

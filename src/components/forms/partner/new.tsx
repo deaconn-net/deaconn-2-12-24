@@ -78,6 +78,7 @@ export default function PartnerForm ({
     // Setup form.
     const form = useFormik({
         initialValues: {
+            priority: partner?.priority ?? 0,
             name: partner?.name ?? "",
             url: partner?.url ?? "",
             bannerRemove: false,
@@ -96,6 +97,7 @@ export default function PartnerForm ({
             // Create article.
             partnerMut.mutate({
                 id: partner?.id,
+                priority: values.priority,
                 name: values.name,
                 url: values.url,
                 banner: banner?.toString(),
@@ -185,6 +187,18 @@ export default function PartnerForm ({
                             </div>
                         )}
                     </>
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Priority</label>
+                {preview ? (
+                    <p className="italic">{form.values.priority.toString()}</p>
+                ) : (
+                    <Field
+                        type="number"
+                        name="priority"
+                        className="form-input"
+                    />
                 )}
             </div>
             <div className="form-div">
