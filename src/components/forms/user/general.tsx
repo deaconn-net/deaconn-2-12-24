@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Field, useFormik } from "formik";
+import { useSession } from "next-auth/react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -14,12 +15,15 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import Markdown from "@components/markdown/markdown";
+import { has_role } from "@utils/user/auth";
 
 export default function GeneralForm ({
     user
 } : {
     user?: User
 }) {
+    // Retrieve session.
+    const { data: session } = useSession();
     // Success and error messages.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -81,6 +85,7 @@ export default function GeneralForm ({
             aboutMe: user?.aboutMe ?? "",
             birthday: new Date(user?.birthday ?? Date.now()),
             showEmail: user?.showEmail ?? false,
+            isTeam: user?.isTeam ?? false,
 
             website: user?.website ?? "",
             socialTwitter: user?.socialTwitter ?? "",
@@ -97,7 +102,6 @@ export default function GeneralForm ({
 
             if (successCtx)
                 successCtx.setTitle(undefined);
-            
 
             if (!user?.id) {
                 if (errorCtx) {
@@ -116,6 +120,7 @@ export default function GeneralForm ({
                 aboutMe: values.aboutMe,
                 birthday: values.birthday,
                 showEmail: values.showEmail,
+                isTeam: values.isTeam,
 
                 website: values.website,
                 socialTwitter: values.socialTwitter,
@@ -199,6 +204,21 @@ export default function GeneralForm ({
                     </div>
                 )}
             </div>
+            {session && has_role(session, "admin") && (
+                <div className="form-div">
+                    <label className="form-label">Is Team</label>
+                    {preview ? (
+                        <p className="italic">{form.values.isTeam ? "Yes" : "No"}</p>
+                    ) : (
+                        <div className="form-checkbox">
+                            <Field
+                                name="isTeam"
+                                type="checkbox"
+                            /> <span>Yes</span>
+                        </div>
+                    )}
+                </div>
+            )}
             <h2>Social</h2>
             <div className="form-div">
                 <label className="form-label">Website</label>

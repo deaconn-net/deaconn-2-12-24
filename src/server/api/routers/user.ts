@@ -30,8 +30,18 @@ export const userRouter = createTRPCRouter({
             socialFacebook: z.string().max(64).optional(),
         }))
         .mutation(async ({ ctx, input }) => {
+            // Retrieve level of access.
+            let isAdmin = false;
+            let isMod = false;
+
+            if (has_role(ctx.session, "admin"))
+                isAdmin = true;
+
+            if (has_role(ctx.session, "moderator"))
+                isMod = true;
+        
             // If we have a custom user ID and the IDs don't match, make sure the user has permissions.
-            if ((input.id && input.id != ctx.session.user.id) && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+            if ((input.id && input.id != ctx.session.user.id) && (!isAdmin && !isMod))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
     
             // Update user.
@@ -51,7 +61,9 @@ export const userRouter = createTRPCRouter({
                         aboutMe: input.aboutMe,
                         birthday: input.birthday,
                         showEmail: input.showEmail,
-                        isTeam: input.isTeam,
+                        ...(isAdmin && {
+                            isTeam: input.isTeam
+                        }),
                         ...(input.website && {
                             website: RetrieveSocialTag(input.website, "website")
                         }),
