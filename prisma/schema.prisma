@@ -321,7 +321,7 @@ model GitLog {
   userId   String?
   user     User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
   name     String?
-  userName String?
+  username String?
 
   repoName   String
   repoBranch String
