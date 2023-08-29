@@ -156,7 +156,7 @@ export default function Header () {
                                 <IconAndText
                                     icon={
                                         <SignInIcon
-                                            className="nav-item-icon fill-white"
+                                            className="nav-item-icon stroke-white fill-none"
                                         />
                                     }
                                     text={
