@@ -4,9 +4,9 @@ const config = {
   theme: {
     extend: {
         colors: {
-            "deaconn-header": "#1f2937",
-            "deaconn-data": "#111827",
-            "deaconn-data2": "#030712",
+            "deaconn-header": "#00444E",
+            "deaconn-data": "#19253B",
+            "deaconn-data2": "#141F32",
             "deaconn-ring": "#083344",
             "deaconn-ring2": "#155e75"
         }

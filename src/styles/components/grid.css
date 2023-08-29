@@ -6,10 +6,14 @@
 }
 
 .grid-view-sm {
-    @apply sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))];
+    @apply sm:grid-cols-[repeat(auto-fill,minmax(20rem,1fr))];
 
     & .grid-view-image {
-        @apply h-72;
+        @apply h-64;
+    }
+
+    & h3 {
+        @apply text-xl;
     }
 }
 

@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.root, #root, #docs-root {
-    --header-color1: #1f2937;
-    --data-color1: #030712;
-    --ring-color1: #1f2937;
-}
-
 /* Base Layer (Imports Do Not Work In Base Layer) */
 @layer base {
     main {

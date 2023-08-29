@@ -108,7 +108,7 @@ export default function ArticleView ({
                 />
             </div>
             <h1>{article.title}</h1>
-            <div className="w-full bg-gray-800 p-6 rounded-sm flex flex-col gap-4">
+            <div className="w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 p-6 rounded-sm flex flex-col gap-4">
                 <div className="flex justify-between flex-wrap text-white text-sm">
                     <div>
                         {article.user && (

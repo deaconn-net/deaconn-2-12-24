@@ -34,6 +34,7 @@
     @apply text-2xl;
     @apply font-bold;
     @apply text-center;
+    @apply not-italic;
 }
 
 .service-row-name > h3 > a {
