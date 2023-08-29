@@ -1,7 +1,7 @@
 .content {
     @apply container;
     @apply mx-auto;
-    @apply py-16;
+    @apply py-8;
 
     @apply grow;
 }
@@ -18,9 +18,43 @@
 .content-col-large {
     @apply w-full;
     @apply sm:w-2/3;
+
+    @apply flex;
+    @apply flex-col;
+    @apply gap-8;
 }
 
 .content-col-small {
     @apply w-full;
     @apply sm:w-1/3;
+
+    @apply flex;
+    @apply flex-col;
+    @apply gap-8;
+}
+
+.content-item2 {
+    @apply flex;
+    @apply flex-col;
+
+    @apply ring-4;
+    @apply ring-deaconn-ring;
+    @apply hover:ring-deaconn-ring2;
+    @apply rounded-md;
+
+    & > div {
+        @apply p-4;
+    }
+
+    & > div:first-child {
+        @apply rounded-t-md;
+        @apply bg-deaconn-header;
+    }
+
+    & > div:last-child {
+        @apply rounded-b-md;
+        @apply bg-gradient-to-b;
+        @apply from-deaconn-data;
+        @apply to-deaconn-data2;
+    }
 }

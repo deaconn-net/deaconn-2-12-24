@@ -18,9 +18,13 @@ const Page: NextPage<GlobalPropsType> = ({
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="content-item">
-                    <h1>About Us</h1>
-                    <p>This is the start of our about us page!</p>
+                <div className="content-item2">
+                    <div>
+                        <h1>About Us</h1>
+                    </div>
+                    <div>
+                        <p>This is the start of our about us page!</p>
+                    </div>
                 </div>
             </Wrapper>
         </>

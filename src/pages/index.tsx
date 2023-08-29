@@ -42,30 +42,59 @@ const Page: NextPage<{
                 <div className="flex justify-center">
                     <UpdateBox />
                 </div>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap sm:flex-nowrap gap-12">
                     <div className="content-col-large">
-                        <div className="content-item">
-                            <h1>Who Are We?</h1>
-                            <p><span className="font-bold">Deaconn</span> is a software developer which produces products and services in various areas within technology.</p>
-                        </div>
-                        <div className="content-item">
-                            <h1>Have A Request?</h1>
-                            <p>We are a freelancing business and accept requests.</p>
-                            <p><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
-                            <div className="flex py-6">
-                                <Link href="/request/new" className="button">New Request</Link>
+                        <div className="content-item2">
+                            <div>
+                                <h1>Who Are We?</h1>
+                            </div>
+                            <div>
+                                <p>
+                                    <span className="font-bold">Deaconn</span> is a software developer which produces products and services in various areas within technology.
+                                </p>
                             </div>
                         </div>
-                        <div className="content-item">
-                            <h1>Git Log</h1>
-                            <GitLogBox />
+                        <div className="content-item2">
+                            <div>
+                                <h1>Have A Request?</h1>
+                            </div>
+                            <div>
+                                <p>We are a freelancing business and accept requests.</p>
+                                <p><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
+                                <div className="flex py-6">
+                                    <Link href="/request/new" className="button">New Request</Link>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="content-item2">
+                            <div>
+                                <h1>Git Log</h1>
+                            </div>
+                            <div className="!p-0">
+                                <GitLogBox />
+                            </div>
+                        </div>
+                        <div className="content-item2">
+                            <div>
+                                <h1>Open Source!</h1>
+                            </div>
+                            <div className="flex flex-col gap-4">
+                                <p>Our website is <span className="font-bold">open source</span> on our <Link href="https://github.com/deaconn-net" target="_blank">GitHub organization</Link>!</p>
+                                <Link
+                                    href="https://github.com/deaconn-net/deaconn"
+                                    target="_blank"
+                                    className="button button-primary w-full sm:w-72"
+                                >Check Out!</Link>
+                            </div>
                         </div>
                     </div>
                     <div className="content-col-small">
                         {team.length > 0 && (
-                            <div className="content-item">
-                                <h1>Our Team</h1>
-                                <div className="flex flex-col gap-4 bg-gradient-to-b from-gray-950 to-black ring-8 ring-cyan-950 p-6 rounded-md">
+                            <div className="content-item2">
+                                <div>
+                                    <h1>Our Team</h1>
+                                </div>
+                                <div className="flex flex-col gap-4">
                                     {team.map((user) => {
                                         return (
                                             <UserRowGrid
@@ -81,15 +110,20 @@ const Page: NextPage<{
                             </div>
                         )}
                         {footerPartners && footerPartners.length > 0 && (
-                            <div className="content-item">
-                                <h1>Our Partners</h1>
-                                <div className="flex flex-col gap-4 bg-gradient-to-b from-gray-950 to-black ring-8 ring-cyan-950 p-6 rounded-md">
+                            <div className="content-item2">
+                                <div>
+                                    <h1>Our Partners</h1>
+                                </div>
+                                <div className="flex flex-col gap-4">
                                     {footerPartners?.map((partner) => {
                                         return (
                                             <PartnerRow
                                                 key={"partner-" + partner.id.toString()}
                                                 partner={partner}
                                                 showInline={true}
+                                                bannerWidth={undefined}
+                                                bannerHeight={undefined}
+                                                bannerClassName="partner-row-banner"
                                             />
                                         );
                                     })}
@@ -97,16 +131,22 @@ const Page: NextPage<{
                             </div>
                         )}
                         {discordServerId && (
-                            <div className="content-item">
-                                <h1>Our Discord Server!</h1>
-                                <DiscordWidget
-                                    id={discordServerId}
-                                />
+                            <div className="content-item2">
+                                <div>
+                                    <h1>Our Discord Server!</h1>
+                                </div>
+                                <div className="flex justify-center">
+                                    <DiscordWidget
+                                        id={discordServerId}
+                                        className="max-w-full w-full"
+                                        width="auto"
+                                    />
+                                </div>
                             </div>
                         )}
                     </div>
                 </div>
-                <div className="content-item">
+                <div className="content-item mt-8">
                     <h1>Popular Services</h1>
                     <div className="grid-view grid-view-sm">
                         {services.map((service) => {

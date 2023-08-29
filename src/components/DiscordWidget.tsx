@@ -5,8 +5,8 @@ export default function DiscordWidget ({
     className
 } : {
     id: string,
-    width?: number,
-    height?: number,
+    width?: number | string | undefined,
+    height?: number | string | undefined,
     className?: string
 }) {
     return (

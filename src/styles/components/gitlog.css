@@ -2,13 +2,6 @@
     @apply w-full;
     @apply overflow-y-scroll;
     @apply h-96;
-
-    @apply rounded-md;
-    @apply bg-gradient-to-b;
-    @apply from-gray-950;
-    @apply to-black;
-    @apply ring-8;
-    @apply ring-cyan-950;
 }
 
 .gitlog::-webkit-scrollbar {

@@ -12,7 +12,7 @@ export default function TabsMenuWithData ({
             <div>
                 {menu}
             </div>
-            <div className={data_background ? "bg-gray-800" : ""}>
+            <div className={data_background ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : ""}>
                 {data}
             </div>
         </div>

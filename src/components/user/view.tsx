@@ -130,7 +130,7 @@ export default function UserView ({
                 />
             </div>
 
-            <div className="bg-gray-800">
+            <div className="bg-gradient-to-b from-deaconn-data to-deaconn-data2">
                 {children}
             </div>
         </div>

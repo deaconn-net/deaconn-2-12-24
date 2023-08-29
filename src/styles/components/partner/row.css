@@ -21,3 +21,12 @@
     @apply text-lg;
     @apply text-white;
 }
+
+.partner-row-banner {
+    @apply w-full;
+
+    & img {
+        @apply w-full;
+        @apply max-w-full;
+    }
+}

@@ -8,15 +8,17 @@ export default function PartnerRow ({
     showInline,
     iconWidth=32,
     iconHeight=32,
-    bannerWidth=300,
-    bannerHeight=300
+    bannerWidth=500,
+    bannerHeight=300,
+    bannerClassName
 } : {
     partner: Partner,
     showInline?: boolean,
     iconWidth?: number,
     iconHeight?: number,
     bannerWidth?: number,
-    bannerHeight?: number
+    bannerHeight?: number,
+    bannerClassName?: string
 }) {
     const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
     const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
@@ -30,6 +32,7 @@ export default function PartnerRow ({
                     <Link
                         href={partner.url}
                         target="_blank"
+                        className={bannerClassName}
                     >
                         <Image
                             src={banner}

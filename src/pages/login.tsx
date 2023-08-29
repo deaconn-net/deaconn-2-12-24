@@ -26,76 +26,80 @@ const Page: NextPage<GlobalPropsType> = ({
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="flex flex-col gap-4 justify-center items-center">
-                    <h2>Login Options</h2>
-                    <div className="bg-gray-800 p-6 flex flex-col gap-4">
-                        <p>Please make a <Link href="/request/new">request</Link> if you&apos;re having issues signing in!</p>
+                <div className="flex justify-center">
+                    <div className="content-item2">
+                        <div>
+                            <h1>Login Options</h1>
+                        </div>
                         <div className="flex flex-col gap-4">
-                            {session?.user ? (
-                                <button
-                                    className="login-button"
-                                    onClick={() => {
-                                        signOut();
-                                    }}
-                                >
-                                    <span className="text-lg">Sign Out</span>
-                                </button>
-                            ) : (
-                                <>
+                            <p>Please make a <Link href="/request/new">request</Link> if you&apos;re having issues signing in!</p>
+                            <div className="flex flex-col gap-4">
+                                {session?.user ? (
                                     <button
                                         className="login-button"
                                         onClick={() => {
-                                            signIn("discord");
+                                            signOut();
                                         }}
                                     >
-                                        <IconAndText
-                                            icon={
-                                                <DiscordIcon
-                                                    className="w-10 h-10 fill-white"
-                                                />
-                                            }
-                                            text={<span className="text-lg text-center">Discord</span>}
-                                            inline={true}
-                                            className="gap-3 justify-center"
-                                        />
+                                        <span className="text-lg">Sign Out</span>
                                     </button>
-                                    <button
-                                        className="login-button"
-                                        onClick={() => {
-                                            signIn("github");
-                                        }}
-                                    >
-                                        <IconAndText
-                                            icon={
-                                                <GithubIcon
-                                                    className="w-10 h-10 fill-white"
-                                                />
-                                            }
+                                ) : (
+                                    <>
+                                        <button
+                                            className="login-button"
+                                            onClick={() => {
+                                                signIn("discord");
+                                            }}
+                                        >
+                                            <IconAndText
+                                                icon={
+                                                    <DiscordIcon
+                                                        className="w-10 h-10 fill-white"
+                                                    />
+                                                }
+                                                text={<span className="text-lg text-center">Discord</span>}
+                                                inline={true}
+                                                className="gap-3 justify-center"
+                                            />
+                                        </button>
+                                        <button
+                                            className="login-button"
+                                            onClick={() => {
+                                                signIn("github");
+                                            }}
+                                        >
+                                            <IconAndText
+                                                icon={
+                                                    <GithubIcon
+                                                        className="w-10 h-10 fill-white"
+                                                    />
+                                                }
 
-                                            text={<span className="text-lg">GitHub</span>}
-                                            inline={true}
-                                            className="gap-3 justify-center"
-                                        />
-                                    </button>
-                                    <button
-                                        className="login-button"
-                                        onClick={() => {
-                                            signIn("google");
-                                        }}
-                                    >
-                                        <IconAndText
-                                            icon={
-                                                <GoogleIcon
-                                                    className="w-10 h-10 fill-white"
-                                                />
-                                            }
-                                            text={<span className="text-lg">Google</span>}
-                                            inline={true}
-                                            className="gap-3 justify-center"
-                                        />
-                                    </button>
-                                </>
-                            )}
+                                                text={<span className="text-lg">GitHub</span>}
+                                                inline={true}
+                                                className="gap-3 justify-center"
+                                            />
+                                        </button>
+                                        <button
+                                            className="login-button"
+                                            onClick={() => {
+                                                signIn("google");
+                                            }}
+                                        >
+                                            <IconAndText
+                                                icon={
+                                                    <GoogleIcon
+                                                        className="w-10 h-10 fill-white"
+                                                    />
+                                                }
+                                                text={<span className="text-lg">Google</span>}
+                                                inline={true}
+                                                className="gap-3 justify-center"
+                                            />
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

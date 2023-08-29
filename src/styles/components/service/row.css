@@ -1,7 +1,9 @@
 .service-row {
     @apply w-full;
 
-    @apply bg-cyan-900;
+    @apply bg-gradient-to-b;
+    @apply from-deaconn-data;
+    @apply to-deaconn-data2;
 
     @apply rounded;
 
@@ -9,8 +11,8 @@
     @apply flex-col;
 
     @apply ring-4;
-    @apply ring-gray-800;
-    @apply hover:ring-gray-600;
+    @apply ring-deaconn-ring;
+    @apply hover:ring-deaconn-ring2;
 
     & .grid-view-image img {
         @apply filter;
