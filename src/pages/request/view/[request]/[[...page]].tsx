@@ -356,7 +356,7 @@ const Page: NextPage<{
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
-    const session = await getSession(ctx);
+    const session = await getServerAuthSession(ctx);
 
     let authed = false;
 

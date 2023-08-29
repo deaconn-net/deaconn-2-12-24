@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/react";
+import { getServerAuthSession } from "@server/auth";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import { type UserExperienceWithUser } from "~/types/user/experience";
@@ -50,7 +50,7 @@ const Page: NextPage<{
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
-    const session = await getSession(ctx);
+    const session = await getServerAuthSession(ctx);
 
     // Retrieve experience ID if any.
     const { params } = ctx;

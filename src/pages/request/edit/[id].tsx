@@ -1,5 +1,5 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { getServerAuthSession } from "@server/auth";
 
 import { type Service, type Request } from "@prisma/client";
 
@@ -64,7 +64,7 @@ const Page: NextPage<{
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const { params } = ctx;
 
-    const session = await getSession(ctx);
+    const session = await getServerAuthSession(ctx);
 
     // Make sure we're signed in.
     let authed = false;

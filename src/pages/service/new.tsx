@@ -1,5 +1,5 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { getServerAuthSession } from "@server/auth";
 
 import { type CategoryWithChildren } from "~/types/category";
 
@@ -52,7 +52,7 @@ const Page: NextPage<{
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
-    const session = await getSession(ctx);
+    const session = await getServerAuthSession(ctx);
 
     // Make sure we're authenticated.
     let authed = false;
