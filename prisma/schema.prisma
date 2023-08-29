@@ -169,15 +169,16 @@ model User {
 
   credit Float @default(0)
 
-  image     String?
-  avatar    String?
-  url       String?   @unique
-  name      String?
-  title     String?
-  aboutMe   String?   @db.Text
-  birthday  DateTime?
-  showEmail Boolean   @default(false)
-  isTeam    Boolean   @default(false)
+  image        String?
+  avatar       String?
+  url          String?   @unique
+  name         String?
+  title        String?
+  aboutMe      String?   @db.Text
+  birthday     DateTime?
+  showEmail    Boolean   @default(false)
+  isTeam       Boolean   @default(false)
+  isRestricted Boolean   @default(false)
 
   socialTwitter  String?
   socialGithub   String?

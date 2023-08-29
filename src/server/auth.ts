@@ -19,7 +19,8 @@ declare module "next-auth" {
     interface Session extends DefaultSession {
         user: DefaultSession["user"] & {
             id: string
-            roles: string[]
+            roles: string[],
+            isRestricted?: boolean
         };
     }
 }
@@ -50,6 +51,16 @@ export const authOptions: NextAuthOptions = {
 
                 if (roles)
                     session.user.roles = roles.map(role => role.roleId);
+
+                // See if we're restricted.
+                const isRestrictedQuery = await prisma.user.count({
+                    where: {
+                        id: user.id,
+                        isRestricted: true
+                    }
+                });
+
+                session.user.isRestricted = (isRestrictedQuery > 0) ? true : false;
             }
 
             return session;

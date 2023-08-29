@@ -99,7 +99,7 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-    if (!ctx.session || !ctx.session.user) {
+    if (!ctx.session || !ctx.session.user || ctx.session.user.isRestricted) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next({
@@ -122,7 +122,7 @@ export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
 // Admin middlware.
 const isAdmin = t.middleware(async ({ ctx, next }) => {
-    if (!ctx.session || !ctx.session.user)
+    if (!ctx.session || !ctx.session.user || ctx.session.user.isRestricted)
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Check.
@@ -141,7 +141,7 @@ export const adminProcedure = t.procedure.use(isAdmin);
 
 // Moderator middleware.
 const isMod = t.middleware(async ({ ctx, next }) => {
-    if (!ctx.session || !ctx.session.user)
+    if (!ctx.session || !ctx.session.user || ctx.session.user.isRestricted)
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Check.
@@ -160,7 +160,7 @@ export const modProcedure = t.procedure.use(isMod);
 
 // Contributor middleware.
 const isContributor = t.middleware(async ({ ctx, next }) => {
-    if (!ctx.session || !ctx.session.user)
+    if (!ctx.session || !ctx.session.user || ctx.session.user.isRestricted)
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Check.

@@ -22,6 +22,7 @@ export const userRouter = createTRPCRouter({
             birthday: z.date().optional(),
             showEmail: z.boolean().optional(),
             isTeam: z.boolean().optional(),
+            isRestricted: z.boolean().optional(),
 
             avatar: z.string().optional(),
             avatarRemove: z.boolean().default(false),
@@ -90,6 +91,9 @@ export const userRouter = createTRPCRouter({
                         showEmail: input.showEmail,
                         ...(isAdmin && {
                             isTeam: input.isTeam
+                        }),
+                        ...(isAdmin && {
+                            isRestricted: input.isRestricted
                         }),
                         ...(input.website && {
                             website: RetrieveSocialTag(input.website, "website")

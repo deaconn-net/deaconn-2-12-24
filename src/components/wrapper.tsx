@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+
+import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type GlobalPropsType } from "@utils/global_props";
 
@@ -6,7 +9,6 @@ import Header from "@components/header";
 import Footer from "@components/footer";
 import ErrorBox from "@components/error/box";
 import SuccessBox from "@components/success/box";
-import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 export default function Wrapper ({
     footerServices,
@@ -16,6 +18,9 @@ export default function Wrapper ({
 } : {
     children: React.ReactNode
 } & GlobalPropsType) {
+    // Retrieve session.
+    const { data: session } = useSession();
+
     // Success and error messages.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -48,16 +53,29 @@ export default function Wrapper ({
         <main>
             <Header />
             <div className="content">
-                <ErrorBox
-                    title={errorCtx?.title}
-                    msg={errorCtx?.msg}
-                />
-                <SuccessBox
-                    title={successCtx?.title}
-                    msg={successCtx?.msg}
-                />
+                {session?.user?.isRestricted ? (
+                    <div className="content-item2">
+                        <div>
+                            <h1>Restricted!</h1>
+                        </div>
+                        <div>
+                            <p>Your account has been restricted. Please contact an administrator.</p>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <ErrorBox
+                            title={errorCtx?.title}
+                            msg={errorCtx?.msg}
+                        />
+                        <SuccessBox
+                            title={successCtx?.title}
+                            msg={successCtx?.msg}
+                        />
 
-                {children}
+                        {children}
+                    </>
+                )}
             </div>
             <Footer
                 services={footerServices}

@@ -90,6 +90,7 @@ export default function GeneralForm ({
             birthday: new Date(user?.birthday ?? Date.now()),
             showEmail: user?.showEmail ?? false,
             isTeam: user?.isTeam ?? false,
+            isRestricted: user?.isRestricted ?? false,
 
             avatarRemove: false,
 
@@ -127,6 +128,7 @@ export default function GeneralForm ({
                 birthday: values.birthday,
                 showEmail: values.showEmail,
                 isTeam: values.isTeam,
+                isRestricted: values.isRestricted,
 
                 avatar: avatar?.toString(),
                 avatarRemove: values.avatarRemove,
@@ -254,19 +256,34 @@ export default function GeneralForm ({
                 )}
             </div>
             {session && has_role(session, "admin") && (
-                <div className="form-div">
-                    <label className="form-label">Is Team</label>
-                    {preview ? (
-                        <p className="italic">{form.values.isTeam ? "Yes" : "No"}</p>
-                    ) : (
-                        <div className="form-checkbox">
-                            <Field
-                                name="isTeam"
-                                type="checkbox"
-                            /> <span>Yes</span>
-                        </div>
-                    )}
-                </div>
+                <>
+                    <div className="form-div">
+                        <label className="form-label">Is Team</label>
+                        {preview ? (
+                            <p className="italic">{form.values.isTeam ? "Yes" : "No"}</p>
+                        ) : (
+                            <div className="form-checkbox">
+                                <Field
+                                    name="isTeam"
+                                    type="checkbox"
+                                /> <span>Yes</span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="form-div">
+                        <label className="form-label">Is Restricted</label>
+                        {preview ? (
+                            <p className="italic">{form.values.isRestricted ? "Yes" : "No"}</p>
+                        ) : (
+                            <div className="form-checkbox">
+                                <Field
+                                    name="isRestricted"
+                                    type="checkbox"
+                                /> <span>Yes</span>
+                            </div>
+                        )}
+                    </div>
+                </>
             )}
             <h2>Social</h2>
             <div className="form-div">
