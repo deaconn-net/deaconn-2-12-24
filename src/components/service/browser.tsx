@@ -100,7 +100,7 @@ export default function ServiceBrowser ({
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
                 >
-                    <div className="grid-view grid-view-sm">
+                    <div className="grid-view grid-view-lg">
                         {services.map((service: Service) => {
                             return (
                                 <ServiceRow

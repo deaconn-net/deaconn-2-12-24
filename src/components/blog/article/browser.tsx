@@ -117,7 +117,7 @@ export default function ArticleBrowser({
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
                 >
-                    <div className="grid-view grid-view-sm">
+                    <div className="grid-view grid-view-lg">
                         {articles.map((article: Article) => {
                             return (
                                 <ArticleRow
