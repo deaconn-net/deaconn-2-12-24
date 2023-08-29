@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { type User } from "@prisma/client"
 
 import { has_role } from "@utils/user/auth";
-import UserLink from "../link";
 
 export default function UserRowGrid ({
     user,
