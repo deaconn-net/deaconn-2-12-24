@@ -24,6 +24,7 @@ export default function GeneralForm ({
 }) {
     // Retrieve session.
     const { data: session } = useSession();
+
     // Success and error messages.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -77,6 +78,9 @@ export default function GeneralForm ({
             >{preview ? "Preview Off" : "Preview On"}</button>
         </div>;
 
+    // Avatar.
+    const [avatar, setAvatar] = useState<string | ArrayBuffer | null>(null);
+
     // Setup form.
     const form = useFormik({
         initialValues: {
@@ -86,6 +90,8 @@ export default function GeneralForm ({
             birthday: new Date(user?.birthday ?? Date.now()),
             showEmail: user?.showEmail ?? false,
             isTeam: user?.isTeam ?? false,
+
+            avatarRemove: false,
 
             website: user?.website ?? "",
             socialTwitter: user?.socialTwitter ?? "",
@@ -122,6 +128,9 @@ export default function GeneralForm ({
                 showEmail: values.showEmail,
                 isTeam: values.isTeam,
 
+                avatar: avatar?.toString(),
+                avatarRemove: values.avatarRemove,
+
                 website: values.website,
                 socialTwitter: values.socialTwitter,
                 socialGithub: values.socialGithub,
@@ -136,6 +145,46 @@ export default function GeneralForm ({
             form={form}
             submitBtn={submit_btn}
         >
+            <div className="form-div">
+                <label 
+                    className="form-label"
+                >Avatar</label>
+                <input
+                    name="avatar"
+                    className="form-input"
+                    type="file"
+                    onChange={(e) => {
+                        const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
+
+                        if (file) {
+                            const reader = new FileReader();
+
+                            reader.onloadend = () => {
+                                setAvatar(reader.result);
+                            };
+                            
+                            reader.readAsDataURL(file);
+                        }
+                    }}
+                />
+                {user?.avatar && (
+                    <>
+                        {preview ? (
+                            <>
+                                <label className="form-label">Remove Avatar</label>
+                                <p className="italic">{form.values.avatarRemove ? "Yes" : "No"}</p>
+                            </>
+                        ) : (
+                            <div className="form-checkbox">
+                                <Field
+                                    name="avatarRemove"
+                                    type="checkbox"
+                                /> <span>Remove Avatar</span>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
             <div className="form-div">
                 <label className="form-label">Name</label>
                 {preview ? (

@@ -9,7 +9,7 @@ import UserLink from "../link";
 
 export default function UserRowGrid ({
     user,
-    showBanner = true,
+    showAvatar = true,
     showTitle = true,
     showEmail,
     showActions,
@@ -18,7 +18,7 @@ export default function UserRowGrid ({
     avatarHeight = 72
 } : {
     user: User,
-    showBanner?: boolean,
+    showAvatar?: boolean,
     showTitle?: boolean,
     showEmail?: boolean,
     showActions?: boolean,
@@ -30,27 +30,40 @@ export default function UserRowGrid ({
 
     // Compile links.
     const editUrl = `/admin/user/edit/${user.id}`;
+    const viewUrl = `/user/view/${user.url ? user.url : `$${user.id.toString()}`}`
+
+    // Retrieve some environmental variables.
+    const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
+
+    let avatar = cdn + (process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE ?? "");
+
+    if (user.avatar)
+        avatar = cdn + uploadUrl + user.avatar;
 
     return (
         <div className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}>
-            {showBanner && user.image && (
-                <div className="user-browser-grid-avatar">
-                    <Image
-                        className="rounded-full"
-                        src={user.image}
-                        width={avatarWidth}
-                        height={avatarHeight}
-                        alt="Avatar"
-                    />
-                </div>
-            )}
-            {user.name && (
-                <div className="user-browser-grid-name">
-                    <UserLink
-                        user={user}
-                    />
-                </div>
-            )}
+            <Link
+                href={viewUrl}
+                className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}
+            >
+                {showAvatar && (
+                    <div className="user-browser-grid-avatar">
+                        <Image
+                            className="rounded-full"
+                            src={avatar}
+                            width={avatarWidth}
+                            height={avatarHeight}
+                            alt="Avatar"
+                        />
+                    </div>
+                )}
+                {user.name && (
+                    <div className="user-browser-grid-name">
+                        {user.name}
+                    </div>
+                )}
+            </Link>
             {showTitle && user.title && (
                 <div className="user-browser-title">
                     <p>{user.title}</p>

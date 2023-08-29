@@ -170,6 +170,7 @@ model User {
   credit Float @default(0)
 
   image     String?
+  avatar    String?
   url       String?   @unique
   name      String?
   title     String?

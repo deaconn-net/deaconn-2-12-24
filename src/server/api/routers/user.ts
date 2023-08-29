@@ -6,6 +6,7 @@ import { TRPCError } from "@trpc/server";
 
 import { RetrieveSocialTag } from "@utils/social";
 import { has_role } from "@utils/user/auth";
+import { upload_file } from "@utils/file_upload";
 
 export const userRouter = createTRPCRouter({
     update: protectedProcedure
@@ -14,7 +15,6 @@ export const userRouter = createTRPCRouter({
 
             credit: z.number().optional(),
 
-            image: z.string().optional(),
             name: z.string().max(64).optional(),
             url: z.string().max(32).optional(),
             title: z.string().min(3).max(64).optional(),
@@ -23,6 +23,9 @@ export const userRouter = createTRPCRouter({
             showEmail: z.boolean().optional(),
             isTeam: z.boolean().optional(),
 
+            avatar: z.string().optional(),
+            avatarRemove: z.boolean().default(false),
+
             website: z.string().max(64).optional(),
             socialTwitter: z.string().max(64).optional(),
             socialGithub: z.string().max(64).optional(),
@@ -30,6 +33,8 @@ export const userRouter = createTRPCRouter({
             socialFacebook: z.string().max(64).optional(),
         }))
         .mutation(async ({ ctx, input }) => {
+            const userId = input.id ?? ctx.session.user.id;
+
             // Retrieve level of access.
             let isAdmin = false;
             let isMod = false;
@@ -43,18 +48,40 @@ export const userRouter = createTRPCRouter({
             // If we have a custom user ID and the IDs don't match, make sure the user has permissions.
             if ((input.id && input.id != ctx.session.user.id) && (!isAdmin && !isMod))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
+
+            // Check for avatar.
+            let avatarPath: string | undefined | null = undefined;
+
+            if (input.avatarRemove)
+                avatarPath = null;
+            else if (input.avatar) {
+                // Compile name without file extension.
+                const path = `/users/avatars/${userId}`;
+
+                // Upload file and retrieve full path.
+                const [success, err, fullPath] = upload_file(path, input.avatar);
+
+                if (!success || !fullPath) {
+                    throw new TRPCError({
+                        code: "PARSE_ERROR",
+                        message: `Failed to upload avatar. Error => ${err ? err : "N/A"}.`
+                    });
+                }
+
+                avatarPath = fullPath;
+            }
     
             // Update user.
             try {
                 await ctx.prisma.user.update({
                     where: {
-                        id: input.id ?? ctx.session.user.id
+                        id: userId
                     },
                     data: {
                         ...(input.id && {
                             credit: input.credit,
                         }),
-                        image: input.image,
+                        avatar: avatarPath,
                         name: input.name,
                         url: input.url,
                         title: input.title,
