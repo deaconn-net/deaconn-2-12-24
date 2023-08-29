@@ -26,7 +26,8 @@ const config = {
     domains: [
         "cdn.discordapp.com",
         "lh3.googleusercontent.com",
-        "avatars.githubusercontent.com"
+        "avatars.githubusercontent.com",
+        "uploads.deaconn.net"
     ]
   }
 };
