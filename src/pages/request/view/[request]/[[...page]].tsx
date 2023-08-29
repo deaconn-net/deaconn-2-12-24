@@ -1,7 +1,8 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import { getServerAuthSession } from "@server/auth";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
