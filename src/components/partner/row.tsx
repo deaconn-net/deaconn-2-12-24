@@ -30,7 +30,7 @@ export default function PartnerRow ({
             {partner.banner ? (
                 <div className="flex justify-center">
                     <Link
-                        href={partner.url}
+                        href={`https://${partner.url}`}
                         target="_blank"
                         className={bannerClassName}
                     >
@@ -45,7 +45,7 @@ export default function PartnerRow ({
             ) : (
                 <div>
                     <Link
-                        href={partner.url}
+                        href={`https://${partner.url}`}
                         target="_blank"
                         className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}
                     >
