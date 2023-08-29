@@ -53,7 +53,8 @@ const client = z.object({
     NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: z.string().default("/images/blog/default.jpg"),
     NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: z.string().default("/images/service/default.png"),
     NEXT_PUBLIC_DISCORD_SERVER_ID: z.string().optional(),
-    NEXT_PUBLIC_GITHUB_ORG_URL: z.string().optional()
+    NEXT_PUBLIC_GITHUB_ORG_URL: z.string().optional(),
+    NEXT_PUBLIC_GITHUB_REPO_URL: z.string().optional()
 });
 
 /**
@@ -93,7 +94,8 @@ const processEnv = {
     NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
     NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE,
     NEXT_PUBLIC_DISCORD_SERVER_ID: process.env.NEXT_PUBLIC_DISCORD_SERVER_ID,
-    NEXT_PUBLIC_GITHUB_ORG_URL: process.env.NEXT_PUBLIC_GITHUB_ORG_URL
+    NEXT_PUBLIC_GITHUB_ORG_URL: process.env.NEXT_PUBLIC_GITHUB_ORG_URL,
+    NEXT_PUBLIC_GITHUB_REPO_URL: process.env.NEXT_PUBLIC_GITHUB_REPO_URL
 };
 
 // Don't touch the part below

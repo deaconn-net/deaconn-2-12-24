@@ -30,6 +30,9 @@ const Page: NextPage<{
 }) => {
     const discordServerId = process.env.NEXT_PUBLIC_DISCORD_SERVER_ID || undefined;
 
+    const githubOrgUrl = process.env.NEXT_PUBLIC_GITHUB_ORG_URL || undefined;
+    const githubRepoUrl = process.env.NEXT_PUBLIC_GITHUB_REPO_URL || undefined;
+
     return (
         <>
             <Meta
@@ -79,12 +82,17 @@ const Page: NextPage<{
                                 <h1>Open Source!</h1>
                             </div>
                             <div className="flex flex-col gap-4">
-                                <p>Our website is <span className="font-bold">open source</span> on our <Link href="https://github.com/deaconn-net" target="_blank">GitHub organization</Link>!</p>
-                                <Link
-                                    href="https://github.com/deaconn-net/deaconn"
-                                    target="_blank"
-                                    className="button button-primary w-full sm:w-72"
-                                >Check Out!</Link>
+                                {githubOrgUrl && (
+                                    <p>Our website is <span className="font-bold">open source</span> on our <Link href={githubOrgUrl} target="_blank">GitHub organization</Link>!</p>
+                                )}
+                                {githubRepoUrl && (
+                                    <Link
+                                        href={githubRepoUrl}
+                                        target="_blank"
+                                        className="button button-primary w-full sm:w-72"
+                                    >Check It Out!</Link>
+                                )}
+                                
                             </div>
                         </div>
                     </div>
