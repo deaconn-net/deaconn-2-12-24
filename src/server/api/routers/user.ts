@@ -4,9 +4,9 @@ import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
 
-import { RetrieveSocialTag } from "@utils/social";
-import { has_role } from "@utils/user/auth";
-import { upload_file } from "@utils/file_upload";
+import { RetrieveSocialTag } from "@utils/Social";
+import { has_role } from "@utils/user/Auth";
+import { UploadFile } from "@utils/FileUpload";
 
 export const userRouter = createTRPCRouter({
     update: protectedProcedure
@@ -60,7 +60,7 @@ export const userRouter = createTRPCRouter({
                 const path = `/users/avatars/${userId}`;
 
                 // Upload file and retrieve full path.
-                const [success, err, fullPath] = upload_file(path, input.avatar);
+                const [success, err, fullPath] = UploadFile(path, input.avatar);
 
                 if (!success || !fullPath) {
                     throw new TRPCError({

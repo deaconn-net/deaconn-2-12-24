@@ -3,8 +3,8 @@ import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
 
-import { upload_file } from "@utils/file_upload";
-import { has_role } from "@utils/user/auth";
+import { UploadFile } from "@utils/FileUpload";
+import { has_role } from "@utils/user/Auth";
 
 export const blogRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -121,7 +121,7 @@ export const blogRouter = createTRPCRouter({
                 const path = `/blog/articles/${article.id}`;
 
                 // Upload file and retrieve full path.
-                const [success, err, full_path] = upload_file(path, input.banner);
+                const [success, err, full_path] = UploadFile(path, input.banner);
 
                if (!success || !full_path) {
                     throw new TRPCError({

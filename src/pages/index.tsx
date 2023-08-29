@@ -4,18 +4,18 @@ import { type NextPage } from "next";
 import { prisma } from "@server/db";
 import { type Article, type Service, type User } from "@prisma/client";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import ArticleRow from "@components/blog/article/row";
-import ServiceRow from "@components/service/row";
-import PartnerRow from "@components/partner/row";
+import ArticleRow from "@components/blog/article/Row";
+import ServiceRow from "@components/service/Row";
+import PartnerRow from "@components/partner/Row";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import UpdateBox from "@components/log/UpdateBox";
 import GitLogBox from "@components/log/GitLogBox";
 import DiscordWidget from "@components/DiscordWidget";
-import UserRowGrid from "@components/user/row/grid";
+import UserRowGrid from "@components/user/row/Grid";
 
 const Page: NextPage<{
     articles: Article[],

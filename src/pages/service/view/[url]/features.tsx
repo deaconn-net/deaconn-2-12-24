@@ -4,13 +4,13 @@ import { type Service } from ".prisma/client";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import ServiceView from "@components/service/view";
-import NotFound from "@components/error/not_found";
+import ServiceView from "@components/service/View";
+import NotFound from "@components/error/NotFound";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     service?: Service,

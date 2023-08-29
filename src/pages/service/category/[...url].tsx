@@ -4,15 +4,15 @@ import { type CategoryWithAllAndServiceCount, type CategoryWithAll } from "~/typ
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import ServiceBrowser from "@components/service/browser";
-import CategoryTabs from "@components/category/tabs";
-import TabMenuWithData from "@components/tabs/menu_with_data";
-import NotFound from "@components/error/not_found";
+import ServiceBrowser from "@components/service/Browser";
+import CategoryTabs from "@components/category/Tabs";
+import TabMenuWithData from "@components/tabs/MenuWithData";
+import NotFound from "@components/error/NotFound";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     category?: CategoryWithAll,

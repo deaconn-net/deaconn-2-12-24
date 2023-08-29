@@ -5,14 +5,14 @@ import { type Role } from "@prisma/client"
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/error/no_permissions";
-import NotFound from "@components/error/not_found";
-import RoleForm from "@components/forms/role/new";
+import Wrapper from "@components/Wrapper";
+import AdminSettingsPanel from "@components/admin/SettingsPanel";
+import NoPermissions from "@components/error/NoPermissions";
+import NotFound from "@components/error/NotFound";
+import RoleForm from "@components/forms/role/New";
 
-import { has_role } from "@utils/user/auth";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { has_role } from "@utils/user/Auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Edit: NextPage<{
     authed: boolean,

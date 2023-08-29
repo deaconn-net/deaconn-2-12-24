@@ -5,15 +5,15 @@ import { type Service, type Request } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import RequestForm from "@components/forms/request/new";
-import NoPermissions from "@components/error/no_permissions";
-import NotFound from "@components/error/not_found";
+import RequestForm from "@components/forms/request/New";
+import NoPermissions from "@components/error/NoPermissions";
+import NotFound from "@components/error/NotFound";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-import { has_role } from "@utils/user/auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import { has_role } from "@utils/user/Auth";
 
 const Page: NextPage<{
     authed: boolean,

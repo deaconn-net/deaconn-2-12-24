@@ -4,14 +4,14 @@ import { type ArticleWithUser } from "~/types/blog/article";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import NotFound from "@components/error/not_found";
+import NotFound from "@components/error/NotFound";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-import ArticleView from "@components/blog/article/view";
+import ArticleView from "@components/blog/article/View";
 
 const Page: NextPage<{
     article?: ArticleWithUser,

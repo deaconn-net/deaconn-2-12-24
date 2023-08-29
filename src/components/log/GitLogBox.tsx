@@ -6,15 +6,15 @@ import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { type GitLogWithUser } from "~/types/gitlog";
 
-import DeleteIcon from "@components/icons/delete";
-import Loader from "@components/loader";
-import UserRowGrid from "@components/user/row/grid";
+import DeleteIcon from "@components/icons/Delete";
+import Loader from "@components/Loader";
+import UserRowGrid from "@components/user/row/Grid";
 
-import { api } from "@utils/api";
+import { api } from "@utils/Api";
 
-import { dateFormat, dateFormatThree } from "@utils/date";
-import { ScrollToTop } from "@utils/scroll";
-import { has_role } from "@utils/user/auth";
+import { dateFormat, dateFormatThree } from "@utils/Date";
+import { ScrollToTop } from "@utils/Scroll";
+import { has_role } from "@utils/user/Auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 

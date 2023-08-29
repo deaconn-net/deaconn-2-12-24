@@ -1,15 +1,15 @@
 import { useSession } from "next-auth/react";
 import { type NextPage } from "next";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import UserSettingsPanel from "@components/user/settings_panel";
-import SkillBrowser from "@components/user/skill/browser";
-import SkillForm from "@components/forms/user/skill";
-import NotSignedIn from "@components/error/not_signed_in";
+import UserSettingsPanel from "@components/user/SettingsPanel";
+import SkillBrowser from "@components/user/skill/Browser";
+import SkillForm from "@components/forms/user/Skill";
+import NotSignedIn from "@components/error/NotSignedIn";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<GlobalPropsType> = ({
     footerServices,

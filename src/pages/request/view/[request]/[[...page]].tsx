@@ -9,20 +9,20 @@ import { type RequestWithAll } from "~/types/request";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import NoPermissions from "@components/error/no_permissions";
-import NotFound from "@components/error/not_found";
-import Markdown from "@components/markdown/markdown";
-import RequestReplyForm from "@components/forms/request/reply";
-import UserGridRow from "@components/user/row/grid";
+import NoPermissions from "@components/error/NoPermissions";
+import NotFound from "@components/error/NotFound";
+import Markdown from "@components/markdown/Markdown";
+import RequestReplyForm from "@components/forms/request/Reply";
+import UserGridRow from "@components/user/row/Grid";
 
-import { api } from "@utils/api";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-import { has_role } from "@utils/user/auth";
-import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/date";
-import { ScrollToTop } from "@utils/scroll";
+import { api } from "@utils/Api";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import { has_role } from "@utils/user/Auth";
+import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/Date";
+import { ScrollToTop } from "@utils/Scroll";
 
 const Page: NextPage<{
     authed: boolean,

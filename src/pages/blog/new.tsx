@@ -5,14 +5,14 @@ import { type CategoryWithChildren } from "~/types/category";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import ArticleForm from '@components/forms/article/new';
-import NoPermissions from "@components/error/no_permissions";
+import ArticleForm from '@components/forms/article/New';
+import NoPermissions from "@components/error/NoPermissions";
 
-import { has_role } from "@utils/user/auth";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { has_role } from "@utils/user/Auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     authed: boolean,

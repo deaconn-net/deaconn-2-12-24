@@ -6,19 +6,19 @@ import { type UserProjectWithSources } from "~/types/user/project";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import NotFound from "@components/error/not_found";
-import UserView from "@components/user/view";
-import Markdown from "@components/markdown/markdown";
+import NotFound from "@components/error/NotFound";
+import UserView from "@components/user/View";
+import Markdown from "@components/markdown/Markdown";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-import { dateFormat, dateFormatThree } from "@utils/date";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import { dateFormat, dateFormatThree } from "@utils/Date";
 
-import IconAndText from "@components/containers/icon_and_text";
+import IconAndText from "@components/containers/IconAndText";
 import Link from "next/link";
-import SourceIcon from "@components/icons/source";
+import SourceIcon from "@components/icons/Source";
 
 const Page: NextPage<{
     user?: User,

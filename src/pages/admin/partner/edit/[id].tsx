@@ -5,14 +5,14 @@ import { type Partner } from "@prisma/client"
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/error/no_permissions";
-import NotFound from "@components/error/not_found";
+import Wrapper from "@components/Wrapper";
+import AdminSettingsPanel from "@components/admin/SettingsPanel";
+import NoPermissions from "@components/error/NoPermissions";
+import NotFound from "@components/error/NotFound";
 
-import { has_role } from "@utils/user/auth";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-import PartnerForm from "@components/forms/partner/new";
+import { has_role } from "@utils/user/Auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import PartnerForm from "@components/forms/partner/New";
 
 const Page: NextPage<{
     authed: boolean,

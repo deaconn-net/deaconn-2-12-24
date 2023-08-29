@@ -8,16 +8,16 @@ import { type Role, type User } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/error/no_permissions";
-import NotFound from "@components/error/not_found";
-import UserForm from "@components/forms/user/general";
+import Wrapper from "@components/Wrapper";
+import AdminSettingsPanel from "@components/admin/SettingsPanel";
+import NoPermissions from "@components/error/NoPermissions";
+import NotFound from "@components/error/NotFound";
+import UserForm from "@components/forms/user/General";
 
-import { api } from "@utils/api";
-import { has_role } from "@utils/user/auth";
-import { ScrollToTop } from "@utils/scroll";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { api } from "@utils/Api";
+import { has_role } from "@utils/user/Auth";
+import { ScrollToTop } from "@utils/Scroll";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 const Page: NextPage<{
     authed: boolean,
     user?: User,

@@ -2,7 +2,7 @@ import { createTRPCRouter, contributorProcedure, publicProcedure, modProcedure }
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
-import { upload_file } from "@utils/file_upload";
+import { UploadFile } from "@utils/FileUpload";
 
 export const serviceRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -119,7 +119,7 @@ export const serviceRouter = createTRPCRouter({
                     const path = `/services/${service.id}_banner`;
 
                     // Upload file and retrieve full path.
-                    const [success, err, full_path] = upload_file(path, input.banner);
+                    const [success, err, full_path] = UploadFile(path, input.banner);
 
                     if (!success || !full_path) {
                         throw new TRPCError({
@@ -136,7 +136,7 @@ export const serviceRouter = createTRPCRouter({
                     const path = `/services/${service.id}_icon`;
 
                     // Upload file and retrieve full path.
-                    const [success, err, full_path] = upload_file(path, input.icon);
+                    const [success, err, full_path] = UploadFile(path, input.icon);
 
                     if (!success || !full_path) {
                         throw new TRPCError({

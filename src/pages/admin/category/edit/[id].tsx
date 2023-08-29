@@ -6,15 +6,15 @@ import { type CategoryWithChildren } from "~/types/category";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
+import Wrapper from "@components/Wrapper";
 
-import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/error/no_permissions";
-import NotFound from "@components/error/not_found";
-import CategoryForm from "@components/forms/category/new";
+import AdminSettingsPanel from "@components/admin/SettingsPanel";
+import NoPermissions from "@components/error/NoPermissions";
+import NotFound from "@components/error/NotFound";
+import CategoryForm from "@components/forms/category/New";
 
-import { has_role } from "@utils/user/auth";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { has_role } from "@utils/user/Auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     authed: boolean,

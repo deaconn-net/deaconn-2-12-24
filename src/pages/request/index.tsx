@@ -2,13 +2,13 @@ import { useSession } from "next-auth/react";
 
 import { type NextPage } from "next";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import NotSignedIn from "@components/error/not_signed_in";
-import RequestBrowser from "@components/request/browser";
+import NotSignedIn from "@components/error/NotSignedIn";
+import RequestBrowser from "@components/request/Browser";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<GlobalPropsType> = ({
     footerServices,

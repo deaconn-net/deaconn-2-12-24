@@ -1,9 +1,9 @@
 import { type NextPage } from "next";
 
-import Meta from "@components/meta";
-import Wrapper from "@components/wrapper";
+import Meta from "@components/Meta";
+import Wrapper from "@components/Wrapper";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<GlobalPropsType> = ({
     footerServices,

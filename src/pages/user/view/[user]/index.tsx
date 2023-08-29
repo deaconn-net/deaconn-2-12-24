@@ -1,19 +1,19 @@
 import { type User } from "@prisma/client";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import NotFound from "@components/error/not_found";
-import UserView from "@components/user/view";
+import NotFound from "@components/error/NotFound";
+import UserView from "@components/user/View";
 
-import { dateFormat, dateFormatTwo } from "@utils/date";
+import { dateFormat, dateFormatTwo } from "@utils/Date";
 
-import Markdown from "@components/markdown/markdown";
+import Markdown from "@components/markdown/Markdown";
 
 const Page: NextPage<{
     user?: User

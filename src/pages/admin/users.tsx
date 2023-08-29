@@ -1,13 +1,13 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-import Wrapper from "@components/wrapper";
-import AdminSettingsPanel from "@components/admin/settingspanel";
-import NoPermissions from "@components/error/no_permissions";
-import UserBrowser from "@components/user/browser";
+import Wrapper from "@components/Wrapper";
+import AdminSettingsPanel from "@components/admin/SettingsPanel";
+import NoPermissions from "@components/error/NoPermissions";
+import UserBrowser from "@components/user/Browser";
 
-import { has_role } from "@utils/user/auth";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { has_role } from "@utils/user/Auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     authed: boolean

@@ -4,14 +4,14 @@ import { type User } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import ExperienceBrowser from "@components/user/experience/browser";
-import NotFound from "@components/error/not_found";
-import UserView from "@components/user/view";
+import ExperienceBrowser from "@components/user/experience/Browser";
+import NotFound from "@components/error/NotFound";
+import UserView from "@components/user/View";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     user?: User

@@ -5,12 +5,12 @@ import { type Service } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import RequestForm from "@components/forms/request/new";
-import NoPermissions from "@components/error/no_permissions";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import RequestForm from "@components/forms/request/New";
+import NoPermissions from "@components/error/NoPermissions";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     authed: boolean,

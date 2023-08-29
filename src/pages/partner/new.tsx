@@ -3,14 +3,14 @@ import { getSession } from "next-auth/react";
 
 import { type Partner } from "@prisma/client";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import PartnerForm from '@components/forms/partner/new';
-import NoPermissions from "@components/error/no_permissions";
+import PartnerForm from '@components/forms/partner/New';
+import NoPermissions from "@components/error/NoPermissions";
 
-import { has_role } from "@utils/user/auth";
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import { has_role } from "@utils/user/Auth";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     authed: boolean,

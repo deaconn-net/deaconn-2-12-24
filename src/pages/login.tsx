@@ -3,14 +3,14 @@ import { type NextPage } from "next";
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
-import IconAndText from "@components/containers/icon_and_text";
-import DiscordIcon from "@components/icons/social/discord";
-import GithubIcon from "@components/icons/social/github";
-import GoogleIcon from "@components/icons/social/google";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import IconAndText from "@components/containers/IconAndText";
+import DiscordIcon from "@components/icons/social/Discord";
+import GithubIcon from "@components/icons/social/Github";
+import GoogleIcon from "@components/icons/social/Google";
 
 const Page: NextPage<GlobalPropsType> = ({
     footerServices,

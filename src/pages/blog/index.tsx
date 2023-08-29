@@ -5,14 +5,14 @@ import { type CategoryWithAllAndAricleCount } from "~/types/category";
 
 import { prisma } from "@server/db";
 
-import Wrapper from "@components/wrapper";
-import Meta from "@components/meta";
+import Wrapper from "@components/Wrapper";
+import Meta from "@components/Meta";
 
-import ArticleBrowser from "@components/blog/article/browser";
-import CategoryTabs from "@components/category/tabs";
-import TabMenuWithData from "@components/tabs/menu_with_data";
+import ArticleBrowser from "@components/blog/article/Browser";
+import CategoryTabs from "@components/category/Tabs";
+import TabMenuWithData from "@components/tabs/MenuWithData";
 
-import GlobalProps, { type GlobalPropsType } from "@utils/global_props";
+import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
     categories?: CategoryWithAllAndAricleCount[]
