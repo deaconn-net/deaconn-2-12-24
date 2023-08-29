@@ -80,16 +80,16 @@ export default function ServiceView ({
             text: <>Details</>,
             active: view == "details"
         },
-        {
+        ...(service.install ? [{
             url: `${viewUrl}/install`,
             text: <>Installation</>,
             active: view == "install"
-        },
-        {
+        }] : []),
+        ...(service.features ? [{
             url: `${viewUrl}/features`,
             text: <>Features</>,
             active: view == "features"
-        }
+        }] : [])
     ];
     
     return (

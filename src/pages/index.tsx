@@ -73,7 +73,7 @@ const Page: NextPage<{
                             <div>
                                 <h1>Git Log</h1>
                             </div>
-                            <div className="!p-0">
+                            <div>
                                 <GitLogBox />
                             </div>
                         </div>
