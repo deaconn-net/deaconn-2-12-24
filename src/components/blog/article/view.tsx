@@ -32,17 +32,16 @@ export default function ArticleView ({
     const { data: session } = useSession();
 
     // Environmental variables.
-    const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
 
     // Compile links.
     const editUrl = `/blog/edit/${article?.id?.toString()}`;
 
     // Retrieve banner.
-    let banner = cdn + (process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE ?? "");
+    let banner = process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE ?? "";
 
     if (article.banner)
-        banner = cdn + uploadUrl + article.banner;
+        banner = uploadUrl + article.banner;
 
     // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation({

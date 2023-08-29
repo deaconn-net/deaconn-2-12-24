@@ -32,13 +32,12 @@ export default function UserRowGrid ({
     const viewUrl = `/user/view/${user.url ? user.url : `$${user.id.toString()}`}`
 
     // Retrieve some environmental variables.
-    const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
 
-    let avatar = cdn + (process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE ?? "");
+    let avatar = process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE ?? "";
 
     if (user.avatar)
-        avatar = cdn + uploadUrl + user.avatar;
+        avatar = uploadUrl + user.avatar;
 
     return (
         <div className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}>

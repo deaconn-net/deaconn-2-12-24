@@ -48,8 +48,7 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-    NEXT_PUBLIC_UPLOADS_PRE_URL: z.string().optional(),
-    NEXT_PUBLIC_CDN_URL: z.string().optional(),
+    NEXT_PUBLIC_UPLOADS_URL: z.string().optional(),
     NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: z.string().default("/images/blog/default.jpg"),
     NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: z.string().default("/images/service/default.png"),
     NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE: z.string().default("/images/users/avatars/default.png"),
@@ -90,8 +89,7 @@ const processEnv = {
     GITHUB_API_KEY: process.env.GITHUB_API_KEY,
 
     /* Client */
-    NEXT_PUBLIC_UPLOADS_PRE_URL: process.env.NEXT_PUBLIC_UPLOADS_PRE_URL,
-    NEXT_PUBLIC_CDN_URL: process.env.CDN_URL,
+    NEXT_PUBLIC_UPLOADS_URL: process.env.CDN_URL,
     NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE,
     NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE,
     NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE,

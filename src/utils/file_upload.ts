@@ -64,7 +64,7 @@ export function upload_file (
 
     // Check if we need to prepend upload URL.
     if (prepend_upload_url)
-        full_path = (process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "") + path;
+        full_path = path;
 
     return [true, null, full_path];
 }

@@ -15,7 +15,7 @@ export type MetaType = {
     article_section?: string
     article_tags?: string[],
 
-    include_cdn?: boolean
+    includeUploadUrl?: boolean
 };
 
 export default function Meta ({
@@ -33,7 +33,7 @@ export default function Meta ({
     article_section,
     article_tags,
     
-    include_cdn
+    includeUploadUrl
 } : MetaType) {
     // Retrieve URLs.
     let base_url;
@@ -44,9 +44,11 @@ export default function Meta ({
         full_url = base_url + window.location.pathname;
     }
 
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
+
     // Check if we must prepend CDN URL or use full URL instead.
-    if (process.env.NEXT_PUBLIC_CDN_URL && image && include_cdn)
-        image = process.env.NEXT_PUBLIC_CDN_URL + image;
+    if (uploadUrl && image && includeUploadUrl)
+        image = uploadUrl + image;
     else if (full_url) {
         const partOne = window.location.protocol + "//";
         let partTwo = window.location.host + image;

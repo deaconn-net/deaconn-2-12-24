@@ -20,10 +20,9 @@ export default function PartnerRow ({
     bannerHeight?: number,
     bannerClassName?: string
 }) {
-    const cdn = process.env.NEXT_PUBLIC_CDN_URL ?? "";
-    const upload_url = process.env.NEXT_PUBLIC_UPLOADS_PRE_URL ?? "";
-    const banner = cdn + upload_url + (partner?.banner ?? "");
-    const icon = cdn + upload_url + (partner?.icon ?? "");
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
+    const banner = uploadUrl + (partner?.banner ?? "");
+    const icon = uploadUrl + (partner?.icon ?? "");
 
     return (
         <>
