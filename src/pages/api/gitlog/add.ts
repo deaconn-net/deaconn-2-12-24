@@ -99,7 +99,7 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const action = req.body?.action;
+    const action = req.headers["X-GitHub-Event"]?.toString() || req.body?.action;
 
     if (!action) {
         return res.status(400).json({
