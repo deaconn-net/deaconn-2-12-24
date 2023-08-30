@@ -1,0 +1,57 @@
+.updatelog {
+    @apply w-full;
+    @apply overflow-y-scroll;
+    @apply h-96;
+}
+
+.updatelog::-webkit-scrollbar {
+    @apply w-2;
+    @apply rounded;
+}
+
+.updatelog::-webkit-scrollbar-track {
+    @apply bg-black/20;
+}
+
+.updatelog::-webkit-scrollbar-thumb {
+    @apply bg-gray-800/50;
+    
+    @apply rounded-lg;
+}
+
+.updatelog::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-700/50;
+}
+
+.updatelog .updatelog-table {
+    @apply table-auto;
+    @apply w-full;
+
+    & tr {
+        @apply p-2;
+    }
+
+    & td {
+        @apply p-2;
+        @apply text-sm;
+        @apply font-mono;
+    }
+
+    & .ul-actions {
+        @apply flex;
+        @apply flex-wrap;
+        @apply gap-2;
+    }
+
+    & .ul-actions > button {
+        @apply p-2;
+
+        @apply bg-cyan-900/50;
+        @apply hover:bg-cyan-800/50;
+        @apply rounded-full;
+    }
+
+    & .ul-msg {
+        @apply max-w-sm;
+    }
+}

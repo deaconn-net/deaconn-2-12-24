@@ -42,9 +42,6 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="flex justify-center">
-                    <UpdateBox />
-                </div>
                 <div className="flex flex-wrap sm:flex-nowrap gap-12">
                     <div className="content-col-large">
                         <div className="content-item2">
@@ -67,6 +64,14 @@ const Page: NextPage<{
                                 <div className="flex py-6">
                                     <Link href="/request/new" className="button">New Request</Link>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="content-item2">
+                            <div>
+                                <h1>Updates</h1>
+                            </div>
+                            <div>
+                                <UpdateBox />
                             </div>
                         </div>
                         <div className="content-item2">

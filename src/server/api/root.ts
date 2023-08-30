@@ -8,6 +8,7 @@ import { serviceRouter } from "./routers/service";
 import { userRouter } from "./routers/user";
 import { categoryRouter } from "./routers/category";
 import { gitLogRouter } from "./routers/gitlog";
+import { updateLogRouter } from "./routers/updatelog";
 
 /**
  * This is the primary router for your server.
@@ -22,7 +23,8 @@ export const appRouter = createTRPCRouter({
     user: userRouter,
     partner: partnerRouter,
     category: categoryRouter,
-    gitLog: gitLogRouter
+    gitLog: gitLogRouter,
+    updateLog: updateLogRouter
 });
 
 // export type definition of API
