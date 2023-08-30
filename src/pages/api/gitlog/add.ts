@@ -5,10 +5,10 @@ import crypto from "crypto";
 
 interface ExtendedNextApiRequest extends NextApiRequest {
     body: {
+        ref: string,
         action?: string,
         commits?: {
             id: string,
-            ref: string,
             url: string,
             message: string,
             author: {
@@ -127,7 +127,8 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     }
 
     // Retrieve commits.
-    const commits = req.body?.commits;
+    const ref = req.body.ref;
+    const commits = req.body.commits;
 
     let commitsAdded = 0;
 
@@ -138,7 +139,7 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
             const commitMsg = commit.message;
 
             // Retrieve branch (or tag).
-            const repoBranch = commit.ref.split("/").pop();
+            const repoBranch = ref.split("/").pop();
 
             // Retrieve information on author.
             const authorName = commit.author.name;
