@@ -17,8 +17,9 @@ interface ExtendedNextApiRequest extends NextApiRequest {
                 username: string
             }
         }[],
-        repository?: {
-            name?: string
+        repository: {
+            name: string,
+            private: boolean
         }
     };
   }
@@ -113,6 +114,16 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
         return res.status(200).json({
             code: 200,
             message: "No pushes or commits detected."
+        });
+    }
+
+    // Make sure this isn't private.
+    const isPrivate = req.body.repository.private;
+
+    if (isPrivate) {
+        return res.status(404).json({
+            code: 404,
+            message: "Repository is private. Aborting."
         });
     }
 
