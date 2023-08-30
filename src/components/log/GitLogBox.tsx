@@ -90,7 +90,7 @@ function Row ({
     const gitOrgUrl = process.env.NEXT_PUBLIC_GITHUB_ORG_URL || "";
 
     // Compile URLs.
-    const viewUrl = `${gitOrgUrl}/${log.repoName}/commits/${log.commitId}`;
+    const viewUrl = `${gitOrgUrl}/${log.repoName}/commit/${log.commitId}`;
     const repoUrl = `${gitOrgUrl}/${log.repoName}`;
     const branchUrl = `${gitOrgUrl}/${log.repoName}/tree/${log.repoBranch}`;
     const githubUserUrl = `https://github.com/${log.username ?? ""}`;
