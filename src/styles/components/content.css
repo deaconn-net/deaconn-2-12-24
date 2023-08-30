@@ -57,4 +57,9 @@
         @apply from-deaconn-data;
         @apply to-deaconn-data2;
     }
+
+    & > div:last-child p {
+        @apply py-2;
+        @apply leading-6;
+    }
 }
