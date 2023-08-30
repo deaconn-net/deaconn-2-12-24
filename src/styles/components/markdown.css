@@ -1,3 +1,7 @@
+.markdown {
+    @apply break-all;
+}
+
 .markdown ol {
     @apply list-decimal;
 }

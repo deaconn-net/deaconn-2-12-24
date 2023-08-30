@@ -89,7 +89,7 @@ const Page: NextPage<{
                                     <Link
                                         href={githubRepoUrl}
                                         target="_blank"
-                                        className="button button-primary w-full sm:w-72"
+                                        className="button w-full sm:w-72"
                                     >Check It Out!</Link>
                                 )}
                                 

@@ -98,7 +98,7 @@ export default function ServiceView ({
                 <div className="w-full flex justify-center">
                     <Image
                         src={banner}
-                        className="max-h-[32rem] max-w-full min-h-[32rem]"
+                        className="w-full max-h-[32rem] max-w-full min-h-[32rem] object-cover"
                         width={1024}
                         height={512}
                         alt="Banner"

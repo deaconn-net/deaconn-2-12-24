@@ -12,6 +12,10 @@
         @apply h-64;
     }
 
+    & .grid-view-image img {
+        @apply object-cover;
+    }
+
     & h3 {
         @apply text-xl;
     }
@@ -22,6 +26,10 @@
 
     & .grid-view-image {
         @apply h-72;
+    }
+
+    & .grid-view-image img {
+        @apply object-cover;
     }
 }
 

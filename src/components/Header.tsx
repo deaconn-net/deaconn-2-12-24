@@ -48,7 +48,7 @@ export default function Header () {
                 <ul className="nav-section">
                     <Link
                         href="/"
-                        className={`nav-link`}
+                        className={`nav-link hidden md:block`}
                     >
                         <li className="nav-item">
                             <Image
