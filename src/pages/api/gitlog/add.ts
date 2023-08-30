@@ -51,8 +51,8 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const secret = req.headers["X-Hub-Signature-256"]?.toString() || undefined;
-    const authHeaderVal = req.headers.authorization || undefined;
+    const secret = req.headers["x-hub-signature-256"]?.toString();
+    const authHeaderVal = req.headers.authorization;
 
     if (!secret && !authHeaderVal) {
         return res.status(401).json({
@@ -99,7 +99,7 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const action = req.headers["X-GitHub-Event"]?.toString() || req.body?.action;
+    const action = req.headers["x-github-event"]?.toString() || req.body?.action;
 
     if (!action) {
         return res.status(400).json({
