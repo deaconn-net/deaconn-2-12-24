@@ -39,6 +39,7 @@ const server = z.object({
     LIMIT_PROJECTS_MAX: z.string().optional(),
 
     // GitHub
+    GITHUB_API_SECRET: z.string().optional(),
     GITHUB_API_KEY: z.string().optional()
 
 });
@@ -86,6 +87,7 @@ const processEnv = {
     LIMIT_PROJECTS_MAX: process.env.LIMIT_PROJECTS_MAX,
 
     // GitHub
+    GITHUB_API_SECRET: process.env.GITHUB_API_SECRET,
     GITHUB_API_KEY: process.env.GITHUB_API_KEY,
 
     /* Client */

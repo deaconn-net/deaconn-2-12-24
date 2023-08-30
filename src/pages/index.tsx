@@ -92,7 +92,6 @@ const Page: NextPage<{
                                         className="button w-full sm:w-72"
                                     >Check It Out!</Link>
                                 )}
-                                
                             </div>
                         </div>
                     </div>
