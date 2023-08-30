@@ -122,8 +122,8 @@ export default function GeneralForm ({
             userMut.mutate({
                 id: user.id,
 
-                name: values.name,
-                url: values.url,
+                name: values.name || undefined,
+                url: values.url || undefined,
                 aboutMe: values.aboutMe,
                 birthday: values.birthday,
                 showEmail: values.showEmail,
