@@ -20,6 +20,7 @@ export default function Breadcrumbs ({
                 return (
                     <>
                         <Link
+                            key={`breadcrumb-${i.toString()}`}
                             href={item.url}
                             target={item.target}
                         >{item.name}</Link>
