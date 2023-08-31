@@ -56,6 +56,9 @@ export default function Meta ({
     else if (baseUrl) 
         image = baseUrl + image;
 
+    if (!image.startsWith("http://") && !image.startsWith("https://"))
+        image = baseUrl + image;
+
     return (
         <Head>
             <link rel="canonical" href={fullUrl} />
