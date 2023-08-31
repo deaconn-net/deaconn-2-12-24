@@ -11,7 +11,16 @@ export default function UserRowTable ({
 } : {
     user: User
 }) {
+    // Retrieve session.
     const { data: session } = useSession();
+
+    // Retrieve user avatar.
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
+
+    let avatar = process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE || undefined;
+
+    if (user.avatar)
+        avatar = uploadUrl + user.avatar;
 
     // Compile links.
     const editUrl = `/admin/user/edit/${user.id}`;
@@ -19,9 +28,9 @@ export default function UserRowTable ({
     return (
         <tr>
             <td className="user-browser-table-avatar">
-                {user.image && (
+                {avatar && (
                     <Image
-                        src={user.image}
+                        src={avatar}
                         width={64}
                         height={64}
                         alt="Avatar"

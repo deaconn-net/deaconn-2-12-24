@@ -26,6 +26,16 @@ export default function UserView ({
 
     children: React.ReactNode
 }) {
+
+    // Retrieve user avatar.
+    const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
+
+    let avatar = process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE || undefined;
+
+    if (user.avatar)
+        avatar = uploadUrl + user.avatar;
+
+    // Compile links.
     const baseUrl = `/user/view/${user?.url ? user.url : "$" + (user?.id ?? "")}`;
 
     // Compile tabs.
@@ -56,10 +66,10 @@ export default function UserView ({
         <div className="tab-menu-with-data">
             <div className="flex flex-col gap-4 !justify-normal">
                 <div className="flex flex-col items-center justify-center gap-2">
-                    {user.image && (
+                    {avatar && (
                         <Image
                             className="w-20 h-20"
-                            src={user.image}
+                            src={avatar}
                             width={50}
                             height={50}
                             alt="User Avatar"

@@ -25,19 +25,20 @@ export default function UserRowGrid ({
     avatarWidth?: number,
     avatarHeight?: number
 }) {
+    // Retrieve session.
     const { data: session } = useSession();
 
-    // Compile links.
-    const editUrl = `/admin/user/edit/${user.id}`;
-    const viewUrl = `/user/view/${user.url ? user.url : `$${user.id.toString()}`}`
-
-    // Retrieve some environmental variables.
+    // Retrieve user avatar.
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
 
     let avatar = process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE || undefined;
 
     if (user.avatar)
         avatar = uploadUrl + user.avatar;
+
+    // Compile links.
+    const editUrl = `/admin/user/edit/${user.id}`;
+    const viewUrl = `/user/view/${user.url ? user.url : `$${user.id.toString()}`}`
 
     return (
         <div className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}>
