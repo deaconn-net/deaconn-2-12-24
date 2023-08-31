@@ -37,8 +37,14 @@ const Page: NextPage<{
                         name: "Requests",
                         url: "/request"
                     },
+                    {
+                        name: "Replies"
+                    },
+                    {
+                        name: "Editing"
+                    },
                     ...(reply ? [{
-                        name: `Editing Reply #${reply.id.toString()}`,
+                        name: `#${reply.id.toString()}`,
                         url: `/request/reply/edit/${reply.id.toString()}`
                     }] : [])
                 ]}

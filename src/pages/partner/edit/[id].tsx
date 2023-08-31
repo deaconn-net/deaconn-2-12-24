@@ -37,8 +37,11 @@ const Page: NextPage<{
                         name: "Partners",
                         url: "/partner"
                     },
+                    {
+                        name: "Editing"
+                    },
                     ...(partner ? [{
-                        name: `Editing Partner ${partner.name}`,
+                        name: partner.name,
                         url: `/partner/edit/${partner.id.toString()}`
                     }] : [])
                 ]}

@@ -34,8 +34,11 @@ const Page: NextPage<{
                         name: "Services",
                         url: "/service"
                     },
+                    {
+                        name: "Viewing"
+                    },
                     ...(service ? [{
-                        name: `Viewing ${service.name}`,
+                        name: service.name,
                         url: `/service/view/${service.url}`
                     }] : []),
                     ...(service?.install ? [{

@@ -44,8 +44,11 @@ const Page: NextPage<{
             />
             <Wrapper
                 breadcrumbs={[
+                    {
+                        name: "Profiles"
+                    },
                     ...(user ? [{
-                        name: `Viewing ${user.name}`,
+                        name: user.name ?? "User",
                         url: `/user/view/${user.url ? user.url : `$${user.id}`}`
                     }] : []),
                     ...(user ? [{
@@ -53,7 +56,7 @@ const Page: NextPage<{
                         url: `/user/view/${user.url ? user.url : `$${user.id}`}/experiences`
                     }] : []),
                     ...(user && experience ? [{
-                        name: `Viewing ${experience.title}`,
+                        name: experience.title,
                         url: `/user/view/${user.url ? user.url : `$${user.id}`}/experiences/${experience.id.toString()}`
                     }] : [])
                 ]}

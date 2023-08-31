@@ -35,6 +35,20 @@ const Page: NextPage<{
                 robots="noindex"
             />
             <Wrapper
+                breadcrumbs={[
+                    {
+                        name: "Services",
+                        url: "/service"
+                    },
+                    {
+                        name: "Editing"
+                    },
+                    ...(service ? [{
+                        name: service.name,
+                        url: `/service/edit/${service.id.toString()}`
+                    }] : [])
+                ]}
+
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

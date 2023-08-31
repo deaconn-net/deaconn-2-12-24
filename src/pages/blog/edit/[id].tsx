@@ -40,8 +40,11 @@ const Page: NextPage<{
                         name: "Blog",
                         url: "/blog"
                     },
+                    {
+                        name: "Editing"
+                    },
                     ...(article ? [{
-                        name: `Editing ${article.title}`,
+                        name: article.title,
                         url: `/blog/edit/${article.id.toString()}`
                     }] : [])
                 ]}

@@ -39,8 +39,11 @@ const Page: NextPage<{
                         name: "Requests",
                         url: "/request"
                     },
+                    {
+                        name: "Editing"
+                    },
                     ...(request ? [{
-                        name: `Editing Request ${request.title}`,
+                        name: request.title ?? `#${request.id.toString()}`,
                         url: `/request/edit/${request.id.toString()}`
                     }] : [])
                 ]}
