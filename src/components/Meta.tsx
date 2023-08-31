@@ -53,8 +53,8 @@ export default function Meta ({
     // Check if we must prepend CDN URL or use full URL instead.
     if (uploadUrl && image && includeUploadUrl)
         image = uploadUrl + image;
-    else if (fullUrl) 
-        image = fullUrl + image;
+    else if (baseUrl) 
+        image = baseUrl + image;
 
     return (
         <Head>
