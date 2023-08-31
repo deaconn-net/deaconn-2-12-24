@@ -38,8 +38,17 @@
     }
 
     & .ul-pulse {
-        @apply p-1;
+        @apply w-4;
+
+        @apply hidden;
+        @apply sm:table-cell;
+    }
+
+    & .ul-pulse > div {
+        @apply w-2;
+        @apply h-2;
         @apply flex;
+        @apply flex-col;
         @apply items-center;
     }
 
