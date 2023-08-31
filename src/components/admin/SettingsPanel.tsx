@@ -3,9 +3,13 @@ import Tabs, { type TabItemType } from "@components/tabs/Tabs";
 
 export default function AdminSettingsPanel({
     view,
+    showBg,
+
     children
 } : {
     view: string,
+    showBg?: boolean,
+
     children: React.ReactNode
 }) {
     // Compile tabs.
@@ -39,7 +43,7 @@ export default function AdminSettingsPanel({
     
     return (
         <TabMenuWithData
-            data_background={true}
+            data_background={showBg}
             menu={
                 <Tabs
                     items={tabs}

@@ -33,9 +33,16 @@ const Edit: NextPage<{
                 <h2>Admin Panel</h2>
                 {(authed && role) ? (
                     <AdminSettingsPanel view="roles">
-                        <RoleForm
-                            role={role}
-                        />
+                        <div className="content-item2">
+                            <div>
+                                <h2>Editing Role {role.id}</h2>
+                            </div>
+                            <div>
+                                <RoleForm
+                                    role={role}
+                                />
+                            </div>
+                        </div>
                     </AdminSettingsPanel>
                 ) : (
                     <>

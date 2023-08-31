@@ -69,101 +69,109 @@ const Page: NextPage<{
                     <h2>Admin Panel</h2>
                     <AdminSettingsPanel view="categories">
                         <div className="flex flex-col gap-4">
-                            <div className="content-item">
-                                <h2>Add Category</h2>
-                                <CategoryForm
-                                    key={"category-add-form"}
-                                    categories={categories ?? []}
-                                />
-                            </div>
-                            <div className="content-item">
-                                <h2>Existing Categories</h2>
-                                <div className="flex flex-wrap gap-4">
-                                    {categories?.map((category) => {
-                                        // Compile links.
-                                        const editUrl = `/admin/category/edit/${category.id.toString()}`;
-
-                                        return (
-                                            <div
-                                                key={`admin-categories-${category.id.toString()}`}
-                                                className="p-6 bg-cyan-900 flex flex-col gap-2 rounded-md"
-                                            >
-                                                <div className="flex gap-2 items-center">
-                                                    <h2 className="text-center">{category.name}</h2>
-                                                </div>
-                                                <div className="grow">
-                                                    {category.desc ? (
-                                                        <Markdown>
-                                                            {category.desc}
-                                                        </Markdown>
-                                                    ) : (
-                                                        <p className="italic">No description available.</p>
-                                                    )}
-                                                </div>
-                                                {category.children.length > 0 && (
-                                                    <div className="content-item">
-                                                        <h3>Children</h3>
-                                                        <ul className="list-none flex flex-wrap gap-4">
-                                                            {category.children.map((categoryChild) => {
-                                                                const editUrlChild = `/admin/category/edit/${categoryChild.id.toString()}`;
-
-                                                                return (
-                                                                    <div
-                                                                        key={`admin-categories-${categoryChild.id.toString()}`}
-                                                                        className="flex gap-2 items-center"
-                                                                    >
-                                                                        <Link
-                                                                            href={editUrlChild}
-                                                                        >{categoryChild.name}</Link>
-                                                                        <button
-                                                                            className="text-red-600 hover:text-red-500"
-                                                                            onClick={(e) => {
-                                                                                e.preventDefault();
-
-                                                                                const yes = confirm("Are you sure you want to delete this category?");
-
-                                                                                if (yes) {
-                                                                                    categoryDeleteMut.mutate({
-                                                                                        id: categoryChild.id
-                                                                                    });
-                                                                                }
-
-                                                                                ScrollToTop();
-                                                                            }}
-                                                                        >X</button>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </ul>
-                                                    </div>
-                                                )}
-                                                <div className="flex flex-wrap gap-2">
-                                                    <Link
-                                                        href={editUrl}
-                                                        className="button button-primary"
-                                                    >Edit</Link>
-                                                    <button
-                                                        className="button button-danger"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-
-                                                            const yes = confirm("Are you sure you want to delete this category?");
-
-                                                            if (yes) {
-                                                                categoryDeleteMut.mutate({
-                                                                    id: category.id
-                                                                });
-                                                            }
-
-                                                            ScrollToTop();
-                                                        }}
-                                                    >Delete</button>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                            <div className="content-item2">
+                                <div>
+                                    <h2>Add Category</h2>
+                                </div>
+                                <div>
+                                    <CategoryForm
+                                        key={"category-add-form"}
+                                        categories={categories ?? []}
+                                    />
                                 </div>
                             </div>
+                            {categories && categories.length > 0 && (
+                                <div className="content-item">
+                                    <h2>Existing Categories</h2>
+                                    <div className="flex flex-wrap gap-4">
+                                        {categories?.map((category) => {
+                                            // Compile links.
+                                            const editUrl = `/admin/category/edit/${category.id.toString()}`;
+
+                                            return (
+                                                <div
+                                                    key={`admin-categories-${category.id.toString()}`}
+                                                    className="content-item2"
+                                                >
+                                                    <div>
+                                                        <h2>{category.name}</h2>
+                                                    </div>
+                                                    <div className="flex flex-col gap-4 h-full">
+                                                        <div className="grow">
+                                                            {category.desc ? (
+                                                                <Markdown>
+                                                                    {category.desc}
+                                                                </Markdown>
+                                                            ) : (
+                                                                <p className="italic">No description available.</p>
+                                                            )}
+                                                        </div>
+                                                        {category.children.length > 0 && (
+                                                            <div className="content-item">
+                                                                <h3>Children</h3>
+                                                                <ul className="list-none flex flex-wrap gap-4">
+                                                                    {category.children.map((categoryChild) => {
+                                                                        const editUrlChild = `/admin/category/edit/${categoryChild.id.toString()}`;
+
+                                                                        return (
+                                                                            <div
+                                                                                key={`admin-categories-${categoryChild.id.toString()}`}
+                                                                                className="flex gap-2 items-center"
+                                                                            >
+                                                                                <Link
+                                                                                    href={editUrlChild}
+                                                                                >{categoryChild.name}</Link>
+                                                                                <button
+                                                                                    className="text-red-600 hover:text-red-500"
+                                                                                    onClick={(e) => {
+                                                                                        e.preventDefault();
+
+                                                                                        const yes = confirm("Are you sure you want to delete this category?");
+
+                                                                                        if (yes) {
+                                                                                            categoryDeleteMut.mutate({
+                                                                                                id: categoryChild.id
+                                                                                            });
+                                                                                        }
+
+                                                                                        ScrollToTop();
+                                                                                    }}
+                                                                                >X</button>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                        <div className="flex flex-wrap gap-2">
+                                                            <Link
+                                                                href={editUrl}
+                                                                className="button button-primary"
+                                                            >Edit</Link>
+                                                            <button
+                                                                className="button button-danger"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+
+                                                                    const yes = confirm("Are you sure you want to delete this category?");
+
+                                                                    if (yes) {
+                                                                        categoryDeleteMut.mutate({
+                                                                            id: category.id
+                                                                        });
+                                                                    }
+
+                                                                    ScrollToTop();
+                                                                }}
+                                                            >Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </AdminSettingsPanel>
                 </div>

@@ -37,10 +37,17 @@ const Page: NextPage<{
                 <h2>Admin Panel</h2>
                 {(authed && category) ? (
                     <AdminSettingsPanel view="categories">
-                        <CategoryForm
-                            category={category}
-                            categories={categories}
-                        />
+                        <div className="content-item2">
+                            <div>
+                                <h2>Editing Category {category.name}</h2>
+                            </div>
+                            <div>
+                                <CategoryForm
+                                    category={category}
+                                    categories={categories}
+                                />
+                            </div>
+                        </div>
                     </AdminSettingsPanel>
                 ) : (
                     <>

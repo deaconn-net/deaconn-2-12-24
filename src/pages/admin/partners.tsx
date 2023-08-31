@@ -68,60 +68,67 @@ const Page: NextPage<{
                     <h2>Admin Panel</h2>
                     <AdminSettingsPanel view="partners">
                         <div className="flex flex-col gap-4">
-                            <div className="content-item">
-                                <h2>Add Partner</h2>
-                                <PartnerForm />
-                            </div>
-                            <div className="content-item">
-                                <h2>Existing Partners</h2>
-                                <div className="flex gap-4">
-                                    {partners?.map((partner) => {
-                                        // Compile links.
-                                        const editUrl = `/admin/partner/edit/${partner.id.toString()}`;
-
-                                        return (
-                                            <div
-                                                key={`admin-partners-${partner.id.toString()}`}
-                                                className="p-6 bg-cyan-900 flex flex-col gap-2 rounded-md"
-                                            >
-                                                <div className="flex flex-col gap-2 items-center">
-                                                    <h2 className="text-center">{partner.name}</h2>
-                                                    <p className="italic">
-                                                        <Link
-                                                            href={`https://${partner.url}`}
-                                                            target="_blank"
-                                                        >
-                                                            {partner.url}
-                                                        </Link>
-                                                    </p>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                    <Link
-                                                        href={editUrl}
-                                                        className="button button-primary"
-                                                    >Edit</Link>
-                                                    <button
-                                                        className="button button-danger"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-
-                                                            const yes = confirm("Are you sure you want to delete this partner?");
-
-                                                            if (yes) {
-                                                                partnerDeleteMut.mutate({
-                                                                    id: partner.id
-                                                                });
-                                                            }
-
-                                                            ScrollToTop();
-                                                        }}
-                                                    >Delete</button>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                            <div className="content-item2">
+                                <div>
+                                    <h2>Add Partner</h2>
+                                </div>
+                                <div>
+                                    <PartnerForm />
                                 </div>
                             </div>
+                            {partners && partners.length > 0 && (
+                                <div className="content-item">
+                                    <h2>Existing Partners</h2>
+                                    <div className="flex gap-4">
+                                        {partners.map((partner) => {
+                                            // Compile links.
+                                            const editUrl = `/admin/partner/edit/${partner.id.toString()}`;
+
+                                            return (
+                                                <div
+                                                    key={`admin-partners-${partner.id.toString()}`}
+                                                    className="content-item2"
+                                                >
+                                                    <div>
+                                                        <h2 className="text-center">{partner.name}</h2>
+                                                    </div>
+                                                    <div className="flex flex-col gap-4 h-full">
+                                                        <p className="italic">
+                                                            <Link
+                                                                href={`https://${partner.url}`}
+                                                                target="_blank"
+                                                            >
+                                                                {partner.url}
+                                                            </Link>
+                                                        </p>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            <Link
+                                                                href={editUrl}
+                                                                className="button button-primary"
+                                                            >Edit</Link>
+                                                            <button
+                                                                className="button button-danger"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+
+                                                                    const yes = confirm("Are you sure you want to delete this partner?");
+
+                                                                    if (yes) {
+                                                                        partnerDeleteMut.mutate({
+                                                                            id: partner.id
+                                                                        });
+                                                                    }
+                                                                }}
+                                                            >Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
                     </AdminSettingsPanel>
                 </div>

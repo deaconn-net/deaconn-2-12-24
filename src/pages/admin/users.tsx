@@ -26,8 +26,13 @@ const Page: NextPage<{
                 <div className="content-item">
                     <h2>Admin Panel</h2>
                     <AdminSettingsPanel view="users">
-                        <div className="content-item">
-                            <UserBrowser />
+                        <div className="content-item2">
+                            <div>
+                                <h2>All Users</h2>
+                            </div>
+                            <div>
+                                <UserBrowser />
+                            </div>
                         </div>
                     </AdminSettingsPanel>
                 </div>

@@ -100,21 +100,27 @@ const Page: NextPage<{
                 <h2>Admin Panel</h2>
                 {(authed && user) ? (
                     <AdminSettingsPanel view="users">
-                        <div className="flex flex-col gap-2">
-                            <div className="content-item">
-                                <h1>General Form</h1>
+                        <div className="content-item2">
+                            <div>
+                                <h2>General Form</h2>
+                            </div>
+                            <div>
                                 <UserForm
                                     user={user}
                                 />
                             </div>
-                            <div className="flex flex-col gap-4">
-                                <div className="content-item">
-                                    <h1>Roles</h1>
-                                    <div className="flex flex-wrap gap-4">
-                                        {userRoles?.map((role) => {
-                                            return (
-                                                <div key={`role-${role.roleId}`} className="p-6 rounded-md bg-cyan-900 flex flex-col gap-2">
-                                                    <h2 className="text-center">{role.roleId}</h2>
+                        </div>
+                        {userRoles && userRoles.length > 0 && (
+                            <div className="content-item">
+                                <h2>Existing Roles</h2>
+                                <div className="flex flex-wrap gap-4 h-full">
+                                    {userRoles?.map((role) => {
+                                        return (
+                                            <div key={`role-${role.roleId}`} className="content-item2">
+                                                <div>
+                                                    <h2>{role.roleId}</h2>
+                                                </div>
+                                                <div>
                                                     <button
                                                         className="button button-danger p-2"
                                                         onClick={(e) => {
@@ -133,48 +139,50 @@ const Page: NextPage<{
                                                         }}
                                                     >Delete</button>
                                                 </div>
-                                            );
-                                        })}
-                                    </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-                                <div className="content-item w-full">
-                                    <h2>Add Role</h2>
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        
-                                        <select
-                                            className="form-input w-72 p-2"
-                                            onChange={(e) => {
-                                                setRoleName(e.currentTarget.value);
-                                            }}
-                                        >
-                                            {roles.map((role) => {
-                                                return (
-                                                    <option
-                                                        key={`add-role-${role.id}`}
-                                                        value={role.id}
-                                                    >
-                                                        {role.title} ({role.id})
-                                                    </option>
-                                                );
-                                            })}
-                                        </select>
-                                        <button
-                                            className="button button-primary"
-                                            onClick={(e) => {
-                                                e.preventDefault();
+                            </div>
+                        )}
 
-                                                if (roleName.length > 0) {
-                                                    addRoleMut.mutate({
-                                                        userId: user.id,
-                                                        role: roleName
-                                                    });
-                                                }
+                        <div className="content-item2">
+                            <div>
+                                <h2>Add Role</h2>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                                <select
+                                    className="form-input w-72 p-2"
+                                    onChange={(e) => {
+                                        setRoleName(e.currentTarget.value);
+                                    }}
+                                >
+                                    {roles.map((role) => {
+                                        return (
+                                            <option
+                                                key={`add-role-${role.id}`}
+                                                value={role.id}
+                                            >
+                                                {role.title} ({role.id})
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                                <button
+                                    className="button button-primary"
+                                    onClick={(e) => {
+                                        e.preventDefault();
 
-                                                ScrollToTop();
-                                            }}
-                                        >Add!</button>
-                                    </div>
-                                </div>
+                                        if (roleName.length > 0) {
+                                            addRoleMut.mutate({
+                                                userId: user.id,
+                                                role: roleName
+                                            });
+                                        }
+
+                                        ScrollToTop();
+                                    }}
+                                >Add!</button>
                             </div>
                         </div>
                     </AdminSettingsPanel>

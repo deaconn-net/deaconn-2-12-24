@@ -33,9 +33,16 @@ const Page: NextPage<{
                 <h2>Admin Panel</h2>
                 {(authed && partner) ? (
                     <AdminSettingsPanel view="partners">
-                        <PartnerForm
-                            partner={partner}
-                        />
+                        <div className="content-item2">
+                            <div>
+                                <h2>Editing Partner {partner.name}</h2>
+                            </div>
+                            <div>
+                                <PartnerForm
+                                    partner={partner}
+                                />
+                            </div>
+                        </div>
                     </AdminSettingsPanel>
                 ) : (
                     <>
