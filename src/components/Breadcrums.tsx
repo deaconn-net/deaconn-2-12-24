@@ -1,5 +1,7 @@
-import ArrowRightIcon from "@components/icons/ArrowRight";
+import React from "react";
 import Link from "next/link";
+
+import ArrowRightIcon from "@components/icons/ArrowRight";
 
 export type Breadcrumb = {
     name: string
@@ -18,9 +20,9 @@ export default function Breadcrumbs ({
         <div className="breadcrumbs">
             {items.map((item, i) => {
                 return (
-                    <>
+                    <React.Fragment key={`breadcrumb-${i.toString()}`}>
                         <Link
-                            key={`breadcrumb-${i.toString()}`}
+                            
                             href={item.url}
                             target={item.target}
                         >{item.name}</Link>
@@ -29,7 +31,7 @@ export default function Breadcrumbs ({
                                 className="w-4 h-4 stroke-white"
                             />
                         )}
-                    </>
+                    </React.Fragment>
                 );
             })}
         </div>
