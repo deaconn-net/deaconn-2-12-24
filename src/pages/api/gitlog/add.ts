@@ -144,7 +144,7 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     let commitsAdded = 0;
 
     if (commits) {
-        const commitsMapping = commits.map(async (commit) => {
+        const commitsMapping = commits.reverse().map(async (commit) => {
             // Retrieve commit ID and message.
             const commitId = commit.id;
             const commitMsg = commit.message;
