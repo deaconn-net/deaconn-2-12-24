@@ -50,25 +50,27 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="content-item">
-                    {(authed && request) ? (
-                        <>
-                            <h1>Edit Request</h1>
+                {(authed && request) ? (
+                    <div className="content-item2">
+                        <div>
+                            <h2>Edit Request {request.title ?? `#${request.id.toString()}`}</h2>
+                        </div>
+                        <div>
                             <RequestForm
                                 request={request}
                                 services={services}
                             />
-                        </>
-                    ) : (
-                        <>
-                            {!authed ? (
-                                <NoPermissions />
-                            ) : (
-                                <NotFound item="Request" />
-                            )}
-                        </>
-                    )}
-                </div>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        {!authed ? (
+                            <NoPermissions />
+                        ) : (
+                            <NotFound item="Request" />
+                        )}
+                    </>
+                )}
             </Wrapper>
         </>
     );

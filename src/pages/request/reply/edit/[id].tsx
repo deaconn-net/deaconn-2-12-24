@@ -53,13 +53,17 @@ const Page: NextPage<{
             >
                 <div className="content-item">
                     {(authed && reply) ? (
-                        <>
-                            <h1>Edit Reply</h1>
-                            <RequestReplyForm
-                                requestId={reply.requestId}
-                                reply={reply}
-                            />
-                        </>
+                        <div className="content-item2">
+                            <div>
+                                <h2>Edit Reply #{reply.id.toString()}</h2>
+                            </div>
+                            <div>
+                                <RequestReplyForm
+                                    requestId={reply.requestId}
+                                    reply={reply}
+                                />
+                            </div>
+                        </div>
                     ) : (
                         <>
                             {!authed ? (

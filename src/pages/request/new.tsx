@@ -32,18 +32,20 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="content-item">
-                    {authed ? (
-                        <>
-                            <h1>New Request</h1>
+                {authed ? (
+                    <div className="content-item2">
+                        <div>
+                            <h2>New Request</h2>
+                        </div>
+                        <div>
                             <RequestForm
                                 services={services}
                             />
-                        </>
-                    ) : (
-                        <NoPermissions />
-                    )}
-                </div>
+                        </div>
+                    </div>
+                ) : (
+                    <NoPermissions />
+                )}
             </Wrapper>
         </>
     );

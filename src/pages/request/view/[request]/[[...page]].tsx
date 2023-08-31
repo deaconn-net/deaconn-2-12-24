@@ -185,7 +185,7 @@ const Page: NextPage<{
                             <h1>{request?.title ?? `Request #${request.id.toString()}`}</h1>
                             <div className="flex flex-col gap-4">
                                 <div className="flex flex-wrap">
-                                    <div className="p-4 flex flex-col gap-1 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
+                                    <div className="p-4 flex flex-col gap-1 items-center bg-deaconn-header rounded-tl-lg rounded-bl-lg">
                                         <UserGridRow
                                             user={request.user}
                                         />
@@ -195,7 +195,7 @@ const Page: NextPage<{
                                             <p className="text-lg font-bold">On {reqStartDate}</p>
                                         )}
                                     </div>
-                                    <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
+                                    <div className="grow p-4 bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
                                         <div className="flex flex-wrap gap-2">
                                             <Markdown className="grow">
                                                 {request.content}
@@ -284,12 +284,12 @@ const Page: NextPage<{
                                                 key={`request-reply-${reply.id.toString()}`}
                                                 className="flex flex-wrap"
                                             >
-                                                <div className="p-4 flex flex-col gap-2 items-center bg-gray-700 rounded-tl-lg rounded-bl-lg">
+                                                <div className="p-4 flex flex-col gap-2 items-center bg-deaconn-header rounded-tl-lg rounded-bl-lg">
                                                     <UserGridRow
                                                         user={request.user}
                                                     />
                                                 </div>
-                                                <div className="grow p-4 bg-gray-800 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
+                                                <div className="grow p-4 bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">
                                                     <Markdown>
                                                         {reply.content}
                                                     </Markdown>
@@ -344,11 +344,15 @@ const Page: NextPage<{
                                             })}
                                         </ul>
                                     )}
-                                    <div className="p-4 bg-gray-800 flex flex-col gap-2">
-                                        <h3>Add Reply</h3>
-                                        <RequestReplyForm
-                                            requestId={request.id}
-                                        />
+                                    <div className="content-item2">
+                                        <div>
+                                            <h2>Add Reply</h2>
+                                        </div>
+                                        <div>
+                                            <RequestReplyForm
+                                                requestId={request.id}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
