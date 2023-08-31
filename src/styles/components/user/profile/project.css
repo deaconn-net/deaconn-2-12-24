@@ -19,6 +19,7 @@
 /* Description */
 .project-row-description {
     @apply pb-6;
+    @apply text-sm;
     @apply grow;
 }
 

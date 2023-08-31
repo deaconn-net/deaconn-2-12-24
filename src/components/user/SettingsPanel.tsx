@@ -5,9 +5,13 @@ import Tabs, { type TabItemType } from "@components/tabs/Tabs";
 
 export default function SettingsPanel ({
     view = "general",
+    showBg,
+
     children
 } : {
     view?: string,
+    showBg?: boolean,
+
     children: React.ReactNode
 }) {
     // Compile tabs.
@@ -45,7 +49,7 @@ export default function SettingsPanel ({
 
     return (
         <TabMenuWithData
-            data_background={true}
+            data_background={showBg}
             menu={
                 <Tabs
                     items={tabs}

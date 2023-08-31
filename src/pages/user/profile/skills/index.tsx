@@ -29,9 +29,13 @@ const Page: NextPage<GlobalPropsType> = ({
                 <div className="content-item"> 
                     {session?.user ? (
                         <UserSettingsPanel view="skills">
-                            <div className="content-item">
-                                <h2>Add Skill</h2>
-                                <SkillForm />
+                            <div className="content-item2">
+                                <div>
+                                    <h2>Add Skill</h2>
+                                </div>
+                                <div>
+                                    <SkillForm />
+                                </div>
                             </div>
                             <div className="content-item">
                                 <h2>Existing Skills</h2>

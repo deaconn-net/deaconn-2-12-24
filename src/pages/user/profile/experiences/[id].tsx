@@ -34,9 +34,13 @@ const Page: NextPage<{
                 <div className="content-item"> 
                     {experience ? (
                         <UserSettingsPanel view="experiences">
-                            <div className="content-item">
-                                <h2>Edit Experience {experience.title}</h2>
-                                <ExperienceForm experience={experience} />
+                            <div className="content-item2">
+                                <div>
+                                    <h2>Edit Experience {experience.title}</h2>
+                                </div>
+                                <div>
+                                    <ExperienceForm experience={experience} />
+                                </div>
                             </div>
                         </UserSettingsPanel>
                     ) : (

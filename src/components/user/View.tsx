@@ -16,11 +16,13 @@ import FacebookIcon from "@components/icons/social/Facebook";
 export default function UserView ({
     user,
     view,
+    showDataBg,
 
     children
 } : {
     user: User,
     view: string,
+    showDataBg?: boolean
 
     children: React.ReactNode
 }) {
@@ -130,7 +132,7 @@ export default function UserView ({
                 />
             </div>
 
-            <div className="bg-gradient-to-b from-deaconn-data to-deaconn-data2">
+            <div className={showDataBg ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : undefined}>
                 {children}
             </div>
         </div>

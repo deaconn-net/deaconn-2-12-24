@@ -34,9 +34,13 @@ const Page: NextPage<{
                 <div className="content-item"> 
                     {skill ? (
                         <UserSettingsPanel view="skills">
-                            <div className="content-item">
-                                <h2>Edit Skill {skill.title}</h2>
-                                <SkillForm skill={skill} />
+                            <div className="content-item2">
+                                <div>
+                                    <h2>Edit Skill {skill.title}</h2>
+                                </div>
+                                <div>
+                                    <SkillForm skill={skill} />
+                                </div>
                             </div>
                         </UserSettingsPanel>
                     ) : (

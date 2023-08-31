@@ -65,36 +65,38 @@ export default function SkillRow ({
     });
 
     return (
-        <div className="skill-row">
-            <div className="skill-row-title">
-                <h3>{skill.title}</h3>
+        <div className="content-item2">
+            <div>
+                <h2>{skill.title}</h2>
             </div>
-            <div className="skill-row-description">
-                <p>{skill.desc ?? ""}</p>
-            </div>
-            <div className="skill-row-actions">
-                {canEdit && (
-                    <>
-                        <Link
-                            href={editUrl}
-                            className="button button-primary"
-                        >Edit</Link>
-                        <button
-                            className="button button-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
+            <div>
+                <div className="skill-row-description">
+                    <p>{skill.desc ?? ""}</p>
+                </div>
+                <div className="skill-row-actions">
+                    {canEdit && (
+                        <>
+                            <Link
+                                href={editUrl}
+                                className="button button-primary"
+                            >Edit</Link>
+                            <button
+                                className="button button-danger"
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-                                const yes = confirm("Are you sure you want to delete this experience?");
+                                    const yes = confirm("Are you sure you want to delete this experience?");
 
-                                if (yes) {
-                                    deleteMut.mutate({
-                                        id: skill.id
-                                    });
-                                }
-                            }}
-                        >Delete</button>
-                    </>
-                )}
+                                    if (yes) {
+                                        deleteMut.mutate({
+                                            id: skill.id
+                                        });
+                                    }
+                                }}
+                            >Delete</button>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

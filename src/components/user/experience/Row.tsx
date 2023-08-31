@@ -70,41 +70,42 @@ export default function UserExperienceRow ({
     });
 
     return (
-        <div className={"experience-row"}>
-            <div className="experience-row-title">
-                <h3>{experience.title}</h3>
+        <div className="content-item2">
+            <div>
+                <h2>{experience.title}</h2>
             </div>
-            <div className="experience-row-description">
-                <p>{experience.desc ?? ""}</p>
-            </div>
+            <div>
+                <div className="experience-row-description">
+                    <p>{experience.desc ?? ""}</p>
+                </div>
+                <div className="experience-row-actions">
+                    <Link
+                        href={viewUrl}
+                        className="button"
+                    >View</Link>
+                    {canEdit && (
+                        <>
+                            <Link
+                                href={editUrl}
+                                className="button button-primary"
+                            >Edit</Link>
+                            <button
+                                className="button button-danger"
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-            <div className="experience-row-actions">
-                <Link
-                    href={viewUrl}
-                    className="button"
-                >View</Link>
-                {canEdit && (
-                    <>
-                        <Link
-                            href={editUrl}
-                            className="button button-primary"
-                        >Edit</Link>
-                        <button
-                            className="button button-danger"
-                            onClick={(e) => {
-                                e.preventDefault();
+                                    const yes = confirm("Are you sure you want to delete this experience?");
 
-                                const yes = confirm("Are you sure you want to delete this experience?");
-
-                                if (yes) {
-                                    deleteMut.mutate({
-                                        id: experience.id
-                                    });
-                                }
-                            }}
-                        >Delete</button>
-                    </>
-                )}
+                                    if (yes) {
+                                        deleteMut.mutate({
+                                            id: experience.id
+                                        });
+                                    }
+                                }}
+                            >Delete</button>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

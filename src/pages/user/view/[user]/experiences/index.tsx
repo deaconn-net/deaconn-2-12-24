@@ -44,24 +44,22 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="content-item">
-                    {user ? (
-                        <UserView
-                            user={user}
-                            view="experiences"
-                        >
-                            <div className="content-item">
-                                <h1>Experiences</h1>
-                                <ExperienceBrowser
-                                    userId={user.id}
-                                    small={true}
-                                />
-                            </div>
-                        </UserView>
-                    ) : (
-                        <NotFound item="User" />
-                    )}
-                </div>
+                {user ? (
+                    <UserView
+                        user={user}
+                        view="experiences"
+                    >
+                        <div className="content-item">
+                            <h1>Experiences</h1>
+                            <ExperienceBrowser
+                                userId={user.id}
+                                small={true}
+                            />
+                        </div>
+                    </UserView>
+                ) : (
+                    <NotFound item="User" />
+                )}
             </Wrapper>
         </>
     );

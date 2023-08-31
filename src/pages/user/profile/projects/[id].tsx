@@ -34,9 +34,13 @@ const Page: NextPage<{
                 <div className="content-item"> 
                     {project ? (
                         <UserSettingsPanel view="projects">
-                            <div className="content-item">
-                                <h2>Edit Project {project.name}</h2>
-                                <ProjectForm project={project} />
+                            <div className="content-item2">
+                                <div>
+                                    <h2>Edit Project {project.name}</h2>
+                                </div>
+                                <div>
+                                    <ProjectForm project={project} />
+                                </div>
                             </div>
                         </UserSettingsPanel>
                     ) : (

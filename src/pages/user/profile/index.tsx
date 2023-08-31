@@ -32,7 +32,10 @@ const Page: NextPage<{
             >
                 <div className="content-item"> 
                     {user ? (
-                        <UserSettingsPanel view="general">
+                        <UserSettingsPanel
+                            view="general"
+                            showBg={true}
+                        >
                             <div className="content-item">
                                 <h2>General</h2>
                                 <GeneralForm

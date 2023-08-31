@@ -59,7 +59,7 @@ export default function UserProjectBrowser ({
                     loader={<Loader key={"loader"} />}
                     hasMore={requireItems}
                 >
-                    <div className={`grid-view grid-view-center ${small  ? "grid-view-sm" : "grid-view-lg"}`}>
+                    <div className={`grid-view ${small  ? "grid-view-sm" : "grid-view-lg"}`}>
                         {projects.map((project) => {
                             return (
                                 <ProjectRow

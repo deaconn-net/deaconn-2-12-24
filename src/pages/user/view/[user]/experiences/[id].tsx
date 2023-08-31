@@ -70,10 +70,12 @@ const Page: NextPage<{
                             user={user}
                             view="experiences"
                         >
-                            <div className="content-item">
-                                {experience ? (
-                                    <>
+                            {experience ? (
+                                <div className="content-item2">
+                                    <div>
                                         <h2>{experience.title}</h2>
+                                    </div>
+                                    <div className="flex flex-col gap-4">
                                         {startDate && (
                                             <p><span className="text-lg font-bold">Start Date</span> - <span className="italic">{startDate}</span></p>
                                         )}
@@ -83,11 +85,11 @@ const Page: NextPage<{
                                         <Markdown>
                                             {experience.details ?? ""}
                                         </Markdown>
-                                    </>
-                                ) : (
-                                    <NotFound item="Experience" />
-                                )}
-                            </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <NotFound item="Experience" />
+                            )}
                         </UserView>
                     ) : (
                         <NotFound item="User" />

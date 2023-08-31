@@ -48,6 +48,7 @@ const Page: NextPage<{
                         <UserView
                             user={user}
                             view="general"
+                            showDataBg={true}
                         >
                             <div className="content-item">
                                 <h1>General</h1>

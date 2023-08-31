@@ -20,6 +20,7 @@
 
 /* Description */
 .skill-row-description {
+    @apply text-sm;
     @apply pb-6;
     @apply grow;
 }

@@ -68,66 +68,66 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="content-item">
-                    {user ? (
-                        <UserView
-                            user={user}
-                            view="projects"
-                        >
-                            <div className="content-item">
-                                {project ? (
-                                    <>
-                                        <h2>{project.name}</h2>
-                                        {startDate && (
-                                            <p><span className="text-lg font-bold">Start Date</span> - <span className="italic">{startDate}</span></p>
-                                        )}
-                                        {endDate && (
-                                            <p><span className="text-lg font-bold">End Date</span> - <span className="italic">{endDate}</span></p>
-                                        )}
-                                        <Markdown>
-                                            {project.details ?? ""}
-                                        </Markdown>
-                                        {project.sources.length > 0 && (
-                                            <div className="project-sources">
-                                                {project.sources.map((source) => {
-                                                    return (
-                                                        <Link
-                                                            href={source.url}
-                                                            key={`project-source-${source.projectId.toString()}-${source.url}`}
-                                                            className="project-source"
-                                                            target="_blank"
-                                                        >
-                                                            <IconAndText
-                                                                icon={
-                                                                    <SourceIcon
-                                                                        className="w-10 h-10 fill-white"
-                                                                    />
-                                                                }
-                                                                text={
-                                                                    <>{source.title}</>
-                                                                }
-                                                                inline={true}
-                                                            />
-                                                        </Link>
-                                                    );
-                                                })}
-                                            </div>
-                                        )}
-                                        {project.openSource && (
-                                            <div className="flex justify-center">
-                                                <p>This project is <span className="text-green-400 font-bold">open source</span>!</p>
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <NotFound item="Project" />
-                                )}
+                {user ? (
+                    <UserView
+                        user={user}
+                        view="projects"
+                    >
+                        {project ? (
+                            <div className="content-item2">
+                                <div>
+                                    <h2>{project.name}</h2>
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    {startDate && (
+                                        <p><span className="text-lg font-bold">Start Date</span> - <span className="italic">{startDate}</span></p>
+                                    )}
+                                    {endDate && (
+                                        <p><span className="text-lg font-bold">End Date</span> - <span className="italic">{endDate}</span></p>
+                                    )}
+                                    <Markdown>
+                                        {project.details ?? ""}
+                                    </Markdown>
+                                    {project.sources.length > 0 && (
+                                        <div className="project-sources">
+                                            {project.sources.map((source) => {
+                                                return (
+                                                    <Link
+                                                        href={source.url}
+                                                        key={`project-source-${source.projectId.toString()}-${source.url}`}
+                                                        className="project-source"
+                                                        target="_blank"
+                                                    >
+                                                        <IconAndText
+                                                            icon={
+                                                                <SourceIcon
+                                                                    className="w-10 h-10 fill-white"
+                                                                />
+                                                            }
+                                                            text={
+                                                                <>{source.title}</>
+                                                            }
+                                                            inline={true}
+                                                        />
+                                                    </Link>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                    {project.openSource && (
+                                        <div className="flex justify-center">
+                                            <p>This project is <span className="text-green-400 font-bold">open source</span>!</p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </UserView>
-                    ) : (
-                        <NotFound item="User" />
-                    )}
-                </div>
+                        ) : (
+                            <NotFound item="Project" />
+                        )}
+                    </UserView>
+                ) : (
+                    <NotFound item="User" />
+                )}
             </Wrapper>
         </>
     );
