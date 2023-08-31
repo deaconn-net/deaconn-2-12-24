@@ -31,16 +31,18 @@ const Page: NextPage<{
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                <div className="content-item">
-                    {authed ? (
-                        <>
+                {authed ? (
+                    <div className="content-item2">
+                        <div>
                             <h1>Add Partner</h1>
+                        </div>
+                        <div>
                             <PartnerForm />
-                        </>
-                    ) : (
-                        <NoPermissions />
-                    )}
-                </div>
+                        </div>
+                    </div>
+                ) : (
+                    <NoPermissions />
+                )}
             </Wrapper>
         </>
     );
