@@ -118,4 +118,5 @@
     @import "components/login.css";
     @import "components/gitlog.css";
     @import "components/updatelog.css";
+    @import "components/breadcrumbs.css";
 }

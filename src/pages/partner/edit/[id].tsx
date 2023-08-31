@@ -32,6 +32,16 @@ const Page: NextPage<{
                 robots="noindex"
             />
             <Wrapper
+                breadcrumbs={[
+                    {
+                        name: "Partners",
+                        url: "/partner"
+                    },
+                    ...(partner ? [{
+                        name: `Editing Partner ${partner.name}`,
+                        url: `/partner/edit/${partner.id.toString()}`
+                    }] : [])
+                ]}
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

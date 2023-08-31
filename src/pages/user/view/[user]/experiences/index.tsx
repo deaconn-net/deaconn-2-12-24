@@ -27,6 +27,17 @@ const Page: NextPage<{
                 title={`Experiences - ${user?.name ?? "Not Found"} - Users - Deaconn`}
             />
             <Wrapper
+                breadcrumbs={[
+                    ...(user ? [{
+                        name: `Viewing ${user.name}`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}`
+                    }] : []),
+                    ...(user ? [{
+                        name: `Experiences`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}/experiences`
+                    }] : [])
+                ]}
+                
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

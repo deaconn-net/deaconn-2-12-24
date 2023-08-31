@@ -33,6 +33,20 @@ const Page: NextPage<{
                 description={`${category?.desc ?? "Not found."}`}
             />
             <Wrapper
+                breadcrumbs={[
+                    {
+                        name: "Blog",
+                        url: "/blog"
+                    },
+                    ...(category?.parent ? [{
+                        name: `Category ${category.parent.name.charAt(0).toUpperCase()}${category.parent.name.slice(1)}`,
+                        url: `/blog/category/${category.parent.url}`
+                    }] : []),
+                    ...(category ? [{
+                        name: `Category ${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`,
+                        url: `/blog/category/${category?.parent ? `${category.parent.url}/` : ``}${category.url}`
+                    }] : [])
+                ]}
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

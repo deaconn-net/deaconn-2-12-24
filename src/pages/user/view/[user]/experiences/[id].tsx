@@ -43,6 +43,21 @@ const Page: NextPage<{
                 title={`${experience ? experience.title + " - " : ""}Experiences - ${user?.name ?? "Not Found"} - Users - Deaconn`}
             />
             <Wrapper
+                breadcrumbs={[
+                    ...(user ? [{
+                        name: `Viewing ${user.name}`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}`
+                    }] : []),
+                    ...(user ? [{
+                        name: `Experiences`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}/experiences`
+                    }] : []),
+                    ...(user && experience ? [{
+                        name: `Viewing ${experience.title}`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}/experiences/${experience.id.toString()}`
+                    }] : [])
+                ]}
+
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

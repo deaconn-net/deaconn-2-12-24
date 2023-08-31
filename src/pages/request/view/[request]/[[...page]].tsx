@@ -163,6 +163,16 @@ const Page: NextPage<{
                 title="View Request - Requests - Deaconn"
             />
             <Wrapper
+                breadcrumbs={[
+                    {
+                        name: "Requests",
+                        url: "/request"
+                    },
+                    ...(request ? [{
+                        name: `Viewing ${request.title}`,
+                        url: `/request/view/${request.id.toString()}`
+                    }] : [])
+                ]}
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

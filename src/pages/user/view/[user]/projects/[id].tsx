@@ -47,6 +47,21 @@ const Page: NextPage<{
                 title={`${project ? project.name + " - " : ""}Projects - ${user?.name ?? "Not Found"} - Users - Deaconn`}
             />
             <Wrapper
+                breadcrumbs={[
+                    ...(user ? [{
+                        name: `Viewing ${user.name}`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}`
+                    }] : []),
+                    ...(user ? [{
+                        name: `Projects`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}/projects`
+                    }] : []),
+                    ...(user && project ? [{
+                        name: `Viewing ${project.name}`,
+                        url: `/user/view/${user.url ? user.url : `$${user.id}`}/projects/${project.id.toString()}`
+                    }] : [])
+                ]}
+
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

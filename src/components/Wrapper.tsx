@@ -9,13 +9,17 @@ import Header from "@components/Header";
 import Footer from "@components/Footer";
 import ErrorBox from "@components/error/Box";
 import SuccessBox from "@components/success/Box";
+import Breadcrumbs, { Breadcrumb } from "./Breadcrums";
 
 export default function Wrapper ({
     footerServices,
     footerPartners,
 
+    breadcrumbs,
+
     children
 } : {
+    breadcrumbs?: Breadcrumb[] | Breadcrumb
     children: React.ReactNode
 } & GlobalPropsType) {
     // Retrieve session.
@@ -53,6 +57,9 @@ export default function Wrapper ({
         <main>
             <Header />
             <div className="content">
+                {breadcrumbs && (
+                    <Breadcrumbs breadcrumbs={breadcrumbs} />
+                )}
                 {session?.user?.isRestricted ? (
                     <div className="content-item2">
                         <div>
@@ -64,6 +71,7 @@ export default function Wrapper ({
                     </div>
                 ) : (
                     <>
+
                         <ErrorBox
                             title={errorCtx?.title}
                             msg={errorCtx?.msg}
@@ -75,6 +83,9 @@ export default function Wrapper ({
 
                         {children}
                     </>
+                )}
+                {breadcrumbs && (
+                    <Breadcrumbs breadcrumbs={breadcrumbs} />
                 )}
             </div>
             <Footer

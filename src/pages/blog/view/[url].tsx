@@ -28,6 +28,16 @@ const Page: NextPage<{
                 description={`${article?.desc ?? "Article not found."}`}
             />
             <Wrapper
+                breadcrumbs={[
+                    {
+                        name: "Blog",
+                        url: "/blog"
+                    },
+                    ...(article ? [{
+                        name: `${article.title}`,
+                        url: `/blog/view/${article.url}`
+                    }] : [])
+                ]}
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >

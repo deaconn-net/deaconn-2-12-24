@@ -32,6 +32,16 @@ const Page: NextPage<{
                 description="Create or edit reply with Deaconn."
             />
             <Wrapper
+                breadcrumbs={[
+                    {
+                        name: "Requests",
+                        url: "/request"
+                    },
+                    ...(reply ? [{
+                        name: `Editing Reply #${reply.id.toString()}`,
+                        url: `/request/reply/edit/${reply.id.toString()}`
+                    }] : [])
+                ]}
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
