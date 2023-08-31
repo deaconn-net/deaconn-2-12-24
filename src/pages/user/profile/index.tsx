@@ -36,11 +36,15 @@ const Page: NextPage<{
                             view="general"
                             showBg={true}
                         >
-                            <div className="content-item">
-                                <h2>General</h2>
-                                <GeneralForm
-                                    user={user}
-                                />
+                            <div className="content-item2">
+                                <div>
+                                    <h2>General</h2>
+                                </div>
+                                <div>
+                                    <GeneralForm
+                                        user={user}
+                                    />
+                                </div>
                             </div>
                         </UserSettingsPanel>
                     ) : (

@@ -48,33 +48,36 @@ const Page: NextPage<{
                         <UserView
                             user={user}
                             view="general"
-                            showDataBg={true}
                         >
-                            <div className="content-item">
-                                <h1>General</h1>
-                                {!user.aboutMe && !user.showEmail && !birthday && (
-                                    <p>No general information to show.</p>
-                                )}
-                                {user.aboutMe && (
-                                    <div className="p-6">
-                                        <h3>About Me</h3>
-                                        <Markdown>
-                                            {user.aboutMe}
-                                        </Markdown>
-                                    </div>
-                                )}
-                                {user.showEmail && user.email && (
-                                    <div className="p-6">
-                                        <h3>Email</h3>
-                                        <p className="italic">{user.email}</p>
-                                    </div>
-                                )}
-                                {birthday && (
-                                    <div className="p-6">
-                                        <h3>Birthday</h3>
-                                        <p className="italic">{birthday}</p>
-                                    </div>
-                                )}
+                            <div className="content-item2">
+                                <div>
+                                    <h2>General</h2>
+                                </div>
+                                <div>
+                                    {!user.aboutMe && !user.showEmail && !birthday && (
+                                        <p>No general information to show.</p>
+                                    )}
+                                    {user.aboutMe && (
+                                        <div className="p-6">
+                                            <h3>About Me</h3>
+                                            <Markdown>
+                                                {user.aboutMe}
+                                            </Markdown>
+                                        </div>
+                                    )}
+                                    {user.showEmail && user.email && (
+                                        <div className="p-6">
+                                            <h3>Email</h3>
+                                            <p className="italic">{user.email}</p>
+                                        </div>
+                                    )}
+                                    {birthday && (
+                                        <div className="p-6">
+                                            <h3>Birthday</h3>
+                                            <p className="italic">{birthday}</p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </UserView>
                     ) : (
