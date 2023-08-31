@@ -21,7 +21,6 @@ import { api } from "@utils/Api";
 import { has_role } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 
-
 export default function ServiceView ({
     service,
     view

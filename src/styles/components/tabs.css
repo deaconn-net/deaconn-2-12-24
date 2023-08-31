@@ -51,7 +51,7 @@
 .tab-menu-with-data > div:last-child {
     @apply grow;
 
-    @apply p-0;
+    @apply p-2;
     @apply sm:p-6;
     @apply flex;
     @apply flex-col;
