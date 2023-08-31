@@ -36,7 +36,7 @@ const Page: NextPage<{
                 footerPartners={footerPartners}
             >
                 <div className="flex flex-wrap sm:flex-nowrap gap-4">
-                    <div className="w-2/3">
+                    <div className="content-col-large">
                         <div className="content-item2">
                             <div>
                                 <h2>About Us</h2>
@@ -46,7 +46,7 @@ const Page: NextPage<{
                             </div>
                         </div>
                     </div>
-                    <div className="w-1/3">
+                    <div className="content-col-small">
                         <div className="content-item2">
                             <div>
                                 <h2>Stats</h2>
