@@ -36,7 +36,7 @@ const Page: NextPage<{
                         url: "/blog"
                     },
                     ...(article ? [{
-                        name: `${article.title}`,
+                        name: `Viewing ${article.title}`,
                         url: `/blog/view/${article.url}`
                     }] : [])
                 ]}
