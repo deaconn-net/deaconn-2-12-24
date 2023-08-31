@@ -133,6 +133,9 @@ function Row ({
 
     return (
         <tr>
+            <td className="ul-pulse">
+                <div className="w-2 h-2"><span className=" animate-pulse inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span></div>
+            </td>
             {dateStr && (
                 <td className="gl-date">
                     {dateStr}
