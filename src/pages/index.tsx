@@ -46,7 +46,7 @@ const Page: NextPage<{
                     <div className="content-col-large">
                         <div className="content-item2">
                             <div>
-                                <h1>Who Are We?</h1>
+                                <h2>Who Are We?</h2>
                             </div>
                             <div>
                                 <p>
@@ -56,7 +56,7 @@ const Page: NextPage<{
                         </div>
                         <div className="content-item2">
                             <div>
-                                <h1>Have A Request?</h1>
+                                <h2>Have A Request?</h2>
                             </div>
                             <div>
                                 <p>We are a freelancing business and accept requests.</p>
@@ -68,7 +68,7 @@ const Page: NextPage<{
                         </div>
                         <div className="content-item2">
                             <div>
-                                <h1>Updates</h1>
+                                <h2>Updates</h2>
                             </div>
                             <div>
                                 <UpdateBox />
@@ -76,7 +76,7 @@ const Page: NextPage<{
                         </div>
                         <div className="content-item2">
                             <div>
-                                <h1>Git Log</h1>
+                                <h2>Git Log</h2>
                             </div>
                             <div>
                                 <GitLogBox />
@@ -84,7 +84,7 @@ const Page: NextPage<{
                         </div>
                         <div className="content-item2">
                             <div>
-                                <h1>Open Source!</h1>
+                                <h2>Open Source!</h2>
                             </div>
                             <div className="flex flex-col gap-4">
                                 {githubOrgUrl && (
@@ -104,7 +104,7 @@ const Page: NextPage<{
                         {team.length > 0 && (
                             <div className="content-item2">
                                 <div>
-                                    <h1>Our Team</h1>
+                                    <h2>Our Team</h2>
                                 </div>
                                 <div className="flex flex-col gap-4">
                                     {team.map((user) => {
@@ -124,7 +124,7 @@ const Page: NextPage<{
                         {footerPartners && footerPartners.length > 0 && (
                             <div className="content-item2">
                                 <div>
-                                    <h1>Our Partners</h1>
+                                    <h2>Our Partners</h2>
                                 </div>
                                 <div className="flex flex-col gap-4">
                                     {footerPartners?.map((partner) => {
@@ -145,7 +145,7 @@ const Page: NextPage<{
                         {discordServerId && (
                             <div className="content-item2">
                                 <div>
-                                    <h1>Our Discord Server!</h1>
+                                    <h2>Our Discord Server!</h2>
                                 </div>
                                 <div className="flex justify-center">
                                     <DiscordWidget
@@ -159,7 +159,7 @@ const Page: NextPage<{
                     </div>
                 </div>
                 <div className="content-item mt-8">
-                    <h1>Popular Services</h1>
+                    <h2>Popular Services</h2>
                     <div className="grid-view grid-view-sm">
                         {services.map((service) => {
                             return (
@@ -172,7 +172,7 @@ const Page: NextPage<{
                     </div>
                 </div>
                 <div className="content-item">
-                    <h1>Latest Articles</h1>
+                    <h2>Latest Articles</h2>
                     <div className="grid-view grid-view-sm">
                         {articles.map((article) => {
                             return (

@@ -39,7 +39,7 @@ const Page: NextPage<{
                     <div className="w-2/3">
                         <div className="content-item2">
                             <div>
-                                <h1>About Us</h1>
+                                <h2>About Us</h2>
                             </div>
                             <div>
                                 <p>This is the start of our about us page!</p>
@@ -49,7 +49,7 @@ const Page: NextPage<{
                     <div className="w-1/3">
                         <div className="content-item2">
                             <div>
-                                <h1>Stats</h1>
+                                <h2>Stats</h2>
                             </div>
                             <div className="flex flex-col gap-4">
                                 <div>

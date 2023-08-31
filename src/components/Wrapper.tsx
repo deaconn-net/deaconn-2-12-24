@@ -9,7 +9,7 @@ import Header from "@components/Header";
 import Footer from "@components/Footer";
 import ErrorBox from "@components/error/Box";
 import SuccessBox from "@components/success/Box";
-import Breadcrumbs, { Breadcrumb } from "./Breadcrums";
+import Breadcrumbs, { type Breadcrumb } from "./Breadcrums";
 
 export default function Wrapper ({
     footerServices,
@@ -71,7 +71,6 @@ export default function Wrapper ({
                     </div>
                 ) : (
                     <>
-
                         <ErrorBox
                             title={errorCtx?.title}
                             msg={errorCtx?.msg}
