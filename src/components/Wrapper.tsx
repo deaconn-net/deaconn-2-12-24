@@ -9,7 +9,7 @@ import Header from "@components/Header";
 import Footer from "@components/Footer";
 import ErrorBox from "@components/error/Box";
 import SuccessBox from "@components/success/Box";
-import Breadcrumbs, { type Breadcrumb } from "./Breadcrums";
+import Breadcrumbs, { type Breadcrumb } from "./Breadcrumbs";
 
 export default function Wrapper ({
     footerServices,
