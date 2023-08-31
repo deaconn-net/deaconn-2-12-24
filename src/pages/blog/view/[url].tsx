@@ -26,6 +26,8 @@ const Page: NextPage<{
             <Meta
                 title={`${article?.title ?? "Not Found!"} - Blog - Deaconn`}
                 description={`${article?.desc ?? "Article not found."}`}
+                image={article?.banner ?? undefined}
+                includeUploadUrl={article?.banner ? true : false}
             />
             <Wrapper
                 breadcrumbs={[

@@ -25,6 +25,8 @@ const Page: NextPage<{
             <Meta
                 title={`${service?.name ?? "Not Found"} - Features - Services - Deaconn`}
                 description={`${service?.desc ?? "Service not found."}`}
+                image={service?.banner ?? undefined}
+                includeUploadUrl={service?.banner ? true : false}
             />
             <Wrapper
                 breadcrumbs={[
