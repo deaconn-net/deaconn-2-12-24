@@ -1,4 +1,4 @@
-import { createTRPCRouter, contributorProcedure, publicProcedure, modProcedure } from "../trpc";
+import { createTRPCRouter, contributorProcedure, publicProcedure, modProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
@@ -65,6 +65,7 @@ export const serviceRouter = createTRPCRouter({
 
             links: z.array(z.object({
                 serviceId: z.number(),
+                isDownload: z.boolean().default(false),
                 title: z.string().max(64),
                 url: z.string().max(128)
             })).optional(),
@@ -94,6 +95,7 @@ export const serviceRouter = createTRPCRouter({
 
                     links: {
                         create: input.links?.map((link) => ({
+                            isDownload: link.isDownload,
                             title: link.title,
                             url: link.url
                         }))
@@ -116,6 +118,7 @@ export const serviceRouter = createTRPCRouter({
                             serviceId: input.id
                         },
                         create: input.links?.map((link) => ({
+                            isDownload: link.isDownload,
                             title: link.title,
                             url: link.url
                         }))
@@ -210,6 +213,31 @@ export const serviceRouter = createTRPCRouter({
                 throw new TRPCError({
                     code: "BAD_REQUEST",
                     message: "Unable to delete service. Service ID #" + input.id.toString() + " likely not found."
+                });
+            }
+        }),
+    incDownloads: protectedProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.service.update({
+                    data: {
+                        totalDownloads: {
+                            increment: 1
+                        }
+                    },
+                    where: {
+                        id: input.id
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: `Failed to increment downloads for service ID #${input.id.toString()}`
                 });
             }
         })

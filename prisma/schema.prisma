@@ -87,6 +87,8 @@ model ServiceLink {
   serviceId Int
   service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
+  isDownload Boolean @default(false)
+
   title String @default("Download")
   url   String
 

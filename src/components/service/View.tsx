@@ -74,6 +74,9 @@ export default function ServiceView ({
         }
     });
 
+    // Prepare increment downloads mutation.
+    const incDownloadsMut = api.service.incDownloads.useMutation();
+
     // Compile tabs.
     const tabs: TabItemType[] = [
         {
@@ -197,12 +200,27 @@ export default function ServiceView ({
                                                     href={link.url}
                                                     className="service-link"
                                                     target="_blank"
+                                                    onClick={() => {
+                                                        if (link.isDownload) {
+                                                            incDownloadsMut.mutate({
+                                                                id: service.id
+                                                            });
+                                                        }
+                                                    }}
                                                 >
                                                     <IconAndText
                                                         icon={
-                                                            <LinkIcon
-                                                                className="w-10 h-10 stroke-white fill-none"
-                                                            />
+                                                            <>
+                                                                {link.isDownload ? (
+                                                                    <DownloadIcon
+                                                                        className="w-10 h-10 fill-white"
+                                                                    />
+                                                                ) : (
+                                                                    <LinkIcon
+                                                                        className="w-10 h-10 stroke-white fill-none"
+                                                                    />
+                                                                )}
+                                                            </>
                                                         }
                                                         text={
                                                             <>{link.title}</>

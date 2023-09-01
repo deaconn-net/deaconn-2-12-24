@@ -15,6 +15,7 @@ import Markdown from "@components/markdown/Markdown";
 
 const DEFAULT_LINK = {
     serviceId: 0,
+    isDownload: false,
     title: "",
     url: ""
 }
@@ -386,7 +387,6 @@ export default function ServiceForm ({
                                 <label>Title</label>
                                 <Field
                                     name={`links[${index.toString()}].title`}
-                                    value={link.title ?? ""}
                                     className="form-input"
                                 />
                             </div>
@@ -394,9 +394,15 @@ export default function ServiceForm ({
                                 <label>URL</label>
                                 <Field
                                     name={`links[${index.toString()}].url`}
-                                    value={link.url ?? ""}
                                     className="form-input"
                                 />
+                            </div>
+                            <div className="form-checkbox">
+                                <Field
+                                    name={`links[${index.toString()}].isDownload`}
+                                    defaultValue={link.isDownload ?? false}
+                                    type="checkbox"
+                                /> <span>Yes</span>
                             </div>
                             <button
                                 className="button button-danger sm:w-32"
