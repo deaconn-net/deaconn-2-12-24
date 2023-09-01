@@ -88,6 +88,12 @@ export default function ServiceView ({
             url: `${viewUrl}/features`,
             text: <>Features</>,
             active: view == "features"
+        }] : []),
+        ...(service.gitLink ? [{
+            url: service.gitLink,
+            text: <>Source Code</>,
+            className: "bg-green-800",
+            target: "_blank"
         }] : [])
     ];
     
