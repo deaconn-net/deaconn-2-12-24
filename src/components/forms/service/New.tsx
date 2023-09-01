@@ -3,7 +3,7 @@ import { Field, useFormik } from "formik";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
-import { type Service } from "@prisma/client";
+import { type ServiceWithCategoryAndLinks } from "~/types/service";
 import { type CategoryWithChildren } from "~/types/category";
 
 import FormMain from "@components/forms/Main";
@@ -13,11 +13,17 @@ import { ScrollToTop } from "@utils/Scroll";
 
 import Markdown from "@components/markdown/Markdown";
 
+const DEFAULT_LINK = {
+    serviceId: 0,
+    title: "",
+    url: ""
+}
+
 export default function ServiceForm ({
     service,
     categories
 } : {
-    service?: Service,
+    service?: ServiceWithCategoryAndLinks,
     categories: CategoryWithChildren[]
 }) {
     // Error and success handling.
@@ -94,6 +100,9 @@ export default function ServiceForm ({
             content: service?.content ?? "",
             gitLink: service?.gitLink ?? "",
             openSource: service?.openSource ?? true,
+
+            links: service?.links ?? [DEFAULT_LINK],
+
             bannerRemove: false,
             iconRemove: false
         },
@@ -121,6 +130,9 @@ export default function ServiceForm ({
                 icon: icon?.toString(),
                 gitLink: values.gitLink,
                 openSource: values.openSource,
+
+                links: values.links,
+
                 bannerRemove: values.bannerRemove,
                 iconRemove: values.iconRemove
             })
@@ -361,6 +373,61 @@ export default function ServiceForm ({
                         /> <span>Yes</span>
                     </div>
                 )}
+            </div>
+            <h2>Links</h2>
+            <div className="form-div">
+                {form.values.links.map((link, index) => {
+                    return (
+                        <div
+                            key={`link-${index.toString()}`}
+                            className="flex flex-col gap-4"
+                        >
+                            <div>
+                                <label>Title</label>
+                                <Field
+                                    name={`links[${index.toString()}].title`}
+                                    value={link.title ?? ""}
+                                    className="form-input"
+                                />
+                            </div>
+                            <div>
+                                <label>URL</label>
+                                <Field
+                                    name={`links[${index.toString()}].url`}
+                                    value={link.url ?? ""}
+                                    className="form-input"
+                                />
+                            </div>
+                            <button
+                                className="button button-danger sm:w-32"
+                                onClick={(e) => {
+                                    e.preventDefault();
+
+                                    // Remove from form values.
+                                    const links = form.values.links;
+                                    links.splice(index, 1);
+
+                                    form.setValues({
+                                        ...form.values,
+                                        links
+                                    });
+                                }}
+                            >Remove</button>
+                        </div>
+                    );
+                })}
+
+                <button
+                    className="button button-primary sm:w-32"
+                    onClick={(e) => {
+                        e.preventDefault();
+
+                        form.setValues({
+                            ...form.values,
+                            links: [...form.values.links, DEFAULT_LINK]
+                        });
+                    }}
+                >Add</button>
             </div>
         </FormMain>
     );

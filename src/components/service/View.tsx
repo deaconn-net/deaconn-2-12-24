@@ -6,7 +6,8 @@ import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
 import { useSession } from "next-auth/react";
 
-import { type Service } from "@prisma/client";
+import { type ServiceWithCategoryAndLinks } from "~/types/service";
+
 
 import Tabs, { type TabItemType } from "@components/tabs/Tabs";
 import TabMenuWithData from "@components/tabs/MenuWithData";
@@ -16,6 +17,7 @@ import Markdown from "@components/markdown/Markdown";
 import ViewIcon from "@components/icons/View";
 import DownloadIcon from "@components/icons/Download";
 import PurchaseIcon from "@components/icons/Purchase";
+import LinkIcon from "@components/icons/Link";
 
 import { api } from "@utils/Api";
 import { has_role } from "@utils/user/Auth";
@@ -25,7 +27,7 @@ export default function ServiceView ({
     service,
     view
 } : {
-    service: Service,
+    service: ServiceWithCategoryAndLinks,
     view: string
 }) {
     // Success and error handling.
@@ -88,6 +90,11 @@ export default function ServiceView ({
             url: `${viewUrl}/features`,
             text: <>Features</>,
             active: view == "features"
+        }] : []),
+        ...(service.links?.length > 0 ? [{
+            url: `${viewUrl}/links`,
+            text: <>Links</>,
+            active: view == "links"
         }] : []),
         ...(service.gitLink ? [{
             url: service.gitLink,
@@ -179,29 +186,58 @@ export default function ServiceView ({
                                     </Markdown>
                                 </>
                             )}
+                            {service.links?.length > 0 && view == "links" && (
+                                <>
+                                    <h2>Links</h2>
+                                    <div className="flex flex-wrap gap-4">
+                                        {service.links.map((link) => {
+                                            return (
+                                                <Link
+                                                    key={`service-link-${link.url}`}
+                                                    href={link.url}
+                                                    className="service-link"
+                                                    target="_blank"
+                                                >
+                                                    <IconAndText
+                                                        icon={
+                                                            <LinkIcon
+                                                                className="w-10 h-10 stroke-white fill-none"
+                                                            />
+                                                        }
+                                                        text={
+                                                            <>{link.title}</>
+                                                        }
+                                                        inline={true}
+                                                    />
+                                                </Link>
+                                            )
+                                        })}
+                                    </div>
+                                </>
+                            )}
+                            {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                                <div className="flex flex-wrap gap-4 justify-center">
+                                    <Link
+                                        href={editUrl}
+                                        className="button button-primary"
+                                    >Edit</Link>
+                                    <button
+                                        className="button button-danger"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+
+                                            const yes = confirm("Are you sure you want to delete this article?");
+
+                                            if (yes) {
+                                                deleteMut.mutate({
+                                                    id: service.id
+                                                });
+                                            }
+                                        }}
+                                    >Delete</button>
+                                </div>
+                            )}
                         </div>
-                        {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
-                            <div className="flex flex-wrap gap-4 justify-center">
-                                <Link
-                                    href={editUrl}
-                                    className="button button-primary"
-                                >Edit</Link>
-                                <button
-                                    className="button button-danger"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-
-                                        const yes = confirm("Are you sure you want to delete this article?");
-
-                                        if (yes) {
-                                            deleteMut.mutate({
-                                                id: service.id
-                                            });
-                                        }
-                                    }}
-                                >Delete</button>
-                            </div>
-                        )}
                     </div>
                 }
             />

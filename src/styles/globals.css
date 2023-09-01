@@ -98,6 +98,7 @@
 
     @import "components/service/row.css";
     @import "components/service/browser.css";
+    @import "components/service/view.css";
 
     @import "components/user/profile/main.css";
     @import "components/user/profile/experience.css";

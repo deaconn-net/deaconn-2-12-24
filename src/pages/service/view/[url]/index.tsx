@@ -1,6 +1,6 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import { type Service } from ".prisma/client";
+import { type ServiceWithCategoryAndLinks } from "~/types/service";
 
 import { prisma } from "@server/db";
 
@@ -13,7 +13,7 @@ import NotFound from "@components/error/NotFound";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
-    service?: Service,
+    service?: ServiceWithCategoryAndLinks,
 } & GlobalPropsType> = ({
     service,
 
@@ -67,11 +67,15 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const lookupUrl = params?.url?.toString();
 
     // Initialize service.
-    let service: Service | null = null;
+    let service: ServiceWithCategoryAndLinks | null = null;
 
     // Retrieve service if lookup URL is found.
     if (lookupUrl) {
         service = await prisma.service.findFirst({
+            include: {
+                category: true,
+                links: true
+            },
             where: {
                 url: lookupUrl
             }

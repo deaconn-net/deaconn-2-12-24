@@ -1,7 +1,7 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 import { getServerAuthSession } from "@server/auth";
 
-import { type Service } from "@prisma/client";
+import { type ServiceWithCategoryAndLinks } from "~/types/service";
 import { type CategoryWithChildren } from "~/types/category";
 
 import { prisma } from "@server/db";
@@ -16,9 +16,10 @@ import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import NotFound from "@components/error/NotFound";
 
+
 const Page: NextPage<{
     authed: boolean,
-    service?: Service,
+    service?: ServiceWithCategoryAndLinks,
     categories: CategoryWithChildren[]
 } & GlobalPropsType> = ({
     authed,
@@ -94,12 +95,16 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const lookupId = params?.id?.toString();
 
     // Initialize service and categories.
-    let service: Service | null = null;
+    let service: ServiceWithCategoryAndLinks | null = null;
     let categories: CategoryWithChildren[] = [];
 
     // If lookup ID and authenticated, retrieve service and categories.
     if (authed && lookupId) {
         service = await prisma.service.findFirst({
+            include: {
+                category: true,
+                links: true
+            },
             where: {
                 id: Number(lookupId)
             }

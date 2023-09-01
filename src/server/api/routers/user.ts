@@ -542,8 +542,7 @@ export const userRouter = createTRPCRouter({
                 projectId: z.number(),
                 title: z.string().max(64),
                 url: z.string().max(128),
-            })).optional(),
-            sourcesToDelete: z.array(z.number()).optional()
+            })).optional()
         }))
         .mutation(async ({ ctx, input }) => {
             const userId = input.userId ?? ctx.session.user.id;

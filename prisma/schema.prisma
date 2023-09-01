@@ -80,10 +80,10 @@ model Service {
   requests Request[]
   Purchase Purchase[]
 
-  downloads ServiceDownload[]
+  links ServiceLink[]
 }
 
-model ServiceDownload {
+model ServiceLink {
   serviceId Int
   service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 

@@ -23,7 +23,7 @@ const Page: NextPage<{
     return (
         <>
             <Meta
-                title={`${service?.name ?? "Not Found"} - Features - Services - Deaconn`}
+                title={`${service?.name ?? "Not Found"} - Downloads - Services - Deaconn`}
                 description={`${service?.desc ?? "Service not found."}`}
                 image={service?.banner ?? undefined}
                 includeUploadUrl={service?.banner ? true : false}
@@ -41,9 +41,9 @@ const Page: NextPage<{
                         name: service.name,
                         url: `/service/view/${service.url}`
                     }] : []),
-                    ...(service?.features ? [{
-                        name: `Features`,
-                        url: `/service/view/${service.url}/features`
+                    ...(service?.links && service.links.length > 0 ? [{
+                        name: `Links`,
+                        url: `/service/view/${service.url}/links`
                     }] : [])
                 ]}
 
@@ -54,7 +54,7 @@ const Page: NextPage<{
                     {service ? (
                         <ServiceView
                             service={service}
-                            view="features"
+                            view="links"
                         />
                     ) : (
                         <NotFound item="Service" />

@@ -7,3 +7,10 @@ export type ServiceFooter = Prisma.ServiceGetPayload<{
         url: true
     }
 }>
+
+export type ServiceWithCategoryAndLinks = Prisma.ServiceGetPayload<{
+    include: {
+        category: true,
+        links: true
+    }
+}>

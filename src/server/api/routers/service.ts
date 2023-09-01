@@ -63,6 +63,12 @@ export const serviceRouter = createTRPCRouter({
             gitLink: z.string().max(128).optional(),
             openSource: z.boolean().default(true),
 
+            links: z.array(z.object({
+                serviceId: z.number(),
+                title: z.string().max(64),
+                url: z.string().max(128)
+            })).optional(),
+
             icon: z.string().optional(),
             banner: z.string().optional(),
 
@@ -84,7 +90,14 @@ export const serviceRouter = createTRPCRouter({
                     features: input.features,
                     content: input.content,
                     gitLink: input.gitLink,
-                    openSource: input.openSource
+                    openSource: input.openSource,
+
+                    links: {
+                        create: input.links?.map((link) => ({
+                            title: link.title,
+                            url: link.url
+                        }))
+                    }
                 },
                 update: {
                     categoryId: input.category,
@@ -97,6 +110,17 @@ export const serviceRouter = createTRPCRouter({
                     content: input.content,
                     gitLink: input.gitLink,
                     openSource: input.openSource,
+
+                    links: {
+                        deleteMany: {
+                            serviceId: input.id
+                        },
+                        create: input.links?.map((link) => ({
+                            title: link.title,
+                            url: link.url
+                        }))
+                    },
+
                     ...(input.bannerRemove && {
                         banner: null
                     }),

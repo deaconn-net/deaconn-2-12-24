@@ -1,0 +1,11 @@
+.service-link {
+    @apply bg-cyan-700;
+    @apply hover:bg-cyan-600;
+    @apply p-4;
+    @apply rounded;
+    @apply w-full;
+    @apply sm:w-auto;
+    @apply sm:min-w-[24rem];
+    @apply sm:max-w-full;
+    @apply hover:text-white;
+}
