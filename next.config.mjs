@@ -27,7 +27,8 @@ const config = {
         "cdn.discordapp.com",
         "lh3.googleusercontent.com",
         "avatars.githubusercontent.com",
-        "uploads.deaconn.net"
+        "uploads.deaconn.net",
+        "uploadstest.deaconn.net"
     ]
   }
 };
