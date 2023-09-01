@@ -67,9 +67,9 @@ model Service {
   features String? @db.Text
   content  String  @db.Text
 
-  views     Int @default(0)
-  purchases Int @default(0)
-  downloads Int @default(0)
+  totalViews     Int @default(0)
+  totalPurchases Int @default(0)
+  totalDownloads Int @default(0)
 
   icon   String?
   banner String?
@@ -79,6 +79,18 @@ model Service {
 
   requests Request[]
   Purchase Purchase[]
+
+  downloads ServiceDownload[]
+}
+
+model ServiceDownload {
+  serviceId Int
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  title String @default("Download")
+  url   String
+
+  @@id([serviceId, url])
 }
 
 model Request {

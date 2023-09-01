@@ -133,7 +133,7 @@ export default function ServiceView ({
                                                 className="w-6 h-6 fill-white"
                                             />
                                         }
-                                        text={<>{service.views}</>}
+                                        text={<>{service.totalViews}</>}
                                     />
                                     <IconAndText
                                         icon={
@@ -141,7 +141,7 @@ export default function ServiceView ({
                                                 className="w-6 h-6 fill-white"
                                             />
                                         }
-                                        text={<>{service.downloads}</>}
+                                        text={<>{service.totalDownloads}</>}
                                     />
                                     <IconAndText
                                         icon={
@@ -149,7 +149,7 @@ export default function ServiceView ({
                                                 className="w-6 h-6 fill-white"
                                             />
                                         }
-                                        text={<>{service.purchases}</>}
+                                        text={<>{service.totalPurchases}</>}
                                     />
                                 </div>
                             </div>

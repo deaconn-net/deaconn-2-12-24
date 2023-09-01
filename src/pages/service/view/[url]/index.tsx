@@ -85,7 +85,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 id: service.id
             },
             data: {
-                views: {
+                totalViews: {
                     increment: 1
                 }
             }
