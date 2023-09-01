@@ -34,7 +34,6 @@ const Page: NextPage<{
                     {user ? (
                         <UserSettingsPanel
                             view="general"
-                            showBg={true}
                         >
                             <div className="content-item2">
                                 <div>
