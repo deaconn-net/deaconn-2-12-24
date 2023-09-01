@@ -381,6 +381,7 @@ export const userRouter = createTRPCRouter({
             startDate: z.date().nullable().optional(),
             endDate: z.date().nullable().optional(),
 
+            company: z.string().max(128).optional(),
             title: z.string().min(2).max(32),
             desc: z.string().max(512).optional(),
             details: z.string().max(32768).optional()
@@ -430,6 +431,7 @@ export const userRouter = createTRPCRouter({
                         userId: userId,
                         startDate: input.startDate,
                         endDate: input.endDate,
+                        company: input.company,
                         title: input.title,
                         desc: input.desc,
                         details: input.details
@@ -438,6 +440,7 @@ export const userRouter = createTRPCRouter({
                         userId: userId,
                         startDate: input.startDate,
                         endDate: input.endDate,
+                        company: input.company,
                         title: input.title,
                         desc: input.desc,
                         details: input.details

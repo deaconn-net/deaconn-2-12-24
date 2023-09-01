@@ -87,6 +87,7 @@ export default function ExperienceForm ({
         initialValues: {
             startDate: new Date(experience?.startDate ?? Date.now()),
             endDate: new Date(experience?.endDate ?? Date.now()),
+            company: experience?.company ?? "",
             title: experience?.title ?? "",
             desc: experience?.desc ?? "",
             details: experience?.details ?? ""
@@ -105,6 +106,7 @@ export default function ExperienceForm ({
                 id: experience?.id,
                 startDate: values.startDate || null,
                 endDate: values.endDate || null,
+                company: values.company,
                 title: values.title,
                 desc: values.desc,
                 details: values.details
@@ -146,6 +148,17 @@ export default function ExperienceForm ({
                         onChange={(date: Date) => {
                             void form.setFieldValue('endDate', date);
                         }}
+                    />
+                )}
+            </div>
+            <div className="form-div">
+                <label className="form-label">Company</label>
+                {preview ? (
+                    <p className="italic">{form.values.company}</p>
+                ) : (
+                    <Field
+                        name="company"
+                        className="form-input"
                     />
                 )}
             </div>

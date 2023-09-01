@@ -72,7 +72,7 @@ export default function UserExperienceRow ({
     return (
         <div className="content-item2">
             <div>
-                <h2>{experience.title}</h2>
+                <h2>{experience.title}{experience.company ? ` @ ${experience.company}` : ``}</h2>
             </div>
             <div className="flex flex-col gap-4 h-full">
                 <div className="experience-row-description">

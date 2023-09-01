@@ -211,6 +211,7 @@ model UserExperience {
   startDate DateTime?
   endDate   DateTime?
 
+  company String?
   title   String
   desc    String?
   details String? @db.Text

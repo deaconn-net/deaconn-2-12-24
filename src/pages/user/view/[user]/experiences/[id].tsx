@@ -73,14 +73,17 @@ const Page: NextPage<{
                             {experience ? (
                                 <div className="content-item2">
                                     <div>
-                                        <h2>{experience.title}</h2>
+                                        <h2>{experience.title}{experience.company ? ` @ ${experience.company}` : ``}</h2>
                                     </div>
-                                    <div className="flex flex-col gap-4">
+                                    <div className="flex flex-col gap-2">
                                         {startDate && (
                                             <p><span className="text-lg font-bold">Start Date</span> - <span className="italic">{startDate}</span></p>
                                         )}
                                         {endDate && (
                                             <p><span className="text-lg font-bold">End Date</span> - <span className="italic">{endDate}</span></p>
+                                        )}
+                                        {experience.company && (
+                                            <p><span className="text-lg font-bold">Company</span> - <span className="italic">{experience.company}</span></p>
                                         )}
                                         <Markdown>
                                             {experience.details ?? ""}
