@@ -42,40 +42,33 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     }
 
     // This code can likely be improved on \o/
-    const apiToken = process.env.GITHUB_API_KEY || undefined;
-    const apiSecret = process.env.GITHUB_API_SECRET || undefined;
+    const authToken = process.env.GITHUB_API_KEY || undefined;
+    const authSecret = process.env.GITHUB_API_SECRET || undefined;
 
-    if ((!apiToken || apiToken.length < 1) && (!apiSecret || apiSecret.length < 1)) {
+    if (!authToken && !authSecret) {
         return res.status(401).json({
-            code: 404,
-            message: "Unauthorized. No GitHub API secret or token set."
+            code: 400,
+            message: "Both authorization and secret tokens not set on server-side."
         });
     }
 
     const secret = req.headers["x-hub-signature-256"]?.toString();
-    const authHeaderVal = req.headers.authorization;
+    const authHeaderToken = req.headers.authorization;
 
-    if (!secret && !authHeaderVal) {
+    if (!secret && !authHeaderToken) {
         return res.status(401).json({
-            code: 401,
+            code: 400,
             message: "Both secret and authentication headers not set."
         });
     }
 
-    if (!secret && !authHeaderVal) {
-        return res.status(401).json({
-            code: 404,
-            message: "Unauthorized. Secret and authorization header value not specified."
-        })
-    }
-
-    if (secret && apiSecret) {
+    if (secret && authSecret) {
         const sigHashAlg = "sha256";
 
         const data = JSON.stringify(req.body);
 
         const sig = Buffer.from(secret, "utf-8");
-        const hmac = crypto.createHmac(sigHashAlg, apiSecret);
+        const hmac = crypto.createHmac(sigHashAlg, authSecret);
         const digest = Buffer.from(`${sigHashAlg}=${hmac.update(data).digest("hex")}`, "utf-8");
         
         if (sig.length !== digest.length || !crypto.timingSafeEqual(digest, sig)) {
@@ -84,10 +77,10 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
                 message: `Request body digest (${digest}) did not match 'X-Hub-Signature-256' (${sig}).`
             });
         }
-    } else if (authHeaderVal && apiToken) {
-        const apiKeyFull = "Bearer " + apiToken;
+    } else if (authHeaderToken && authToken) {
+        const apiKeyFull = "Bearer " + authToken;
 
-        if (authHeaderVal != apiKeyFull) {
+        if (authHeaderToken !== apiKeyFull) {
             return res.status(401).json({
                 code: 404,
                 message: "Unauthorized."

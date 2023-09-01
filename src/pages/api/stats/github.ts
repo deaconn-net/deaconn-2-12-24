@@ -27,10 +27,10 @@ const statsGithub = async (req: ExtendedNextApiRequest, res: NextApiResponse) =>
 
     const apiKey = process.env.ROOT_API || undefined;
 
-    if ((!apiKey || apiKey.length < 1)) {
+    if (!apiKey) {
         return res.status(401).json({
             code: 404,
-            message: "Unauthorized. No GitHub API secret or token set."
+            message: "API token not set."
         });
     }
 

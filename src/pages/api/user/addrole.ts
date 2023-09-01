@@ -25,10 +25,27 @@ const makeAdmin = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const authHeaderVal = req.headers.authorization ?? "";
-    const authKey = "Bearer " + process.env.ROOT_API;
+    const authHeaderToken = req.headers.authorization || undefined;
 
-    if (authHeaderVal != authKey) {
+    if (!authHeaderToken) {
+        return res.status(400).json({
+            code: 400,
+            message: "Authorization header token not set."
+        });
+    }
+
+    const authToken = process.env.ROOT_API || undefined;
+
+    if (!authToken) {
+        return res.status(400).json({
+            code: 400,
+            message: "No root API token set on the server-side."
+        })
+    }
+
+    const fullAuthToken = `Bearer ${authToken}`;
+
+    if (authHeaderToken !== fullAuthToken) {
         return res.status(401).json({
             code: 404,
             message: "Unauthorized."
