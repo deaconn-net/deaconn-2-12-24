@@ -208,7 +208,7 @@ export async function getServerSideProps() {
     const services = await prisma.service.findMany({
         take: 10,
         orderBy: {
-            downloads: "desc"
+            totalDownloads: "desc"
         }
     });
 
