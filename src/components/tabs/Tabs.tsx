@@ -6,6 +6,7 @@ export type TabItemType = {
     text: JSX.Element,
     className?: string,
     active?: boolean,
+    target?: React.HTMLAttributeAnchorTarget
     onClick?: MouseEventHandler<HTMLAnchorElement>,
     onMouseEnter?: MouseEventHandler<HTMLAnchorElement>,
     onMouseLeave?: MouseEventHandler<HTMLAnchorElement>
@@ -50,8 +51,9 @@ export default function Tabs ({
                     <Link
                         key={`tab-item-${item.url}`}
                         href={item.url}
-                        className={`tab-link tab-item ${item.active ? "tab-active" : ""} ${className ?? ""}`}
+                        className={`tab-link tab-item ${item.active ? "tab-active" : ""} ${item.className ?? ""}`}
                         onClick={item.onClick}
+                        target={item.target}
                         onMouseEnter={item.onMouseEnter}
                         onMouseLeave={item.onMouseLeave}
                     >
