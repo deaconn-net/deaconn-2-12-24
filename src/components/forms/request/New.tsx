@@ -196,7 +196,7 @@ export default function RequestForm ({
             <div className="form-div">
                 <label className="form-label">Details</label>
                 {preview ? (
-                    <Markdown className="p-4 bg-gray-800">
+                    <Markdown className="p-4">
                         {form.values.content}
                     </Markdown>
                 ) : (

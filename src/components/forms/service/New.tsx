@@ -277,7 +277,7 @@ export default function ServiceForm ({
             <div className="form-div">
                 <label className="form-label">Description</label>
                 {preview ? (
-                    <Markdown className="p-4 bg-gray-800">
+                    <Markdown className="p-4">
                         {form.values.desc}
                     </Markdown>
                 ) : (
@@ -293,7 +293,7 @@ export default function ServiceForm ({
             <div className="form-div">
                 <label className="form-label">Installation</label>
                 {preview ? (
-                    <Markdown className="p-4 bg-gray-800">
+                    <Markdown className="p-4">
                         {form.values.install}
                     </Markdown>
                 ) : (
@@ -309,7 +309,7 @@ export default function ServiceForm ({
             <div className="form-div">
                 <label className="form-label">Features</label>
                 {preview ? (
-                    <Markdown className="p-4 bg-gray-800">
+                    <Markdown className="p-4">
                         {form.values.features}
                     </Markdown>
                 ) : (
@@ -325,7 +325,7 @@ export default function ServiceForm ({
             <div className="form-div">
                 <label className="form-label">Details</label>
                 {preview ? (
-                    <Markdown className="p-4 bg-gray-800">
+                    <Markdown className="p-4">
                         {form.values.content}
                     </Markdown>
                 ) : (

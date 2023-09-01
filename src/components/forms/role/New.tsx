@@ -130,7 +130,7 @@ export default function RoleForm ({
             <div className="form-div">
                 <label className="form-label">Description</label>
                 {preview ? (
-                    <Markdown>
+                    <Markdown className="p-4">
                         {form.values.description}
                     </Markdown>
                 ) : (

@@ -213,7 +213,7 @@ export default function GeneralForm ({
             <div className="form-div">
                 <label className="form-label">About Me</label>
                 {preview ? (
-                    <Markdown className="p-4 bg-gray-800">
+                    <Markdown className="p-4">
                         {form.values.aboutMe}
                     </Markdown>
                 ) : (

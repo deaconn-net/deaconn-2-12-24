@@ -188,7 +188,7 @@ export default function UserProjectForm({
             <div className="form-div">
                 <label>Details</label>
                 {preview ? (
-                    <Markdown className="p-4 bg-gray-800">
+                    <Markdown className="p-4">
                         {form.values.details}
                     </Markdown>
                 ) : (
