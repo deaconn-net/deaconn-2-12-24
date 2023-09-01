@@ -69,7 +69,7 @@ export default function SkillRow ({
             <div>
                 <h2>{skill.title}</h2>
             </div>
-            <div>
+            <div className="flex flex-col gap-4 h-full">
                 <div className="skill-row-description">
                     <p>{skill.desc ?? ""}</p>
                 </div>

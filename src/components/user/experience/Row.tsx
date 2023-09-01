@@ -74,7 +74,7 @@ export default function UserExperienceRow ({
             <div>
                 <h2>{experience.title}</h2>
             </div>
-            <div>
+            <div className="flex flex-col gap-4 h-full">
                 <div className="experience-row-description">
                     <p>{experience.desc ?? ""}</p>
                 </div>
