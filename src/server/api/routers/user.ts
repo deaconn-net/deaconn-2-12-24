@@ -95,19 +95,19 @@ export const userRouter = createTRPCRouter({
                         ...(isAdmin && {
                             isRestricted: input.isRestricted
                         }),
-                        ...(input.website && {
+                        ...(input.website != undefined && {
                             website: RetrieveSocialTag(input.website, "website")
                         }),
-                        ...(input.socialTwitter && {
+                        ...(input.socialTwitter != undefined && {
                             socialTwitter: RetrieveSocialTag(input.socialTwitter, "twitter")
                         }),
-                        ...(input.socialGithub && {
+                        ...(input.socialGithub != undefined && {
                             socialGithub: RetrieveSocialTag(input.socialGithub, "github")
                         }),
-                        ...(input.socialLinkedin && {
+                        ...(input.socialLinkedin != undefined && {
                             socialLinkedin: RetrieveSocialTag(input.socialLinkedin, "linkedin")
                         }),
-                        ...(input.socialFacebook && {
+                        ...(input.socialFacebook != undefined && {
                             socialFacebook: RetrieveSocialTag(input.socialFacebook, "facebook")
                         })
                     }

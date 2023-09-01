@@ -45,8 +45,8 @@ export function FormatSocialUrl(
 export function RetrieveSocialTag(
     input: string,
     platform: string
-): string | undefined {
-    let tag: string | undefined = undefined;
+): string | null {
+    let tag: string | null = null;
 
     if (input.length < 1)
         return tag;
