@@ -33,7 +33,7 @@
 .tab-menu-with-data {
     @apply flex;
     @apply flex-wrap;
-    @apply sm:flex-nowrap;
+    /*@apply sm:flex-nowrap;*/
     @apply gap-2;
     @apply justify-center;
 }
@@ -50,6 +50,7 @@
 
 .tab-menu-with-data > div:last-child {
     @apply grow;
+    @apply w-96;
 
     @apply p-2;
     @apply sm:p-6;
