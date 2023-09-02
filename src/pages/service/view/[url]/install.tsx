@@ -20,12 +20,18 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    // Retrieve banner for Meta image.
+    let banner = process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE || undefined;
+
+    if (service?.banner)
+        banner = service.banner;
+
     return (
         <>
             <Meta
                 title={`${service?.name ?? "Not Found"} - Installation - Services - Deaconn`}
                 description={`${service?.desc ?? "Service not found."}`}
-                image={service?.banner ?? undefined}
+                image={banner}
                 includeUploadUrl={service?.banner ? true : false}
             />
             <Wrapper

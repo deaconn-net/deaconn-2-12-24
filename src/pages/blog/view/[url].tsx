@@ -22,12 +22,18 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    // Retrieve banner for Meta image.
+    let banner = process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE || undefined;
+
+    if (article?.banner)
+        banner = article.banner;
+
     return (
         <>
             <Meta
                 title={`${article?.title ?? "Not Found!"} - Blog - Deaconn`}
                 description={`${article?.desc ?? "Article not found."}`}
-                image={article?.banner ?? undefined}
+                image={banner}
                 includeUploadUrl={article?.banner ? true : false}
             />
             <Wrapper
