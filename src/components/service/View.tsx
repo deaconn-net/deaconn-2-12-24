@@ -130,7 +130,7 @@ export default function ServiceView ({
                     />
                 }
                 data={
-                    <div>
+                    <div className="p-6">
                         <div className="flex flex-wrap justify-between">
                             <div>
                                 <p className="text-green-300 font-bold italic">{service.price > 0 ? "$" + service.price + "/m" : "Free"}</p>
