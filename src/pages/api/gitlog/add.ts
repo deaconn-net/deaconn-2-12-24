@@ -11,6 +11,7 @@ interface ExtendedNextApiRequest extends NextApiRequest {
             id: string,
             url: string,
             message: string,
+            timestamp: string,
             author: {
                 email?: string,
                 name: string,
@@ -137,6 +138,15 @@ const gitlogAdd = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
     let commitsAdded = 0;
 
     if (commits) {
+        // First, sort array by timestamp field.
+        commits.sort((a, b) => {
+            const dateA = new Date(a.timestamp);
+            const dateB = new Date(b.timestamp);
+
+            return dateA.getTime() - dateB.getTime();
+        });
+
+        
         const commitsMapping = commits.reverse().map(async (commit) => {
             // Retrieve commit ID and message.
             const commitId = commit.id;
