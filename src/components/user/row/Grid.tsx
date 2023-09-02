@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import { type User } from "@prisma/client"
+import { type UserPublic, type UserPublicWithEmail } from "~/types/user/user";
 
 import { has_role } from "@utils/user/Auth";
 
@@ -16,7 +17,7 @@ export default function UserRowGrid ({
     avatarWidth = 72,
     avatarHeight = 72
 } : {
-    user: User,
+    user: User | UserPublic | UserPublicWithEmail,
     showAvatar?: boolean,
     showTitle?: boolean,
     showEmail?: boolean,
@@ -68,7 +69,7 @@ export default function UserRowGrid ({
                     <p>{user.title}</p>
                 </div>
             )}
-            {showEmail && (
+            {showEmail && "email" in user && user.email && (
                 <div className="user-browser-grid-email">
                     {user.email}
                 </div>

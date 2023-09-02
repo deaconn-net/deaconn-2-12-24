@@ -1,6 +1,8 @@
 import { getServerSideSitemapLegacy } from "next-sitemap"
 import { type GetServerSideProps } from "next"
 
+import { UserPublicRefSelect } from "~/types/user/user";
+
 import { prisma } from "@server/db";
 
 type Changefreq =
@@ -67,7 +69,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // User projects.
     const userProjects = await prisma.userProject.findMany({
         include: {
-            user: true
+            user: {
+                select: UserPublicRefSelect
+            }
         }
     });
 

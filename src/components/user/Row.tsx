@@ -1,11 +1,12 @@
 import Image from "next/image";
 
+import { type UserPublicWithEmail, type UserPublic } from "~/types/user/user";
 import { type User } from "@prisma/client";
 
 export default function UserRow ({
     user
 } : {
-    user: User
+    user: User | UserPublic | UserPublicWithEmail 
 }) {
     // Retrieve user avatar.
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";

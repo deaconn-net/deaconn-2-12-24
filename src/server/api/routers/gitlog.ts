@@ -1,6 +1,8 @@
 import { TRPCError } from "@trpc/server";
 import { adminProcedure, createTRPCRouter, publicProcedure } from "../trpc";
 
+import { UserPublicSelect } from "~/types/user/user";
+
 import z from "zod";
 
 export const gitLogRouter = createTRPCRouter({
@@ -15,7 +17,9 @@ export const gitLogRouter = createTRPCRouter({
                     createdAt: "desc"
                 },
                 include: {
-                    user: true
+                    user: {
+                        select: UserPublicSelect
+                    }
                 },
                 
                 take: input.limit + 1,

@@ -1,7 +1,8 @@
-import { type User } from "@prisma/client";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+
+import { type UserPublicWithEmail } from "~/types/user/user";
 
 import { prisma } from "@server/db";
 
@@ -16,7 +17,7 @@ import { dateFormat, dateFormatTwo } from "@utils/Date";
 import Markdown from "@components/markdown/Markdown";
 
 const Page: NextPage<{
-    user?: User
+    user?: UserPublicWithEmail
 } & GlobalPropsType> = ({
     user,
 
@@ -96,7 +97,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const userId = params?.user?.toString();
 
     // Initialize user.
-    let user: User | null = null;
+    let user: UserPublicWithEmail | null = null;
 
     // If user ID is found, retrieve user.
     if (userId) {
@@ -115,6 +116,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 })
             }
         });
+
+        // Make sure to not pass email if show Email is set to false.
+        if (user && !user.showEmail)
+            user.email = null;
     }
 
     // Retrieve global props.

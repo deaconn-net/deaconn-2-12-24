@@ -1,5 +1,7 @@
 import { type Prisma } from "@prisma/client";
 
+import { type UserPublicSelect } from "./user/user";
+
 export type RequestWithService = Prisma.RequestGetPayload<{
     include: {
         service: true
@@ -11,9 +13,13 @@ export type RequestWithAll = Prisma.RequestGetPayload<{
         service: true,
         replies: {
             include: {
-                user: true
+                user: {
+                    select: typeof UserPublicSelect
+                }
             }
         },
-        user: true
+        user: {
+            select: typeof UserPublicSelect
+        }
     }
 }>

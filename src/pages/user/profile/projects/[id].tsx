@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "@server/auth";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
+import { UserPublicSelect } from "~/types/user/user";
 import { type UserProjectWithSourcesAndUser } from "~/types/user/project";
 
 import { prisma } from "@server/db";
@@ -68,7 +69,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (session?.user && projectId) {
             project = await prisma.userProject.findFirst({
                 include: {
-                    user: true,
+                    user: {
+                        select: UserPublicSelect
+                    },
                     sources: true
                 },
                 where: {

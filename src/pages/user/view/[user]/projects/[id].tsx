@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import { type User } from "@prisma/client";
+import { UserPublicSelect, type UserPublic } from "~/types/user/user";
 import { type UserProjectWithSources } from "~/types/user/project";
 
 import { prisma } from "@server/db";
@@ -21,7 +21,7 @@ import Link from "next/link";
 import SourceIcon from "@components/icons/Source";
 
 const Page: NextPage<{
-    user?: User,
+    user?: UserPublic,
     project?: UserProjectWithSources
 } & GlobalPropsType> = ({
     user,
@@ -141,7 +141,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const projectId = params?.id?.toString();
 
     // Initialize user and project.
-    let user: User | null = null;
+    let user: UserPublic | null = null;
     let project: UserProjectWithSources | null = null;
 
     // If user ID is found, retrieve user.
@@ -152,6 +152,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             lookupUrl = false;
 
         user = await prisma.user.findFirst({
+            select: UserPublicSelect,
             where: {
                 ...(lookupUrl && {
                     url: userId

@@ -1,5 +1,6 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
+import { UserPublicSelect } from "~/types/user/user";
 import { type ArticleWithUser } from "~/types/blog/article";
 
 import { prisma } from "@server/db";
@@ -76,7 +77,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 url: url
             },
             include: {
-                user: true
+                user: {
+                    select: UserPublicSelect
+                }
             }
         });
     }

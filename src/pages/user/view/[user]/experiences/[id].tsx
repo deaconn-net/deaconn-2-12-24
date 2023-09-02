@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import { type UserExperience, type User } from "@prisma/client";
+import { type UserExperience } from "@prisma/client";
+import { UserPublicSelect, type UserPublic } from "~/types/user/user";
 
 import { prisma } from "@server/db";
 
@@ -17,7 +18,7 @@ import { dateFormat, dateFormatThree } from "@utils/Date";
 import Markdown from "@components/markdown/Markdown";
 
 const Page: NextPage<{
-    user?: User,
+    user?: UserPublic,
     experience?: UserExperience
 } & GlobalPropsType> = ({
     user,
@@ -111,7 +112,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const experienceId = params?.id?.toString();
 
     // Initialize user and experience.
-    let user: User | null = null;
+    let user: UserPublic | null = null;
     let experience: UserExperience | null = null;
 
     // If user ID is found, retrieve user and others.
@@ -122,6 +123,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             lookupUrl = false;
 
         user = await prisma.user.findFirst({
+            select: UserPublicSelect,
             where: {
                 ...(lookupUrl && {
                     url: userId

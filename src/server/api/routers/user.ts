@@ -1,5 +1,7 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
+import { UserPublicSelect } from "~/types/user/user";
+
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
@@ -139,7 +141,9 @@ export const userRouter = createTRPCRouter({
                     [input.sort]: input.sortDir
                 },
                 include: {
-                    user: true
+                    user: {
+                        select: UserPublicSelect
+                    }
                 },
                 where: {
                     ...(input.userId && {
@@ -178,7 +182,9 @@ export const userRouter = createTRPCRouter({
                     [input.sort]: input.sortDir
                 },
                 include: {
-                    user: true
+                    user: {
+                        select: UserPublicSelect
+                    }
                 },
                 where: {
                     ...(input.userId && {
@@ -217,7 +223,9 @@ export const userRouter = createTRPCRouter({
                     [input.sort]: input.sortDir
                 },
                 include: {
-                    user: true
+                    user: {
+                        select: UserPublicSelect
+                    }
                 },
                 where: {
                     ...(input.userId && {

@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { type User } from "@prisma/client"
+import { type UserPublic, type UserPublicWithEmail } from "~/types/user/user";
 
 import Tabs, { type TabItemType } from "@components/tabs/Tabs";
 
@@ -20,7 +20,7 @@ export default function UserView ({
 
     children
 } : {
-    user: User,
+    user: UserPublic | UserPublicWithEmail,
     view: string,
     showDataBg?: boolean
 

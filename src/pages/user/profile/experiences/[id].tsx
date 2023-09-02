@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "@server/auth";
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
+import { UserPublicSelect } from "~/types/user/user";
 import { type UserExperienceWithUser } from "~/types/user/experience";
 
 import { prisma } from "@server/db";
@@ -13,7 +14,6 @@ import ExperienceForm from "@components/forms/user/Experience";
 import NotSignedIn from "@components/error/NotSignedIn";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
-
 const Page: NextPage<{
     experience?: UserExperienceWithUser,
 } & GlobalPropsType> = ({
@@ -69,7 +69,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         // Retrieve experience.
         experience = await prisma.userExperience.findFirst({
             include: {
-                user: true
+                user: {
+                    select: UserPublicSelect
+                }
             },
             where: {
                 userId: session.user.id,

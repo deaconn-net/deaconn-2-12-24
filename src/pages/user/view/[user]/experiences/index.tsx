@@ -1,6 +1,6 @@
 import { type GetServerSidePropsContext, type NextPage } from "next";
 
-import { type User } from "@prisma/client";
+import { UserPublicSelect, type UserPublic } from "~/types/user/user";
 
 import { prisma } from "@server/db";
 
@@ -14,7 +14,7 @@ import UserView from "@components/user/View";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 const Page: NextPage<{
-    user?: User
+    user?: UserPublic
 } & GlobalPropsType> = ({
     user,
 
@@ -72,7 +72,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const userId = params?.user?.toString();
 
     // Initialize user.
-    let user: User | null = null;
+    let user: UserPublic | null = null;
 
     // If user ID or URL is found, retrieve user.
     if (userId) {
@@ -82,6 +82,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             lookupUrl = false;
 
         user = await prisma.user.findFirst({
+            select: UserPublicSelect,
             where: {
                 ...(lookupUrl && {
                     url: userId

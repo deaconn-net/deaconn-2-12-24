@@ -144,6 +144,11 @@ export default function UserBrowser ({
                                                 <UserTableRow
                                                     key={`user-row-${user.id}`}
                                                     user={user}
+                                                    showAvatar={true}
+                                                    showEmail={true}
+                                                    showUrl={true}
+                                                    showTitle={true}
+                                                    showActions={true}
                                                 />
                                             );
                                         })}

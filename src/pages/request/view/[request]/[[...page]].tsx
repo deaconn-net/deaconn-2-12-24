@@ -6,6 +6,7 @@ import { getServerAuthSession } from "@server/auth";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
+import { UserPublicSelect } from "~/types/user/user";
 import { type RequestWithAll } from "~/types/request";
 
 import { prisma } from "@server/db";
@@ -415,10 +416,14 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                     take: repliesPerPage,
                     skip: repliesOffset,
                     include: {
-                        user: true
+                        user: {
+                            select: UserPublicSelect
+                        }
                     }
                 },
-                user: true
+                user: {
+                    select: UserPublicSelect
+                }
             }
         });
     }
