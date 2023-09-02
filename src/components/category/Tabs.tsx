@@ -21,6 +21,8 @@ export default function CategoryTabs ({
     const tabs: TabItemType[] = [];
 
     categories.map((category) => {
+        let children: TabItemType[] | undefined = undefined;
+
         const viewUrl = `/${categories_with_articles ? "blog" : "service"}/category/${category.url}`;
         let cnt = "Article" in category._count
             ? (category._count as { Article: number }).Article
@@ -34,6 +36,29 @@ export default function CategoryTabs ({
                 cnt += (childCnt._count as { Service: number }).Service;
         });
 
+        // Parse children.
+        if (category.children?.length > 0) {
+            children = [];
+
+            category.children.map((categoryChild) => {
+                const viewUrlChild = `/${categories_with_articles ? "blog" : "service"}/category/${category.url}/${categoryChild.url}`;
+                const cntChild = "Article" in categoryChild._count
+                    ? (categoryChild._count as { Article: number }).Article
+                    : (categoryChild._count as { Service: number }).Service;
+
+                // Add to children.
+                children?.push({
+                    url: viewUrlChild,
+                    text:
+                        <div className="flex gap-2">
+                            <span>{categoryChild.name.charAt(0) + categoryChild.name.slice(1)}</span>
+                            <span>({cntChild})</span>
+                        </div>,
+                    active: active == categoryChild.id
+                })
+            })
+        }
+
         // Add to tabs.
         tabs.push({
             url: viewUrl,
@@ -42,28 +67,9 @@ export default function CategoryTabs ({
                     <span>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</span>
                     <span>({cnt})</span>
                 </div>,
-            active: active == category.id
+            active: active == category.id,
+            children: children
         });
-
-        // Parse children.
-        category.children.map((categoryChild) => {
-            const viewUrlChild = `/${categories_with_articles ? "blog" : "service"}/category/${category.url}/${categoryChild.url}`;
-            const cntChild = "Article" in categoryChild._count
-                ? (categoryChild._count as { Article: number }).Article
-                : (categoryChild._count as { Service: number }).Service;
-
-            // Add to tabs.
-            tabs.push({
-                url: viewUrlChild,
-                text:
-                    <div className="flex gap-2">
-                        <span>{categoryChild.name.charAt(0) + categoryChild.name.slice(1)}</span>
-                        <span>({cntChild})</span>
-                    </div>,
-                active: active == categoryChild.id,
-                className: "sm:ml-4"
-            })
-        })
     })
     
     return (

@@ -1,9 +1,50 @@
+@keyframes child-slide-down {
+    0% {
+        transform: translateY(-70px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes child-slide-up {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-70px);
+    }
+}
+
 .tab-container {
+    @apply relative;
     @apply list-none;
     @apply flex;
     @apply flex-col;
     @apply gap-2;
     @apply w-full;
+
+    @apply z-30;
+
+    & > div {
+        @apply flex-col;
+        @apply list-none;
+        @apply w-full;
+        @apply gap-2;
+    }
+
+    & > div > div {
+        @apply flex;
+        @apply flex-col;
+        @apply list-none;
+        @apply w-full;
+    }
+
+    & div > div > ul {
+        @apply list-none;
+        @apply flex-col;
+        @apply w-full;
+    }
 }
 
 .tab-link {
@@ -15,16 +56,27 @@
     @apply hover:text-white;
 
     @apply bg-cyan-950;
-
-    @apply rounded;
+    @apply z-20;
 }
 
-.tab-item {
-    @apply hidden;
+.tab-link-child {
+    @apply p-6;
+    @apply w-full;
+    @apply text-center;
+
+    @apply hover:font-bold;
+    @apply hover:text-white;
+
+    @apply bg-cyan-950;
+
     @apply sm:block;
+
+    @apply z-10;
+
+
 }
 
-.tab-active {
+.tab-active, .tab-active-child {
     @apply text-white;
     @apply font-bold;
     @apply bg-cyan-900;
@@ -34,7 +86,7 @@
     @apply flex;
     @apply flex-wrap;
     /*@apply sm:flex-nowrap;*/
-    @apply gap-2;
+    @apply gap-4;
     @apply justify-center;
 }
 
@@ -51,9 +103,6 @@
 .tab-menu-with-data > div:last-child {
     @apply grow;
     @apply w-96;
-
-    @apply p-2;
-    @apply sm:p-6;
     @apply flex;
     @apply flex-col;
     @apply gap-4;

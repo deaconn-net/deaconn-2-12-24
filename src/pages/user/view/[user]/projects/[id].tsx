@@ -196,5 +196,4 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
 }
 
-
 export default Page;
