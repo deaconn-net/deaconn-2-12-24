@@ -14,13 +14,13 @@
 }
 
 .updatelog::-webkit-scrollbar-thumb {
-    @apply bg-gray-800/50;
+    @apply bg-gray-700/50;
     
     @apply rounded-lg;
 }
 
 .updatelog::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-700/50;
+    @apply bg-gray-600/50;
 }
 
 .updatelog .updatelog-table {
