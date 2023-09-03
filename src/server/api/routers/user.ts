@@ -17,8 +17,8 @@ export const userRouter = createTRPCRouter({
 
             credit: z.number().optional(),
 
-            name: z.string().max(64).optional(),
-            url: z.string().max(32).optional(),
+            name: z.string().max(64).regex(/^[a-zA-Z0-9 -]+$/).optional(),
+            url: z.string().max(32).regex(/^[a-zA-Z0-9-]+$/).optional(),
             title: z.string().min(3).max(64).optional(),
             aboutMe: z.string().max(16384).optional(),
             birthday: z.date().optional(),
@@ -549,7 +549,7 @@ export const userRouter = createTRPCRouter({
             sources: z.array(z.object({
                 projectId: z.number(),
                 title: z.string().max(64),
-                url: z.string().max(128),
+                url: z.string().url().max(128),
             })).optional()
         }))
         .mutation(async ({ ctx, input }) => {

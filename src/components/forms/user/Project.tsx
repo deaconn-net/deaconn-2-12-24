@@ -38,16 +38,46 @@ export default function UserProjectForm({
             console.error(message);
 
             if (errorCtx) {
-                switch (data?.code) {
-                    case "PAYLOAD_TOO_LARGE":
-                        errorCtx.setTitle("Too Many Projects!");
-                        errorCtx.setMsg("You have too many existing projects. Please delete one!");
+                if (data?.zodError) {
+                    const zodErr = data.zodError;
+
+                    if ("sources" in zodErr.fieldErrors) {
+                        const sources = zodErr.fieldErrors.sources;
+
+                        if (sources && sources.includes("Invalid url")) {
+                            const err = zodErr.fieldErrors.sources?.toString();
+
+                            errorCtx.setTitle("URL Validation Error");
+                            errorCtx.setMsg(err ?? "One or more sources contain an invalid URL.");
+                        }
+                    } else if ("name" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.name?.toString();
+
+                        errorCtx.setTitle("Name Validation Error");
+                        errorCtx.setMsg(err ?? "Name is either too short or too long.");
+                    } else if ("desc" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.desc?.toString();
+
+                        errorCtx.setTitle("Description Validation Error");
+                        errorCtx.setMsg(err ?? "Description is either too short or too long.");
+                    } else if ("details" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.details?.toString();
+
+                        errorCtx.setTitle("Details Validation Error");
+                        errorCtx.setMsg(err ?? "Details is either too short or too long.");
+                    }
+                } else {
+                    switch (data?.code) {
+                        case "PAYLOAD_TOO_LARGE":
+                            errorCtx.setTitle("Too Many Projects!");
+                            errorCtx.setMsg("You have too many existing projects. Please delete one!");
+                            
+                            break;
                         
-                        break;
-                    
-                    default:
-                        errorCtx.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
-                        errorCtx.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
+                        default:
+                            errorCtx.setTitle(`Error ${project ? "Saving" : "Creating"} Project`);
+                            errorCtx.setMsg(`Error ${project ? "saving" : "creating"} project. Read developer console for more information.`);
+                    }
                 }
         
                 // Scroll to top.

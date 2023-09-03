@@ -34,12 +34,28 @@ export default function RequestForm ({
             console.error(message);
 
             if (errorCtx) {
-                errorCtx.setTitle("Error Creating Or Editing Request");
-    
-                if (data?.code == "UNAUTHORIZED")
-                    errorCtx.setMsg("You are not signed in or have permissions to create requests.")
-                else
-                    errorCtx.setMsg(`Error ${request ? "saving" : "creating"} request.`);
+                if (data?.zodError) {
+                    const zodErr = data.zodError;
+
+                    if ("title" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.title?.toString();
+
+                        errorCtx.setTitle("Title Validation Error");
+                        errorCtx.setMsg(err ?? "Title is too long.");
+                    } else if ("content" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.content?.toString();
+
+                        errorCtx.setTitle("Content Validation Error");
+                        errorCtx.setMsg(err ?? "Content is too short.");
+                    }
+                } else {
+                    errorCtx.setTitle("Error Creating Or Editing Request");
+        
+                    if (data?.code == "UNAUTHORIZED")
+                        errorCtx.setMsg("You are not signed in or have permissions to create requests.")
+                    else
+                        errorCtx.setMsg(`Error ${request ? "saving" : "creating"} request.`);
+                }
         
                 // Scroll to top.
                 ScrollToTop(); 

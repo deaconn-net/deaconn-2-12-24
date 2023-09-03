@@ -28,16 +28,32 @@ export default function SkillForm ({
             console.error(message);
 
             if (errorCtx) {
-                switch (data?.code) {
-                    case "PAYLOAD_TOO_LARGE":
-                        errorCtx.setTitle("Too Many Skills!");
-                        errorCtx.setMsg("You have too many existing skills. Please delete one!");
+                if (data?.zodError) {
+                    const zodErr = data.zodError;
 
-                        break;
+                    if ("title" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.title?.toString();
 
-                    default:
-                        errorCtx.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
-                        errorCtx.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
+                        errorCtx.setTitle("Title Validation Error");
+                        errorCtx.setMsg(err ?? "Title is either too short or too long.");
+                    } else if ("desc" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.desc?.toString();
+
+                        errorCtx.setTitle("Description Validation Error");
+                        errorCtx.setMsg(err ?? "Description is either too short or too long.");
+                    }
+                } else {
+                    switch (data?.code) {
+                        case "PAYLOAD_TOO_LARGE":
+                            errorCtx.setTitle("Too Many Skills!");
+                            errorCtx.setMsg("You have too many existing skills. Please delete one!");
+
+                            break;
+
+                        default:
+                            errorCtx.setTitle(`Error ${skill ? "Saving" : "Creating"} Skill`);
+                            errorCtx.setMsg(`Error ${skill ? "saving" : "creating"} skill. Read developer console for more information.`);
+                    }
                 }
 
                 // Scroll to top.

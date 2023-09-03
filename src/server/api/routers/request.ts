@@ -68,7 +68,7 @@ export const requestRouter = createTRPCRouter({
 
             title: z.string().max(64).optional(),
             timeframe: z.number(),
-            content: z.string(),
+            content: z.string().min(10),
             startDate: z.date().optional(),
             price: z.number()
         }))

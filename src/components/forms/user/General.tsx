@@ -32,13 +32,25 @@ export default function GeneralForm ({
     // User mutations.
     const userMut = api.user.update.useMutation({
         onError: (opts) => {
-            const { message } = opts;
+            const { message, data } = opts;
 
             console.error(message);
 
             if (errorCtx) {
-                errorCtx.setTitle("Error Saving Profile");
-                errorCtx.setMsg("Error saving profile. Read developer console for more information.");
+                if (data?.zodError) {
+                    const zodErr = data.zodError;
+                    
+                    if ("url" in zodErr.fieldErrors) {
+                        errorCtx.setTitle("Invalid URL");
+                        errorCtx.setMsg("Invalid URL set. Please make sure to use letters, numbers, and hyphens (-) only.");
+                    } else if ("name" in zodErr.fieldErrors) {
+                        errorCtx.setTitle("Invalid Name");
+                        errorCtx.setMsg("Invalid name. Please make sure to use letters, numbers, hyphens, and spaces only.");
+                    }
+                } else {
+                    errorCtx.setTitle("Error Saving Profile");
+                    errorCtx.setMsg("Error saving profile. Read developer console for more information.");
+                }
         
                 // Scroll to top.
                 ScrollToTop();

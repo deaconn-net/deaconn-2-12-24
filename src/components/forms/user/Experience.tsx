@@ -33,16 +33,42 @@ export default function ExperienceForm ({
             console.error(message);
 
             if (errorCtx) {
-                switch (data?.code) {
-                    case "PAYLOAD_TOO_LARGE":
-                        errorCtx.setTitle("Too Many Experiences!");
-                        errorCtx.setMsg("You have too many existing experiences. Please delete one!");
+                if (data?.zodError) {
+                    const zodErr = data.zodError;
 
-                        break;
+                    if ("company" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.company?.toString();
 
-                    default:
-                        errorCtx.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
-                        errorCtx.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
+                        errorCtx.setTitle("Company Validation Error");
+                        errorCtx.setMsg(err ?? "Company is either too short or too long.");
+                    } else if ("title" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.title?.toString();
+
+                        errorCtx.setTitle("Title Validation Error");
+                        errorCtx.setMsg(err ?? "Title is either too short or too long.");
+                    } else if ("desc" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.desc?.toString();
+
+                        errorCtx.setTitle("Description Validation Error");
+                        errorCtx.setMsg(err ?? "Description is either too short or too long.");
+                    } else if ("details" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.details?.toString();
+
+                        errorCtx.setTitle("Details Validation Error");
+                        errorCtx.setMsg(err ?? "Details is too long.");
+                    }
+                } else {
+                    switch (data?.code) {
+                        case "PAYLOAD_TOO_LARGE":
+                            errorCtx.setTitle("Too Many Experiences!");
+                            errorCtx.setMsg("You have too many existing experiences. Please delete one!");
+
+                            break;
+
+                        default:
+                            errorCtx.setTitle(`Error ${experience ? "Saving" : "Creating"} Experience`);
+                            errorCtx.setMsg(`Error ${experience ? "saving" : "creating"} experience. Read developer console for more information.`);
+                    }
                 }
         
                 // Scroll to top.

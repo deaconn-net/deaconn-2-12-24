@@ -31,12 +31,23 @@ export default function RequestReplyForm ({
             console.error(message);
 
             if (errorCtx) {
-                errorCtx.setTitle("Error Creating Or Editing Reply");
-    
-                if (data?.code == "UNAUTHORIZED")
-                    errorCtx.setMsg("You are not signed in or have permissions to create replies.")
-                else
-                    errorCtx.setMsg(`Error ${reply ? "saving" : "creating"} reply.`);
+                if (data?.zodError) {
+                    const zodErr = data.zodError;
+
+                    if ("content" in zodErr.fieldErrors) {
+                        const err = zodErr.fieldErrors.content?.toString();
+
+                        errorCtx.setTitle("Content Validation Error");
+                        errorCtx.setMsg(err ?? "Content is either too short or too long.");
+                    }
+                } else {
+                    errorCtx.setTitle("Error Creating Or Editing Reply");
+        
+                    if (data?.code == "UNAUTHORIZED")
+                        errorCtx.setMsg("You are not signed in or have permissions to create replies.")
+                    else
+                        errorCtx.setMsg(`Error ${reply ? "saving" : "creating"} reply.`);
+                }
         
                 // Scroll to top.
                 ScrollToTop();
