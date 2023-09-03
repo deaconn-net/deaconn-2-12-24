@@ -131,7 +131,7 @@ export default function Header () {
                         <>
                             <Link
                                 href="/user/profile"
-                                className={`nav-link ${location == "/user/profile" ? "nav-active" : ""}`} 
+                                className={`nav-link ${location.includes("/user/profile") ? "nav-active" : ""}`} 
                             >
                                 <li className="nav-item">
                                     <IconAndText
