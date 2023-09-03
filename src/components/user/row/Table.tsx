@@ -42,44 +42,55 @@ export default function UserRowTable ({
 
     return (
         <tr>
-            {showAvatar && avatar && (
+            {showAvatar && (
                 <td className="user-browser-table-avatar">
-                    <Image
-                        src={avatar}
-                        width={avatarWidth}
-                        height={avatarHeight}
-                        alt="Avatar"
-                    />
+                    {avatar && (
+                        <Image
+                            src={avatar}
+                            width={avatarWidth}
+                            height={avatarHeight}
+                            alt="Avatar"
+                        />
+                    )}
                 </td>
             )}
-            {showEmail && "email" in user && user.email && (
+            {showEmail && (
                 <td className="user-browser-table-email">
-                    {user.email}
+                    {"email" in user && user.email && (
+                        <>{user.email}</>
+                    )}
                 </td>
             )}
+           
             <td className="user-browser-table-name">
                 {user.name && (
                     <>{user.name}</>
                 )}
             </td>
-            {showUrl && user.url && (
+            {showUrl && (
                 <td className="user-browser-table-url">
                     {user.url && (
                         <>{user.url}</>
                     )}
                 </td>
             )}
-            {showTitle && user.title && (
+            {showTitle && (
                 <td className="user-browser-table-title">
-                    {user.title}
+                {user.title && (
+                    <>{user.title}</>
+                )}
                 </td>
             )}
-            {showActions && session && has_role(session, "admin") && (
+
+            {showActions && (
                 <td className="user-browser-table-actions">
-                    <Link
-                        href={editUrl}
-                        className="button button-primary"
-                    >Edit</Link>
+                    {session && has_role(session, "admin") && (
+                        <Link
+                            href={editUrl}
+                            className="button button-primary"
+                        >Edit</Link>
+                    )}
+
                 </td>
             )}
         </tr>
