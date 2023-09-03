@@ -1,18 +1,23 @@
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { type PluggableList, ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 import DefaultTheme from "@components/markdown/styles/Default";
 
+import rehypeRaw from "rehype-raw";
+
 export default function Markdown ({
     className,
+    rehype,
     children
 } : {
-    className?: string
+    className?: string,
+    rehype?: boolean,
     children: string
-}) {
+}) { 
     return (
         <ReactMarkdown
             className={`markdown ${className ?? ""}`}
+            rehypePlugins={rehype ? [rehypeRaw] as PluggableList : undefined}
             components={{
                 code({ inline, className, children, ...props}) {
                     const match = /language-(\w+)/.exec(className || "");

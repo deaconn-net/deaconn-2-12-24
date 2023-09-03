@@ -125,7 +125,7 @@ export default function ArticleView ({
                         )}
                     </div>
                 </div>
-                <Markdown>
+                <Markdown rehype={true}>
                     {article.content}
                 </Markdown>
                 <div className="flex flex-col gap-2">

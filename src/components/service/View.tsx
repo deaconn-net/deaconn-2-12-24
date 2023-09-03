@@ -168,7 +168,7 @@ export default function ServiceView ({
                             {view == "details" && (
                                 <>
                                     <h2>Details</h2>
-                                    <Markdown>
+                                    <Markdown rehype={true}>
                                         {service.content}
                                     </Markdown>
                                 </>
@@ -176,7 +176,7 @@ export default function ServiceView ({
                             {service.install && view == "install" && (
                                 <>
                                     <h2>Installation</h2>
-                                    <Markdown>
+                                    <Markdown rehype={true}>
                                         {service.install}
                                     </Markdown>
                                 </>
@@ -184,7 +184,7 @@ export default function ServiceView ({
                             {service.features && view == "features" && (
                                 <>
                                     <h2>Features</h2>
-                                    <Markdown>
+                                    <Markdown rehype={true}>
                                         {service.features}
                                     </Markdown>
                                 </>
