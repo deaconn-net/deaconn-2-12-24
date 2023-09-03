@@ -1,27 +1,26 @@
 import { type NextPage } from "next";
 
+import { type UserPublic, UserPublicSelect } from "~/types/user/user";
+import StatsBlock, { type Stats } from "@components/blocks/Stats";
+
+import { prisma } from "@server/db";
+
 import Meta from "@components/Meta";
 import Wrapper from "@components/Wrapper";
 
+import DiscordServerBlock from "@components/blocks/DiscordServer";
+import WhoAreWeBlock from "@components/blocks/WhoAreWe";
+import MeetOurTeamBlock from "@components/blocks/MeetOurTeam";
+import MeetOurPartnersBlock from "@components/blocks/MeetOurPartners";
+
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
-import { prisma } from "@server/db";
-
-type stats = {
-    users?: number,
-    articles?: number,
-    services?: number,
-    userExperiences?: number,
-    userSkills?: number,
-    userProjects?: number,
-
-    totalCommits?: number,
-    totalRepos?: number
-}
 
 const Page: NextPage<{
-    stats?: stats
+    stats?: Stats,
+    team: UserPublic[]
 } & GlobalPropsType> = ({
     stats,
+    team,
 
     footerServices,
     footerPartners
@@ -37,41 +36,13 @@ const Page: NextPage<{
             >
                 <div className="flex flex-wrap sm:flex-nowrap gap-4">
                     <div className="content-col-large">
-                        <div className="content-item2">
-                            <div>
-                                <h2>About Us</h2>
-                            </div>
-                            <div>
-                                <p>This is the start of our about us page!</p>
-                            </div>
-                        </div>
+                        <WhoAreWeBlock />
+                        <MeetOurTeamBlock team={team} />
+                        <MeetOurPartnersBlock partners={footerPartners} />
                     </div>
                     <div className="content-col-small">
-                        <div className="content-item2">
-                            <div>
-                                <h2>Stats</h2>
-                            </div>
-                            <div className="flex flex-col gap-4">
-                                <div>
-                                    <h2>Website</h2>
-                                    <ul className="px-6">
-                                        <li>{stats?.users?.toString() ?? "N/A"} <span className="font-bold">Total Users</span></li>
-                                        <li>{stats?.articles?.toString() ?? "N/A"} <span className="font-bold">Total Articles</span></li>
-                                        <li>{stats?.services?.toString() ?? "N/A"} <span className="font-bold">Total Services</span></li>
-                                        <li>{stats?.userExperiences?.toString() ?? "N/A"} <span className="font-bold">Total User Experiences</span></li>
-                                        <li>{stats?.userSkills?.toString() ?? "N/A"} <span className="font-bold">Total User Skills</span></li>
-                                        <li>{stats?.userProjects?.toString() ?? "N/A"} <span className="font-bold">Total User Projects</span></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h2>GitHub</h2>
-                                    <ul className="px-6">
-                                        <li>{stats?.totalCommits?.toString() ?? "N/A"} <span className="font-bold">Total Commits</span></li>
-                                        <li>{stats?.totalRepos?.toString() ?? "N/A"} <span className="font-bold">Total Repositories</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <StatsBlock stats={stats} />
+                        <DiscordServerBlock />
                     </div>
                 </div>
             </Wrapper>
@@ -80,7 +51,7 @@ const Page: NextPage<{
 }
 
 export async function getServerSideProps() {
-    const stats: stats = {};
+    const stats: Stats = {};
     stats.users = await prisma.user.count();
     stats.articles = await prisma.article.count();
     stats.services = await prisma.service.count();
@@ -107,12 +78,20 @@ export async function getServerSideProps() {
     if (repos)
         stats.totalRepos = Number(repos.val);
 
+    const team = await prisma.user.findMany({
+        select: UserPublicSelect,
+        where: {
+            isTeam: true
+        }
+    });
+
     const globalProps = await GlobalProps();
 
     return {
         props: {
             ...globalProps,
-            stats: stats
+            stats: stats,
+            team: JSON.parse(JSON.stringify(team))
         }
     }
 }

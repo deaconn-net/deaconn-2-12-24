@@ -11,13 +11,17 @@ import Meta from "@components/Meta";
 
 import ArticleRow from "@components/blog/article/Row";
 import ServiceRow from "@components/service/Row";
-import PartnerRow from "@components/partner/Row";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
-import UpdateBox from "@components/log/UpdateBox";
-import GitLogBox from "@components/log/GitLogBox";
-import DiscordWidget from "@components/DiscordWidget";
-import UserRowGrid from "@components/user/row/Grid";
+
+import OpenSourceBlock from "@components/blocks/OpenSource";
+import DiscordServerBlock from "@components/blocks/DiscordServer";
+import OurPartnersBlock from "@components/blocks/OurPartners";
+import OurTeamBlock from "@components/blocks/OurTeam";
+import GitLogBlock from "@components/blocks/GitLog";
+import UpdateLogBlock from "@components/blocks/UpdateLog";
+import HaveARequestBlock from "@components/blocks/HaveARequest";
+import WhoAreWeBlock from "@components/blocks/WhoAreWe";
 
 const Page: NextPage<{
     articles: Article[],
@@ -30,10 +34,7 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
-    const discordServerId = process.env.NEXT_PUBLIC_DISCORD_SERVER_ID || undefined;
-
-    const githubOrgUrl = process.env.NEXT_PUBLIC_GITHUB_ORG_URL || undefined;
-    const githubRepoUrl = process.env.NEXT_PUBLIC_GITHUB_REPO_URL || undefined;
+    
 
     return (
         <>
@@ -46,118 +47,16 @@ const Page: NextPage<{
             >
                 <div className="flex flex-wrap sm:flex-nowrap gap-12">
                     <div className="content-col-large">
-                        <div className="content-item2">
-                            <div>
-                                <h2>Who Are We?</h2>
-                            </div>
-                            <div>
-                                <p>
-                                    <span className="font-bold">Deaconn</span> is a software developer which produces products and services in various areas within technology.
-                                </p>
-                            </div>
-                        </div>
-                        <div className="content-item2">
-                            <div>
-                                <h2>Have A Request?</h2>
-                            </div>
-                            <div>
-                                <p>We are a freelancing business and accept requests.</p>
-                                <p><span className="font-bold">Note</span> - We cannot guarantee that we will accept every request. Once you submit a request, we will be able to communicate back and forth on payment, time frame, and more.</p>
-                                <div className="flex py-6">
-                                    <Link href="/request/new" className="button">New Request</Link>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="content-item2">
-                            <div>
-                                <h2>Updates</h2>
-                            </div>
-                            <div>
-                                <UpdateBox />
-                            </div>
-                        </div>
-                        <div className="content-item2">
-                            <div>
-                                <h2>Git Log</h2>
-                            </div>
-                            <div>
-                                <GitLogBox />
-                            </div>
-                        </div>
-                        <div className="content-item2">
-                            <div>
-                                <h2>Open Source!</h2>
-                            </div>
-                            <div className="flex flex-col gap-4">
-                                {githubOrgUrl && (
-                                    <p>Our website is <span className="font-bold">open source</span> on our <Link href={githubOrgUrl} target="_blank">GitHub organization</Link>!</p>
-                                )}
-                                {githubRepoUrl && (
-                                    <Link
-                                        href={githubRepoUrl}
-                                        target="_blank"
-                                        className="button w-full sm:w-72"
-                                    >Check It Out!</Link>
-                                )}
-                            </div>
-                        </div>
+                        <WhoAreWeBlock />
+                        <HaveARequestBlock />
+                        <UpdateLogBlock />
+                        <GitLogBlock />
                     </div>
                     <div className="content-col-small">
-                        {team.length > 0 && (
-                            <div className="content-item2">
-                                <div>
-                                    <h2>Our Team</h2>
-                                </div>
-                                <div className="flex flex-col gap-4">
-                                    {team.map((user) => {
-                                        return (
-                                            <UserRowGrid
-                                                key={"team-" + user.id}
-                                                user={user}
-                                                showInline={true}
-                                                avatarWidth={50}
-                                                avatarHeight={50}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-                        {footerPartners && footerPartners.length > 0 && (
-                            <div className="content-item2">
-                                <div>
-                                    <h2>Our Partners</h2>
-                                </div>
-                                <div className="flex flex-col gap-4">
-                                    {footerPartners?.map((partner) => {
-                                        return (
-                                            <PartnerRow
-                                                key={"partner-" + partner.id.toString()}
-                                                partner={partner}
-                                                showInline={true}
-                                                bannerWidth={undefined}
-                                                bannerHeight={undefined}
-                                                bannerClassName="partner-row-banner"
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-                        {discordServerId && (
-                            <div className="content-item2">
-                                <div>
-                                    <h2>Our Discord Server!</h2>
-                                </div>
-                                <div className="flex justify-center">
-                                    <DiscordWidget
-                                        id={discordServerId}
-                                        className="max-w-full w-full"
-                                        width="auto"
-                                    />
-                                </div>
-                            </div>
-                        )}
+                        <OurTeamBlock team={team} />
+                        <OurPartnersBlock partners={footerPartners} />
+                        <DiscordServerBlock />
+                        <OpenSourceBlock />
                     </div>
                 </div>
                 <div className="content-item mt-8">
