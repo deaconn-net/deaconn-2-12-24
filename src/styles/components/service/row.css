@@ -13,6 +13,7 @@
     @apply ring-4;
     @apply ring-deaconn-ring;
     @apply hover:ring-deaconn-ring2;
+    @apply hover:duration-150;
 
     & .grid-view-image img {
         @apply filter;

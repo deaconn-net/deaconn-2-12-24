@@ -20,6 +20,7 @@
     @apply hover:text-white;
     
     @apply hover:font-bold;
+    @apply hover:duration-150;
 }
 
 .nav-item {

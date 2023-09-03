@@ -78,6 +78,7 @@
     footer {
         @apply p-6;
         @apply bg-slate-800;
+        @apply z-20;
     }
 }
 

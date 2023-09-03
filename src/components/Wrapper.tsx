@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
@@ -53,10 +53,18 @@ export default function Wrapper ({
         }
     }, [errorCtx, successCtx]);
 
+    const [windowY, setWindowY] = useState(0);
+
+    useEffect(() => {
+        if (typeof window !== undefined) {
+            setWindowY(window.scrollY);
+        }
+    })
+
     return (
         <main>
             <Header />
-            <div className="content">
+            <div className={`content ${(windowY == 0 && firstRender) ? "sm:animate-content-slide-up" : ""}`}>
                 {breadcrumbs && (
                     <Breadcrumbs breadcrumbs={breadcrumbs} />
                 )}

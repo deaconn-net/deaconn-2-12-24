@@ -5,7 +5,8 @@ const config = {
     extend: {
         animation: {
             "child-slide-down": "child-slide-down 1s ease-out",
-            "child-slide-up": "child-slide-up 1s ease-out"
+            "child-slide-up": "child-slide-up 1s ease-out",
+            "content-slide-up": "content-slide-up 0.5s ease-out"
         },
         colors: {
             "deaconn-header": "#155e75",

@@ -1,3 +1,12 @@
+@keyframes content-slide-up {
+    0% {
+        transform: translateY(200%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
 .content {
     @apply container;
     @apply mx-auto;
@@ -41,6 +50,7 @@
     @apply ring-deaconn-ring;
     @apply hover:ring-deaconn-ring2;
     @apply rounded-md;
+    @apply hover:duration-150;
 
     & > div {
         @apply p-4;
