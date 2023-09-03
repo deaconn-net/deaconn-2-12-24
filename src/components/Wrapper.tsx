@@ -10,6 +10,7 @@ import Footer from "@components/Footer";
 import ErrorBox from "@components/error/Box";
 import SuccessBox from "@components/success/Box";
 import Breadcrumbs, { type Breadcrumb } from "./Breadcrumbs";
+import GoogleAnalytics from "./GoogleAnalytics";
 
 export default function Wrapper ({
     footerServices,
@@ -63,6 +64,7 @@ export default function Wrapper ({
 
     return (
         <main>
+            <GoogleAnalytics />
             <Header />
             <div className={`content ${(windowY == 0 && firstRender) ? "sm:animate-content-slide-up" : ""}`}>
                 {breadcrumbs && (
