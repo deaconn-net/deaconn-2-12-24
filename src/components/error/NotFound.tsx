@@ -3,9 +3,15 @@ export default function NotFound ({
 } : {
     item?: string
 }) {
+    const itemName = item.charAt(0).toUpperCase() + item.slice(1);
     return (
-        <div className="error error-not-found">
-            <p>{item.charAt(0).toUpperCase() + item.slice(1)} not found. Please check the URL.</p>
+        <div className="content-item2">
+            <div>
+                <h2>{itemName}Not Found</h2>
+            </div>
+            <div>
+                <p>{itemName} not found. Please check the URL.</p>
+            </div>
         </div>
     );
 }
