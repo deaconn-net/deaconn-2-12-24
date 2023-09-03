@@ -105,7 +105,7 @@ export const requestRouter = createTRPCRouter({
             id: z.number().optional(),
 
             requestId: z.number(),
-            content: z.string().max(32768)
+            content: z.string().min(10).max(32768)
         }))
         .mutation(async ({ ctx, input }) => {
             // Make sure we either own the request or are an admin.
