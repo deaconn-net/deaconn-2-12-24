@@ -18,11 +18,13 @@ export default function OpenSourceBlock () {
                 )}
                 <p>This website was built by <Link href={`/user/view/${rootUserUrl}`}>Christian Deacon</Link></p>
                 {githubRepoUrl && (
-                    <Link
-                        href={githubRepoUrl}
-                        target="_blank"
-                        className="button w-full sm:w-72"
-                    >Check It Out!</Link>
+                    <div className="flex justify-center">
+                        <Link
+                            href={githubRepoUrl}
+                            target="_blank"
+                            className="button w-full sm:w-auto"
+                        >Check It Out!</Link>
+                    </div>
                 )}
             </div>
         </div>
