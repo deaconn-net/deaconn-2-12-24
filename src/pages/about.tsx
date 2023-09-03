@@ -12,6 +12,7 @@ import DiscordServerBlock from "@components/blocks/DiscordServer";
 import WhoAreWeBlock from "@components/blocks/WhoAreWe";
 import MeetOurTeamBlock from "@components/blocks/MeetOurTeam";
 import MeetOurPartnersBlock from "@components/blocks/MeetOurPartners";
+import OpenSourceBlock from "@components/blocks/OpenSource";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
@@ -39,6 +40,7 @@ const Page: NextPage<{
                         <WhoAreWeBlock />
                         <MeetOurTeamBlock team={team} />
                         <MeetOurPartnersBlock partners={footerPartners} />
+                        <OpenSourceBlock />
                     </div>
                     <div className="content-col-small">
                         <StatsBlock stats={stats} />
