@@ -138,11 +138,14 @@ function Row ({
                     {item.children.map((child, childIndex) => {
                         if (child.active && !isChildOpen)
                             setIsChildOpen(true);
+
+                        const isLastItem = ((item?.children?.length ?? 1) - 1) == childIndex;
+
                         return (
                             <Link
                                 key={`tab-item-${index.toString()}-${childIndex.toString()}`}
                                 href={child.url}
-                                className={`tab-link-child ${child.active ? "tab-active-child" : ""} ${child.className ?? ""}`}
+                                className={`tab-link-child ${child.active ? "tab-active-child" : ""} ${child.className ?? ""} ${isLastItem ? "rounded-b" : ""}`}
                                 onClick={child.onClick}
                                 target={child.target}
                                 onMouseEnter={child.onMouseEnter}
