@@ -1,6 +1,6 @@
 @keyframes child-slide-down {
     0% {
-        transform: translateY(-70px);
+        transform: translateY(-100%);
     }
     100% {
         transform: translateY(0);
@@ -12,7 +12,7 @@
         transform: translateY(0);
     }
     100% {
-        transform: translateY(-70px);
+        transform: translateY(-100%);
     }
 }
 
@@ -23,6 +23,7 @@
     @apply flex-col;
     @apply gap-2;
     @apply w-full;
+    @apply overflow-hidden;
 
     @apply z-30;
 
