@@ -7,7 +7,7 @@ export default function NotFound ({
     return (
         <div className="content-item2">
             <div>
-                <h2>{itemName}Not Found</h2>
+                <h2>{itemName} Not Found</h2>
             </div>
             <div>
                 <p>{itemName} not found. Please check the URL.</p>
