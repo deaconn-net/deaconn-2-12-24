@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { type NextPage } from "next";
 
 import { prisma } from "@server/db";
@@ -34,8 +33,6 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
-    
-
     return (
         <>
             <Meta

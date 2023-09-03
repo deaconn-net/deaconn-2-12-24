@@ -59,7 +59,7 @@ export default function Wrapper ({
         if (typeof window !== undefined) {
             setWindowY(window.scrollY);
         }
-    })
+    }, [])
 
     return (
         <main>

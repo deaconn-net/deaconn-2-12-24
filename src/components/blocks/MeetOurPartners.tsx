@@ -1,4 +1,4 @@
-import { Partner } from "@prisma/client";
+import { type Partner } from "@prisma/client";
 
 export default function MeetOurPartnersBlock ({
     partners
