@@ -112,6 +112,7 @@ export default function ArticleView ({
                         width={500}
                         height={500}
                         alt="Banner"
+                        priority={true}
                     />
                 </div>
             )}

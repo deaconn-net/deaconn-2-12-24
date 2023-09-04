@@ -117,6 +117,7 @@ export default function ServiceView ({
                         width={1024}
                         height={512}
                         alt="Banner"
+                        priority={true}
                     />
                 </div>
             )}

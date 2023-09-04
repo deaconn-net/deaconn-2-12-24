@@ -57,6 +57,7 @@ export default function Header () {
                                 width={200}
                                 height={72}
                                 alt="Deaconn Banner"
+                                priority={true}
                             />
                         </li>
                     </Link>

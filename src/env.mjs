@@ -57,7 +57,8 @@ const client = z.object({
     NEXT_PUBLIC_GITHUB_ORG_URL: z.string().optional(),
     NEXT_PUBLIC_GITHUB_REPO_URL: z.string().optional(),
     NEXT_PUBLIC_ROOT_USER_URL: z.string().optional(),
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: z.string().optional()
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: z.string().optional(),
+    NEXT_PUBLIC_BASE_URL: z.string().optional()
 });
 
 /**
@@ -101,7 +102,8 @@ const processEnv = {
     NEXT_PUBLIC_GITHUB_ORG_URL: process.env.NEXT_PUBLIC_GITHUB_ORG_URL,
     NEXT_PUBLIC_GITHUB_REPO_URL: process.env.NEXT_PUBLIC_GITHUB_REPO_URL,
     NEXT_PUBLIC_ROOT_USER_URL: process.env.NEXT_PUBLIC_ROOT_USER_URL,
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID,
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL
 };
 
 // Don't touch the part below

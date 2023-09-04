@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export type MetaType = {
     title?: string
@@ -35,17 +36,25 @@ export default function Meta ({
     
     includeUploadUrl
 } : MetaType) {
+    const router = useRouter();
+
     // Retrieve URLs.
     let baseUrl: string | undefined = undefined;
     let fullUrl: string | undefined = undefined;
 
-    if (typeof window !== "undefined") {
+    if (typeof window != "undefined") {
         const protocol = window.location.protocol;
         const host = window.location.host;
         const pathName = window.location.pathname;
 
         baseUrl = `${protocol}//${host}`;
         fullUrl = `${protocol}//${host}${pathName}`;
+    } else {
+        // If window is undefined, try using base URL from environmental variables as a fallback.
+        const baseUrlEnv = process.env.NEXT_PUBLIC_BASE_URL ?? "";
+
+        baseUrl = baseUrlEnv;
+        fullUrl = baseUrl + router.asPath;
     }
 
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
