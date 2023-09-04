@@ -124,12 +124,14 @@ export default function ServiceRow ({
                     className="button"
                     href={viewUrl}
                 >View</Link>
-                {service.openSource && service.gitLink && (
+                {service.openSource && service.gitLink ? (
                     <Link
                         className="button"
                         target="_blank"
                         href={service.gitLink}
                     >Source Code</Link>
+                ) : (
+                    <div className="p-7"></div>
                 )}
             </div>
             {session && (

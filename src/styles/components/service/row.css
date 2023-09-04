@@ -45,6 +45,7 @@
 
 /* Description */
 .service-row-description {
+    @apply grow;
     @apply p-6;
 }
 
@@ -76,7 +77,6 @@
     
     @apply text-white;
     @apply text-sm;
-    @apply grow;
 }
 
 .service-row-stats-stat {
