@@ -15,8 +15,9 @@ model Article {
   id  Int    @id @default(autoincrement())
   url String @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  lastEdited DateTime @default(now())
 
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -54,8 +55,9 @@ model Service {
   id  Int    @id @default(autoincrement())
   url String @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  lastEdited DateTime @default(now())
 
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?

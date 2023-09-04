@@ -96,6 +96,7 @@ export const blogRouter = createTRPCRouter({
                     })
                 },
                 update: {
+                    lastEdited: new Date(),
                     categoryId: input.category,
                     url: input.url,
                     createdAt: input.createdAt,

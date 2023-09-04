@@ -102,6 +102,7 @@ export const serviceRouter = createTRPCRouter({
                     }
                 },
                 update: {
+                    lastEdited: new Date(),
                     categoryId: input.category,
                     url: input.url,
                     name: input.name,

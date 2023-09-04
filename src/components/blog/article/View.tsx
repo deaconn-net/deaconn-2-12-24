@@ -82,7 +82,7 @@ export default function ArticleView ({
 
     // Dates.
     const [articleCreatedAt, setArticleCreatedAt] = useState<string | undefined>(undefined);
-    const [articleUpdatedAt, setArticleUpdatedAt] = useState<string | undefined>(undefined);
+    const [articleEditedAt, setArticleEditedAt] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (!article)
@@ -91,9 +91,9 @@ export default function ArticleView ({
         if (!articleCreatedAt)
             setArticleCreatedAt(dateFormat(article.createdAt, dateFormatFour));
 
-        if (!articleUpdatedAt)
-            setArticleUpdatedAt(dateFormat(article.updatedAt, dateFormatFour));
-    }, [article, articleCreatedAt, articleUpdatedAt]);
+        if (!articleEditedAt)
+            setArticleEditedAt(dateFormat(article.lastEdited, dateFormatFour));
+    }, [article, articleCreatedAt, articleEditedAt]);
     
     return (
         <div className="flex flex-col gap-4">
@@ -120,8 +120,8 @@ export default function ArticleView ({
                         {articleCreatedAt && (
                             <p>Created On <span className="font-bold">{articleCreatedAt}</span></p>
                         )}
-                        {articleUpdatedAt && (
-                            <p>Updated On <span className="font-bold">{articleUpdatedAt}</span></p>
+                        {articleEditedAt && (
+                            <p>Updated On <span className="font-bold">{articleEditedAt}</span></p>
                         )}
                     </div>
                 </div>
