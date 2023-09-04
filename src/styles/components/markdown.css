@@ -19,7 +19,7 @@
 
     & p {
         @apply leading-6;
-        @apply py-1;
+        @apply pb-2;
     }
 
     & img {
