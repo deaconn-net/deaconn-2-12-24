@@ -21,6 +21,8 @@
     @apply flex;
     @apply flex-col;
     @apply gap-4;
+
+    @apply py-2;
 }
 
 .content-col-large {
