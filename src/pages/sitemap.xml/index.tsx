@@ -76,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     });
 
     userProjects.map((project) => {
-        const url = `https://deaconn.net/user/view/$${project.user.id}/projects/${project.id.toString()}`;
+        const url = `https://deaconn.net/user/view/${project.user.url ? project.user.url : `$${project.user.id.toString()}`}/projects/${project.id.toString()}`;
 
         items.push({
             loc: url,
