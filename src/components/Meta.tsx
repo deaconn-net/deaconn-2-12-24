@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 export type MetaType = {
     title?: string
+    contentTitle?: string
     description?: string
     robots?: string
     image?: string
@@ -14,13 +15,14 @@ export type MetaType = {
     article_etime?: string
     article_author?: string
     article_section?: string
-    article_tags?: string[],
+    article_tags?: string[]
 
     includeUploadUrl?: boolean
 };
 
 export default function Meta ({
     title = "Deaconn",
+    contentTitle,
     description = "A software developer and community with the goal to bring together and empower as many software, security, and network engineers and developers as possible.",
     robots = "index, follow",
     image = "/images/banner.png",
@@ -73,10 +75,21 @@ export default function Meta ({
             <link rel="canonical" href={fullUrl} />
 
             {title && (
+                <title>{title}</title>
+            )}
+            {contentTitle ? (
                 <>
-                    <title>{title}</title>
-                    <meta property="twitter:title" content={title} />
-                    <meta property="og:title" content={title} />
+                    <meta property="twitter:title" content={contentTitle} />
+                    <meta property="og:title" content={contentTitle} />
+                </>
+            ) : (
+                <>
+                    {title && (
+                        <>
+                            <meta property="twitter:title" content={title} />
+                            <meta property="og:title" content={title} />
+                        </>
+                    )}
                 </>
             )}
             {description && (

@@ -30,6 +30,7 @@ const Page: NextPage<{
         <>
             <Meta
                 title={`${service?.name ?? "Not Found"} - Features - Services - Deaconn`}
+                contentTitle={service?.name ?? "Not Found"}
                 description={`${service?.desc ?? "Service not found."}`}
                 image={banner}
                 includeUploadUrl={service?.banner ? true : false}

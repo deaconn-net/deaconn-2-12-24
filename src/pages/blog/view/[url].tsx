@@ -32,6 +32,7 @@ const Page: NextPage<{
         <>
             <Meta
                 title={`${article?.title ?? "Not Found!"} - Blog - Deaconn`}
+                contentTitle={article?.title ?? "Not Found"}
                 description={`${article?.desc ?? "Article not found."}`}
                 image={banner}
                 includeUploadUrl={article?.banner ? true : false}
