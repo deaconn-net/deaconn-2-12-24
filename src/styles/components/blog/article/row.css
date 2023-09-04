@@ -47,6 +47,7 @@
 /* Description */
 .article-row-description {
     @apply p-6;
+    @apply grow;
 }
 
 .article-row-description > p {
@@ -61,7 +62,6 @@
     @apply justify-between;
     @apply text-white;
     @apply text-sm;
-    @apply grow;
 }
 
 .article-row-stats-stat {
