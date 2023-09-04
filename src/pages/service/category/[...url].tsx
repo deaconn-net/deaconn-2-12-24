@@ -26,6 +26,7 @@ const Page: NextPage<{
     footerServices,
     footerPartners
 }) => {
+    console.log(categories);
     return (
         <>
             <Meta
@@ -125,10 +126,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             });
 
             if (category) {
-                categories = [category.id];
-
                 // Now add all children IDs to array.
-                categories = [...category.children.map(child => child.id)];
+                categories = [category.id, ...category.children.map(child => child.id)];
             }
         }
 
