@@ -17,7 +17,6 @@
 
 .content-item {
     @apply w-full;
-    @apply p-4;
 
     @apply flex;
     @apply flex-col;

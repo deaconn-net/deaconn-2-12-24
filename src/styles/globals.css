@@ -16,6 +16,8 @@
 
         @apply flex;
         @apply flex-col;
+
+        @apply break-words;
     }
 
     p {

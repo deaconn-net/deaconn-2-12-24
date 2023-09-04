@@ -71,6 +71,7 @@
 .service-row-stats {
     @apply pb-6;
     @apply flex;
+    @apply flex-wrap;
     @apply justify-between;
     
     @apply text-white;
