@@ -1,32 +1,37 @@
-.markdown ol {
-    @apply list-decimal;
-}
+.markdown {
+    & h1, h2, h3, h4, h5 {
+        @apply not-italic;
+        @apply pt-2;
+        @apply pb-1;
+    }
 
-.markdown ol > li, .markdown ul > li {
-    @apply ml-12;
-}
+    & ol {
+        @apply list-decimal;
+    }
 
-.markdown ul {
-    @apply list-disc;
-}
+    & ul {
+        @apply list-disc;
+    }
 
-.markdown > p {
-    @apply leading-10;
-}
+    & ol > li, ul > li {
+        @apply ml-12;
+    }
 
-.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5 {
-    @apply py-2;
-}
+    & p {
+        @apply leading-6;
+        @apply py-1;
+    }
 
-.markdown img {
-    @apply py-2;
-}
+    & img {
+        @apply py-2;
+    }
 
-.markdown pre {
-    @apply bg-gray-900;
-    @apply rounded-sm;
-    @apply text-white;
-    @apply p-4;
+    & pre {
+        @apply bg-gray-900;
+        @apply rounded-sm;
+        @apply text-white;
+        @apply p-4;
+    }
 }
 
 .markdown-code-inline {

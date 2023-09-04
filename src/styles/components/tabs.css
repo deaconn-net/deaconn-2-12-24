@@ -73,8 +73,6 @@
     @apply sm:block;
 
     @apply z-10;
-
-
 }
 
 .tab-active, .tab-active-child {
