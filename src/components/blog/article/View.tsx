@@ -78,7 +78,7 @@ export default function ArticleView ({
     const [baseUrl, setBaseUrl] = useState("");
 
     useEffect(() => {
-        if (typeof window != "undefined")
+        if (typeof window !== "undefined")
             setBaseUrl(`${window.location.protocol}//${window.location.host}`)
     }, [])
 

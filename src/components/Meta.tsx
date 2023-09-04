@@ -42,7 +42,7 @@ export default function Meta ({
     let baseUrl: string | undefined = undefined;
     let fullUrl: string | undefined = undefined;
 
-    if (typeof window != "undefined") {
+    if (typeof window !== "undefined") {
         const protocol = window.location.protocol;
         const host = window.location.host;
         const pathName = window.location.pathname;
