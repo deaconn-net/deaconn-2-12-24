@@ -82,6 +82,11 @@
         @apply bg-slate-800;
         @apply z-20;
     }
+
+    hr {
+        @apply border-t-2;
+        @apply border-cyan-900;
+    }
 }
 
 /* Components */

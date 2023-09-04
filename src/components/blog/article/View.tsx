@@ -18,6 +18,7 @@ import TwitterIcon from "@components/icons/social/Twitter";
 import FacebookIcon from "@components/icons/social/Facebook";
 import LinkedinIcon from "@components/icons/social/Linkedin";
 import { ScrollToTop } from "@utils/Scroll";
+import IconAndText from "@components/containers/IconAndText";
 
 export default function ArticleView ({
     article
@@ -42,6 +43,12 @@ export default function ArticleView ({
 
     if (article.banner)
         banner = uploadUrl + article.banner;
+
+    // Retrieve user avatar.
+    let userAvatar = process.env.NEXT_PUBLIC_DEFAULT_AVATAR_IMAGE || undefined;
+
+    if (article.user?.avatar)
+        userAvatar = uploadUrl + article.user.avatar;
 
     // Prepare delete mutation.
     const deleteMut = api.blog.delete.useMutation({
@@ -128,8 +135,9 @@ export default function ArticleView ({
                 <Markdown rehype={true}>
                     {article.content}
                 </Markdown>
+                <hr />
                 <div className="flex flex-col gap-2">
-                    <h2>Share!</h2>
+                    <h3>Share!</h3>
                     <div className="flex flex-wrap gap-2">
                         <Link
                             href={`https://twitter.com/intent/tweet?text=${encodedText}`}
@@ -157,6 +165,37 @@ export default function ArticleView ({
                         </Link>
                     </div>
                 </div>
+                <hr />
+                {article.user && article.user.aboutMe && (
+                    <div className="flex flex-col gap-2">
+                        <h3>
+                            {userAvatar ? (
+                                <div>
+                                    <IconAndText
+                                        icon={
+                                            <Image
+                                                src={userAvatar}
+                                                width={64}
+                                                height={64}
+                                                alt="User Avatar"
+                                                className="rounded-full"
+                                            />
+                                        }
+                                        text={<>About <UserLink user={article.user} /></>}
+                                        inline={true}
+                                    />
+                                </div>
+                            ) : (
+                                <>About {article.user.name ?? "N/A"}</>
+                            )}
+                        </h3>
+                        <div>
+                            <Markdown className="text-sm">
+                                {article.user.aboutMe ?? "N/A"}
+                            </Markdown>
+                        </div>
+                    </div>
+                )}
                 {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link
