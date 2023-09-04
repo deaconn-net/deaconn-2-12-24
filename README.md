@@ -5,18 +5,19 @@
 This is [Deaconn's](https://deaconn.net/) rebuilt website which uses the T3 stack, [Create T3 App](https://create.t3.gg/), and is completely **open source**! This stack comes with TypeScript, Next.js, React, tRPC, Prisma, and Tailwind CSS.
 
 ## Under Development!
-This website is still under development and **not yet public**. There is currently no ETA on when this website will be released publicly, but we're hoping to have it up by **mid-Fall of 2023**.
+This website is still under heavy development and recently went public on *September 2nd, 2023*. There is currently no ETA on when this website will be released publicly, but we're hoping to have it up by **mid-Fall of 2023**.
 
 ## Features
-* Login through Discord.
+* Login through GitHub, Google, or Discord.
 * Role-based permissions.
 * A simple admin panel.
 * Full Markdown support with code highlighting for content fields.
 * A blog system.
 * A service system which will eventually support transactions and more in the future.
-* A request system
-* User profiles including about me, experiences, projects, and skills that act as a resume.
-* A Sitemap that generates URLs to static and dynamic content that should come up on search engines.
+* A user request system.
+* User profiles including fields such as **About Me** and more.
+* The ability for users to showcase their own projects, experiences, and skills which then can act as a personalized portfolio!
+* A Sitemap that generates URLs for static and dynamic content that should come up on search engines.
 
 **Note** - We are adding additional features quite often since the website is actively under development.
 
@@ -27,7 +28,7 @@ If you'd like to contribute to this project, please contact [Christian Deacon](h
 * [Christian Deacon](https://github.com/gamemann) - Wrote all code
 * [Cally](https://github.com/CallyPalladin) - Designed Deaconn's logo and icon
 
-## Preview (As Of August 21st, 2023)
+## Preview As Of September 4th, 2023
 ![Preview 1](./preview/preview01.png)
 ![Preview 2](./preview/preview02.png)
 ![Preview 3](./preview/preview03.png)
@@ -41,10 +42,3 @@ If you'd like to contribute to this project, please contact [Christian Deacon](h
 ![Preview 11](./preview/preview11.png)
 ![Preview 12](./preview/preview12.png)
 ![Preview 13](./preview/preview13.png)
-![Preview 14](./preview/preview14.png)
-![Preview 15](./preview/preview15.png)
-![Preview 16](./preview/preview16.png)
-![Preview 17](./preview/preview17.png)
-![Preview 18](./preview/preview18.png)
-![Preview 19](./preview/preview19.png)
-![Preview 20](./preview/preview20.png)
