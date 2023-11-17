@@ -31,6 +31,27 @@
         @apply rounded-sm;
         @apply text-white;
         @apply p-4;
+        @apply overflow-y-scroll;
+        @apply max-h-80;
+    }
+
+    & pre::-webkit-scrollbar {
+        @apply w-2;
+        @apply rounded;
+    }
+    
+    & pre::-webkit-scrollbar-track {
+        @apply bg-black/20;
+    }
+    
+    & pre::-webkit-scrollbar-thumb {
+        @apply bg-gray-700/50;
+        
+        @apply rounded-lg;
+    }
+    
+    & pre::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-600/50;
     }
 }
 
