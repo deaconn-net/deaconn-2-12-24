@@ -25,23 +25,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     items.push({
         loc: "https://deaconn.net/",
         lastmod: new Date().toISOString(),
-        priority: 0.7,
+        priority: 1.0,
         changefreq: "always"
     });
     items.push({
         loc: "https://deaconn.net/blog",
         lastmod: new Date().toISOString(),
-        priority: 0.7
+        priority: 0.8,
+        changefreq: "daily"
     });
     items.push({
         loc: "https://deaconn.net/service",
         lastmod: new Date().toISOString(),
-        priority: 0.7
+        priority: 0.8,
+        changefreq: "daily"
     });
     items.push({
         loc: "https://deaconn.net/about",
         lastmod: new Date().toISOString(),
-        priority: 0.4
+        priority: 0.8,
+        changefreq: "weekly"
     });
 
     // Handle articles.
@@ -51,7 +54,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         items.push({
             loc: "https://deaconn.net/blog/view/" + article.url,
             lastmod: new Date().toISOString(),
-            priority: 0.5
+            priority: 0.7,
+            changefreq: "weekly"
         });
     })
 
@@ -62,7 +66,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         items.push({
             loc: "https://deaconn.net/service/view/" + service.url,
             lastmod: new Date().toISOString(),
-            priority: 0.5
+            priority: 0.7,
+            changefreq: "weekly"
         });
     })
 
@@ -81,7 +86,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         items.push({
             loc: url,
             lastmod: new Date().toISOString(),
-            priority: 0.4
+            priority: 0.5,
+            changefreq: "weekly"
         });
     })
 
