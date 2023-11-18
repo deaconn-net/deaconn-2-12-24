@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
-import { type Article } from "@prisma/client";
+import { type ArticleWithUser } from "~/types/blog/article";
 
 import IconAndText from "@components/containers/IconAndText";
 
@@ -14,11 +14,12 @@ import CommentIcon from "@components/icons/Comment";
 import ViewIcon from "@components/icons/View";
 import { has_role } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
+import UserLink from "@components/user/Link"
 
 export default function ArticleRow ({
     article
 } : {
-    article: Article
+    article: ArticleWithUser
 }) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
@@ -87,6 +88,9 @@ export default function ArticleRow ({
                 <p>{article.desc}</p>
             </div>
             <div className="article-row-stats">
+                {article.user && (
+                    <span>By <UserLink user={article.user} /></span>
+                )}
                 <IconAndText
                     icon={
                         <ViewIcon

@@ -5,6 +5,7 @@ import { TRPCError } from "@trpc/server";
 
 import { UploadFile } from "@utils/FileUpload";
 import { has_role } from "@utils/user/Auth";
+import { UserPublicSelect } from "~/types/user/user";
 
 export const blogRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -30,7 +31,10 @@ export const blogRouter = createTRPCRouter({
                     [input.sort]: input.sortDir
                 },
                 include: {
-                    category: true
+                    category: true,
+                    user: {
+                        select: UserPublicSelect
+                    }
                 },
 
                 take: input.limit + 1,

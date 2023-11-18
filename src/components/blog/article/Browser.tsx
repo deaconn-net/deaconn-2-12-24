@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-import { type Article } from "@prisma/client";
+import { type ArticleWithUser } from "~/types/blog/article";
 
 import IconAndText from "@components/containers/IconAndText";
 import ArticleRow from "@components/blog/article/Row";
@@ -54,7 +54,7 @@ export default function ArticleBrowser({
         void fetchNextPage();
     }
 
-    const articles: Article[] = [];
+    const articles: ArticleWithUser[] = [];
 
     if (data) {
         data.pages.forEach((pg) => {
@@ -118,7 +118,7 @@ export default function ArticleBrowser({
                     hasMore={requireItems}
                 >
                     <div className="grid-view grid-view-lg">
-                        {articles.map((article: Article) => {
+                        {articles.map((article) => {
                             return (
                                 <ArticleRow
                                     key={"article-" + article.id.toString()}

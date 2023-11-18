@@ -2,7 +2,8 @@ import { type NextPage } from "next";
 
 import { prisma } from "@server/db";
 
-import { type Article, type Service } from "@prisma/client";
+import { type Service } from "@prisma/client";
+import { type ArticleWithUser } from "~/types/blog/article";
 import { type UserPublic, UserPublicSelect } from "~/types/user/user";
 
 import Wrapper from "@components/Wrapper";
@@ -23,7 +24,7 @@ import HaveARequestBlock from "@components/blocks/HaveARequest";
 import WhoAreWeBlock from "@components/blocks/WhoAreWe";
 
 const Page: NextPage<{
-    articles: Article[],
+    articles: ArticleWithUser[],
     team: UserPublic[],
     services: Service[]
 } & GlobalPropsType> = ({
@@ -91,6 +92,11 @@ export async function getServerSideProps() {
     // Retrieve articles, team members, and services.
     const articles = await prisma.article.findMany({
         take: 10,
+        include: {
+            user: {
+                select: UserPublicSelect
+            }
+        },
         orderBy: {
             createdAt: "desc"
         }
