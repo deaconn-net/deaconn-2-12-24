@@ -20,7 +20,7 @@ export default function Markdown ({
             rehypePlugins={rehype ? [rehypeRaw] : undefined}
             components={{
                 code(props) {
-                    const { children, className, ...rest } = props;
+                    const { children, className, ref: _, ...rest } = props;
                     
                     const match = /language-(\w+)/.exec(className || '')
 
