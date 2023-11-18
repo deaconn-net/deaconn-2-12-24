@@ -46,7 +46,7 @@ const Page: NextPage<{
                     },
                     ...(service ? [{
                         name: service.name,
-                        url: `/service/edit/${service.id.toString()}`
+                        url: `/service/view/${service.url}`
                     }] : [])
                 ]}
 

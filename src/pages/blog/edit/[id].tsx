@@ -45,7 +45,7 @@ const Page: NextPage<{
                     },
                     ...(article ? [{
                         name: article.title,
-                        url: `/blog/edit/${article.id.toString()}`
+                        url: `/blog/view/${article.url}`
                     }] : [])
                 ]}
                 footerServices={footerServices}
