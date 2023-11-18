@@ -22,6 +22,14 @@
         @apply pb-2;
     }
 
+    & a { 
+        @apply text-cyan-400;
+
+        &:hover {
+            @apply text-cyan-300;
+        }
+    }
+
     & img {
         @apply py-2;
     }
