@@ -3,6 +3,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 import DefaultTheme from "@components/markdown/styles/Default";
 
+import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism'
+
 import rehypeRaw from "rehype-raw";
 
 export default function Markdown ({
@@ -29,8 +31,8 @@ export default function Markdown ({
                             wrapLines={true}
                             showLineNumbers={true}
                             wrapLongLines={true}
-                            style={DefaultTheme}
-                            language={match?.[1]}
+                            style={dark}
+                            language={match[1]}
                             PreTag="div"
                         >
                             {String(children).replace(/\n$/, "")}
