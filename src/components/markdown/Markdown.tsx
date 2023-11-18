@@ -26,6 +26,7 @@ export default function Markdown ({
 
                     return match ? (
                         <SyntaxHighlighter
+                            {...rest}
                             wrapLines={true}
                             showLineNumbers={true}
                             wrapLongLines={true}
