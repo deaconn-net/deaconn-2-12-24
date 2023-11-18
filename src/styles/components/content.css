@@ -13,6 +13,14 @@
     @apply py-8;
 
     @apply grow;
+
+    & p a { 
+        @apply text-cyan-400;
+
+        &:hover {
+            @apply text-cyan-300;
+        }
+    }
 }
 
 .content-item {
