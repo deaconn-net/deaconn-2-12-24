@@ -4,6 +4,7 @@ import { type GetServerSideProps } from "next"
 import { UserPublicRefSelect } from "~/types/user/user";
 
 import { prisma } from "@server/db";
+import { dateToYMD } from "@utils/Date";
 
 type Changefreq =
     | "always"
@@ -21,28 +22,31 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         changefreq?: Changefreq
     }> = [];
 
+    // Get current date in YYYY-MM-DD format.
+    const curDateYmd = dateToYMD(new Date());
+
     // Push URLs we are already aware of.
     items.push({
         loc: "https://deaconn.net/",
-        lastmod: new Date().toISOString(),
+        lastmod: curDateYmd,
         priority: 1.0,
         changefreq: "always"
     });
     items.push({
         loc: "https://deaconn.net/blog",
-        lastmod: new Date().toISOString(),
+        lastmod: curDateYmd,
         priority: 0.8,
         changefreq: "daily"
     });
     items.push({
         loc: "https://deaconn.net/service",
-        lastmod: new Date().toISOString(),
+        lastmod: curDateYmd,
         priority: 0.8,
         changefreq: "daily"
     });
     items.push({
         loc: "https://deaconn.net/about",
-        lastmod: new Date().toISOString(),
+        lastmod: curDateYmd,
         priority: 0.8,
         changefreq: "weekly"
     });
@@ -51,9 +55,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const articles = await prisma.article.findMany();
 
     articles.map((article) => {
+        const dateYmd = dateToYMD(article.updatedAt);
+        
         items.push({
             loc: "https://deaconn.net/blog/view/" + article.url,
-            lastmod: new Date().toISOString(),
+            lastmod: dateYmd,
             priority: 0.7,
             changefreq: "weekly"
         });
@@ -63,9 +69,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const services = await prisma.service.findMany();
 
     services.map((service) => {
+        const dateYmd = dateToYMD(service.updatedAt);
+
         items.push({
             loc: "https://deaconn.net/service/view/" + service.url,
-            lastmod: new Date().toISOString(),
+            lastmod: dateYmd,
             priority: 0.7,
             changefreq: "weekly"
         });
