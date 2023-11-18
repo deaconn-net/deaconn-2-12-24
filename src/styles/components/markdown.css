@@ -60,6 +60,4 @@
     & pre::-webkit-scrollbar-thumb:hover {
         @apply bg-gray-600/50;
     }
-
-
 }

@@ -25,8 +25,6 @@ export default function Markdown ({
                     
                     const match = /language-(\w+)/.exec(className || '')
 
-                    console.log(className);
-
                     return match ? (
                         <SyntaxHighlighter
                             children={String(children).replace(/\n$/, "")}
@@ -38,7 +36,7 @@ export default function Markdown ({
                             PreTag="div"
                         />
                     ) : (
-                        <code {...rest} className={`markdown-code-inline ${className ?? ""}`}>
+                        <code {...rest} className={className}>
                             {children}
                         </code>
                     )
