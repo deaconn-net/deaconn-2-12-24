@@ -15,11 +15,19 @@
     @apply hover:ring-deaconn-ring2;
     @apply hover:duration-150;
 
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(0);
+
     & .grid-view-image img {
         @apply filter;
         @apply brightness-[85%];
         @apply rounded-t;
     }
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
     &:hover .grid-view-image img {
         @apply brightness-100;
     }
