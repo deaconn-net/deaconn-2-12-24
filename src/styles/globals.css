@@ -87,6 +87,24 @@
         @apply border-t-2;
         @apply border-cyan-900;
     }
+
+    ::-webkit-scrollbar {
+        @apply rounded;
+    }
+    
+    ::-webkit-scrollbar-track {
+        @apply bg-gray-950;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gray-800;
+        @apply w-2;
+        @apply rounded-lg;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-700;
+    }
 }
 
 /* Components */
