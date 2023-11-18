@@ -1,4 +1,4 @@
-import { type PluggableList, ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { default as ReactMarkdown } from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 import DefaultTheme from "@components/markdown/styles/Default";
@@ -17,28 +17,27 @@ export default function Markdown ({
     return (
         <ReactMarkdown
             className={`markdown ${className ?? ""}`}
-            rehypePlugins={rehype ? [rehypeRaw] as PluggableList : undefined}
+            rehypePlugins={rehype ? [rehypeRaw] : undefined}
             components={{
-                code({ inline, className, children, ...props}) {
-                    const match = /language-(\w+)/.exec(className || "");
+                code(props) {
+                    const { children, className, ref: _, ...rest } = props;
+                    
+                    const match = /language-(\w+)/.exec(className || '')
 
-                    return !inline ? (
+                    return match ? (
                         <SyntaxHighlighter
-                            {...props}
+                            {...rest}
                             wrapLines={true}
                             showLineNumbers={true}
                             wrapLongLines={true}
                             style={DefaultTheme}
-                            language={match?.[1]}
+                            language={match[1]}
                             PreTag="div"
                         >
                             {String(children).replace(/\n$/, "")}
                         </SyntaxHighlighter>
                     ) : (
-                        <code
-                            {...props}
-                            className={`markdown-code-inline ${className ?? ""}`}                        
-                        >
+                        <code {...rest} className={className}>
                             {children}
                         </code>
                     )

@@ -35,6 +35,13 @@
         @apply max-h-80;
     }
 
+    & code:not(pre code) {
+        @apply bg-gray-950;
+        @apply px-1;
+        @apply rounded-sm;
+        @apply text-cyan-300;
+    }
+
     & pre::-webkit-scrollbar {
         @apply w-2;
         @apply rounded;
@@ -53,11 +60,4 @@
     & pre::-webkit-scrollbar-thumb:hover {
         @apply bg-gray-600/50;
     }
-}
-
-.markdown-code-inline {
-    @apply bg-gray-950;
-    @apply px-1;
-    @apply rounded-sm;
-    @apply text-cyan-300;
 }
