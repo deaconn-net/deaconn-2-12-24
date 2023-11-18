@@ -26,7 +26,9 @@ export default function Markdown ({
 
                     return match ? (
                         <SyntaxHighlighter
-        
+                            wrapLines={true}
+                            showLineNumbers={true}
+                            wrapLongLines={true}
                             style={DefaultTheme}
                             language={match[1]}
                             PreTag="div"
