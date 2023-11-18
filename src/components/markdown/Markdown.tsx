@@ -18,32 +18,6 @@ export default function Markdown ({
         <ReactMarkdown
             className={`markdown ${className ?? ""}`}
             rehypePlugins={rehype ? [rehypeRaw] as PluggableList : undefined}
-            components={{
-                code({ inline, className, children, ...props}) {
-                    const match = /language-(\w+)/.exec(className || "");
-
-                    return !inline ? (
-                        <SyntaxHighlighter
-                            {...props}
-                            wrapLines={true}
-                            showLineNumbers={true}
-                            wrapLongLines={true}
-                            style={DefaultTheme}
-                            language={match?.[1]}
-                            PreTag="div"
-                        >
-                            {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                    ) : (
-                        <code
-                            {...props}
-                            className={`markdown-code-inline ${className ?? ""}`}                        
-                        >
-                            {children}
-                        </code>
-                    )
-                }
-            }}
         >
             {children}
         </ReactMarkdown>
