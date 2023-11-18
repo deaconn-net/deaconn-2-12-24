@@ -16,7 +16,6 @@ export default function Markdown ({
 }) { 
     return (
         <ReactMarkdown
-            children={children}
             className={`markdown ${className ?? ""}`}
             rehypePlugins={rehype ? [rehypeRaw] : undefined}
             components={{
@@ -27,14 +26,15 @@ export default function Markdown ({
 
                     return match ? (
                         <SyntaxHighlighter
-                            children={String(children).replace(/\n$/, "")}
                             wrapLines={true}
                             showLineNumbers={true}
                             wrapLongLines={true}
                             style={DefaultTheme}
                             language={match?.[1]}
                             PreTag="div"
-                        />
+                        >
+                            {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
                     ) : (
                         <code {...rest} className={className}>
                             {children}
@@ -42,6 +42,8 @@ export default function Markdown ({
                     )
                 }
             }}
-        />
+        >
+            {children}
+        </ReactMarkdown>
     );
 }
