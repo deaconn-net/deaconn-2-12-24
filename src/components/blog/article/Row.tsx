@@ -88,9 +88,6 @@ export default function ArticleRow ({
                 <p>{article.desc}</p>
             </div>
             <div className="article-row-stats">
-                {article.user && (
-                    <span>By <UserLink user={article.user} /></span>
-                )}
                 <IconAndText
                     icon={
                         <ViewIcon
@@ -100,6 +97,9 @@ export default function ArticleRow ({
                     text={<>{article.views}</>}
                     inline={true}
                 />
+                {article.user && (
+                    <span>By <UserLink user={article.user} /></span>
+                )}
                 <IconAndText
                     icon={
                         <CommentIcon 
