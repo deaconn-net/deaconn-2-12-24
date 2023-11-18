@@ -90,20 +90,21 @@
 
     ::-webkit-scrollbar {
         @apply rounded;
+        @apply w-2;
     }
     
     ::-webkit-scrollbar-track {
-        @apply bg-gray-950;
+        @apply bg-gray-800;
     }
     
     ::-webkit-scrollbar-thumb {
-        @apply bg-gray-800;
-        @apply w-2;
+        @apply bg-cyan-800;
+        
         @apply rounded-lg;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        @apply bg-gray-700;
+        @apply bg-cyan-600;
     }
 }
 
