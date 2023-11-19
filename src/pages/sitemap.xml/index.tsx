@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const articles = await prisma.article.findMany();
 
     articles.map((article) => {
-        const dateYmd = dateToYMD(article.updatedAt);
+        const dateYmd = dateToYMD(article.lastEdited);
         
         items.push({
             loc: "https://deaconn.net/blog/view/" + article.url,
@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const services = await prisma.service.findMany();
 
     services.map((service) => {
-        const dateYmd = dateToYMD(service.updatedAt);
+        const dateYmd = dateToYMD(service.lastEdited);
 
         items.push({
             loc: "https://deaconn.net/service/view/" + service.url,
@@ -93,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         items.push({
             loc: url,
-            lastmod: new Date().toISOString(),
+            lastmod: curDateYmd,
             priority: 0.5,
             changefreq: "weekly"
         });
