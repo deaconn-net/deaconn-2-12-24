@@ -1,6 +1,6 @@
 .gitlog {
     @apply w-full;
-    @apply overflow-y-scroll;
+    @apply overflow-y-auto;
     @apply h-96;
 }
 

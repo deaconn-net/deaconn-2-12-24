@@ -39,7 +39,7 @@
         @apply rounded-sm;
         @apply text-white;
         @apply p-4;
-        @apply overflow-y-scroll;
+        @apply overflow-y-auto;
         @apply max-h-80;
     }
 
