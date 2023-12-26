@@ -5,6 +5,7 @@ import "react-multi-carousel/lib/styles.css";
 import { useContext } from "react";
 import { ViewPortCtx } from "@components/Wrapper";
 import ArticleRow from "./article/Row";
+import { LeftArrow, RightArrow } from "@components/Carousel";
 
 export default function BlogCarousel ({
     articles = [],
@@ -57,6 +58,8 @@ export default function BlogCarousel ({
             infinite={infinite}
             autoPlay={!viewPort.mobile ? autoPlay : false}
             autoPlaySpeed={autoPlaySpeed}
+            customLeftArrow={<LeftArrow />}
+            customRightArrow={<RightArrow />}
         >
             {articles.map((article, index) => {
                 return (

@@ -5,6 +5,7 @@ import { type Service } from "@prisma/client";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ServiceRow from "./Row";
+import { LeftArrow, RightArrow } from "@components/Carousel";
 
 export default function ServiceCarousel ({
     services = [],
@@ -57,6 +58,8 @@ export default function ServiceCarousel ({
             infinite={infinite}
             autoPlay={!viewPort.mobile ? autoPlay : false}
             autoPlaySpeed={autoPlaySpeed}
+            customLeftArrow={<LeftArrow />}
+            customRightArrow={<RightArrow />}
         >
             {services.map((service, index) => {
                 return (
