@@ -20,21 +20,21 @@ export default function UserRow ({
     const link = "/user/view/" + ((user.url) ? user.url : "$" + user.id);
 
     return (
-        <a href={link} className="user-row">
+        <a href={link} className="text-white bg-cyan-900 hover:bg-cyan-800 flex items-center gap-2 ring-4 ring-gray-800 hover:ring-gray-600">
             {avatar && (
                 <Image
-                    className="user-row-image"
+                    className="rounded-full w-16 h-16"
                     src={avatar}
                     width={50}
                     height={50}
                     alt="User Avatar"
                 />
             )}
-            <div className="user-row-username">
+            <div className="text-white hover:text-white">
                 {user.name}
             </div>
             {user.title && (
-                <div className="user-row-title">
+                <div className="font-bold">
                     {user.title}
                 </div>
             )}

@@ -75,22 +75,22 @@ export default function UserExperienceRow ({
                 <h2>{experience.title}{experience.company ? ` @ ${experience.company}` : ``}</h2>
             </div>
             <div className="flex flex-col gap-4 h-full">
-                <div className="experience-row-description">
+                <div className="pb-6 grow text-sm">
                     <p>{experience.desc ?? ""}</p>
                 </div>
-                <div className="experience-row-actions">
+                <div className="p-6 flex flex-wrap gap-2 justify-center">
                     <Link
                         href={viewUrl}
-                        className="button"
+                        className="button w-full"
                     >View</Link>
                     {canEdit && (
                         <>
                             <Link
                                 href={editUrl}
-                                className="button button-primary"
+                                className="button button-primary w-full"
                             >Edit</Link>
                             <button
-                                className="button button-danger"
+                                className="button button-danger w-full"
                                 onClick={(e) => {
                                     e.preventDefault();
 

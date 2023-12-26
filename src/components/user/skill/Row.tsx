@@ -70,18 +70,18 @@ export default function SkillRow ({
                 <h2>{skill.title}</h2>
             </div>
             <div className="flex flex-col gap-4 h-full">
-                <div className="skill-row-description">
+                <div className="pb-6 text-sm grow">
                     <p>{skill.desc ?? ""}</p>
                 </div>
-                <div className="skill-row-actions">
+                <div className="p-6 flex flex-wrap gap-2 justify-center">
                     {canEdit && (
                         <>
                             <Link
                                 href={editUrl}
-                                className="button button-primary"
+                                className="button button-primary w-full"
                             >Edit</Link>
                             <button
-                                className="button button-danger"
+                                className="button button-danger w-full"
                                 onClick={(e) => {
                                     e.preventDefault();
 

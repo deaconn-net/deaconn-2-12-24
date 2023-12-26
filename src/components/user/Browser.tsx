@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { type User } from "@prisma/client";
 
@@ -126,15 +126,15 @@ export default function UserBrowser ({
                             loader={<Loader key="loader" />}
                             hasMore={requireItems}
                         >
-                            <table className="user-browser-table">
+                            <table className="w-full table-auto">
                                 <thead>
                                     <tr>
-                                        <th>Avatar</th>
-                                        <th>Email</th>
-                                        <th>Name</th>
-                                        <th>URL</th>
-                                        <th>Title</th>
-                                        <th>Actions</th>
+                                        <TableHeader>Avatar</TableHeader>
+                                        <TableHeader>Email</TableHeader>
+                                        <TableHeader>Name</TableHeader>
+                                        <TableHeader>URL</TableHeader>
+                                        <TableHeader>Title</TableHeader>
+                                        <TableHeader>Actions</TableHeader>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -163,4 +163,16 @@ export default function UserBrowser ({
             )}
         </>
     );
+}
+
+function TableHeader ({
+    children
+} : {
+    children: React.ReactNode
+}) {
+    return (
+        <th className="text-center">
+            {children}
+        </th>
+    )
 }

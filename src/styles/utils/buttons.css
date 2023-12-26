@@ -28,4 +28,4 @@
 .button-danger {
     @apply !bg-red-900;
     @apply hover:!bg-red-800;
-} 
+}

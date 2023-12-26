@@ -75,22 +75,22 @@ export default function UserProjectRow ({
                 <h2>{project.name}</h2>
             </div>
             <div className="flex flex-col gap-4 h-full">
-                <div className="project-row-description">
+                <div className="pb-6 text-sm grow">
                     <p>{project.desc ?? ""}</p>
                 </div>
-                <div className="project-row-actions">
+                <div className="p-6 flex flex-wrap gap-2 justify-center">
                     <Link
                         href={viewUrl}
-                        className="button"
+                        className="button w-full"
                     >View</Link>
                     {canEdit && (
                         <>
                             <Link
                                 href={editUrl}
-                                className="button button-primary"
+                                className="button button-primary w-full"
                             >Edit</Link>
                             <button
-                                className="button button-danger"
+                                className="button button-danger w-full"
                                 onClick={(e) => {
                                     e.preventDefault();
 

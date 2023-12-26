@@ -10,7 +10,7 @@ export default function IconAndText ({
     inline?: boolean
 }) {
     return (
-        <div className={`container-icon-and-text ${!inline ? "flex-col" : ""} ${className ?? ""}`}>
+        <div className={`flex items-center gap-1 ${!inline ? "flex-col" : ""} ${className ?? ""}`}>
             <span>{icon}</span>
             <span>{text}</span>
         </div>

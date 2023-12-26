@@ -4,22 +4,6 @@
 
 /* Base Layer (Imports Do Not Work In Base Layer) */
 @layer base {
-    main {
-        /* Default text and height*/
-        @apply text-gray-100;
-        @apply min-h-screen;
-    
-        /* Primary background */
-        @apply bg-gradient-to-b;
-        @apply from-zinc-900;
-        @apply to-neutral-900;
-
-        @apply flex;
-        @apply flex-col;
-
-        @apply break-words;
-    }
-
     p {
         @apply leading-5;
     }
@@ -59,33 +43,19 @@
         @apply text-lg;
     }
 
-    header {
-        @apply bg-slate-800;
-    }
-    
-    header > nav {
-        @apply container;
-        @apply mx-auto;
-
-        @apply hidden;
-    
-        @apply sm:flex;
-        @apply sm:!flex-nowrap;
-        @apply flex-wrap;
-        @apply justify-between;
-    
-        @apply text-center;
-    }
-
-    footer {
-        @apply p-6;
-        @apply bg-slate-800;
-        @apply z-20;
-    }
-
     hr {
         @apply border-t-2;
         @apply border-cyan-900;
+    }
+
+    form {
+        & label {
+            @apply block text-lg font-bold text-white;
+        }
+
+        & input, select {
+            @apply p-4 bg-cyan-900 ring-cyan-800 rounded w-full;
+        }
     }
 
     ::-webkit-scrollbar {
@@ -110,41 +80,17 @@
 
 /* Components */
 @layer components {
-    @import "components/blog/article/row.css";
-    @import "components/blog/article/browser.css";
-
     @import "components/forms/main.css";
 
-    @import "components/header/navbar.css";
-    @import "components/header/navbar_mobile.css";
-
-    @import "components/partner/row.css";
-
-    @import "components/request/row.css";
-    @import "components/request/browser.css";
-
-    @import "components/service/row.css";
-    @import "components/service/browser.css";
-    @import "components/service/view.css";
-
-    @import "components/user/profile/main.css";
-    @import "components/user/profile/experience.css";
-    @import "components/user/profile/skill.css";
-    @import "components/user/profile/project.css";
-    @import "components/user/row/grid.css";
-    @import "components/user/row/table.css";
-    @import "components/user/row.css";
-
-    @import "components/buttons.css";
     @import "components/content.css";
-    @import "components/footer.css";
     @import "components/grid.css";
     @import "components/markdown.css";
-    @import "components/error.css";
-    @import "components/containers.css";
     @import "components/tabs.css";
-    @import "components/login.css";
     @import "components/gitlog.css";
     @import "components/updatelog.css";
-    @import "components/breadcrumbs.css";
+}
+
+@layer utilities {
+    @import "utils/buttons.css";
+    @import "utils/icons.css";
 }

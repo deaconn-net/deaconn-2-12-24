@@ -19,20 +19,20 @@ export default function RequestRow ({
     const updatedAt = dateFormat(request.updatedAt, dateFormatOne);
 
     return (
-        <tr className="request-row">
-            <td className="request-row-data">
+        <tr className="w-full bg-cyan-900 hover:bg-cyan-800 border-gray-800 border-2 border-solid">
+            <td className="p-6">
                 {request.title && request.title}
             </td>
-            <td className="request-row-data">
+            <td className="p-6">
                 {request.service ? request.service.name : "None"}
             </td>
-            <td className="request-row-data">
+            <td className="p-6">
                 {createdAt ?? "Not Set"}
             </td>
-            <td className="request-row-data">
+            <td className="p-6">
                 {updatedAt ?? "Not Set"}
             </td>
-            <td className="request-row-data">
+            <td className="p-6">
                 {request.status == 0 && (
                     <>Open</>
                 )}
@@ -43,10 +43,10 @@ export default function RequestRow ({
                     <>Completed</>
                 )}
             </td>
-            <td className="request-row-data">
+            <td className="p-6">
                 {request.accepted ? "Yes" : "No"}
             </td>
-            <td className="request-row-data">
+            <td className="p-6">
                 <Link href={viewUrl} className="button">View</Link>
             </td>
         </tr>

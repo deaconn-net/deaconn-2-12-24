@@ -1,0 +1,4 @@
+.icon-nav-item {
+    @apply h-5;
+    @apply w-5;
+}

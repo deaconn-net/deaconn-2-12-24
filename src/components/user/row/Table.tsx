@@ -43,7 +43,7 @@ export default function UserRowTable ({
     return (
         <tr>
             {showAvatar && (
-                <td className="user-browser-table-avatar">
+                <td className="flex justify-center">
                     {avatar && (
                         <Image
                             src={avatar}
@@ -55,27 +55,27 @@ export default function UserRowTable ({
                 </td>
             )}
             {showEmail && (
-                <td className="user-browser-table-email">
+                <td className="text-center">
                     {"email" in user && user.email && (
                         <>{user.email}</>
                     )}
                 </td>
             )}
            
-            <td className="user-browser-table-name">
+            <td className="text-center">
                 {user.name && (
                     <>{user.name}</>
                 )}
             </td>
             {showUrl && (
-                <td className="user-browser-table-url">
+                <td className="text-center">
                     {user.url && (
                         <>{user.url}</>
                     )}
                 </td>
             )}
             {showTitle && (
-                <td className="user-browser-table-title">
+                <td className="text-center">
                 {user.title && (
                     <>{user.title}</>
                 )}
@@ -83,7 +83,7 @@ export default function UserRowTable ({
             )}
 
             {showActions && (
-                <td className="user-browser-table-actions">
+                <td className="flex flex-wrap gap-2 justify-center">
                     {session && has_role(session, "admin") && (
                         <Link
                             href={editUrl}

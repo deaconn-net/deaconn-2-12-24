@@ -1,6 +1,0 @@
-.navbar-mobile-button {
-    @apply sm:hidden;
-    @apply p-4;
-    @apply top-0;
-    @apply left-0;
-}

@@ -48,7 +48,7 @@ export default function UserRowGrid ({
                 className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}
             >
                 {showAvatar && avatar && (
-                    <div className="user-browser-grid-avatar">
+                    <div className="">
                         <Image
                             className="rounded-full"
                             src={avatar}
@@ -59,26 +59,26 @@ export default function UserRowGrid ({
                     </div>
                 )}
                 {user.name && (
-                    <div className="user-browser-grid-name">
+                    <div className="">
                         {user.name}
                     </div>
                 )}
             </Link>
             {showTitle && user.title && (
-                <div className="user-browser-title">
+                <div className="">
                     <p>{user.title}</p>
                 </div>
             )}
             {showEmail && "email" in user && user.email && (
-                <div className="user-browser-grid-email">
+                <div className="">
                     {user.email}
                 </div>
             )}
             {showActions && session && has_role(session, "admin") && (
-                <div className="flex flex-wrap gap-2">
+                <div className="p-6 flex flex-wrap gap-2">
                     <Link
                         href={editUrl}
-                        className="button button-primary"
+                        className="button button-primary w-full"
                     >Edit</Link>
                 </div>
             )}

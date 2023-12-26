@@ -10,15 +10,13 @@ export default function PartnerRow ({
     iconHeight=32,
     bannerWidth=500,
     bannerHeight=300,
-    bannerClassName
 } : {
     partner: Partner,
     showInline?: boolean,
     iconWidth?: number,
     iconHeight?: number,
     bannerWidth?: number,
-    bannerHeight?: number,
-    bannerClassName?: string
+    bannerHeight?: number
 }) {
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
     const banner = uploadUrl + (partner?.banner ?? "");
@@ -31,7 +29,7 @@ export default function PartnerRow ({
                     <Link
                         href={`https://${partner.url}`}
                         target="_blank"
-                        className={bannerClassName}
+                        className="w-full"
                     >
                         <Image
                             src={banner}
@@ -39,6 +37,7 @@ export default function PartnerRow ({
                             width={bannerWidth}
                             height={bannerHeight}
                             alt="Banner"
+                            className="w-full max-w-full"
                         />
                     </Link>
                 </div>

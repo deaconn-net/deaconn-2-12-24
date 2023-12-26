@@ -22,6 +22,7 @@ import LinkIcon from "@components/icons/Link";
 import { api } from "@utils/Api";
 import { has_role } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
+import { type ServiceLink } from "@prisma/client";
 
 export default function ServiceView ({
     service,
@@ -73,9 +74,6 @@ export default function ServiceView ({
             }
         }
     });
-
-    // Prepare increment downloads mutation.
-    const incDownloadsMut = api.service.incDownloads.useMutation();
 
     // Compile tabs.
     const tabs: TabItemType[] = [
@@ -194,41 +192,12 @@ export default function ServiceView ({
                                 <>
                                     <h2>Links</h2>
                                     <div className="flex flex-wrap gap-4">
-                                        {service.links.map((link) => {
+                                        {service.links.map((link, index) => {
                                             return (
-                                                <Link
-                                                    key={`service-link-${link.url}`}
-                                                    href={link.url}
-                                                    className="service-link"
-                                                    target="_blank"
-                                                    onClick={() => {
-                                                        if (link.isDownload) {
-                                                            incDownloadsMut.mutate({
-                                                                id: service.id
-                                                            });
-                                                        }
-                                                    }}
-                                                >
-                                                    <IconAndText
-                                                        icon={
-                                                            <>
-                                                                {link.isDownload ? (
-                                                                    <DownloadIcon
-                                                                        className="w-10 h-10 fill-white"
-                                                                    />
-                                                                ) : (
-                                                                    <LinkIcon
-                                                                        className="w-10 h-10 stroke-white fill-none"
-                                                                    />
-                                                                )}
-                                                            </>
-                                                        }
-                                                        text={
-                                                            <>{link.title}</>
-                                                        }
-                                                        inline={true}
-                                                    />
-                                                </Link>
+                                                <ServiceLink
+                                                    key={`link-${index.toString()}`}
+                                                    link={link}
+                                                />
                                             )
                                         })}
                                     </div>
@@ -262,4 +231,48 @@ export default function ServiceView ({
             />
         </div>
     );
+}
+
+function ServiceLink ({
+    link
+} : {
+    link: ServiceLink
+}) {
+    // Prepare increment downloads mutation.
+    const incDownloadsMut = api.service.incDownloads.useMutation();
+
+    return (
+        <Link
+            href={link.url}
+            className="bg-cyan-700 hover:bg-cyan-600 p-4 rounded w-full sm:w-auto sm:min-w-[24rem] sm:max-w-full hover:text-white"
+            target="_blank"
+            onClick={() => {
+                if (link.isDownload) {
+                    incDownloadsMut.mutate({
+                        id: link.serviceId
+                    });
+                }
+            }}
+        >
+            <IconAndText
+                icon={
+                    <>
+                        {link.isDownload ? (
+                            <DownloadIcon
+                                className="w-10 h-10 fill-white"
+                            />
+                        ) : (
+                            <LinkIcon
+                                className="w-10 h-10 stroke-white fill-none"
+                            />
+                        )}
+                    </>
+                }
+                text={
+                    <>{link.title}</>
+                }
+                inline={true}
+            />
+        </Link>
+    )
 }

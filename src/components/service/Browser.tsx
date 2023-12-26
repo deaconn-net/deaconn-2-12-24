@@ -61,8 +61,8 @@ export default function ServiceBrowser ({
         });
     }    
     return (
-        <div className="service-browser">
-            <div className="service-browser-buttons w-full sm:w-auto">
+        <div className="flex flex-col gap-4">
+            <div className="flex justify-between flex-wrap gap-2 w-full sm:w-auto">
                 <Link
                     className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
                     href="#" 

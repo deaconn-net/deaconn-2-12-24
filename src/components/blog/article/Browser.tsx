@@ -65,8 +65,8 @@ export default function ArticleBrowser({
         });
     }
     return (
-        <div className="article-browser">
-            <div className="article-browser-buttons">
+        <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-2 justify-between">
                 <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                     <Link
                         className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}

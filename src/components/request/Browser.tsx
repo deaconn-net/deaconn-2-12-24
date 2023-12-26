@@ -81,8 +81,8 @@ export default function RequestBrowser () {
     }
     
     return (
-        <div className="request-browser">
-            <div className="request-browser-buttons">
+        <div className="flex flex-col gap-4">
+            <div className="flex justify-between">
                 <div className="flex flex-wrap gap-2">
                     <button
                         className={`button ${oldest ? " !bg-cyan-600" : ""}`}
@@ -154,7 +154,7 @@ export default function RequestBrowser () {
                 >
                     <>
                         {data && (
-                            <table className="request-browser-table">
+                            <table className="w-full table-auto border-spacing-2 border-collapse">
                                 <thead>
                                     <tr>
                                         <th>Title</th>

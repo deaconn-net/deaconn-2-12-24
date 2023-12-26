@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 import { type ServiceFooter } from "~/types/service";
@@ -16,32 +17,37 @@ export default function Footer ({
     partners?: PartnerFooter[]
 }) {
     return (
-        <footer>
-            <div className="footer-content">
-                <div className="footer-section">
+        <footer className="p-6 bg-slate-800 z-20">
+            <div className="container mx-auto flex flex-wrap text-center">
+                <Section>
                     <div className="content-item">
                         <h3>Links</h3>
-                        <ul className="footer-list">
-                            <li className="footer-link"><Link href="/">Home</Link></li>
-                            <li className="footer-link"><Link href="/service">Services</Link></li>
-                            <li className="footer-link"><Link href="/blog">Blog</Link></li>
-                            <li className="footer-link"><Link href="/about">About Us</Link></li>
-                            <li className="footer-link"><Link href="/request">My Requests</Link></li>
-                            <li className="footer-link"><Link href="/request/new">New Request</Link></li>
-                        </ul>
+                        <List>
+                            <ListItem url="/">Home</ListItem>
+                            <ListItem url="/service">Services</ListItem>
+                            <ListItem url="/blog">Blog</ListItem>
+                            <ListItem url="/about">About Us</ListItem>
+                            <ListItem url="/request">My Requests</ListItem>
+                            <ListItem url="/request/new">New Request</ListItem>
+                        </List>
                     </div>
-                </div>
-                <div className="footer-section">
+                </Section>
+                <Section>
                     <div className="content-item">
                         <h3>Services</h3>
-                        <ul className="footer-list">
+                        <List>
                             {services && services.length > 0 ? (
                                 <>
-                                    {services.map((service) => {
+                                    {services.map((service, index) => {
                                         const viewLink = "/service/view/" + service.url;
 
                                         return (
-                                            <li key={"footer-service-" + service.id.toString()} className="footer-link"><Link href={viewLink}>{service.name}</Link></li>
+                                            <ListItem
+                                                key={`service-${index.toString()}`}
+                                                url={viewLink}
+                                            >
+                                                {service.name}
+                                            </ListItem>
                                         );
                                     })}
 
@@ -49,33 +55,32 @@ export default function Footer ({
                             ) : (
                                 <p>No services.</p>
                             )}
-                        </ul>
+                        </List>
                     </div>
-                </div>
-                <div className="footer-section">
+                    </Section>
+                <Section>
                     <div className="flex flex-col gap-4">
                         <div className="content-item">
                             <h3>Partners</h3>
-                            <ul className="footer-list">
+                            <List>
                                 {partners && partners.length > 0 ? (
                                     <>
-                                        {partners.map((partner) => {
+                                        {partners.map((partner, index) => {
                                             return (
-                                                <Link
-                                                    href={`https://${partner.url}`}
-                                                    className="footer-link"
-                                                    key={`footer-partner-${partner.id.toString()}`}
-                                                    target="_blank"
+                                                <ListItem
+                                                    key={`partner-${index.toString()}`}
+                                                    url={`https://${partner.url}`}
+                                                    newTab={true}
                                                 >
-                                                    <li>{partner.name}</li>
-                                                </Link>
+                                                    {partner.name}
+                                                </ListItem>
                                             );
                                         })}
                                     </>
                                 ) : (
                                     <p>No partners.</p>
                                 )}
-                            </ul>
+                            </List>
                         </div>
                         <div className="content-item">
                             <h3>Follow Us!</h3>
@@ -115,8 +120,51 @@ export default function Footer ({
                             </div>
                         </div>
                     </div>
-                </div>
+                </Section>
             </div>
         </footer>
     );
+}
+
+function Section ({
+    children
+} : {
+    children: React.ReactNode
+}) {
+    return (
+        <div className="p-6 w-full sm:w-1/3">
+            {children}
+        </div>
+    )
+}
+
+function List ({
+    children
+} : {
+    children: React.ReactNode
+}) {
+    return (
+        <ul className="list-none flex flex-col gap-3">
+            {children}
+        </ul>
+    )
+}
+
+function ListItem ({
+    url,
+    newTab = false,
+    children
+} : {
+    url: string
+    newTab?: boolean
+    children: React.ReactNode
+}) {
+    return (
+        <Link
+            href={url}
+            target={newTab ? "_blank" : undefined}
+        >
+            {children}
+        </Link>
+    )
 }

@@ -17,7 +17,7 @@ export default function Breadcrumbs ({
     const items = Array.isArray(breadcrumbs) ? breadcrumbs : [breadcrumbs];
 
     return (
-        <div className="breadcrumbs">
+        <div className="flex flex-wrap items-center gap-2 pt-1 pb-4 px-4 text-sm font-bold">
             {items.map((item, i) => {
                 return (
                     <React.Fragment key={`breadcrumb-${i.toString()}`}>

@@ -24,7 +24,6 @@ export default function OurPartnersBlock({
                                     showInline={true}
                                     bannerWidth={undefined}
                                     bannerHeight={undefined}
-                                    bannerClassName="partner-row-banner"
                                 />
                             );
                         })}
