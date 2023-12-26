@@ -18,9 +18,11 @@ import { has_role } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 
 export default function ServiceRow ({
-    service
+    service,
+    simple = false
 } : {
     service: Service
+    simple?: boolean
 }) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
@@ -67,33 +69,34 @@ export default function ServiceRow ({
     });
 
     return (
-        <div className="service-row">
+        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-64" : "h-auto"}`}>
             {banner && (
-                <div className="grid-view-image">
+                <div className={`${simple ? "h-1/2" : "h-64"}`}>
                     <Link href={viewUrl}>
                         <Image
                             src={banner}
                             width={600}
                             height={400}
+                            className="h-full max-h-full w-full filter brightness-[85%] group-hover:brightness-100 rounded-t"
                             alt="Service Banner"
                         />
                     </Link>
                 </div>
             )}
-            <div className="service-row-name">
-                <h3>
+            <div>
+                <h3 className="text-lg text-bold text-center text-white hover:text-blue-200 not-italic">
                     <Link href={viewUrl}>{service.name}</Link>
                 </h3>
             </div>
             {service.desc && (
-                <div className="service-row-description">
+                <div className="p-6 grow">
                     <p>{service.desc}</p>
                 </div>
             )}
-            <div className="service-row-price">
+            <div className="pb-6 flex justify-center">
                 <p>{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>
             </div>
-            <div className="service-row-stats">
+            <div className="pb-6 flex flex-wrap justify-between text-white text-sm">
                 <IconAndText
                     icon={
                         <ViewIcon
@@ -119,32 +122,34 @@ export default function ServiceRow ({
                     text={<>{service.totalPurchases}</>}
                 />
             </div>
-            <div className="service-row-links">
-                <Link
-                    className="button"
-                    href={viewUrl}
-                >View</Link>
-                {service.openSource && service.gitLink ? (
+            {!simple && (
+                <div className="p-6 flex flex-wrap gap-2 justify-center">
                     <Link
-                        className="button"
-                        target="_blank"
-                        href={service.gitLink}
-                    >Source Code</Link>
-                ) : (
-                    <div className="p-7"></div>
-                )}
-            </div>
-            {session && (
-                <div className="service-row-actions">
+                        className="button w-full"
+                        href={viewUrl}
+                    >View</Link>
+                    {service.openSource && service.gitLink ? (
+                        <Link
+                            className="button w-full"
+                            target="_blank"
+                            href={service.gitLink}
+                        >Source Code</Link>
+                    ) : (
+                        <div className="p-7"></div>
+                    )}
+                </div>
+            )}
+            {(session && !simple) && (
+                <div className="p-6 flex flex-wrap gap-2 justify-center">
                     {(has_role(session, "contributor") || has_role(session, "admin")) && (
                         <Link
-                            className="button button-primary"
+                            className="button button-primary w-full"
                             href={editUrl}
                         >Edit</Link>    
                     )}
                     {(has_role(session, "moderator") || has_role(session, "admin") && 
                         <Link
-                            className="button button-danger"
+                            className="button button-danger w-full"
                             href="#"
                             onClick={(e) => {
                                 e.preventDefault();

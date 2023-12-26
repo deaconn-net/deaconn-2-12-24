@@ -17,9 +17,11 @@ import { ScrollToTop } from "@utils/Scroll";
 import UserLink from "@components/user/Link"
 
 export default function ArticleRow ({
-    article
+    article,
+    simple = false
 } : {
     article: ArticleWithUser
+    simple?: boolean
 }) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
@@ -66,28 +68,29 @@ export default function ArticleRow ({
     });
 
     return (
-        <div className="article-row">
+        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
             {banner && (
-                <div className="grid-view-image">
+                <div className={`${simple ? "h-1/2" : "h-64"}`}>
                     <Link href={viewUrl}>
                         <Image
                             src={banner}
                             width={600}
                             height={400}
+                            className="h-full max-h-full w-full filter brightness-[85%] group-hover:brightness-100 rounded-t"
                             alt="Article Banner"
                         />
                     </Link>
                 </div>
             )}
-            <div className="article-row-title">
-                <h3>
+            <div>
+                <h3 className="text-lg text-bold text-center text-white hover:text-blue-200 not-italic">
                     <Link href={viewUrl}>{article.title}</Link>
                 </h3>
             </div>
-            <div className="article-row-description">
-                <p>{article.desc}</p>
+            <div className="px-2 grow text-ellipsis overflow-hidden pb-4">
+                <p className="text-sm">{article.desc}</p>
             </div>
-            <div className="article-row-stats">
+            <div className="px-2 pb-6 flex flex-wrap justify-between text-white text-sm">
                 <IconAndText
                     icon={
                         <ViewIcon
@@ -110,24 +113,27 @@ export default function ArticleRow ({
                     inline={true}
                 />
             </div>
-            <div className="article-row-read-more">
-                <Link
-                    className="button"
-                    href={viewUrl}
-                >Read More</Link>
-            </div>
-            {session && (
-                <div className="article-row-actions">
+            {!simple && (
+                <div className="px-2 pb-6 flex justify-center">
+                    <Link
+                        className="button w-full"
+                        href={viewUrl}
+                    >Read More</Link>
+                </div>
+            )}
+            
+            {(!simple && session) && (
+                <div className="px-2 p-6 flex flex-wrap gap-2 justify-center">
                     {(has_role(session, "contributor") || has_role(session, "admin")) && (
                         <Link
-                            className="button button-primary"
+                            className="button button-primary w-full"
                             href={editUrl}
                         >Edit</Link>
                     )}
 
                     {(has_role(session, "moderator") || has_role(session, "admin")) && (
                         <Link
-                            className="button button-danger"
+                            className="button button-danger w-full"
                             href="#"
                             onClick={(e) => {
                                 e.preventDefault();
