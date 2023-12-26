@@ -1,9 +1,7 @@
-import { Field, useFormik } from "formik";
+import { Field, Form, Formik } from "formik";
 import React, { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
-
-import FormMain from "@components/forms/Main";
 
 import { api } from "@utils/Api";
 import { ScrollToTop } from "@utils/Scroll";
@@ -67,70 +65,58 @@ export default function RequestReplyForm ({
     // Setup preview.
     const [preview, setPreview] = useState(false);
 
-    // Submit button.
-    const submit_btn = 
-        <div className="flex gap-2 justify-center">
-            <button
-                type="submit"
-                className="button button-primary"
-            >{reply ? "Save Reply" : "Add Reply"}</button>
-            <button
-                className="button button-secondary"
-                onClick={(e) => {
-                    e.preventDefault();
-
-                    if (preview)
-                        setPreview(false);
-                    else
-                        setPreview(true);
-                }}
-            >{preview ? "Preview Off" : "Preview On"}</button>
-        </div>;
-
-    // Setup form.
-    const form = useFormik({
-        initialValues: {
-            content: reply?.content ?? ""
-        },
-        enableReinitialize: false,
-
-        onSubmit: (values) => {
-            // Reset error and success.
-            if (errorCtx)
-                errorCtx.setTitle(undefined);
-
-            if (successCtx)
-                successCtx.setTitle(undefined);
-
-            requestReplyMut.mutate({
-                id: reply?.id,
-                requestId: requestId,
-                content: values.content
-            });
-        }
-    });
-
     return (
-        <FormMain
-            form={form}
-            submitBtn={submit_btn}
+        <Formik
+            initialValues={{
+                content: reply?.content ?? ""
+            }}
+            onSubmit={(values) => {
+                // Reset error and success.
+                if (errorCtx)
+                    errorCtx.setTitle(undefined);
+
+                if (successCtx)
+                    successCtx.setTitle(undefined);
+
+                requestReplyMut.mutate({
+                    id: reply?.id,
+                    requestId: requestId,
+                    content: values.content
+                });
+            }}
         >
-            <div className="form-div">
-                <label className="form-label">Content</label>
-                {preview ? (
-                    <Markdown className="p-4">
-                        {form.values.content}
-                    </Markdown>
-                ) : (
-                    <Field
-                        name="content"
-                        as="textarea"
-                        className="form-input"
-                        rows="16"
-                        cols="32"
-                    />
-                )}
-            </div>
-        </FormMain>
+            {(form) => (
+                <Form>
+                    <div className="form-div">
+                        <label className="form-label">Content</label>
+                        {preview ? (
+                            <Markdown className="p-4">
+                                {form.values.content}
+                            </Markdown>
+                        ) : (
+                            <Field
+                                name="content"
+                                as="textarea"
+                                className="form-input"
+                                rows="16"
+                                cols="32"
+                            />
+                        )}
+                    </div>
+                    <div className="flex gap-2 justify-center">
+                        <button
+                            type="submit"
+                            className="button button-primary"
+                        >{reply ? "Save Reply" : "Add Reply"}</button>
+                        <button
+                            type="button"
+                            className="button button-secondary"
+                            onClick={() => setPreview(!preview)}
+                        >{preview ? "Preview Off" : "Preview On"}</button>
+                    </div>
+                </Form>
+            )}
+            
+        </Formik>
     );
 }
