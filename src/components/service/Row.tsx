@@ -77,7 +77,7 @@ export default function ServiceRow ({
                             src={banner}
                             width={600}
                             height={400}
-                            className="h-full max-h-full w-full filter brightness-[85%] group-hover:brightness-100 rounded-t"
+                            className="h-full max-h-full w-full filter brightness-[85%] group-hover:brightness-100 rounded-t object-cover"
                             alt="Service Banner"
                         />
                     </Link>
@@ -89,7 +89,7 @@ export default function ServiceRow ({
                 </h3>
             </div>
             {service.desc && (
-                <div className="p-6 text-sm grow max-h-4 overflow-clip text-ellipsis">
+                <div className={`p-6 text-sm grow ${simple ? "max-h-4 overflow-clip text-ellipsis" : ""}`}>
                     <p>{service.desc}</p>
                 </div>
             )}

@@ -2,21 +2,24 @@ import { type ArticleWithUser } from "~/types/blog/article";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ViewPortCtx } from "@components/Wrapper";
 import ArticleRow from "./article/Row";
 import { LeftArrow, RightArrow } from "@components/Carousel";
+import { GetRandomInt } from "@utils/Random";
 
 export default function BlogCarousel ({
     articles = [],
     infinite = true,
     autoPlay = true,
-    autoPlaySpeed
+    autoPlaySpeedMin,
+    autoPlaySpeedMax
 } : {
     articles: ArticleWithUser[],
     infinite?: boolean
     autoPlay?: boolean
-    autoPlaySpeed?: number
+    autoPlaySpeedMin?: number
+    autoPlaySpeedMax?: number
 }) {
     const viewPort = useContext(ViewPortCtx);
 
@@ -51,13 +54,21 @@ export default function BlogCarousel ({
         }
     };
 
+    // Retrieve play speed.
+    const [playSpeed, setPlaySpeed] = useState<number | undefined>(undefined);
+
+    if (typeof autoPlaySpeedMin !== "undefined" && typeof autoPlaySpeedMax !== "undefined" && !playSpeed)
+        setPlaySpeed(GetRandomInt(autoPlaySpeedMin, autoPlaySpeedMax))
+
+    console.log(playSpeed)
+
     return (
         <Carousel
             responsive={responsive}
             itemClass="p-4"
             infinite={infinite}
             autoPlay={!viewPort.mobile ? autoPlay : false}
-            autoPlaySpeed={autoPlaySpeed}
+            autoPlaySpeed={playSpeed}
             customLeftArrow={<LeftArrow />}
             customRightArrow={<RightArrow />}
         >

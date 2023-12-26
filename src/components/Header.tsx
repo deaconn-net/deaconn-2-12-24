@@ -68,7 +68,7 @@ export default function Header () {
                     />
                 )}
             </button>
-            <nav className={`${mobileOpen ? "flex" : "hidden"} flex-col gap-2 bg-deaconn-data overflow-y-auto fixed top-0 left-0 p-2 h-full w-1/2 sm:hidden`}>
+            <nav className={`${mobileOpen ? "flex" : "hidden"} flex-col gap-2 bg-deaconn-data overflow-y-auto fixed top-0 left-0 p-2 h-full w-2/3 sm:w-1/2 sm:hidden`}>
                 <div className="flex justify-end">
                     <button
                         type="button"

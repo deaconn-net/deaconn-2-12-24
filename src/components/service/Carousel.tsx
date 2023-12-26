@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ViewPortCtx } from "@components/Wrapper";
 import { type Service } from "@prisma/client";
 
@@ -6,17 +6,20 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ServiceRow from "./Row";
 import { LeftArrow, RightArrow } from "@components/Carousel";
+import { GetRandomInt } from "@utils/Random";
 
 export default function ServiceCarousel ({
     services = [],
     infinite = true,
     autoPlay = true,
-    autoPlaySpeed
+    autoPlaySpeedMin,
+    autoPlaySpeedMax
 } : {
     services: Service[],
     infinite?: boolean
     autoPlay?: boolean
-    autoPlaySpeed?: number
+    autoPlaySpeedMin?: number
+    autoPlaySpeedMax?: number
 }) {
     const viewPort = useContext(ViewPortCtx);
 
@@ -51,13 +54,19 @@ export default function ServiceCarousel ({
         }
     };
 
+    // Retrieve play speed.
+    const [playSpeed, setPlaySpeed] = useState<number | undefined>(undefined);
+
+    if (typeof autoPlaySpeedMin !== "undefined" && typeof autoPlaySpeedMax !== "undefined" && !playSpeed)
+        setPlaySpeed(GetRandomInt(autoPlaySpeedMin, autoPlaySpeedMax))
+
     return (
         <Carousel
             responsive={responsive}
             itemClass="p-4"
             infinite={infinite}
             autoPlay={!viewPort.mobile ? autoPlay : false}
-            autoPlaySpeed={autoPlaySpeed}
+            autoPlaySpeed={playSpeed}
             customLeftArrow={<LeftArrow />}
             customRightArrow={<RightArrow />}
         >

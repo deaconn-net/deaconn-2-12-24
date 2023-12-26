@@ -58,15 +58,27 @@ export default function Page ({
                 </div>
                 <div className="content-item mt-8">
                     <h2>Popular Services</h2>
-                    <ServiceCarousel services={services} />
+                    <ServiceCarousel
+                        services={services}
+                        autoPlaySpeedMax={10000}
+                        autoPlaySpeedMin={3000}
+                    />
                 </div>
                 <div className="content-item">
                     <h2>Latest Articles</h2>
-                    <BlogCarousel articles={articlesLatest} />
+                    <BlogCarousel
+                        articles={articlesLatest}
+                        autoPlaySpeedMax={10000}
+                        autoPlaySpeedMin={3000}
+                    />
                 </div>
                 <div className="content-item">
                     <h2>Popular Articles</h2>
-                    <BlogCarousel articles={articlesPopular} />
+                    <BlogCarousel
+                        articles={articlesPopular}
+                        autoPlaySpeedMax={10000}
+                        autoPlaySpeedMin={3000}
+                    />
                 </div>
             </Wrapper>
         </>
