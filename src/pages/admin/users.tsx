@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 
 import Wrapper from "@components/Wrapper";
@@ -9,14 +9,14 @@ import UserBrowser from "@components/user/Browser";
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    authed: boolean
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+} & GlobalPropsType) {
     return (
         <Wrapper
             footerServices={footerServices}
@@ -63,5 +63,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 }
-
-export default Page;

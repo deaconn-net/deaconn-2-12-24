@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 
 import { type ServiceWithCategoryAndLinks } from "~/types/service";
@@ -17,18 +17,18 @@ import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import NotFound from "@components/error/NotFound";
 
 
-const Page: NextPage<{
-    authed: boolean,
-    service?: ServiceWithCategoryAndLinks,
-    categories: CategoryWithChildren[]
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     service,
     categories,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    service?: ServiceWithCategoryAndLinks
+    categories: CategoryWithChildren[]
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -132,5 +132,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

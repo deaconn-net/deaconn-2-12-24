@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
@@ -16,14 +16,14 @@ import { dateFormat, dateFormatTwo } from "@utils/Date";
 
 import Markdown from "@components/markdown/Markdown";
 
-const Page: NextPage<{
-    user?: UserPublicWithEmail
-} & GlobalPropsType> = ({
+export default function Page ({
     user,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    user?: UserPublicWithEmail
+} & GlobalPropsType) {
     const birthday = (user?.birthday) ? dateFormat(user?.birthday, dateFormatTwo) : null;
 
     return (
@@ -132,6 +132,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-
-export default Page;

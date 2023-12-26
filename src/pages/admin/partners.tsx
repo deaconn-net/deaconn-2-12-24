@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 import Link from "next/link";
 
@@ -20,16 +20,16 @@ import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 import PartnerForm from "@components/forms/partner/New";
 
-const Page: NextPage<{
-    authed: boolean,
-    partners?: Partner[],
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     partners,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    partners?: Partner[]
+} & GlobalPropsType) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -167,5 +167,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 }
-
-export default Page;

@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 import { useContext, useState } from "react";
 
@@ -18,18 +18,19 @@ import { api } from "@utils/Api";
 import { has_role } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
-const Page: NextPage<{
-    authed: boolean,
-    user?: User,
-    roles: Role[]
-} & GlobalPropsType> = ({
+
+export default function Page ({
     authed,
     user,
     roles,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    user?: User
+    roles: Role[]
+} & GlobalPropsType) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -242,5 +243,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 }
-
-export default Page;

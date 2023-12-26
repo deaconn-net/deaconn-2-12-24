@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 import Link from "next/link";
 
@@ -21,16 +21,16 @@ import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 import Markdown from "@components/markdown/Markdown";
 
-const Page: NextPage<{
-    authed: boolean,
-    roles?: Role[],
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     roles,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    roles?: Role[]
+} & GlobalPropsType) {
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -172,5 +172,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 }
-
-export default Page;

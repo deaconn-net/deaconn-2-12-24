@@ -1,7 +1,5 @@
 import { useSession } from "next-auth/react";
 
-import { type NextPage } from "next";
-
 import Wrapper from "@components/Wrapper";
 import Meta from "@components/Meta";
 
@@ -10,10 +8,10 @@ import RequestBrowser from "@components/request/Browser";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<GlobalPropsType> = ({
+export default function Page ({
     footerServices,
     footerPartners
-}) => {
+} : GlobalPropsType) {
     // Retrieve session.
     const { data: session } = useSession();
 
@@ -49,5 +47,3 @@ export async function getServerSideProps() {
         }
     }
 }
-
-export default Page;

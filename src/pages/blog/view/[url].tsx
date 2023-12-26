@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { UserPublicSelect } from "~/types/user/user";
 import { type ArticleWithUser } from "~/types/blog/article";
@@ -14,14 +14,14 @@ import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 import ArticleView from "@components/blog/article/View";
 
-const Page: NextPage<{
-    article?: ArticleWithUser,
-} & GlobalPropsType> = ({
+export default function Page ({
     article,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    article?: ArticleWithUser
+} & GlobalPropsType) {
     // Retrieve banner for Meta image.
     let banner = process.env.NEXT_PUBLIC_DEFAULT_ARTICLE_IMAGE || undefined;
 
@@ -115,5 +115,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

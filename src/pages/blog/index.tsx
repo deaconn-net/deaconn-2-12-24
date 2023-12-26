@@ -1,5 +1,4 @@
 import React from "react";
-import { type NextPage } from "next";
 
 import { type CategoryWithAllAndAricleCount } from "~/types/category";
 
@@ -14,14 +13,14 @@ import TabMenuWithData from "@components/tabs/MenuWithData";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    categories?: CategoryWithAllAndAricleCount[]
-} & GlobalPropsType> = ({
+export default function Page ({
     categories,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    categories?: CategoryWithAllAndAricleCount[]
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -88,5 +87,3 @@ export async function getServerSideProps() {
         }
     };
 }
-
-export default Page;

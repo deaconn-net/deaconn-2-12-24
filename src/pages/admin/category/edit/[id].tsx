@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 
 import { type Category } from "@prisma/client"
@@ -16,18 +16,18 @@ import CategoryForm from "@components/forms/category/New";
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    authed: boolean,
-    category?: Category,
-    categories: CategoryWithChildren[]
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     category,
     categories,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    category?: Category
+    categories: CategoryWithChildren[]
+} & GlobalPropsType) {
     return (
         <Wrapper
             footerServices={footerServices}
@@ -112,5 +112,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

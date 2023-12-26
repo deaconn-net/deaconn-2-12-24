@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
@@ -26,12 +26,7 @@ import { has_role } from "@utils/user/Auth";
 import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/Date";
 import { ScrollToTop } from "@utils/Scroll";
 
-const Page: NextPage<{
-    authed: boolean,
-    request?: RequestWithAll,
-    nextPages: number[],
-    repliesCnt: number
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     request,
     nextPages,
@@ -39,7 +34,12 @@ const Page: NextPage<{
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    request?: RequestWithAll
+    nextPages: number[]
+    repliesCnt: number
+} & GlobalPropsType) {
     // Retrieve session.
     const { data: session } = useSession();
 
@@ -466,4 +466,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 }
-export default Page;

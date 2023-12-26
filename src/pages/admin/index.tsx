@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 
 import { prisma } from "@server/db";
@@ -31,16 +31,16 @@ type statsType = {
 
 };
 
-const Page: NextPage<{
-    authed: boolean,
-    stats: statsType,
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     stats,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    stats: statsType
+} & GlobalPropsType) {
     return (
         <Wrapper
             footerServices={footerServices}
@@ -145,5 +145,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     }
 }
-
-export default Page;

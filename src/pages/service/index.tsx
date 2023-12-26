@@ -1,5 +1,3 @@
-import { type NextPage } from "next";
-
 import { type CategoryWithAllAndServiceCount } from "~/types/category";
 
 import { prisma } from "@server/db";
@@ -13,14 +11,14 @@ import TabMenuWithData from "@components/tabs/MenuWithData";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    categories?: CategoryWithAllAndServiceCount[]
-} & GlobalPropsType> = ({
+export default function Page ({
     categories,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    categories?: CategoryWithAllAndServiceCount[]
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -89,5 +87,3 @@ export async function getServerSideProps() {
         }
     };
 }
-
-export default Page;

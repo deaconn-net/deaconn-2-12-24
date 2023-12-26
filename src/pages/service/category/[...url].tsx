@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { type CategoryWithAllAndServiceCount, type CategoryWithAll } from "~/types/category";
 
@@ -14,19 +14,18 @@ import NotFound from "@components/error/NotFound";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    category?: CategoryWithAll,
-    categories?: number[],
-    categoriesList?: CategoryWithAllAndServiceCount[]
-} & GlobalPropsType> = ({
+export default function Page ({
     category,
     categories,
     categoriesList,
     
     footerServices,
     footerPartners
-}) => {
-    console.log(categories);
+} : {
+    category?: CategoryWithAll
+    categories?: number[]
+    categoriesList?: CategoryWithAllAndServiceCount[]
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -165,5 +164,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 
 import { type Role } from "@prisma/client"
@@ -14,16 +14,16 @@ import RoleForm from "@components/forms/role/New";
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Edit: NextPage<{
-    authed: boolean,
-    role?: Role
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     role,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    role?: Role
+} & GlobalPropsType) {
     return (
         <Wrapper
             footerServices={footerServices}
@@ -96,5 +96,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Edit;

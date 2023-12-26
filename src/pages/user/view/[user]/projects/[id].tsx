@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { UserPublicSelect, type UserPublic } from "~/types/user/user";
 import { type UserProjectWithSources } from "~/types/user/project";
+import { type ProjectSource } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
@@ -20,16 +21,16 @@ import IconAndText from "@components/containers/IconAndText";
 import Link from "next/link";
 import SourceIcon from "@components/icons/Source";
 
-const Page: NextPage<{
-    user?: UserPublic,
-    project?: UserProjectWithSources
-} & GlobalPropsType> = ({
+export default function Page ({
     user,
     project,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    user?: UserPublic,
+    project?: UserProjectWithSources
+} & GlobalPropsType) {
     const [startDate, setStartDate] = useState<string | undefined>(undefined);
     const [endDate, setEndDate] = useState<string | undefined>(undefined);
 
@@ -89,27 +90,13 @@ const Page: NextPage<{
                                         {project.details ?? ""}
                                     </Markdown>
                                     {project.sources.length > 0 && (
-                                        <div className="project-sources">
-                                            {project.sources.map((source) => {
+                                        <div className="flex flex-wrap gap-4">
+                                            {project.sources.map((source, index) => {
                                                 return (
-                                                    <Link
-                                                        href={source.url}
-                                                        key={`project-source-${source.projectId.toString()}-${source.url}`}
-                                                        className="project-source"
-                                                        target="_blank"
-                                                    >
-                                                        <IconAndText
-                                                            icon={
-                                                                <SourceIcon
-                                                                    className="w-10 h-10 fill-white"
-                                                                />
-                                                            }
-                                                            text={
-                                                                <>{source.title}</>
-                                                            }
-                                                            inline={true}
-                                                        />
-                                                    </Link>
+                                                    <Source
+                                                        key={`source-${index.toString()}`}
+                                                        source={source}
+                                                    />
                                                 );
                                             })}
                                         </div>
@@ -131,6 +118,32 @@ const Page: NextPage<{
             </Wrapper>
         </>
     );
+}
+
+function Source ({
+    source
+} : {
+    source: ProjectSource
+}) {
+    return (
+        <Link
+            href={source.url}
+            className="bg-cyan-700 hover:bg-cyan-600 p-4 rounded w-full sm:w-auto sm:min-w-[24rem] sm:max-w-full hover:text-white"
+            target="_blank"
+        >
+            <IconAndText
+                icon={
+                    <SourceIcon
+                        className="w-10 h-10 fill-white"
+                    />
+                }
+                text={
+                    <>{source.title}</>
+                }
+                inline={true}
+            />
+        </Link>
+    )
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
@@ -195,5 +208,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

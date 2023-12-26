@@ -1,5 +1,5 @@
 import { getServerAuthSession } from "@server/auth";
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { UserPublicSelect } from "~/types/user/user";
 import { type UserSkillWithUser } from "~/types/user/skill";
@@ -15,14 +15,14 @@ import NotSignedIn from "@components/error/NotSignedIn";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    skill?: UserSkillWithUser
-} & GlobalPropsType> = ({
+export default function Page ({
     skill,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    skill?: UserSkillWithUser
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -91,5 +91,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

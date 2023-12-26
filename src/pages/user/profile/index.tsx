@@ -1,5 +1,5 @@
 import { getServerAuthSession } from "@server/auth";
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { type User } from "@prisma/client";
 import { prisma } from "@server/db";
@@ -13,14 +13,14 @@ import NotSignedIn from "@components/error/NotSignedIn";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    user?: User,
-} & GlobalPropsType> = ({
+export default function Page ({
     user,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    user?: User
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -83,5 +83,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

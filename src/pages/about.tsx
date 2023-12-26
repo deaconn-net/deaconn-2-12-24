@@ -1,5 +1,3 @@
-import { type NextPage } from "next";
-
 import { type UserPublic, UserPublicSelect } from "~/types/user/user";
 import StatsBlock, { type Stats } from "@components/blocks/Stats";
 
@@ -16,16 +14,16 @@ import OpenSourceBlock from "@components/blocks/OpenSource";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    stats?: Stats,
-    team: UserPublic[]
-} & GlobalPropsType> = ({
+export default function Page ({
     stats,
     team,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    stats?: Stats,
+    team: UserPublic[]
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -97,5 +95,3 @@ export async function getServerSideProps() {
         }
     }
 }
-
-export default Page;

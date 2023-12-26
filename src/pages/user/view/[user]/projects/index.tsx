@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { UserPublicSelect, type UserPublic } from "~/types/user/user";
 
@@ -13,14 +13,14 @@ import UserView from "@components/user/View";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    user?: UserPublic,
-} & GlobalPropsType> = ({
+export default function Page ({
     user,
 
     footerServices,
     footerPartners
-}) => {    
+} : {
+    user?: UserPublic
+} & GlobalPropsType) {   
     return (
         <>
             <Meta
@@ -104,6 +104,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-
-export default Page;

@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { type ServiceWithCategoryAndLinks } from "~/types/service";
 
@@ -12,14 +12,14 @@ import NotFound from "@components/error/NotFound";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    service?: ServiceWithCategoryAndLinks,
-} & GlobalPropsType> = ({
+export default function Page ({
     service,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    service?: ServiceWithCategoryAndLinks
+} & GlobalPropsType) {
     // Retrieve banner for Meta image.
     let banner = process.env.NEXT_PUBLIC_DEFAULT_SERVICE_IMAGE || undefined;
 
@@ -113,5 +113,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

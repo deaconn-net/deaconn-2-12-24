@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 
 import { type Partner } from "@prisma/client";
@@ -15,16 +15,16 @@ import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import NotFound from "@components/error/NotFound";
 
-const Page: NextPage<{
-    authed: boolean,
-    partner?: Partner
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     partner,
     
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    partner?: Partner
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -111,5 +111,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

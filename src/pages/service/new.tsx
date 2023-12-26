@@ -1,4 +1,4 @@
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "@server/auth";
 
 import { type CategoryWithChildren } from "~/types/category";
@@ -14,16 +14,16 @@ import NoPermissions from "@components/error/NoPermissions";
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-const Page: NextPage<{
-    authed: boolean,
-    categories: CategoryWithChildren[]
-} & GlobalPropsType> = ({
+export default function Page ({
     authed,
     categories,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    authed: boolean
+    categories: CategoryWithChildren[]
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -88,5 +88,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-export default Page;

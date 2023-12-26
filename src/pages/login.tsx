@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { type NextPage } from "next";
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
@@ -12,10 +11,10 @@ import DiscordIcon from "@components/icons/social/Discord";
 import GithubIcon from "@components/icons/social/Github";
 import GoogleIcon from "@components/icons/social/Google";
 
-const Page: NextPage<GlobalPropsType> = ({
+export default function Page ({
     footerServices,
     footerPartners
-}) => {
+} : GlobalPropsType) {
     const { data: session } = useSession();
     return (
         <>
@@ -117,5 +116,3 @@ export async function getServerSideProps() {
         }
     };
 }
-
-export default Page;

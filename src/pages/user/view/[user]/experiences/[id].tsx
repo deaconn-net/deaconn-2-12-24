@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { type GetServerSidePropsContext, type NextPage } from "next";
+import { type GetServerSidePropsContext } from "next";
 
 import { type UserExperience } from "@prisma/client";
 import { UserPublicSelect, type UserPublic } from "~/types/user/user";
@@ -17,16 +17,16 @@ import { dateFormat, dateFormatThree } from "@utils/Date";
 
 import Markdown from "@components/markdown/Markdown";
 
-const Page: NextPage<{
-    user?: UserPublic,
-    experience?: UserExperience
-} & GlobalPropsType> = ({
+export default function Page ({
     user,
     experience,
 
     footerServices,
     footerPartners
-}) => {
+} : {
+    user?: UserPublic
+    experience?: UserExperience
+} & GlobalPropsType) {
     const [startDate, setStartDate] = useState<string | undefined>(undefined);
     const [endDate, setEndDate] = useState<string | undefined>(undefined);
 
@@ -163,6 +163,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         }
     };
 }
-
-
-export default Page;
