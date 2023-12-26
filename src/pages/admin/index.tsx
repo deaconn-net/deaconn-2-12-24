@@ -9,6 +9,7 @@ import NoPermissions from "@components/error/NoPermissions";
 
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import { useSession } from "next-auth/react";
 
 type statsType = {
     articles: number
@@ -32,15 +33,17 @@ type statsType = {
 };
 
 export default function Page ({
-    authed,
     stats,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     stats: statsType
 } & GlobalPropsType) {
+    // Retrieve session and check if user is authed.
+    const { data: session } = useSession();
+    const authed = has_role(session, "admin");
+
     return (
         <Wrapper
             footerServices={footerServices}
@@ -90,10 +93,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Make sure we're authorized.
     const session = await getServerAuthSession(ctx);
 
-    let authed = false;
-
-    if (session && has_role(session, "admin"))
-        authed = true;
+    //const authed = has_role(session, "admin");
 
     // Retrieve stats.
     const articleCnt = await prisma.article.count();
@@ -140,7 +140,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
             stats
         }
     }

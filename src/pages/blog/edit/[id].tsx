@@ -15,19 +15,22 @@ import NoPermissions from "@components/error/NoPermissions";
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import NotFound from "@components/error/NotFound";
+import { useSession } from "next-auth/react";
 
 export default function Page ({
-    authed,
     article,
     categories,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     article?: Article
     categories: CategoryWithChildren[]
 } & GlobalPropsType) {
+    // Retrieve session and check if user is authed.
+    const { data: session } = useSession();
+    const authed = has_role(session, "contributor") || has_role(session, "admin");
+
     return (
         <>
             <Meta
@@ -82,10 +85,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Check if we're authenticated.
-    let authed = false;
-
-    if (session && (has_role(session, "contributor") || has_role(session, "admin")))
-        authed = true;
+    const authed = has_role(session, "contributor") || has_role(session, "admin");
 
     // Retrieve lookup ID.
     const { params } = ctx;
@@ -120,7 +120,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
             article: JSON.parse(JSON.stringify(article)),
             categories: categories
         }

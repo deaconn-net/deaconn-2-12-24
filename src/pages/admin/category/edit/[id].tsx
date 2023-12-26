@@ -15,19 +15,22 @@ import CategoryForm from "@components/forms/category/New";
 
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import { useSession } from "next-auth/react";
 
 export default function Page ({
-    authed,
     category,
     categories,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     category?: Category
     categories: CategoryWithChildren[]
 } & GlobalPropsType) {
+    // Retrieve session and check if user is authed.
+    const { data: session } = useSession();
+    const authed = has_role(session, "admin");
+
     return (
         <Wrapper
             footerServices={footerServices}
@@ -68,10 +71,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Check if we have permissions.
-    let authed = false;
-
-    if (session && has_role(session, "admin"))
-        authed = true;
+    const authed = has_role(session, "admin");
 
     // Retrieve role we're editing.
     const { params } = ctx;
@@ -106,7 +106,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
             category: category,
             categories: categories
         }

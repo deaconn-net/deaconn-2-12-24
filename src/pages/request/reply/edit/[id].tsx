@@ -14,17 +14,24 @@ import NotFound from "@components/error/NotFound";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import { has_role } from "@utils/user/Auth";
+import { useSession } from "next-auth/react";
 
 export default function Page ({
-    authed,
     reply,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     reply?: RequestReply
 } & GlobalPropsType) {
+    // Retrieve user session and check if user has access to reply.
+    const { data: session } = useSession();
+    
+    let authed = has_role(session, "admin") || has_role(session, "moderator");
+
+    if (!authed && (session?.user && reply) && reply.userId == session.user.id)
+        authed = true;
+
     return (
         <>
             <Meta
@@ -84,12 +91,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     const session = await getServerAuthSession(ctx);
 
-    // Make sure we're signed in.
-    let authed = false;
-
-    // Check if admin or moderator.
-    if (session && (has_role(session, "admin") || has_role(session, "moderator")))
-        authed = true;
+    // Make sure we're signed in and check if we're an administrator or not.
+    let authed = has_role(session, "admin") || has_role(session, "moderator");
 
     const lookup_id = params?.id;
 
@@ -112,8 +115,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
-            reply: reply
+            ...(authed && {
+                reply: reply
+            })
         }
     };
 }

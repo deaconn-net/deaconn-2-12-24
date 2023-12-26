@@ -27,21 +27,24 @@ import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/Date";
 import { ScrollToTop } from "@utils/Scroll";
 
 export default function Page ({
-    authed,
     request,
-    nextPages,
-    repliesCnt,
+    nextPages = [],
+    repliesCnt = 0,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     request?: RequestWithAll
-    nextPages: number[]
-    repliesCnt: number
+    nextPages?: number[]
+    repliesCnt?: number
 } & GlobalPropsType) {
-    // Retrieve session.
+    // Retrieve user session and check if user has access.
     const { data: session } = useSession();
+
+    let authed = has_role(session, "admin") || has_role(session, "moderator");
+
+    if (!authed && request && session?.user && (request.userId == session?.user.id))
+        authed = true;
 
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
@@ -377,11 +380,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
     const session = await getServerAuthSession(ctx);
 
-    let authed = false;
-
-    // Check if we're admin or moderator.
-    if (session && (has_role(session, "admin") || has_role(session, "moderator")))
-        authed = true;
+    let authed = has_role(session, "admin") || has_role(session, "moderator");
 
     // Retrieve request ID and page number if any.
     const { params } = ctx;
@@ -459,10 +458,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
-            request: JSON.parse(JSON.stringify(request)),
-            nextPages: nextPages,
-            repliesCnt: repliesCnt
+            ...(authed && {
+                request: JSON.parse(JSON.stringify(request)),
+                nextPages: nextPages,
+                repliesCnt: repliesCnt
+            })
         }
     }
 }

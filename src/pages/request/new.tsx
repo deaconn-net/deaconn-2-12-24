@@ -11,17 +11,19 @@ import Meta from "@components/Meta";
 import RequestForm from "@components/forms/request/New";
 import NoPermissions from "@components/error/NoPermissions";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
+import { useSession } from "next-auth/react";
 
 export default function Page ({
-    authed,
     services,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     services?: Service[]
 } & GlobalPropsType) {
+    // Retrieve user session.
+    const { data: session } = useSession();
+
     return (
         <>
             <Meta
@@ -32,7 +34,7 @@ export default function Page ({
                 footerServices={footerServices}
                 footerPartners={footerPartners}
             >
-                {authed ? (
+                {session?.user ? (
                     <div className="content-item2">
                         <div>
                             <h2>New Request</h2>
@@ -55,15 +57,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
     const session = await getServerAuthSession(ctx);
 
-    // Make sure we're signed in.
-    let authed = false;
-
-    if (session)
-        authed = true;
-
     let services: Service[] | null = null;
 
-    if (authed)
+    if (session?.user)
         services = await prisma.service.findMany();
 
     const globalProps = await GlobalProps();
@@ -71,7 +67,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
             services: JSON.parse(JSON.stringify(services))
         }
     };

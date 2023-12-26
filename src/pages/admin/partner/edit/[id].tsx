@@ -13,17 +13,20 @@ import NotFound from "@components/error/NotFound";
 import { has_role } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import PartnerForm from "@components/forms/partner/New";
+import { useSession } from "next-auth/react";
 
 export default function Page ({
-    authed,
     partner,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     partner?: Partner
 } & GlobalPropsType) {
+    // Retrieve session and check if user is authed.
+    const { data: session } = useSession();
+    const authed = has_role(session, "admin");
+
     return (
         <Wrapper
             footerServices={footerServices}
@@ -63,10 +66,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Check if we have permissions.
-    let authed = false;
-
-    if (session && has_role(session, "admin"))
-        authed = true;
+    const authed = has_role(session, "admin");
 
     // Retrieve partner ID.
     const { params } = ctx;
@@ -91,7 +91,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
             partner: partner
         }
     };

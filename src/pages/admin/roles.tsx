@@ -20,17 +20,20 @@ import { ScrollToTop } from "@utils/Scroll";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
 import Markdown from "@components/markdown/Markdown";
+import { useSession } from "next-auth/react";
 
 export default function Page ({
-    authed,
     roles,
 
     footerServices,
     footerPartners
 } : {
-    authed: boolean
     roles?: Role[]
 } & GlobalPropsType) {
+    // Retrieve session and check if user is authed.
+    const { data: session } = useSession();
+    const authed = has_role(session, "admin");
+
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
@@ -149,10 +152,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Make sure we're authenticated.
-    let authed = false;
-
-    if (session && has_role(session, "admin"))
-        authed = true;
+    const authed = has_role(session, "admin");
 
     // Initialize roles.
     let roles: Role[] | undefined = undefined;
@@ -167,7 +167,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            authed: authed,
             roles: roles ? JSON.parse(JSON.stringify(roles)) : null
         }
     }
