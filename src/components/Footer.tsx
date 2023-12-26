@@ -18,7 +18,7 @@ export default function Footer ({
 }) {
     return (
         <footer className="p-6 bg-slate-800 z-20">
-            <div className="container mx-auto flex flex-wrap text-center">
+            <div className="container mx-auto flex flex-wrap text-center text-sm">
                 <Section>
                     <div className="content-item">
                         <h3>Links</h3>
