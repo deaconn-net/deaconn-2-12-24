@@ -1,5 +1,3 @@
-import { type NextPage } from "next";
-
 import { prisma } from "@server/db";
 
 import { type Service } from "@prisma/client";
@@ -8,9 +6,6 @@ import { type UserPublic, UserPublicSelect } from "~/types/user/user";
 
 import Wrapper from "@components/Wrapper";
 import Meta from "@components/Meta";
-
-import ArticleRow from "@components/blog/article/Row";
-import ServiceRow from "@components/service/Row";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
@@ -22,18 +17,22 @@ import GitLogBlock from "@components/blocks/GitLog";
 import UpdateLogBlock from "@components/blocks/UpdateLog";
 import HaveARequestBlock from "@components/blocks/HaveARequest";
 import WhoAreWeBlock from "@components/blocks/WhoAreWe";
+import BlogCarousel from "@components/blog/Carousel";
+import ServiceCarousel from "@components/service/Carousel";
 
-const Page: NextPage<{
-    articles: ArticleWithUser[],
-    team: UserPublic[],
-    services: Service[]
-} & GlobalPropsType> = ({
-    articles,
+export default function Page ({
+    articlesLatest,
+    articlesPopular,
     team,
     services,
     footerServices,
     footerPartners
-}) => {
+} : {
+    articlesLatest: ArticleWithUser[]
+    articlesPopular: ArticleWithUser[]
+    team: UserPublic[]
+    services: Service[]
+} & GlobalPropsType) {
     return (
         <>
             <Meta
@@ -59,29 +58,15 @@ const Page: NextPage<{
                 </div>
                 <div className="content-item mt-8">
                     <h2>Popular Services</h2>
-                    <div className="grid-view grid-view-sm">
-                        {services.map((service) => {
-                            return (
-                                <ServiceRow
-                                    key={"service-" + service.id.toString()}
-                                    service={service}
-                                />
-                            )
-                        })}
-                    </div>
+                    <ServiceCarousel services={services} />
                 </div>
                 <div className="content-item">
                     <h2>Latest Articles</h2>
-                    <div className="grid-view grid-view-sm">
-                        {articles.map((article) => {
-                            return (
-                                <ArticleRow
-                                    key={"article-" + article.id.toString()}
-                                    article={article}
-                                />
-                            )
-                        })}
-                    </div>
+                    <BlogCarousel articles={articlesLatest} />
+                </div>
+                <div className="content-item">
+                    <h2>Popular Articles</h2>
+                    <BlogCarousel articles={articlesPopular} />
                 </div>
             </Wrapper>
         </>
@@ -90,7 +75,7 @@ const Page: NextPage<{
 
 export async function getServerSideProps() {
     // Retrieve articles, team members, and services.
-    const articles = await prisma.article.findMany({
+    const articlesLatest = await prisma.article.findMany({
         take: 10,
         include: {
             user: {
@@ -99,6 +84,18 @@ export async function getServerSideProps() {
         },
         orderBy: {
             createdAt: "desc"
+        }
+    });
+
+    const articlesPopular = await prisma.article.findMany({
+        take: 10,
+        include: {
+            user: {
+                select: UserPublicSelect
+            }
+        },
+        orderBy: {
+            views: "desc"
         }
     });
 
@@ -123,11 +120,10 @@ export async function getServerSideProps() {
     return {
         props: {
             ...globalProps,
-            articles: JSON.parse(JSON.stringify(articles)),
+            articlesLatest: JSON.parse(JSON.stringify(articlesLatest)),
+            articlesPopular: JSON.parse(JSON.stringify(articlesPopular)),
             team: JSON.parse(JSON.stringify(team)),
             services: JSON.parse(JSON.stringify(services))
         }
     };
 }
-
-export default Page;
