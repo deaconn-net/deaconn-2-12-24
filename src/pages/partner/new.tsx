@@ -1,8 +1,3 @@
-import { type GetServerSidePropsContext } from "next";
-import { getServerAuthSession } from "@server/auth";
-
-import { type Partner } from "@prisma/client";
-
 import Wrapper from "@components/Wrapper";
 import Meta from "@components/Meta";
 
@@ -48,7 +43,7 @@ export default function Page ({
     );
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+export async function getServerSideProps() {
     // Retrieve global props.
     const globalProps = await GlobalProps();
 

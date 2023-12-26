@@ -1,6 +1,3 @@
-import { type GetServerSidePropsContext } from "next";
-import { getServerAuthSession } from "@server/auth";
-
 import { prisma } from "@server/db";
 
 import Wrapper from "@components/Wrapper";
@@ -89,12 +86,7 @@ export default function Page ({
     );
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    // Make sure we're authorized.
-    const session = await getServerAuthSession(ctx);
-
-    //const authed = has_role(session, "admin");
-
+export async function getServerSideProps() {
     // Retrieve stats.
     const articleCnt = await prisma.article.count();
     const articleCommentCnt = await prisma.articleComment.count();

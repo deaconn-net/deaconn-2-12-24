@@ -69,7 +69,7 @@ export default function ServiceRow ({
     });
 
     return (
-        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-64" : "h-auto"}`}>
+        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
             {banner && (
                 <div className={`${simple ? "h-1/2" : "h-64"}`}>
                     <Link href={viewUrl}>
@@ -89,7 +89,7 @@ export default function ServiceRow ({
                 </h3>
             </div>
             {service.desc && (
-                <div className="p-6 grow">
+                <div className="p-6 text-sm grow max-h-4 overflow-clip text-ellipsis">
                     <p>{service.desc}</p>
                 </div>
             )}

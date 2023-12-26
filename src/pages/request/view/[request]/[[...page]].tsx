@@ -374,7 +374,7 @@ export default function Page ({
             </Wrapper>
         </>
     );
-};
+}
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.

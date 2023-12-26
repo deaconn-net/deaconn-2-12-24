@@ -1,6 +1,3 @@
-import { type GetServerSidePropsContext } from "next";
-import { getServerAuthSession } from "@server/auth";
-
 import Wrapper from "@components/Wrapper";
 import AdminSettingsPanel from "@components/admin/SettingsPanel";
 import NoPermissions from "@components/error/NoPermissions";
@@ -44,13 +41,7 @@ export default function Page ({
     );
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    // Retrieve session.
-    const session = await getServerAuthSession(ctx);
-
-    // Make sure we're authorized.
-    const authed = has_role(session, "admin");
-
+export async function getServerSideProps() {
     // Retrieve global props.
     const globalProps = await GlobalProps();
 
