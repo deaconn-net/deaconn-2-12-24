@@ -94,7 +94,7 @@ export default function ServiceRow ({
                 </div>
             )}
             <div className="pb-6 flex justify-center">
-                <p>{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>
+                <p className="font-bold text-green-200">{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>
             </div>
             <div className="pb-6 flex flex-wrap justify-between text-white text-sm">
                 <IconAndText
