@@ -58,11 +58,11 @@ export default function UserBrowser ({
 
     return (
         <>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 p-4">
                 <div className="flex flex-wrap gap-2 items-center">
                     <h3>Search</h3>
                     <input
-                        className="w-72 p-2"
+                        className="w-72 p-2 bg-cyan-900 rounded"
                         onChange={(e) => {
                             e.preventDefault();
 
@@ -72,7 +72,7 @@ export default function UserBrowser ({
                         }}
                     />
                     <select
-                        className="w-32 p-2"
+                        className="w-32 p-2 bg-cyan-900 rounded"
                         onChange={(e) => {
                             const val = Number(e.currentTarget.value);
 
