@@ -7,6 +7,7 @@ import { api } from "@utils/Api";
 import { ScrollToTop } from "@utils/Scroll";
 
 import { type Partner } from "@prisma/client";
+import Checkbox from "../Checkbox";
 
 export default function PartnerForm ({
     partner
@@ -113,12 +114,10 @@ export default function PartnerForm ({
                                         <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="bannerRemove"
-                                            type="checkbox"
-                                        /> <span>Remove Banner</span>
-                                    </div>
+                                    <Checkbox
+                                        name="bannerRemove"
+                                        text={<span>Remove Banner</span>}
+                                    />
                                 )}
                             </>
                         )}
@@ -151,12 +150,10 @@ export default function PartnerForm ({
                                         <p className="italic">{form.values.iconRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="iconRemove"
-                                            type="checkbox"
-                                        /> <span>Remove Icon</span>
-                                    </div>
+                                    <Checkbox
+                                        name="iconRemove"
+                                        text={<span>Remove Icon</span>}
+                                    />
                                 )}
                             </>
                         )}

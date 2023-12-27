@@ -10,6 +10,7 @@ import { api } from "@utils/Api";
 import { ScrollToTop } from "@utils/Scroll";
 
 import Markdown from "@components/markdown/Markdown";
+import Checkbox from "../Checkbox";
 
 const DEFAULT_LINK = {
     serviceId: 0,
@@ -145,12 +146,10 @@ export default function ServiceForm ({
                                         <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="bannerRemove"
-                                            type="checkbox"
-                                        /> <span>Remove Banner</span>
-                                    </div>
+                                    <Checkbox
+                                        name="bannerRemove"
+                                        text={<span>Remove Banner</span>}
+                                    />
                                 )}  
                             </>
                         )}
@@ -184,12 +183,10 @@ export default function ServiceForm ({
                                         <p className="italic">{form.values.iconRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="iconRemove"
-                                            type="checkbox"
-                                        /> <span>Remove Icon</span>
-                                    </div>
+                                    <Checkbox
+                                        name="iconRemove"
+                                        text={<span>Remove Icon</span>}
+                                    />
                                 )}
                             </>
                         )}
@@ -339,12 +336,10 @@ export default function ServiceForm ({
                         {preview ? (
                             <p className="italic">{(form.values.openSource) ? "Yes" : "No"}</p>
                         ) : (
-                            <div className="form-checkbox">
-                                <Field
-                                    name="openSource"
-                                    type="checkbox"
-                                /> <span>Yes</span>
-                            </div>
+                            <Checkbox
+                                name="openSource"
+                                text={<span>Yes</span>}
+                            />
                         )}
                     </div>
                     <h2>Links</h2>
@@ -369,13 +364,11 @@ export default function ServiceForm ({
                                             className="form-input"
                                         />
                                     </div>
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name={`links[${index.toString()}].isDownload`}
-                                            defaultValue={link.isDownload ?? false}
-                                            type="checkbox"
-                                        /> <span>Yes</span>
-                                    </div>
+                                    <Checkbox
+                                        name={`links[${index.toString()}].isDownload`}
+                                        text={<span>Yes</span>}
+                                        defaultValue={link.isDownload}
+                                    />
                                     <button
                                         className="button button-danger sm:w-32"
                                         onClick={(e) => {

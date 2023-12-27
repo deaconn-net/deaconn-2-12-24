@@ -14,6 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Markdown from "@components/markdown/Markdown";
 import { has_role } from "@utils/user/Auth";
+import Checkbox from "../Checkbox";
 
 export default function GeneralForm ({
     user
@@ -161,12 +162,10 @@ export default function GeneralForm ({
                                         <p className="italic">{form.values.avatarRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="avatarRemove"
-                                            type="checkbox"
-                                        /> <span>Remove Avatar</span>
-                                    </div>
+                                    <Checkbox
+                                        name="avatarRemove"
+                                        text={<span>Remove Avatar</span>}
+                                    />
                                 )}
                             </>
                         )}
@@ -231,12 +230,10 @@ export default function GeneralForm ({
                         {preview ? (
                             <p className="italic">{form.values.showEmail ? "Yes" : "No"}</p>
                         ) : (
-                            <div className="form-checkbox">
-                                <Field
-                                    name="showEmail"
-                                    type="checkbox"
-                                /> <span>Yes</span>
-                            </div>
+                            <Checkbox
+                                name="showEmail"
+                                text={<span>Yes</span>}
+                            />
                         )}
                     </div>
                     {session && has_role(session, "admin") && (
@@ -246,12 +243,10 @@ export default function GeneralForm ({
                                 {preview ? (
                                     <p className="italic">{form.values.isTeam ? "Yes" : "No"}</p>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="isTeam"
-                                            type="checkbox"
-                                        /> <span>Yes</span>
-                                    </div>
+                                    <Checkbox
+                                        name="isTeam"
+                                        text={<span>Yes</span>}
+                                    />
                                 )}
                             </div>
                             <div className="form-div">
@@ -259,12 +254,10 @@ export default function GeneralForm ({
                                 {preview ? (
                                     <p className="italic">{form.values.isRestricted ? "Yes" : "No"}</p>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="isRestricted"
-                                            type="checkbox"
-                                        /> <span>Yes</span>
-                                    </div>
+                                    <Checkbox
+                                        name="isRestricted"
+                                        text={<span>Yes</span>}
+                                    />
                                 )}
                             </div>
                         </>

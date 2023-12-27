@@ -12,6 +12,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import Markdown from "@components/markdown/Markdown";
+import Checkbox from "../Checkbox";
 
 const DEFAULT_SOURCE = {
     projectId: 0,
@@ -208,13 +209,10 @@ export default function UserProjectForm({
                         {preview ? (
                             <p className="italic">{(form.values.openSource) ? "Yes" : "No"}</p>
                         ) : (
-                            <div className="form-checkbox">
-                                <Field
-                                    name="openSource"
-                                    type="checkbox"
-                                />
-                                <span>Yes</span>
-                            </div>
+                            <Checkbox
+                                name="openSource"
+                                text={<span>Yes</span>}
+                            />
                         )}
                     </div>
                     <h2>Sources</h2>

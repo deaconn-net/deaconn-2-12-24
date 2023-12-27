@@ -10,6 +10,7 @@ import { api } from "@utils/Api";
 import { ScrollToTop } from "@utils/Scroll";
 
 import Markdown from '@components/markdown/Markdown';
+import Checkbox from '../Checkbox';
 
 export default function ArticleForm ({
     article,
@@ -123,12 +124,10 @@ export default function ArticleForm ({
                                         <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
-                                    <div className="form-checkbox">
-                                        <Field
-                                            name="bannerRemove"
-                                            type="checkbox"
-                                        /> <span>Remove Banner</span>
-                                    </div>
+                                    <Checkbox
+                                        name="bannerRemove"
+                                        text={<span>Remove Banner</span>}
+                                    />
                                 )}
                             </>
                         )}
