@@ -1,4 +1,4 @@
-import { UserRoles } from "@prisma/client";
+import { type UserRoles } from "@prisma/client";
 import { type Session } from "next-auth";
 
 export function HasRole(session: Session | null, role: UserRoles) {

@@ -1,5 +1,5 @@
 import { type GetServerSidePropsContext } from "next";
-import { type DefaultSession, getServerSession, type NextAuthOptions, DefaultUser } from "next-auth";
+import { type DefaultSession, getServerSession, type NextAuthOptions, type DefaultUser } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";

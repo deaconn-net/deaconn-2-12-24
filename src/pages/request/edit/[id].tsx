@@ -29,7 +29,7 @@ export default function Page ({
     // Retrieve user session and check if user has access.
     const { data: session } = useSession();
 
-    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
+    let authed = HasRole(session, "ADMIN") || HasRole(session, "MODERATOR");
 
     if (!authed && session?.user && request && session.user.id == request.userId)
         authed = true;
@@ -89,7 +89,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Make sure we're signed in.
-    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
+    let authed = HasRole(session, "ADMIN") || HasRole(session, "MODERATOR");
 
     const lookup_id = params?.id;
 

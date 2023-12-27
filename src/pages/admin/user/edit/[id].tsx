@@ -52,13 +52,6 @@ export default function Page ({
     // Role name to add.
     const [roleName, setRoleName] = useState(availRoles?.[0] ?? undefined);
 
-    // Queries.
-    const userRolesQuery = api.admin.getUserRoles.useQuery({
-        userId: user?.id ?? "INVALID"
-    });
-
-    const userRoles = userRolesQuery.data;
-
     // Prepare mutations.
     const addRoleMut = api.admin.addUserRole.useMutation({
         onError: (opts) => {
@@ -125,7 +118,7 @@ export default function Page ({
                                 />
                             </div>
                         </div>
-                        {userRoles && userRoles.length > 0 && (
+                        {user.roles.length > 0 && (
                             <div className="content-item">
                                 <h2>Existing Roles</h2>
                                 <div className="flex flex-wrap gap-4 h-full">

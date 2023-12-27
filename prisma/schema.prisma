@@ -347,3 +347,33 @@ model GithubStats {
   key String @id
   val String
 }
+
+// API keys
+model ApiKey {
+  id Int @id @default(autoincrement())
+
+  ipAddr   String?
+  agent    String?
+  endPoint String?
+  method   String?
+
+  key       String @unique
+  rateLimit Int?   @default(100)
+
+  log ApiLog[]
+}
+
+model ApiLog {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime @default(now())
+
+  ipAddr   String?
+  agent    String?
+  endPoint String?
+  method   String?
+  data     String?
+
+  apiKeyId Int
+  apiKey   ApiKey @relation(fields: [apiKeyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}

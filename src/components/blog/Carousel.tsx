@@ -60,8 +60,6 @@ export default function BlogCarousel ({
     if (typeof autoPlaySpeedMin !== "undefined" && typeof autoPlaySpeedMax !== "undefined" && !playSpeed)
         setPlaySpeed(GetRandomInt(autoPlaySpeedMin, autoPlaySpeedMax))
 
-    console.log(playSpeed)
-
     return (
         <Carousel
             responsive={responsive}

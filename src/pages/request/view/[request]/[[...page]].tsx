@@ -41,7 +41,7 @@ export default function Page ({
     // Retrieve user session and check if user has access.
     const { data: session } = useSession();
 
-    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
+    let authed = HasRole(session, "ADMIN") || HasRole(session, "MODERATOR");
 
     if (!authed && request && session?.user && (request.userId == session?.user.id))
         authed = true;
@@ -127,15 +127,9 @@ export default function Page ({
     });
 
     // Check if we can edit, set status, or accept/reject request.
-    let isAdmin = false;
+    const isAdmin = HasRole(session, "ADMIN");
 
-    if (session && HasRole(session, "admin"))
-        isAdmin = true;
-
-    let canEditAndStatus = false;
-
-    if (session && (HasRole(session, "admin") || HasRole(session, "moderator")))
-        canEditAndStatus = true;
+    let canEditAndStatus = HasRole(session, "ADMIN") || HasRole(session, "MODERATOR");
 
     if (!canEditAndStatus && session?.user && request && session.user.id == request.userId)
         canEditAndStatus = true;
@@ -271,7 +265,7 @@ export default function Page ({
                                         let canDelete = false;
 
                                         // Check if we can edit and delete reply.
-                                        if (session && (HasRole(session, "admin") || HasRole(session, "moderator"))) {
+                                        if (HasRole(session, "ADMIN") || HasRole(session, "MODERATOR")) {
                                             canEdit = true;
                                             canDelete = true;
                                         }
@@ -380,7 +374,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
     const session = await getServerAuthSession(ctx);
 
-    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
+    let authed = HasRole(session, "ADMIN") || HasRole(session, "MODERATOR");
 
     // Retrieve request ID and page number if any.
     const { params } = ctx;
