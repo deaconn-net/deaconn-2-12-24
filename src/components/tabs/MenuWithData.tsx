@@ -12,7 +12,7 @@ export default function TabsMenuWithData ({
             <div className="w-full sm:w-auto flex justify-center">
                 {menu}
             </div>
-            <div className={`grow flex flex-col gap-4 ${data_background ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : ""}`}>
+            <div className={`w-full grow flex flex-col gap-4 ${data_background ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : ""}`}>
                 {data}
             </div>
         </div>

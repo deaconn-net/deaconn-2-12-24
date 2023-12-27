@@ -63,7 +63,7 @@ export default function UserView ({
     ];
 
     return (
-        <div className="tab-menu-with-data">
+        <div className="flex flex-wrap md:flex-nowrap gap-4 justify-center">
             <div className="flex flex-col gap-4 !justify-normal">
                 <div className="flex flex-col items-center justify-center gap-2">
                     {avatar && (
@@ -142,7 +142,7 @@ export default function UserView ({
                 />
             </div>
 
-            <div className={showDataBg ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : undefined}>
+            <div className={`w-full ${showDataBg ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : ""}`}>
                 {children}
             </div>
         </div>

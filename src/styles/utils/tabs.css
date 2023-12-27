@@ -31,5 +31,5 @@
 .tab-active {
     @apply text-white;
     @apply font-bold;
-    @apply bg-cyan-900;
+    @apply !bg-cyan-900;
 }
