@@ -132,12 +132,10 @@ export default function ArticleRow ({
                     )}
 
                     {(HasRole(session, "MODERATOR") || HasRole(session, "ADMIN")) && (
-                        <Link
+                        <button
+                            type="button"
                             className="button button-danger w-full"
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-
+                            onClick={() => {
                                 const yes = confirm("Are you sure you want to delete this article?");
 
                                 if (yes) {
@@ -146,7 +144,7 @@ export default function ArticleRow ({
                                     });
                                 }
                             }}
-                        >Delete</Link>
+                        >Delete</button>
                     )}
                 </div>
             )}
