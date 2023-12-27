@@ -53,7 +53,7 @@
             @apply block text-lg font-bold text-white;
         }
 
-        & input, select {
+        & input:not([type="checkbox"]), select {
             @apply p-4 bg-cyan-900 ring-cyan-800 rounded w-full;
         }
     }
