@@ -18,6 +18,13 @@ export const UserPublicSelect = {
     socialFacebook: true
 }
 
+export const UserPublicSimpleSelect = {
+    id: true,
+    avatar: true,
+    url: true,
+    name: true
+}
+
 export const UserPublicSelectWithEmail = {
     ...UserPublicSelect,
     email: true

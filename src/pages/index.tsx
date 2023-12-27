@@ -1,7 +1,7 @@
 import { prisma } from "@server/db";
 
 import { type Service } from "@prisma/client";
-import { type ArticleWithUser } from "~/types/blog/article";
+import { ArticleFrontSelect, type ArticleWithUser } from "~/types/blog/article";
 import { type UserPublic, UserPublicSelect } from "~/types/user/user";
 
 import Wrapper from "@components/Wrapper";
@@ -19,6 +19,7 @@ import HaveARequestBlock from "@components/blocks/HaveARequest";
 import WhoAreWeBlock from "@components/blocks/WhoAreWe";
 import BlogCarousel from "@components/blog/Carousel";
 import ServiceCarousel from "@components/service/Carousel";
+import { ServiceFrontSelect } from "~/types/service";
 
 export default function Page ({
     articlesLatest,
@@ -89,11 +90,7 @@ export async function getServerSideProps() {
     // Retrieve articles, team members, and services.
     const articlesLatest = await prisma.article.findMany({
         take: 10,
-        include: {
-            user: {
-                select: UserPublicSelect
-            }
-        },
+        select: ArticleFrontSelect,
         orderBy: {
             createdAt: "desc"
         }
@@ -101,11 +98,7 @@ export async function getServerSideProps() {
 
     const articlesPopular = await prisma.article.findMany({
         take: 10,
-        include: {
-            user: {
-                select: UserPublicSelect
-            }
-        },
+        select: ArticleFrontSelect,
         orderBy: {
             views: "desc"
         }
@@ -121,6 +114,7 @@ export async function getServerSideProps() {
 
     const services = await prisma.service.findMany({
         take: 10,
+        select: ServiceFrontSelect,
         orderBy: {
             totalDownloads: "desc"
         }
