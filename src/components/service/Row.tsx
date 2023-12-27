@@ -89,8 +89,8 @@ export default function ServiceRow ({
                 </h3>
             </div>
             {service.desc && (
-                <div className={`px-6 text-sm ${simple ? "max-h-16 overflow-hidden overflow-ellipsis whitespace-nowrap" : ""}`}>
-                    <span>{service.desc}</span>
+                <div className={`px-6 ${simple ? "max-h-16 overflow-hidden overflow-ellipsis whitespace-nowrap" : ""}`}>
+                    <span className="text-sm">{service.desc}</span>
                 </div>
             )}
             <div className="grow"></div>
