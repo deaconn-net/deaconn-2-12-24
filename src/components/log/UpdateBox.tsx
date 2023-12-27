@@ -112,7 +112,7 @@ export default function UpdateBox ({
                         hasMore={requireItems}
                         useWindow={false}
                     >
-                        <table className="w-full table-auto">
+                        <table className="w-full table-auto border-separate border-spacing-2">
                             <tbody>
                                 {updateLogs.map((update) => {
                                     return (

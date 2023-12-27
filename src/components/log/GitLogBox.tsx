@@ -54,7 +54,7 @@ export default function GitLogBox () {
                     hasMore={requireItems}
                     useWindow={false}
                 >
-                    <table className="w-full table-auto">
+                    <table className="w-full table-auto border-separate border-spacing-2">
                         <tbody>
                             {gitLogs.map((log) => {
                                 return (
