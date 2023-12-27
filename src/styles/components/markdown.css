@@ -2,31 +2,16 @@
     & h1, h2, h3, h4, h5 {
         @apply not-italic;
         @apply pt-2;
-        @apply pb-1;
-    }
-
-    & ol {
-        @apply list-decimal;
     }
 
     & ul {
+        @apply p-2;
         @apply list-disc;
     }
 
-    & ol > li, ul > li {
-        @apply ml-12;
-    }
-
-    & p {
-        @apply leading-6;
-        @apply pb-2;
-    }
-
-    & a { 
-        @apply text-cyan-400;
-
-        &:hover {
-            @apply text-cyan-300;
+    & ul, ol {
+        & > li {
+            @apply ml-6;
         }
     }
 
@@ -37,35 +22,36 @@
     & pre {
         @apply bg-gray-900;
         @apply rounded-sm;
-        @apply text-white;
+        @apply text-gray-200;
         @apply p-4;
-        @apply overflow-y-auto;
+        @apply overflow-auto;
         @apply max-h-80;
+        @apply whitespace-pre-wrap;
+        @apply leading-6;
+        @apply text-sm;
+        @apply text-left;
+        @apply mt-2;
+
+        tab-size: 4;
+        -o-tab-size: 4;
+        -moz-tab-size: 4;
+        
+        hyphens: none;
+        -webkit-hyphens: none;
+        -moz-hyphens: none;
+        -ms-hyphens: none;
     }
 
     & code:not(pre code) {
         @apply bg-gray-950;
+        @apply rounded;
         @apply px-1;
         @apply rounded-sm;
-        @apply text-cyan-300;
+        @apply text-cyan-200;
     }
 
-    & pre::-webkit-scrollbar {
-        @apply w-2;
-        @apply rounded;
-    }
-    
-    & pre::-webkit-scrollbar-track {
-        @apply bg-black/20;
-    }
-    
-    & pre::-webkit-scrollbar-thumb {
-        @apply bg-gray-700/50;
-        
-        @apply rounded-lg;
-    }
-    
-    & pre::-webkit-scrollbar-thumb:hover {
-        @apply bg-gray-600/50;
+    & p {
+        @apply py-1;
+        @apply leading-5;
     }
 }
