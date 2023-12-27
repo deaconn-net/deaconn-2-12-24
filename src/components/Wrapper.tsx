@@ -80,7 +80,7 @@ export default function Wrapper ({
                 const scrollX = window.scrollX;
 
                 setViewPort({
-                    mobile: innerWidth <= 630,
+                    mobile: innerWidth <= 639,
                     innerHeight: innerHeight,
                     innerWidth: innerWidth,
                     scrollY: scrollY,
