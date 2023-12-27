@@ -68,11 +68,29 @@
 
     form {
         & label {
-            @apply block text-lg font-bold text-white;
+            @apply block;
+            @apply text-lg;
+            @apply font-bold;
+            @apply text-white;
         }
 
-        & input:not([type="checkbox"]), select {
-            @apply p-4 bg-cyan-900 ring-cyan-800 rounded w-full;
+        & input:not([type="checkbox"]), select, textarea {
+            @apply p-4;
+            @apply bg-cyan-900;
+            @apply ring-2;
+            @apply ring-deaconn-ring;
+            @apply focus:ring-deaconn-ring2;
+            @apply focus-visible:ring-deaconn-ring2;
+            @apply focus-within:ring-deaconn-ring2;
+            @apply rounded;
+            @apply w-full;
+        }
+
+        & > div {
+            @apply p-6;
+            @apply flex;
+            @apply flex-col;
+            @apply gap-2;
         }
     }
 
@@ -98,10 +116,7 @@
 
 /* Components */
 @layer components {
-    @import "components/forms/main.css";
-
     @import "components/content.css";
-    @import "components/grid.css";
     @import "components/markdown.css";
 }
 
@@ -109,4 +124,5 @@
     @import "utils/buttons.css";
     @import "utils/icons.css";
     @import "utils/tabs.css";
+    @import "utils/grid.css";
 }

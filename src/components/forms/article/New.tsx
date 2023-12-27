@@ -94,13 +94,11 @@ export default function ArticleForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label 
-                            className="form-label"
-                        >Banner</label>
+                    <div>
+                        <label>Banner</label>
                         <input
                             name="banner"
-                            className="form-input"
+                            
                             type="file"
                             onChange={(e) => {
                                 const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
@@ -120,7 +118,7 @@ export default function ArticleForm ({
                             <>
                                 {preview ? (
                                     <>
-                                        <label className="form-label">Remove Banner</label>
+                                        <label>Remove Banner</label>
                                         <p className="italic">{form.values.bannerRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
@@ -132,8 +130,8 @@ export default function ArticleForm ({
                             </>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Category</label>
+                    <div>
+                        <label>Category</label>
                         {preview ? (
                             <p className="italic">{form.values.category}</p>
                         ) : (
@@ -142,7 +140,7 @@ export default function ArticleForm ({
                                 value={form.values.category}
                                 onChange={form.handleChange}
                                 onBlur={form.handleBlur}
-                                className="form-input"
+                                
                             >
                                 <option value={0}>None</option>
                                 {categories.map((category) => {
@@ -164,45 +162,45 @@ export default function ArticleForm ({
                             </select>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">URL</label>
+                    <div>
+                        <label>URL</label>
                         {preview ? (
                             <p className="italic">{form.values.url}</p>
                         ) : (
                             <Field 
                                 name="url" 
-                                className="form-input"
+                                
                             />
                         )}
 
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Title</label>
+                    <div>
+                        <label>Title</label>
                         {preview ? (
                             <p className="italic">{form.values.title}</p>
                         ) : (
                             <Field
                                 name="title"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Description</label>
+                    <div>
+                        <label>Description</label>
                         {preview ? (
                             <p>{form.values.desc}</p>
                         ) : (
                             <Field
                                 name="desc"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="8"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Content</label>
+                    <div>
+                        <label>Content</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.content}
@@ -211,7 +209,7 @@ export default function ArticleForm ({
                             <Field
                                 name="content"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />

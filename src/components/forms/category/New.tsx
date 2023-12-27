@@ -82,14 +82,14 @@ export default function CategoryForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Parent</label>
+                    <div>
+                        <label>Parent</label>
                         {preview ? (
                             <p className="italic">{form.values.parent}</p>
                         ) : (
                             <select
                                 name="parent"
-                                className="form-input"
+                                
                                 value={form.values.parent}
                                 onChange={form.handleChange}
                                 onBlur={form.handleBlur}
@@ -114,30 +114,30 @@ export default function CategoryForm ({
                             </select>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">URL</label>
+                    <div>
+                        <label>URL</label>
                         {preview ? (
                             <p className="italic">{form.values.url}</p>
                         ) : (
                             <Field
                                 name="url"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Name</label>
+                    <div>
+                        <label>Name</label>
                         {preview ? (
                             <p className="italic">{form.values.name}</p>
                         ) : (
                             <Field
                                 name="name"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Description</label>
+                    <div>
+                        <label>Description</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.description}
@@ -146,7 +146,7 @@ export default function CategoryForm ({
                             <Field
                                 name="description"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows={16}
                                 cols={32}
                             />

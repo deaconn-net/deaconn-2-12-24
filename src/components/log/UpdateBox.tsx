@@ -142,7 +142,7 @@ export default function UpdateBox ({
                             if (e.key == "Enter")
                                 checkAndAddMsg();  
                         }}
-                        className="form-input sm:w-2/3"
+                        className="sm:w-2/3"
                     />
                     <button
                         onClick={(e) => {
@@ -260,7 +260,7 @@ function Row ({
                                 });
                             }
                         }}
-                        className="form-input w-auto"
+                        className="w-auto"
                     />
                 ) : (
                     <Markdown>

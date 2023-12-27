@@ -100,18 +100,12 @@ export default function Header () {
     return (
         <header className="bg-slate-800 sticky top-0 z-50">
             <button
-                className="sm:hidden p-4 top-0 left-0"
+                className={`${mobileOpen ? "hidden" : ""} sm:hidden p-4 top-0 left-0`}
                 onClick={() => setMobileOpen(!mobileOpen)}
             >
-                {mobileOpen ? (
-                    <MobileMenuCollapseIcon
-                        className="icon-nav-item fill-white"
-                    />
-                ) : (
-                    <MobileMenuIcon
-                        className="icon-nav-item fill-white"
-                    />
-                )}
+                <MobileMenuIcon
+                    className="icon-nav-item fill-white"
+                />
             </button>
             <nav ref={mobileMenu} className={`hidden flex-col gap-2 bg-deaconn-data2 overflow-auto fixed top-0 left-0 p-2 h-full w-2/3 sm:w-1/2 sm:hidden`}>
                 <div className="flex justify-end">

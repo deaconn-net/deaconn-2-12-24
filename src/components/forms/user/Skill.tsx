@@ -95,25 +95,25 @@ export default function SkillForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Title</label>
+                    <div>
+                        <label>Title</label>
                         {preview ? (
                             <p className="italic">{form.values.title}</p>
                         ) : (
                             <Field
                                 name="title"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Details</label>
+                    <div>
+                        <label>Details</label>
                         {preview ? (
                             <p className="italic">{form.values.desc}</p>
                         ) : (
                             <Field
                                 name="desc"
-                                className="form-input"
+                                
                                 as="textarea"
                                 rows="16"
                                 cols="32"

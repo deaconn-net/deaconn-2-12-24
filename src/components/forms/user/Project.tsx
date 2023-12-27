@@ -131,14 +131,14 @@ export default function UserProjectForm({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Start Date</label>
+                    <div>
+                        <label>Start Date</label>
                         {preview ? (
                             <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
                         ) : (
                             <DatePicker
                             name="startDate"
-                                className="form-input"
+                                
                                 selected={form.values.startDate}
                                 dateFormat="yyyy/MM/dd"
                                 onChange={(date: Date) => {
@@ -147,14 +147,14 @@ export default function UserProjectForm({
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">End Date</label>
+                    <div>
+                        <label>End Date</label>
                         {preview ? (
                             <p className="italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
                         ) : (
                             <DatePicker
                                 name="endDate"
-                                className="form-input"
+                                
                                 selected={form.values.endDate}
                                 dateFormat="yyyy/MM/dd"
                                 onChange={(date: Date) => {
@@ -163,32 +163,32 @@ export default function UserProjectForm({
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Name</label>
+                    <div>
+                        <label>Name</label>
                         {preview ? (
                             <p className="italic">{form.values.name}</p>
                         ) : (
                             <Field
                                 name="name"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Short Description</label>
+                    <div>
+                        <label>Short Description</label>
                         {preview ? (
                             <p className="italic">{form.values.desc}</p>
                         ) : (
                             <Field
                                 name="desc"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
+                    <div>
                         <label>Details</label>
                         {preview ? (
                             <Markdown className="p-4">
@@ -198,13 +198,13 @@ export default function UserProjectForm({
                             <Field
                                 name="details"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
+                    <div>
                         <label>Open Source</label>
                         {preview ? (
                             <p className="italic">{(form.values.openSource) ? "Yes" : "No"}</p>
@@ -216,7 +216,7 @@ export default function UserProjectForm({
                         )}
                     </div>
                     <h2>Sources</h2>
-                    <div className="form-div">
+                    <div>
                         {form.values.sources.map((source, index) => {
                             return (
                                 <div
@@ -228,7 +228,7 @@ export default function UserProjectForm({
                                         <Field
                                             name={`sources[${index.toString()}].title`}
                                             value={source.title ?? ""}
-                                            className="form-input"
+                                            
                                         />
                                     </div>
                                     <div>
@@ -236,7 +236,7 @@ export default function UserProjectForm({
                                         <Field
                                             name={`sources[${index.toString()}].url`}
                                             value={source.url ?? ""}
-                                            className="form-input"
+                                            
                                         />
                                     </div>
                                     <button

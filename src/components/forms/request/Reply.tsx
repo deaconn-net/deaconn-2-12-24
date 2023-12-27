@@ -87,8 +87,8 @@ export default function RequestReplyForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Content</label>
+                    <div>
+                        <label>Content</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.content}
@@ -97,7 +97,7 @@ export default function RequestReplyForm ({
                             <Field
                                 name="content"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />

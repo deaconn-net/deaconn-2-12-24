@@ -118,14 +118,14 @@ export default function ExperienceForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Start Date</label>
+                    <div>
+                        <label>Start Date</label>
                         {preview ? (
                             <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
                         ) : (
                             <DatePicker
                                 name="startDate"
-                                className="form-input"
+                                
                                 selected={form.values.startDate}
                                 dateFormat="yyyy/MM/dd"
                                 onChange={(date: Date) => {
@@ -134,14 +134,14 @@ export default function ExperienceForm ({
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">End Date</label>
+                    <div>
+                        <label>End Date</label>
                         {preview ? (
                             <p className="italic">{form.values.endDate?.toString() ?? "Not Set"}</p>
                         ) : (
                             <DatePicker
                                 name="endDate"
-                                className="form-input"
+                                
                                 selected={form.values.endDate}
                                 dateFormat="yyyy/MM/dd"
                                 onChange={(date: Date) => {
@@ -150,44 +150,44 @@ export default function ExperienceForm ({
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Company</label>
+                    <div>
+                        <label>Company</label>
                         {preview ? (
                             <p className="italic">{form.values.company}</p>
                         ) : (
                             <Field
                                 name="company"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Title</label>
+                    <div>
+                        <label>Title</label>
                         {preview ? (
                             <p className="italic">{form.values.title}</p>
                         ) : (
                             <Field
                                 name="title"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Short Description</label>
+                    <div>
+                        <label>Short Description</label>
                         {preview ? (
                             <p className="italic">{form.values.desc}</p>
                         ) : (
                             <Field
                                 as="textarea"
                                 name="desc"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Details</label>
+                    <div>
+                        <label>Details</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.details}
@@ -196,7 +196,7 @@ export default function ExperienceForm ({
                             <Field
                                 as="textarea"
                                 name="details"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />

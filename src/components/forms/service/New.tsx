@@ -118,12 +118,12 @@ export default function ServiceForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Banner</label>
+                    <div>
+                        <label>Banner</label>
                         <input
                             name="banner"
                             type="file"
-                            className="form-input"
+                            
                             onChange={(e) => {
                                 const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
 
@@ -155,12 +155,12 @@ export default function ServiceForm ({
                         )}
 
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Icon</label>
+                    <div>
+                        <label>Icon</label>
                         <input
                             name="icon"
                             type="file"
-                            className="form-input"
+                            
                             onChange={(e) => {
                                 const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
 
@@ -191,8 +191,8 @@ export default function ServiceForm ({
                             </>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Category</label>
+                    <div>
+                        <label>Category</label>
                         {preview ? (
                             <p className="italic">{form.values.category}</p>
                         ) : (
@@ -201,7 +201,7 @@ export default function ServiceForm ({
                                 value={form.values.category}
                                 onChange={form.handleChange}
                                 onBlur={form.handleBlur}
-                                className="form-input"
+                                
                             >
                                 <option value={0}>None</option>
                                 {categories.map((category) => {
@@ -223,41 +223,41 @@ export default function ServiceForm ({
                             </select>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">URL</label>
+                    <div>
+                        <label>URL</label>
                         {preview ? (
                             <p className="italic">{form.values.url}</p>
                         ) : (
                             <Field
                                 name="url"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Name</label>
+                    <div>
+                        <label>Name</label>
                         {preview ? (
                             <p className="italic">{form.values.name}</p>
                         ) : (
                             <Field
                                 name="name"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Price</label>
+                    <div>
+                        <label>Price</label>
                         {preview ? (
                             <p>{form.values.price}</p>
                         ) : (
                             <Field
                                 name="price"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Description</label>
+                    <div>
+                        <label>Description</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.desc}
@@ -266,14 +266,14 @@ export default function ServiceForm ({
                             <Field
                                 name="desc"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="8"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Installation</label>
+                    <div>
+                        <label>Installation</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.install}
@@ -282,14 +282,14 @@ export default function ServiceForm ({
                             <Field
                                 name="install"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Features</label>
+                    <div>
+                        <label>Features</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.features}
@@ -298,14 +298,14 @@ export default function ServiceForm ({
                             <Field
                                 name="features"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Details</label>
+                    <div>
+                        <label>Details</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.content}
@@ -314,25 +314,25 @@ export default function ServiceForm ({
                             <Field
                                 name="content"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Git Link</label>
+                    <div>
+                        <label>Git Link</label>
                         {preview ? (
                             <p className="italic">{form.values.gitLink}</p>
                         ) : (
                             <Field
                                 name="gitLink"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Open Source</label>
+                    <div>
+                        <label>Open Source</label>
                         {preview ? (
                             <p className="italic">{(form.values.openSource) ? "Yes" : "No"}</p>
                         ) : (
@@ -343,7 +343,7 @@ export default function ServiceForm ({
                         )}
                     </div>
                     <h2>Links</h2>
-                    <div className="form-div">
+                    <div>
                         {form.values.links.map((link, index) => {
                             return (
                                 <div
@@ -354,14 +354,14 @@ export default function ServiceForm ({
                                         <label>Title</label>
                                         <Field
                                             name={`links[${index.toString()}].title`}
-                                            className="form-input"
+                                            
                                         />
                                     </div>
                                     <div>
                                         <label>URL</label>
                                         <Field
                                             name={`links[${index.toString()}].url`}
-                                            className="form-input"
+                                            
                                         />
                                     </div>
                                     <Checkbox

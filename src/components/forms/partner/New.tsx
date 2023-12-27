@@ -89,12 +89,12 @@ export default function PartnerForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Banner</label>
+                    <div>
+                        <label>Banner</label>
                         <input
                             name="banner"
                             type="file"
-                            className="form-input"
+                            
                             onChange={(e) => {
                                 const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
 
@@ -125,12 +125,12 @@ export default function PartnerForm ({
                             </>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Icon</label>
+                    <div>
+                        <label>Icon</label>
                         <input
                             name="icon"
                             type="file"
-                            className="form-input"
+                            
                             onChange={(e) => {
                                 const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
 
@@ -161,42 +161,42 @@ export default function PartnerForm ({
                             </>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Priority</label>
+                    <div>
+                        <label>Priority</label>
                         {preview ? (
                             <p className="italic">{form.values.priority.toString()}</p>
                         ) : (
                             <Field
                                 type="number"
                                 name="priority"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Name</label>
+                    <div>
+                        <label>Name</label>
                         {preview ? (
                             <p className="italic">{form.values.name}</p>
                         ) : (
                             <Field
                                 name="name"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">URL</label>
+                    <div>
+                        <label>URL</label>
                         {preview ? (
                             <p className="italic">{form.values.url}</p>
                         ) : (
                             <Field
                                 name="url"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">About</label>
+                    <div>
+                        <label>About</label>
                         {preview ? (
                             <Markdown>
                                 {form.values.about}
@@ -205,7 +205,7 @@ export default function PartnerForm ({
                             <Field
                                 name="about"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows={8}
                                 cols={32}
                             />

@@ -105,26 +105,26 @@ export default function RequestForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
-                        <label className="form-label">Title</label>
+                    <div>
+                        <label>Title</label>
                         {preview ? (
                             <p className="italic">{form.values.title}</p>
                         ) : (
                             <Field
                                 name="title"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Service</label>
+                    <div>
+                        <label>Service</label>
                         {preview ? (
                             <p className="italic">{form.values.service}</p>
                         ) : (
                             <Field
                                 name="service"
                                 as="select"
-                                className="form-input"
+                                
                             >
                                 <>
                                     <option value="0">None</option>
@@ -141,14 +141,14 @@ export default function RequestForm ({
                         )}
 
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Start Date</label>
+                    <div>
+                        <label>Start Date</label>
                         {preview ? (
                             <p className="italic">{form.values.startDate?.toString() ?? "Not Set"}</p>
                         ) : (
                             <DatePicker
                                 name="startDate"
-                                className="form-input"
+                                
                                 selected={form.values.startDate}
                                 onChange={(date: Date) => {
                                     void form.setFieldValue('startDate', date);
@@ -158,31 +158,31 @@ export default function RequestForm ({
                         )}
 
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Timeframe</label>
+                    <div>
+                        <label>Timeframe</label>
                         {preview ? (
                             <p className="italic">{form.values.timeframe}</p>
                         ) : (
                             <Field
                                 name="timeframe"
-                                className="form-input"
+                                
                             />
                         )}
                         <p className="text-s leading-8">Value should be in <span className="font-bold">hours</span>!</p>
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Price</label>
+                    <div>
+                        <label>Price</label>
                         {preview ? (
                             <p className="italic">{form.values.price}</p>
                         ) : (
                             <Field
-                                className="form-input"
+                                
                                 name="price"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Details</label>
+                    <div>
+                        <label>Details</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.content}
@@ -191,7 +191,7 @@ export default function RequestForm ({
                             <Field
                                 name="content"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />

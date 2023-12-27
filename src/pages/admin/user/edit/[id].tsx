@@ -160,7 +160,7 @@ export default function Page ({
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                                 <select
-                                    className="form-input w-72 p-2"
+                                    className="w-72 p-2"
                                     onChange={(e) => {
                                         const val = e.currentTarget.value;
 

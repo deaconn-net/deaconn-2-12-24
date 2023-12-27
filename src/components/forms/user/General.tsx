@@ -137,13 +137,13 @@ export default function GeneralForm ({
         >
             {(form) => (
                 <Form>
-                    <div className="form-div">
+                    <div>
                         <label 
-                            className="form-label"
+                           
                         >Avatar</label>
                         <input
                             name="avatar"
-                            className="form-input"
+                            
                             type="file"
                             onChange={(e) => {
                                 const file = (e?.target?.files) ? e?.target?.files[0] ?? null : null;
@@ -163,7 +163,7 @@ export default function GeneralForm ({
                             <>
                                 {preview ? (
                                     <>
-                                        <label className="form-label">Remove Avatar</label>
+                                        <label>Remove Avatar</label>
                                         <p className="italic">{form.values.avatarRemove ? "Yes" : "No"}</p>
                                     </>
                                 ) : (
@@ -175,45 +175,45 @@ export default function GeneralForm ({
                             </>
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Name</label>
+                    <div>
+                        <label>Name</label>
                         {preview ? (
                             <p className="italic">{form.values.name}</p>
                         ) : (
                             <Field
                                 name="name"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">URL</label>
+                    <div>
+                        <label>URL</label>
                         {preview ? (
                             <p className="italic">{form.values.url}</p>
                         ) : (
                             <Field 
                                 name="url"
-                                className="form-input"
+                                
                             />
                         )}
                         <p className="text-sm leading-8">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
                     </div>
                     {HasRole(session, "ADMIN") && (
-                        <div className="form-div">
-                            <label className="form-label">Title</label>
+                        <div>
+                            <label>Title</label>
                             {preview ? (
                                 <p className="italic">{form.values.title}</p>
                             ) : (
                                 <Field 
                                     name="title"
-                                    className="form-input"
+                                    
                                 />
                             )}
                             <p className="text-sm leading-8">The user&apos;s title.</p>
                         </div>
                     )}
-                    <div className="form-div">
-                        <label className="form-label">About Me</label>
+                    <div>
+                        <label>About Me</label>
                         {preview ? (
                             <Markdown className="p-4">
                                 {form.values.aboutMe}
@@ -222,20 +222,20 @@ export default function GeneralForm ({
                             <Field
                                 name="aboutMe"
                                 as="textarea"
-                                className="form-input"
+                                
                                 rows="16"
                                 cols="32"
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Birthday</label>
+                    <div>
+                        <label>Birthday</label>
                         {preview ? (
                             <p className="italic">{form.values.birthday?.toString() ?? "Not Set"}</p>
                         ) : (
                             <DatePicker
                                 name="birthday"
-                                className="form-input"
+                                
                                 selected={form.values.birthday}
                                 dateFormat="yyyy/MM/dd"
                                 onChange={(date: Date) => {
@@ -244,8 +244,8 @@ export default function GeneralForm ({
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Show Email</label>
+                    <div>
+                        <label>Show Email</label>
                         {preview ? (
                             <p className="italic">{form.values.showEmail ? "Yes" : "No"}</p>
                         ) : (
@@ -257,8 +257,8 @@ export default function GeneralForm ({
                     </div>
                     {HasRole(session, "ADMIN") && (
                         <>
-                            <div className="form-div">
-                                <label className="form-label">Is Team</label>
+                            <div>
+                                <label>Is Team</label>
                                 {preview ? (
                                     <p className="italic">{form.values.isTeam ? "Yes" : "No"}</p>
                                 ) : (
@@ -268,8 +268,8 @@ export default function GeneralForm ({
                                     />
                                 )}
                             </div>
-                            <div className="form-div">
-                                <label className="form-label">Is Restricted</label>
+                            <div>
+                                <label>Is Restricted</label>
                                 {preview ? (
                                     <p className="italic">{form.values.isRestricted ? "Yes" : "No"}</p>
                                 ) : (
@@ -282,58 +282,58 @@ export default function GeneralForm ({
                         </>
                     )}
                     <h2>Social</h2>
-                    <div className="form-div">
-                        <label className="form-label">Website</label>
+                    <div>
+                        <label>Website</label>
                         {preview ? (
                             <p className="italic">{form.values.website}</p>
                         ) : (
                             <Field
                                 name="website"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Twitter</label>
+                    <div>
+                        <label>Twitter</label>
                         {preview ? (
                             <p className="italic">{form.values.socialTwitter}</p>
                         ) : (
                             <Field
                                 name="socialTwitter"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Github</label>
+                    <div>
+                        <label>Github</label>
                         {preview ? (
                             <p className="italic">{form.values.socialGithub}</p>
                         ) : (
                             <Field
                                 name="socialGithub"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Linkedin</label>
+                    <div>
+                        <label>Linkedin</label>
                         {preview ? (
                             <p className="italic">{form.values.socialLinkedin}</p>
                         ) : (
                             <Field
                                 name="socialLinkedin"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>
-                    <div className="form-div">
-                        <label className="form-label">Facebook</label>
+                    <div>
+                        <label>Facebook</label>
                         {preview ? (
                             <p className="italic">{form.values.socialFacebook}</p>
                         ) : (
                             <Field
                                 name="socialFacebook"
-                                className="form-input"
+                                
                             />
                         )}
                     </div>

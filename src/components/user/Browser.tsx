@@ -62,7 +62,7 @@ export default function UserBrowser ({
                 <div className="flex flex-wrap gap-2 items-center">
                     <h3>Search</h3>
                     <input
-                        className="form-input w-72 p-2"
+                        className="w-72 p-2"
                         onChange={(e) => {
                             e.preventDefault();
 
@@ -72,7 +72,7 @@ export default function UserBrowser ({
                         }}
                     />
                     <select
-                        className="form-input w-32 p-2"
+                        className="w-32 p-2"
                         onChange={(e) => {
                             const val = Number(e.currentTarget.value);
 
