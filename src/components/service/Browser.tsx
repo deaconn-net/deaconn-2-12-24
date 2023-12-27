@@ -29,7 +29,7 @@ export default function ServiceBrowser ({
     const sortDir = "desc";
 
     if (mostPopular)
-        sort = "views";
+        sort = "totalViews";
 
     const [requireItems, setRequireItems] = useState(true);
 
@@ -63,18 +63,11 @@ export default function ServiceBrowser ({
     return (
         <div className="flex flex-col gap-4">
             <div className="flex justify-between flex-wrap gap-2 w-full sm:w-auto">
-                <Link
+                <button
+                    type="button"
                     className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
-                    href="#" 
-                    onClick={(e) => {
-                        e.preventDefault();
-
-                        if (mostPopular)
-                            setMostPopular(false);
-                        else
-                            setMostPopular(true);
-                    }}
-                >Most Popular</Link>
+                    onClick={() => setMostPopular(!mostPopular)}
+                >Most Popular</button>
                 {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                     <Link
                         className="button button-primary flex justify-center"
