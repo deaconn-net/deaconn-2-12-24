@@ -8,8 +8,7 @@
 }
 
 .content {
-    @apply container;
-    @apply mx-auto;
+    @apply px-[5%];
     @apply py-8;
 
     @apply grow;

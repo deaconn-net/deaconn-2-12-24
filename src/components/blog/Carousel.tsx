@@ -26,15 +26,15 @@ export default function BlogCarousel ({
     const responsive = {
         xl3: {
             breakpoint: { max: 4000, min: 2496 },
-            items: 4
+            items: 6
         },
         xl2: {
             breakpoint: { max: 2496, min: 2160 },
-            items: 4
+            items: 5
         },
         xl: {
             breakpoint: { max: 2160, min: 1844 },
-            items: 4
+            items: 5
         },
         lg: {
             breakpoint: { max: 1844, min: 1488 },
@@ -45,11 +45,11 @@ export default function BlogCarousel ({
             items: 3
         },
         sm: {
-            breakpoint: { max: 1152, min: 816 },
+            breakpoint: { max: 1152, min: 639 },
             items: 2
         },
         xs: {
-            breakpoint: { max: 816, min: 0 },
+            breakpoint: { max: 639, min: 0 },
             items: 1
         }
     };
