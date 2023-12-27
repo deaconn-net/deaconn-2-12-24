@@ -107,10 +107,10 @@ export default function ArticleView ({
             {banner && (
                 <div className="w-full flex justify-center">
                     <Image
-                        className="w-full max-h-[32rem] max-w-full min-h-[32rem] object-cover"
+                        className="w-full object-cover max-h-screen"
                         src={banner}
-                        width={500}
-                        height={500}
+                        width={1920}
+                        height={1080}
                         alt="Banner"
                         priority={true}
                     />
