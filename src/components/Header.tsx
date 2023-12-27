@@ -223,7 +223,7 @@ export default function Header () {
                     )}
                 </div>
             </nav>
-            <nav className={`hidden container mx-auto sm:flex !flex-nowrap justify-between text-center items-center sm:gap-1 md:gap-4 ${viewPort.scrollY > 0 ? "h-12" : "h-16"}`}>
+            <nav className={`hidden container mx-auto sm:flex !flex-nowrap justify-between text-center items-center sm:gap-1 md:gap-4 transition-all duration-150 ${viewPort.scrollY > 0 ? "h-12" : "h-16"}`}>
                 <NavItem className="h-full flex items-center" link="/">
                     {viewPort.scrollY > 0 ? (
                         <Image
