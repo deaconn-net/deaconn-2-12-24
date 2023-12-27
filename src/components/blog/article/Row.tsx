@@ -68,7 +68,7 @@ export default function ArticleRow ({
     });
 
     return (
-        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
+        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 shadow-lg shadow-black rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
             {banner && (
                 <div className={`${simple ? "h-1/2" : "h-64"}`}>
                     <Link href={viewUrl}>
@@ -76,7 +76,7 @@ export default function ArticleRow ({
                             src={banner}
                             width={600}
                             height={400}
-                            className="h-full max-h-full w-full filter brightness-[85%] group-hover:brightness-100 rounded-t"
+                            className="h-full max-h-full w-full filter brightness-[85%] group-hover:brightness-100 rounded-t object-cover"
                             alt="Article Banner"
                         />
                     </Link>
