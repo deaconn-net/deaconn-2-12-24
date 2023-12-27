@@ -33,8 +33,10 @@ export default function ArticleBrowser({
     if (mostPopular)
         sort = "views";
 
-    if (oldest)
+    if (oldest) {
+        sort = "createdAt"
         sortDir = "asc";
+    }
 
     const [requireItems, setRequireItems] = useState(true);
 
@@ -68,30 +70,16 @@ export default function ArticleBrowser({
         <div className="flex flex-col gap-4">
             <div className="flex flex-wrap gap-2 justify-between">
                 <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-                    <Link
+                    <button
+                        type="button"
                         className={"button" + ((mostPopular) ? " !bg-cyan-600" : "")}
-                        href="#" 
-                        onClick={(e) => {
-                            e.preventDefault();
-
-                            if (mostPopular)
-                                setMostPopular(false);
-                            else
-                                setMostPopular(true);
-                        }}
-                    >Most Popular</Link>
-                    <Link
+                        onClick={() => setMostPopular(!mostPopular)}
+                    >Most Popular</button>
+                    <button
+                        type="button"
                         className={"button" + ((oldest) ? " !bg-cyan-600" : "")}
-                        href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-
-                            if (oldest)
-                                setOldest(false);
-                            else
-                                setOldest(true);
-                        }}
-                    >Oldest</Link>
+                        onClick={() => setOldest(!oldest)}
+                    >Oldest</button>
                 </div>
                 {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                     <Link
