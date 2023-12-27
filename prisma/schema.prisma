@@ -148,8 +148,9 @@ model Partner {
 
   priority Int @default(0)
 
-  name String
-  url  String
+  name  String
+  about String?
+  url   String
 
   banner String?
   icon   String?

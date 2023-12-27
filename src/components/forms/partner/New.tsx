@@ -8,6 +8,7 @@ import { ScrollToTop } from "@utils/Scroll";
 
 import { type Partner } from "@prisma/client";
 import Checkbox from "../Checkbox";
+import Markdown from "@components/markdown/Markdown";
 
 export default function PartnerForm ({
     partner
@@ -59,6 +60,7 @@ export default function PartnerForm ({
             initialValues={{
                 priority: partner?.priority ?? 0,
                 name: partner?.name ?? "",
+                about: partner?.about ?? "",
                 url: partner?.url ?? "",
                 bannerRemove: false,
                 iconRemove: false 
@@ -76,6 +78,7 @@ export default function PartnerForm ({
                     id: partner?.id,
                     priority: values.priority,
                     name: values.name,
+                    about: values.about,
                     url: values.url,
                     banner: banner?.toString(),
                     bannerRemove: values.bannerRemove,
@@ -189,6 +192,22 @@ export default function PartnerForm ({
                             <Field
                                 name="url"
                                 className="form-input"
+                            />
+                        )}
+                    </div>
+                    <div className="form-div">
+                        <label className="form-label">About</label>
+                        {preview ? (
+                            <Markdown>
+                                {form.values.about}
+                            </Markdown>
+                        ) : (
+                            <Field
+                                name="about"
+                                as="textarea"
+                                className="form-input"
+                                rows={8}
+                                cols={32}
                             />
                         )}
                     </div>

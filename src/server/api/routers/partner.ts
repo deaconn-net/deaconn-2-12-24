@@ -36,6 +36,7 @@ export const partnerRouter = createTRPCRouter({
             priority: z.number().optional(),
 
             url: z.string().min(3).max(128),
+            about: z.string().nullable().optional(),
             name: z.string().max(64),
 
             banner: z.string().optional(),
@@ -52,11 +53,13 @@ export const partnerRouter = createTRPCRouter({
                 create: {
                     priority: input.priority,
                     name: input.name,
+                    about: input.about,
                     url: input.url
                 },
                 update: {
                     priority: input.priority,
                     name: input.name,
+                    about: input.about,
                     url: input.url,
                     ...(input.bannerRemove && {
                         banner: null
