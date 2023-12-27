@@ -209,7 +209,7 @@ export default function GeneralForm ({
                                     className="form-input"
                                 />
                             )}
-                            <p className="text-sm leading-8">The user's title.</p>
+                            <p className="text-sm leading-8">The user&apos;s title.</p>
                         </div>
                     )}
                     <div className="form-div">
