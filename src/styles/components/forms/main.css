@@ -26,8 +26,3 @@
     @apply font-bold;
     @apply text-white;
 }
-
-.form-checkbox {
-    @apply flex;
-    @apply gap-2;
-}
