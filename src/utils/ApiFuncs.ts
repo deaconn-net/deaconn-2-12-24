@@ -32,9 +32,11 @@ export async function CheckApiAccess ({
         return [401, "No authorization token specified.", method];
 
     // Retrieve only the key.
-    const clKey = fullClKey.split(" ")?.[1];
+    const keyS = fullClKey.split(" ")
+    const clType = keyS?.[0]
+    const clKey = keyS?.[1];
 
-    if (!clKey) 
+    if (!clType || !clKey || clType !== "Bearer") 
         return [400, "Authorization key malformed.", method];
 
     // Check if we should match against static key.
