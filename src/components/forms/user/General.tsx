@@ -77,6 +77,7 @@ export default function GeneralForm ({
             initialValues={{
                 name: user?.name ?? "",
                 url: user?.url ?? "",
+                title: user?.title ?? "",
                 aboutMe: user?.aboutMe ?? "",
                 birthday: new Date(user?.birthday ?? Date.now()),
                 showEmail: user?.showEmail ?? false,
@@ -118,6 +119,10 @@ export default function GeneralForm ({
                     showEmail: values.showEmail,
                     isTeam: values.isTeam,
                     isRestricted: values.isRestricted,
+
+                    ...(HasRole(session, "ADMIN") && {
+                        title: values.title
+                    }),
 
                     avatar: avatar?.toString(),
                     avatarRemove: values.avatarRemove,
@@ -193,6 +198,20 @@ export default function GeneralForm ({
                         )}
                         <p className="text-sm leading-8">The URL to your profile (e.g. deaconn.net/user/view/<span className="font-bold">URL</span>)</p>
                     </div>
+                    {HasRole(session, "ADMIN") && (
+                        <div className="form-div">
+                            <label className="form-label">Title</label>
+                            {preview ? (
+                                <p className="italic">{form.values.title}</p>
+                            ) : (
+                                <Field 
+                                    name="title"
+                                    className="form-input"
+                                />
+                            )}
+                            <p className="text-sm leading-8">The user's title.</p>
+                        </div>
+                    )}
                     <div className="form-div">
                         <label className="form-label">About Me</label>
                         {preview ? (

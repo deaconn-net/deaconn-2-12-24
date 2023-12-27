@@ -81,7 +81,9 @@ export const userRouter = createTRPCRouter({
                         avatar: avatarPath,
                         name: input.name,
                         url: input.url,
-                        title: input.title,
+                        ...(isAdmin && {
+                            title: input.title
+                        }),
                         aboutMe: input.aboutMe,
                         birthday: input.birthday,
                         showEmail: input.showEmail,
