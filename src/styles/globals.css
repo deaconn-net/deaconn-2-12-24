@@ -86,7 +86,7 @@
             @apply w-full;
         }
 
-        & > div {
+        & > div:not(:last-child) {
             @apply p-6;
             @apply flex;
             @apply flex-col;

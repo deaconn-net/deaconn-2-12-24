@@ -186,6 +186,7 @@ export default function Page ({
                                     <div className="p-4 flex flex-col gap-1 items-center bg-deaconn-header rounded-tl-lg rounded-bl-lg">
                                         <UserGridRow
                                             user={request.user}
+                                            nameAndTitleCenter={true}
                                         />
                                         <p className="text-xl font-bold"><span className="text-green-500">$</span>{request.price.toString()}</p>
                                         <p className="text-lg font-bold">{request.timeframe.toString()} Hours</p>
@@ -285,6 +286,7 @@ export default function Page ({
                                                 <div className="p-4 flex flex-col gap-2 items-center bg-deaconn-header rounded-tl-lg rounded-bl-lg">
                                                     <UserGridRow
                                                         user={request.user}
+                                                        nameAndTitleCenter={true}
                                                     />
                                                 </div>
                                                 <div className="grow p-4 bg-gradient-to-b from-deaconn-data to-deaconn-data2 rounded-sm flex flex-col gap-4 rounded-tr-lg rounded-br-lg">

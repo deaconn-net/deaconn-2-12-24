@@ -15,16 +15,18 @@ export default function UserRowGrid ({
     showActions,
     showInline,
     avatarWidth = 72,
-    avatarHeight = 72
+    avatarHeight = 72,
+    nameAndTitleCenter = false
 } : {
-    user: User | UserPublic | UserPublicWithEmail,
-    showAvatar?: boolean,
-    showTitle?: boolean,
-    showEmail?: boolean,
-    showActions?: boolean,
-    showInline?: boolean,
-    avatarWidth?: number,
+    user: User | UserPublic | UserPublicWithEmail
+    showAvatar?: boolean
+    showTitle?: boolean
+    showEmail?: boolean
+    showActions?: boolean
+    showInline?: boolean
+    avatarWidth?: number
     avatarHeight?: number
+    nameAndTitleCenter?: boolean
 }) {
     // Retrieve session.
     const { data: session } = useSession();
@@ -59,7 +61,7 @@ export default function UserRowGrid ({
                     </div>
                 )}
                 {user.name && (
-                    <div className="flex flex-col gap-1">
+                    <div className={`flex flex-col gap-1 ${nameAndTitleCenter ? "text-center" : ""}`}>
                         <span>{user.name}</span>
                         {showTitle && user.title && (
                             <span className="font-bold text-green-200 text-sm">{user.title}</span>

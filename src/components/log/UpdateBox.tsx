@@ -142,7 +142,7 @@ export default function UpdateBox ({
                             if (e.key == "Enter")
                                 checkAndAddMsg();  
                         }}
-                        className="sm:w-2/3"
+                        className="w-full bg-cyan-900 p-2 rounded sm:w-2/3"
                     />
                     <button
                         onClick={(e) => {
@@ -246,6 +246,7 @@ function Row ({
             <td>
                 {editMode && isAdmin ? (
                     <input
+                        className="w-full bg-cyan-900 p-2 rounded"
                         defaultValue={update.msg}
                         onChange={(e) => {
                             const val = e.currentTarget.value;
@@ -260,7 +261,6 @@ function Row ({
                                 });
                             }
                         }}
-                        className="w-auto"
                     />
                 ) : (
                     <Markdown>
