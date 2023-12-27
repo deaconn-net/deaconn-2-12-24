@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes menu-left-to-right {
+    0% {
+        transform: translateX(-200%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes menu-right-to-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-200%);
+    }
+}
+
 /* Base Layer (Imports Do Not Work In Base Layer) */
 @layer base {
     p {
@@ -86,8 +104,6 @@
     @import "components/grid.css";
     @import "components/markdown.css";
     @import "components/tabs.css";
-    @import "components/gitlog.css";
-    @import "components/updatelog.css";
 }
 
 @layer utilities {
