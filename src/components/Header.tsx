@@ -229,7 +229,7 @@ export default function Header () {
                     ) : (
                         <Image
                             src="/images/header_banner.png"
-                            className="max-h-full w-32"
+                            className="max-h-full h-auto w-32"
                             width={128}
                             height={64}
                             alt="Deaconn Banner"

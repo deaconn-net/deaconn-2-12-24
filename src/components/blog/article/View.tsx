@@ -105,7 +105,7 @@ export default function ArticleView ({
     return (
         <div className="flex flex-col gap-4">
             {banner && (
-                <div className="w-full flex justify-center">
+                <div className="w-full flex justify-center container mx-auto">
                     <Image
                         className="w-full object-cover max-h-screen"
                         src={banner}
