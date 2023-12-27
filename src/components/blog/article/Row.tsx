@@ -68,7 +68,7 @@ export default function ArticleRow ({
     });
 
     return (
-        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 shadow-lg shadow-black rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
+        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 shadow-lg shadow-black rounded flex flex-col gap-2 ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
             {banner && (
                 <div className={`${simple ? "h-1/2" : "h-64"}`}>
                     <Link href={viewUrl}>
@@ -87,10 +87,11 @@ export default function ArticleRow ({
                     <Link href={viewUrl}>{article.title}</Link>
                 </h3>
             </div>
-            <div className="px-2 grow text-ellipsis overflow-hidden pb-4">
-                <p className="text-sm">{article.desc}</p>
+            <div className={`px-2 ${simple ? "max-h-16 overflow-hidden overflow-ellipsis whitespace-nowrap" : ""}`}>
+                <span className="text-sm">{article.desc}</span>
             </div>
-            <div className="px-2 pb-6 flex flex-wrap justify-between text-white text-sm">
+            <div className="grow"></div>
+            <div className="px-6 py-2 flex flex-wrap justify-between text-white text-sm">
                 <IconAndText
                     icon={
                         <ViewIcon
@@ -114,7 +115,7 @@ export default function ArticleRow ({
                 />
             </div>
             {!simple && (
-                <div className="px-2 pb-6 flex justify-center">
+                <div className="px-2 py-2 flex justify-center">
                     <Link
                         className="button w-full"
                         href={viewUrl}
@@ -123,7 +124,7 @@ export default function ArticleRow ({
             )}
             
             {(!simple && session) && (
-                <div className="px-2 p-6 flex flex-wrap gap-2 justify-center">
+                <div className="px-2 py-2 flex flex-wrap gap-2 justify-center">
                     {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                         <Link
                             className="button button-primary w-full"

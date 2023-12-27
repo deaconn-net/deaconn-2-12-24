@@ -69,7 +69,7 @@ export default function ServiceRow ({
     });
 
     return (
-        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 shadow-lg shadow-black rounded flex flex-col ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
+        <div className={`w-full bg-gradient-to-b from-deaconn-data to-deaconn-data2 shadow-lg shadow-black rounded flex flex-col gap-2 ring-4 ring-deaconn-ring hover:ring-deaconn-ring2 hover:duration-150 translate-y-0 hover:-translate-y-1 group ${simple ? "h-96" : "h-auto"}`}>
             {banner && (
                 <div className={`${simple ? "h-1/2" : "h-64"}`}>
                     <Link href={viewUrl}>
@@ -89,14 +89,15 @@ export default function ServiceRow ({
                 </h3>
             </div>
             {service.desc && (
-                <div className={`p-6 text-sm grow ${simple ? "max-h-4 overflow-clip text-ellipsis" : ""}`}>
-                    <p>{service.desc}</p>
+                <div className={`px-6 text-sm ${simple ? "max-h-16 overflow-hidden overflow-ellipsis whitespace-nowrap" : ""}`}>
+                    <span>{service.desc}</span>
                 </div>
             )}
-            <div className="pb-6 flex justify-center">
+            <div className="grow"></div>
+            <div className="px-6 py-2 flex justify-center">
                 <p className="font-bold text-green-200">{(service.price > 0) ? "$" + service.price.toString() + "/m" : "Free"}</p>
             </div>
-            <div className="pb-6 flex flex-wrap justify-between text-white text-sm">
+            <div className="px-6 py-2 flex flex-wrap justify-between text-white text-sm">
                 <IconAndText
                     icon={
                         <ViewIcon
@@ -104,6 +105,7 @@ export default function ServiceRow ({
                         />
                     }
                     text={<>{service.totalViews}</>}
+                    inline={true}
                 />
                 <IconAndText
                     icon={
@@ -112,6 +114,7 @@ export default function ServiceRow ({
                         />
                     }
                     text={<>{service.totalDownloads}</>}
+                    inline={true}
                 />
                 <IconAndText
                     icon={
@@ -120,10 +123,11 @@ export default function ServiceRow ({
                         />
                     }
                     text={<>{service.totalPurchases}</>}
+                    inline={true}
                 />
             </div>
             {!simple && (
-                <div className="p-6 flex flex-wrap gap-2 justify-center">
+                <div className="px-6 flex flex-wrap gap-2 justify-center">
                     <Link
                         className="button w-full"
                         href={viewUrl}
@@ -140,7 +144,7 @@ export default function ServiceRow ({
                 </div>
             )}
             {(session && !simple) && (
-                <div className="p-6 flex flex-wrap gap-2 justify-center">
+                <div className="px-6 flex flex-wrap gap-2 justify-center">
                     {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                         <Link
                             className="button button-primary w-full"
