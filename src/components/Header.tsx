@@ -34,7 +34,7 @@ function NavItem ({
     return (
         <Link
             href={link}
-            className={typeof className !== "undefined" ? className : `h-full flex items-center p-2 text-sm text-white hover:text-white hover:font-bold hover:duration-150 ${active ? "font-bold bg-cyan-800" : ""}`}
+            className={typeof className !== "undefined" ? className : `h-full flex items-center p-2 text-sm hover:text-white hover:duration-150 ${active ? "text-white font-bold bg-cyan-800" : "text-gray-200"}`}
             target={newTab ? "_blank" : undefined}
         >
             {children}
