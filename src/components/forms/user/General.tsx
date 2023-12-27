@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import Markdown from "@components/markdown/Markdown";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import Checkbox from "../Checkbox";
 
 export default function GeneralForm ({
@@ -236,7 +236,7 @@ export default function GeneralForm ({
                             />
                         )}
                     </div>
-                    {session && has_role(session, "admin") && (
+                    {HasRole(session, "ADMIN") && (
                         <>
                             <div className="form-div">
                                 <label className="form-label">Is Team</label>

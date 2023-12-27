@@ -7,7 +7,7 @@ import { ErrorCtx, SuccessCtx } from "@pages/_app";
 import { type UserSkill } from "@prisma/client";
 
 import { api } from "@utils/Api";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 
 export default function SkillRow ({
@@ -36,7 +36,7 @@ export default function SkillRow ({
             canEdit = true;
 
         // Is user admin or moderator?
-        if (has_role(session, "admin") || has_role(session, "moderator"))
+        if (HasRole(session, "ADMIN") || HasRole(session, "MODERATOR"))
             canEdit = true;
     }
 

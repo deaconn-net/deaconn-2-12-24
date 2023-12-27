@@ -12,7 +12,7 @@ import IconAndText from "@components/containers/IconAndText";
 import { api } from "@utils/Api";
 import CommentIcon from "@components/icons/Comment";
 import ViewIcon from "@components/icons/View";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 import UserLink from "@components/user/Link"
 
@@ -124,14 +124,14 @@ export default function ArticleRow ({
             
             {(!simple && session) && (
                 <div className="px-2 p-6 flex flex-wrap gap-2 justify-center">
-                    {(has_role(session, "contributor") || has_role(session, "admin")) && (
+                    {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                         <Link
                             className="button button-primary w-full"
                             href={editUrl}
                         >Edit</Link>
                     )}
 
-                    {(has_role(session, "moderator") || has_role(session, "admin")) && (
+                    {(HasRole(session, "MODERATOR") || HasRole(session, "ADMIN")) && (
                         <Link
                             className="button button-danger w-full"
                             href="#"

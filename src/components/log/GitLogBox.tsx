@@ -14,7 +14,7 @@ import { api } from "@utils/Api";
 
 import { dateFormat, dateFormatThree } from "@utils/Date";
 import { ScrollToTop } from "@utils/Scroll";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -190,7 +190,7 @@ function Row ({
                         </span>
                     )}
             </td>
-            {session && has_role(session, "admin") && (
+            {HasRole(session, "ADMIN") && (
                 <td className="gl-actions">
                     <button
                         onClick={(e) => {

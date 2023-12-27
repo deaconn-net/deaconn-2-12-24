@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { type UserPublic, type UserPublicWithEmail } from "~/types/user/user";
 import { type User } from "@prisma/client"
 
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 export default function UserRowTable ({
     user,
@@ -84,7 +84,7 @@ export default function UserRowTable ({
 
             {showActions && (
                 <td className="flex flex-wrap gap-2 justify-center">
-                    {session && has_role(session, "admin") && (
+                    {HasRole(session, "ADMIN") && (
                         <Link
                             href={editUrl}
                             className="button button-primary"

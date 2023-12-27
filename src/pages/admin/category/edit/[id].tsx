@@ -13,7 +13,7 @@ import NoPermissions from "@components/error/NoPermissions";
 import NotFound from "@components/error/NotFound";
 import CategoryForm from "@components/forms/category/New";
 
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import { useSession } from "next-auth/react";
 
@@ -29,7 +29,7 @@ export default function Page ({
 } & GlobalPropsType) {
     // Retrieve session and check if user is authed.
     const { data: session } = useSession();
-    const authed = has_role(session, "admin");
+    const authed = HasRole(session, "ADMIN");
 
     return (
         <Wrapper
@@ -71,7 +71,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Check if we have permissions.
-    const authed = has_role(session, "admin");
+    const authed = HasRole(session, "ADMIN");
 
     // Retrieve role we're editing.
     const { params } = ctx;

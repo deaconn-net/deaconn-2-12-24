@@ -15,7 +15,7 @@ import NoPermissions from "@components/error/NoPermissions";
 import CategoryForm from "@components/forms/category/New";
 
 import { api } from "@utils/Api";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
@@ -32,7 +32,7 @@ export default function Page ({
 } & GlobalPropsType) {
     // Retrieve session and check if user is authed.
     const { data: session } = useSession();
-    const authed = has_role(session, "admin");
+    const authed = HasRole(session, "ADMIN");
 
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
@@ -190,7 +190,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Make sure we're authorized.
-    const authed = has_role(session, "admin")
+    const authed = HasRole(session, "ADMIN")
 
     // Initialize categories.
     let categories: CategoryWithChildren[] | undefined = undefined;

@@ -4,7 +4,7 @@ import Wrapper from "@components/Wrapper";
 import AdminSettingsPanel from "@components/admin/SettingsPanel";
 import NoPermissions from "@components/error/NoPermissions";
 
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import { useSession } from "next-auth/react";
 
@@ -19,8 +19,6 @@ type statsType = {
     requestReplies: number
 
     partners: number
-
-    roles: number
 
     users: number
     userExperiences: number
@@ -39,7 +37,7 @@ export default function Page ({
 } & GlobalPropsType) {
     // Retrieve session and check if user is authed.
     const { data: session } = useSession();
-    const authed = has_role(session, "admin");
+    const authed = HasRole(session, "ADMIN");
 
     return (
         <Wrapper
@@ -66,7 +64,6 @@ export default function Page ({
                                                 <li><span className="font-bold">{stats.requests.toString()}</span> Total Requests</li>
                                                 <li><span className="font-bold">{stats.requestReplies.toString()}</span> Total Request Replies</li>
                                                 <li><span className="font-bold">{stats.partners.toString()}</span> Total Partners</li>
-                                                <li><span className="font-bold">{stats.roles.toString()}</span> Total Roles</li>
                                                 <li><span className="font-bold">{stats.users.toString()}</span> Total Users</li>
                                                 <li><span className="font-bold">{stats.userExperiences.toString()}</span> Total User Experiences</li>
                                                 <li><span className="font-bold">{stats.userSkills.toString()}</span> Total User Skills</li>
@@ -99,8 +96,6 @@ export async function getServerSideProps() {
 
     const partnerCnt = await prisma.partner.count();
 
-    const roleCnt = await prisma.role.count();
-
     const userCnt = await prisma.user.count();
     const userExperienceCnt = await prisma.userExperience.count();
     const userSkillCnt = await prisma.userSkill.count();
@@ -117,8 +112,6 @@ export async function getServerSideProps() {
         requestReplies: requestRepliesCnt,
 
         partners: partnerCnt,
-
-        roles: roleCnt,
 
         users: userCnt,
         userExperiences: userExperienceCnt,

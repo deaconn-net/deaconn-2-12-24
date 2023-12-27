@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { type User } from "@prisma/client"
 import { type UserPublic, type UserPublicWithEmail } from "~/types/user/user";
 
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 export default function UserRowGrid ({
     user,
@@ -74,7 +74,7 @@ export default function UserRowGrid ({
                     {user.email}
                 </div>
             )}
-            {showActions && session && has_role(session, "admin") && (
+            {showActions && HasRole(session, "ADMIN") && (
                 <div className="p-6 flex flex-wrap gap-2">
                     <Link
                         href={editUrl}

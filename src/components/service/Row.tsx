@@ -14,7 +14,7 @@ import DownloadIcon from "@components/icons/Download";
 
 import { api } from "@utils/Api";
 
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 
 export default function ServiceRow ({
@@ -141,13 +141,13 @@ export default function ServiceRow ({
             )}
             {(session && !simple) && (
                 <div className="p-6 flex flex-wrap gap-2 justify-center">
-                    {(has_role(session, "contributor") || has_role(session, "admin")) && (
+                    {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                         <Link
                             className="button button-primary w-full"
                             href={editUrl}
                         >Edit</Link>    
                     )}
-                    {(has_role(session, "moderator") || has_role(session, "admin") && 
+                    {(HasRole(session, "MODERATOR") || HasRole(session, "ADMIN") && 
                         <Link
                             className="button button-danger w-full"
                             href="#"

@@ -20,7 +20,7 @@ import PurchaseIcon from "@components/icons/Purchase";
 import LinkIcon from "@components/icons/Link";
 
 import { api } from "@utils/Api";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 import { type ServiceLink } from "@prisma/client";
 
@@ -203,7 +203,7 @@ export default function ServiceView ({
                                     </div>
                                 </>
                             )}
-                            {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                            {(HasRole(session, "ADMIN") || HasRole(session, "MODERATOR")) && (
                                 <div className="flex flex-wrap gap-4 justify-center">
                                     <Link
                                         href={editUrl}

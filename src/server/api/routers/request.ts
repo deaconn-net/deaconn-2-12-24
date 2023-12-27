@@ -1,7 +1,7 @@
 import { adminProcedure, createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 export const requestRouter = createTRPCRouter({
     getAll: protectedProcedure
@@ -19,7 +19,7 @@ export const requestRouter = createTRPCRouter({
         .query(async ({ ctx, input }) => {
             // If view all or user ID is set, make sure we have access.
             if (input.viewAll || input.userId) {
-                if (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")) {
+                if (!HasRole(ctx.session, "ADMIN") && !HasRole(ctx.session, "MODERATOR")) {
                     return {
                         items: [],
                         nextCur: undefined
@@ -109,10 +109,7 @@ export const requestRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             // Make sure we either own the request or are an admin.
-            let isMod = false;
-
-            if (ctx.session && (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator")))
-                isMod = true;
+            const isMod = HasRole(ctx.session, "ADMIN") || HasRole(ctx.session, "MODERATOR");
 
             if (!isMod) {
                 try {
@@ -162,10 +159,7 @@ export const requestRouter = createTRPCRouter({
             status: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
-            let authed = false;
-
-            if (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator"))
-                authed = true;
+            let authed = HasRole(ctx.session, "ADMIN") || HasRole(ctx.session, "MODERATOR");
 
             // Do lookup on request to see if we have access.
             if (!authed) {
@@ -231,10 +225,7 @@ export const requestRouter = createTRPCRouter({
             id: z.number()
         }))
         .mutation(async ({ ctx, input }) => {
-            let authed = false;
-
-            if (has_role(ctx.session, "admin") || has_role(ctx.session, "moderator"))
-                authed = true;
+            let authed = HasRole(ctx.session, "ADMIN") || HasRole(ctx.session, "MODERATOR");
 
             // Do lookup on request to see if we have access.
             if (!authed) {

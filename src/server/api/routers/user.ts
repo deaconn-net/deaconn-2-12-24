@@ -7,7 +7,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 import { RetrieveSocialTag } from "@utils/Social";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { UploadFile } from "@utils/FileUpload";
 
 export const userRouter = createTRPCRouter({
@@ -39,14 +39,8 @@ export const userRouter = createTRPCRouter({
             const userId = input.id ?? ctx.session.user.id;
 
             // Retrieve level of access.
-            let isAdmin = false;
-            let isMod = false;
-
-            if (has_role(ctx.session, "admin"))
-                isAdmin = true;
-
-            if (has_role(ctx.session, "moderator"))
-                isMod = true;
+            const isAdmin = HasRole(ctx.session, "ADMIN");
+            const isMod = HasRole(ctx.session, "MODERATOR");
         
             // If we have a custom user ID and the IDs don't match, make sure the user has permissions.
             if ((input.id && input.id != ctx.session.user.id) && (!isAdmin && !isMod))
@@ -253,7 +247,7 @@ export const userRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns experience if not admin/moderator.
-            if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin")) {
+            if (!HasRole(ctx.session, "MODERATOR") && !HasRole(ctx.session, "ADMIN")) {
                 const userId = ctx.session.user.id;
 
                 // Check if user owns experience.
@@ -272,7 +266,7 @@ export const userRouter = createTRPCRouter({
             }
 
             // Make sure the user has permissions if a custom user ID is set.
-            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+            if (input.userId && (!HasRole(ctx.session, "ADMIN") && !HasRole(ctx.session, "MODERATOR")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
 
             try {
@@ -297,7 +291,7 @@ export const userRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns skill if not admin/moderator.
-            if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin")) {
+            if (!HasRole(ctx.session, "MODERATOR") && !HasRole(ctx.session, "ADMIN")) {
                 const userId = ctx.session.user.id;
 
                 // Check if user owns skill.
@@ -316,7 +310,7 @@ export const userRouter = createTRPCRouter({
             }
 
             // Make sure the user has permissions if a custom user ID is set.
-            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+            if (input.userId && (!HasRole(ctx.session, "ADMIN") && !HasRole(ctx.session, "MODERATOR")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
         
             try {
@@ -342,7 +336,7 @@ export const userRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if user owns project if not admin/moderator.
-            if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin")) {
+            if (!HasRole(ctx.session, "MODERATOR") && !HasRole(ctx.session, "ADMIN")) {
                 const userId = ctx.session.user.id;
 
                 // Check if user owns project.
@@ -361,7 +355,7 @@ export const userRouter = createTRPCRouter({
             }
 
             // Make sure the user has permissions if a custom user ID is set.
-            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+            if (input.userId && (!HasRole(ctx.session, "ADMIN") && !HasRole(ctx.session, "MODERATOR")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
             
             try {
@@ -398,7 +392,7 @@ export const userRouter = createTRPCRouter({
             const userId = input.userId ?? ctx.session.user.id;
 
             // Check if user owns item if ID is set (indicating they're editing).
-            if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
+            if (input.id && (!HasRole(ctx.session, "MODERATOR") && !HasRole(ctx.session, "ADMIN"))) {
                 // Check if user owns experience.
                 try {
                     await ctx.prisma.userExperience.findFirstOrThrow({
@@ -414,7 +408,7 @@ export const userRouter = createTRPCRouter({
             }
 
             // Make sure the user has permissions if a custom user ID is set.
-            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+            if (input.userId && (!HasRole(ctx.session, "ADMIN") && !HasRole(ctx.session, "MODERATOR")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
 
             // Make sure we don't hit the maximum limit of experiences.
@@ -476,7 +470,7 @@ export const userRouter = createTRPCRouter({
             const userId = input.userId ?? ctx.session.user.id;
 
             // Check if user owns item if ID is set (indicating they're editing).
-            if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
+            if (input.id && (!HasRole(ctx.session, "MODERATOR") && !HasRole(ctx.session, "ADMIN"))) {
                 // Check if user owns skill.
                 try {
                     await ctx.prisma.userSkill.findFirstOrThrow({
@@ -492,7 +486,7 @@ export const userRouter = createTRPCRouter({
             }
 
             // Make sure the user has permissions if a custom user ID is set.
-            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+            if (input.userId && (!HasRole(ctx.session, "ADMIN") && !HasRole(ctx.session, "MODERATOR")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
 
             // Make sure we don't hit the maximum limit of experiences.
@@ -556,7 +550,7 @@ export const userRouter = createTRPCRouter({
             const userId = input.userId ?? ctx.session.user.id;
 
             // Check if user owns item if ID is set (indicating they're saving).
-            if (input.id && (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))) {
+            if (input.id && (!HasRole(ctx.session, "MODERATOR") && !HasRole(ctx.session, "ADMIN"))) {
                 const userId = ctx.session.user.id;
 
                 // Check if user owns project.
@@ -574,7 +568,7 @@ export const userRouter = createTRPCRouter({
             }
 
             // Make sure the user has permissions if a custom user ID is set.
-            if (input.userId && (!has_role(ctx.session, "admin") && !has_role(ctx.session, "moderator")))
+            if (input.userId && (!HasRole(ctx.session, "ADMIN") && !HasRole(ctx.session, "MODERATOR")))
                 throw new TRPCError({ code: "UNAUTHORIZED" });
 
             // Make sure we don't hit the maximum limit of experiences.

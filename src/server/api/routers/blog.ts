@@ -4,7 +4,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
 import { UploadFile } from "@utils/FileUpload";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { UserPublicSelect } from "~/types/user/user";
 
 export const blogRouter = createTRPCRouter({
@@ -72,10 +72,7 @@ export const blogRouter = createTRPCRouter({
         }))
         .mutation(async ({ ctx, input }) => {
             // Check if we're admin
-            let isAdmin = false;
-
-            if (ctx.session && has_role(ctx.session, "admin"))
-                isAdmin = true;
+            const isAdmin = HasRole(ctx.session, "ADMIN");
 
             let userId = ctx.session.user.id;
 

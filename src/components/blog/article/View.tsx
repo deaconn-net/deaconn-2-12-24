@@ -12,7 +12,7 @@ import Markdown from "@components/markdown/Markdown";
 
 import { api } from "@utils/Api";
 import { dateFormat, dateFormatFour } from "@utils/Date";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 import TwitterIcon from "@components/icons/social/Twitter";
 import FacebookIcon from "@components/icons/social/Facebook";
@@ -197,7 +197,7 @@ export default function ArticleView ({
                         </div>
                     </div>
                 )}
-                {session && (has_role(session, "admin") || has_role(session, "moderator")) && (
+                {(HasRole(session, "ADMIN") || HasRole(session, "MODERATOR")) && (
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link
                             href={editUrl}

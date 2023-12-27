@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
-import { type Role, type User } from "@prisma/client";
+import { type UserRoles, type User } from "@prisma/client";
 
 import { prisma } from "@server/db";
 
@@ -15,31 +15,42 @@ import NotFound from "@components/error/NotFound";
 import UserForm from "@components/forms/user/General";
 
 import { api } from "@utils/Api";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { ScrollToTop } from "@utils/Scroll";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import { useSession } from "next-auth/react";
 
 export default function Page ({
     user,
-    roles,
 
     footerServices,
     footerPartners
 } : {
     user?: User
-    roles: Role[]
 } & GlobalPropsType) {
     // Retrieve session and check if user is authed.
     const { data: session } = useSession();
-    const authed = has_role(session, "admin");
+    const authed = HasRole(session, "ADMIN");
 
     // Error and success handling.
     const errorCtx = useContext(ErrorCtx);
     const successCtx = useContext(SuccessCtx);
 
+    // Retrieve available roles.
+    const availRoles: UserRoles[] = ["ADMIN", "MODERATOR", "CONTRIBUTOR"]
+
+    // If the user has roles, remove them from the available roles array.
+    if (user) {
+        user.roles.map((role) => {
+            const idx = availRoles.findIndex(tmp => tmp == role)
+
+            if (idx !== -1)
+                availRoles.splice(idx, 1);
+        })
+    }
+
     // Role name to add.
-    const [roleName, setRoleName] = useState(roles?.[0]?.id ?? "");
+    const [roleName, setRoleName] = useState(availRoles?.[0] ?? undefined);
 
     // Queries.
     const userRolesQuery = api.admin.getUserRoles.useQuery({
@@ -118,11 +129,11 @@ export default function Page ({
                             <div className="content-item">
                                 <h2>Existing Roles</h2>
                                 <div className="flex flex-wrap gap-4 h-full">
-                                    {userRoles?.map((role) => {
+                                    {user.roles.map((role, index) => {
                                         return (
-                                            <div key={`role-${role.roleId}`} className="content-item2">
+                                            <div key={`role-${index.toString()}`} className="content-item2">
                                                 <div>
-                                                    <h2>{role.roleId}</h2>
+                                                    <h2>{role}</h2>
                                                 </div>
                                                 <div>
                                                     <button
@@ -135,7 +146,7 @@ export default function Page ({
                                                             if (yes) {
                                                                 delRoleMut.mutate({
                                                                     userId: user.id,
-                                                                    role: role.roleId
+                                                                    role: role
                                                                 });
                                                             }
 
@@ -158,26 +169,45 @@ export default function Page ({
                                 <select
                                     className="form-input w-72 p-2"
                                     onChange={(e) => {
-                                        setRoleName(e.currentTarget.value);
+                                        const val = e.currentTarget.value;
+
+                                        switch (val) {
+                                            case "ADMIN":
+                                                setRoleName("ADMIN");
+
+                                                break;
+
+                                            case "MODERATOR":
+                                                setRoleName("MODERATOR");
+
+                                                break;
+
+                                            case "CONTRIBUTOR":
+                                                setRoleName("CONTRIBUTOR");
+
+                                                break;
+
+                                            default:
+                                                setRoleName(undefined);
+                                        }
                                     }}
                                 >
-                                    {roles.map((role) => {
+                                    {availRoles.map((role, index) => {
                                         return (
                                             <option
-                                                key={`add-role-${role.id}`}
-                                                value={role.id}
+                                                key={`role-${index.toString()}`}
+                                                value={role}
                                             >
-                                                {role.title} ({role.id})
+                                                {role}
                                             </option>
                                         );
                                     })}
                                 </select>
                                 <button
+                                    type="button"
                                     className="button button-primary"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-
-                                        if (roleName.length > 0) {
+                                    onClick={() => {
+                                        if (roleName) {
                                             addRoleMut.mutate({
                                                 userId: user.id,
                                                 role: roleName
@@ -209,7 +239,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Check if we're authenticated.
-    const authed = has_role(session, "admin");
+    const authed = HasRole(session, "ADMIN");
 
     // Retrieve user ID.
     const { params } = ctx;
@@ -218,7 +248,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     // Initialize user and roles.
     let user: User | null = null;
-    let roles: Role[] = [];
 
     // If we're authenticated and have a user ID, retrieve user and roles.
     if (authed && userId) {
@@ -227,8 +256,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 id: userId
             }
         });
-
-        roles = await prisma.role.findMany();
     }
 
     // Retrieve global props.
@@ -237,8 +264,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
         props: {
             ...globalProps,
-            user: JSON.parse(JSON.stringify(user)),
-            roles: roles
+            user: JSON.parse(JSON.stringify(user))
         }
     }
 }

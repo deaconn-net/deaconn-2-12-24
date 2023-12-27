@@ -65,7 +65,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 import { ZodError } from "zod";
 
@@ -135,7 +135,7 @@ const isAdmin = t.middleware(async ({ ctx, next }) => {
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Check.
-    if (!has_role(ctx.session, "admin"))
+    if (!HasRole(ctx.session, "ADMIN"))
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Continue!
@@ -154,7 +154,7 @@ const isMod = t.middleware(async ({ ctx, next }) => {
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Check.
-    if (!has_role(ctx.session, "moderator") && !has_role(ctx.session, "admin"))
+    if (!HasRole(ctx.session, "MODERATOR") && !HasRole(ctx.session, "ADMIN"))
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Continue!
@@ -173,7 +173,7 @@ const isContributor = t.middleware(async ({ ctx, next }) => {
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Check.
-    if (!has_role(ctx.session, "contributor") && !has_role(ctx.session, "admin"))
+    if (!HasRole(ctx.session, "CONTRIBUTOR") && !HasRole(ctx.session, "ADMIN"))
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // Continue!

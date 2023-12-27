@@ -22,7 +22,7 @@ import UserGridRow from "@components/user/row/Grid";
 
 import { api } from "@utils/Api";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { dateFormat, dateFormatFour, dateFormatThree } from "@utils/Date";
 import { ScrollToTop } from "@utils/Scroll";
 
@@ -41,7 +41,7 @@ export default function Page ({
     // Retrieve user session and check if user has access.
     const { data: session } = useSession();
 
-    let authed = has_role(session, "admin") || has_role(session, "moderator");
+    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
 
     if (!authed && request && session?.user && (request.userId == session?.user.id))
         authed = true;
@@ -129,12 +129,12 @@ export default function Page ({
     // Check if we can edit, set status, or accept/reject request.
     let isAdmin = false;
 
-    if (session && has_role(session, "admin"))
+    if (session && HasRole(session, "admin"))
         isAdmin = true;
 
     let canEditAndStatus = false;
 
-    if (session && (has_role(session, "admin") || has_role(session, "moderator")))
+    if (session && (HasRole(session, "admin") || HasRole(session, "moderator")))
         canEditAndStatus = true;
 
     if (!canEditAndStatus && session?.user && request && session.user.id == request.userId)
@@ -271,7 +271,7 @@ export default function Page ({
                                         let canDelete = false;
 
                                         // Check if we can edit and delete reply.
-                                        if (session && (has_role(session, "admin") || has_role(session, "moderator"))) {
+                                        if (session && (HasRole(session, "admin") || HasRole(session, "moderator"))) {
                                             canEdit = true;
                                             canDelete = true;
                                         }
@@ -380,7 +380,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve session.
     const session = await getServerAuthSession(ctx);
 
-    let authed = has_role(session, "admin") || has_role(session, "moderator");
+    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
 
     // Retrieve request ID and page number if any.
     const { params } = ctx;

@@ -1,9 +1,9 @@
 import { type GetServerSidePropsContext } from "next";
-import { type DefaultSession, getServerSession, type NextAuthOptions } from "next-auth";
+import { type DefaultSession, getServerSession, type NextAuthOptions, DefaultUser } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
-import { type UserRole } from "@prisma/client";
+import { type UserRoles } from "@prisma/client";
 
 import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
@@ -17,11 +17,16 @@ import GoogleProvider from "next-auth/providers/google";
  */
 declare module "next-auth" {
     interface Session extends DefaultSession {
-        user: DefaultSession["user"] & {
+        user: {
             id: string
-            roles: string[],
-            isRestricted?: boolean
-        };
+            roles: UserRoles[]
+            isRestricted: boolean
+        } & DefaultSession["user"];
+    }
+
+    interface User extends DefaultUser {
+        roles: UserRoles[],
+        isRestricted: boolean
     }
 }
 
@@ -35,32 +40,8 @@ export const authOptions: NextAuthOptions = {
         async session({ session, user }) {
             if (session.user) {
                 session.user.id = user.id;
-
-                let roles: UserRole[] = [];
-
-                // Retrieve user roles.
-                try {
-                    roles = await prisma.userRole.findMany({
-                        where: {
-                            userId: user.id
-                        }
-                    });
-                } catch (error) {
-                    console.error(`Failed to retrieve user roles (ID #${user.id})`);
-                }
-
-                if (roles)
-                    session.user.roles = roles.map(role => role.roleId);
-
-                // See if we're restricted.
-                const isRestrictedQuery = await prisma.user.count({
-                    where: {
-                        id: user.id,
-                        isRestricted: true
-                    }
-                });
-
-                session.user.isRestricted = (isRestrictedQuery > 0) ? true : false;
+                session.user.roles = user.roles;
+                session.user.isRestricted = user.isRestricted;
             }
 
             return session;

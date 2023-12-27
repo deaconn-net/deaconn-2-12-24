@@ -13,7 +13,7 @@ import NoPermissions from "@components/error/NoPermissions";
 import NotFound from "@components/error/NotFound";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import { useSession } from "next-auth/react";
 
 export default function Page ({
@@ -29,7 +29,7 @@ export default function Page ({
     // Retrieve user session and check if user has access.
     const { data: session } = useSession();
 
-    let authed = has_role(session, "admin") || has_role(session, "moderator");
+    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
 
     if (!authed && session?.user && request && session.user.id == request.userId)
         authed = true;
@@ -89,7 +89,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     const session = await getServerAuthSession(ctx);
 
     // Make sure we're signed in.
-    let authed = has_role(session, "admin") || has_role(session, "moderator");
+    let authed = HasRole(session, "admin") || HasRole(session, "moderator");
 
     const lookup_id = params?.id;
 

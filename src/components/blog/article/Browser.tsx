@@ -11,7 +11,7 @@ import Loader from "@components/Loader";
 
 import { api } from "@utils/Api";
 import AddIcon from "@components/icons/Add";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -93,7 +93,7 @@ export default function ArticleBrowser({
                         }}
                     >Oldest</Link>
                 </div>
-                {session && (has_role(session, "contributor") || has_role(session, "admin")) && (
+                {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                     <Link
                         className="button button-primary flex justify-center"
                         href="/blog/new"

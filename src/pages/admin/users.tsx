@@ -3,7 +3,7 @@ import AdminSettingsPanel from "@components/admin/SettingsPanel";
 import NoPermissions from "@components/error/NoPermissions";
 import UserBrowser from "@components/user/Browser";
 
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 import { useSession } from "next-auth/react";
 
@@ -13,7 +13,7 @@ export default function Page ({
 } : GlobalPropsType) {
     // Retrieve session and check if user is authed.
     const { data: session } = useSession();
-    const authed = has_role(session, "admin");
+    const authed = HasRole(session, "ADMIN");
 
     return (
         <Wrapper

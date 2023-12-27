@@ -1,13 +1,11 @@
+import { UserRoles } from "@prisma/client";
 import { type Session } from "next-auth";
 
-export const has_role = (
-    session: Session | null,
-    role: string
-) => {
-    if (!session)
+export function HasRole(session: Session | null, role: UserRoles) {
+    if (!session?.user)
         return false;
     
-    const roles = session.user?.roles;
+    const roles = session.user.roles;
 
     if (!roles)
         return false;

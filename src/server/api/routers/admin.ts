@@ -2,6 +2,7 @@ import { createTRPCRouter, adminProcedure } from "../trpc";
 import { z } from "zod";
 
 import { TRPCError } from "@trpc/server";
+import { UserRoles } from "@prisma/client";
 
 export const adminRouter = createTRPCRouter({
     /* Users */
@@ -86,113 +87,71 @@ export const adminRouter = createTRPCRouter({
                 nextUser
             };
         }),
-    /* Roles */
-    addRole: adminProcedure
-        .input(z.object({
-            role: z.string().max(64),
-            title: z.string().max(64),
-            description: z.string().optional()
-        }))
-        .mutation(async ({ ctx, input }) => {
-            try {
-                await ctx.prisma.role.upsert({
-                    where: {
-                        id: input.role
-                    },
-                    create: {
-                        id: input.role,
-                        title: input.title,
-                        desc: input.description
-                    },
-                    update: {
-                        title: input.title,
-                        desc: input.description
-                    }
-                });
-            } catch (err) {
-                console.error(err);
-
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: `Unable to add role. Error => ${typeof err == "string" ? err : "Check console."}`
-                });
-            }
-        }),
-    delRole: adminProcedure
-        .input(z.object({
-            role: z.string()
-        }))
-        .mutation(async ({ ctx, input }) => {
-            try {
-                await ctx.prisma.role.delete({
-                    where: {
-                        id: input.role
-                    }
-                });
-            } catch (err) {
-                console.error(err);
-
-                throw new TRPCError({
-                    code: "BAD_REQUEST",
-                    message: `Unable to delete role. Error => ${typeof err == "string" ? err : "Check console."}`
-                });
-            }
-        }),
-    /* User Roles */
-    getUserRoles: adminProcedure
-        .input(z.object({
-            userId: z.string()
-        }))
-        .query(async ({ ctx, input }) => {
-            return await ctx.prisma.userRole.findMany({
-                where: {
-                    userId: input.userId
-                }
-            });
-        }),
     addUserRole: adminProcedure
         .input(z.object({
             userId: z.string(),
-            role: z.string()
+            role: z.nativeEnum(UserRoles)
         }))
         .mutation(async ({ ctx, input }) => {
             try {
-                await ctx.prisma.userRole.create({
+                await ctx.prisma.user.update({
                     data: {
-                        userId: input.userId,
-                        roleId: input.role
+                        roles: {
+                            push: input.role
+                        }
+                    },
+                    where: {
+                        id: input.userId
                     }
                 });
-            } catch (err) {
+            } catch (err: unknown) {
                 console.error(err);
 
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Unable to add user role. Error => ${typeof err == "string" ? err : "Check console."}`
+                    message: `Unable to add user role. Error => ${err}}`
                 });
             }
         }),
     delUserRole: adminProcedure
         .input(z.object({
             userId: z.string(),
-            role: z.string()
+            role: z.nativeEnum(UserRoles)
         }))
         .mutation(async ({ ctx, input }) => {
             try {
-                await ctx.prisma.userRole.delete({
+                // Retrieve current user.
+                const user = await ctx.prisma.user.findFirstOrThrow({
                     where: {
-                        userId_roleId: {
-                            userId: input.userId,
-                            roleId: input.role
+                        id: input.userId
+                    }
+                })
+
+                // Copy roles to new array.
+                const newRoles = user.roles;
+
+                // Find existing role if any.
+                const idx = user.roles.findIndex(tmp => tmp == input.role);
+
+                if (idx !== -1)
+                    newRoles.splice(idx, 1);
+
+                await ctx.prisma.user.update({
+                    data: {
+                        roles: {
+                            set: newRoles
                         }
+                    },
+                    where: {
+                        id: input.userId
                     }
                 });
-            } catch (err) {
+            } catch (err: unknown) {
                 console.error(err);
 
                 throw new TRPCError({
                     code: "BAD_REQUEST",
-                    message: `Unable to delete user role. Error => ${typeof err == "string" ? err : "Check console."}`
+                    message: `Unable to delete user role. Error => ${err}`
                 });
             }
         })

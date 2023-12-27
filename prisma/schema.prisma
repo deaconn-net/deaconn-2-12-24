@@ -11,6 +11,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRoles {
+  ADMIN
+  MODERATOR
+  CONTRIBUTOR
+  USER
+}
+
 model Article {
   id  Int    @id @default(autoincrement())
   url String @unique
@@ -207,7 +214,7 @@ model User {
   skills      UserSkill[]
   projects    UserProject[]
 
-  roles UserRole[]
+  roles UserRoles[] @default([USER])
 
   Article        Article[]
   Request        Request[]
@@ -268,23 +275,6 @@ model ProjectSource {
   url   String
 
   @@id([projectId, url])
-}
-
-model Role {
-  id       String     @id
-  title    String
-  desc     String?
-  UserRole UserRole[]
-}
-
-model UserRole {
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  roleId String
-  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
-
-  @@id([userId, roleId])
 }
 
 model VerificationToken {

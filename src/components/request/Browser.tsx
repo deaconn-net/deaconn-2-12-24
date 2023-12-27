@@ -10,7 +10,7 @@ import Loader from "@components/Loader";
 
 import { api } from "@utils/Api";
 import AddIcon from "@components/icons/Add";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -38,7 +38,7 @@ export default function RequestBrowser () {
     // Check if we can view all.
     let canViewAll = false;
 
-    if (session && (has_role(session, "admin") || has_role(session, "moderator")))
+    if ((HasRole(session, "ADMIN") || HasRole(session, "MODERATOR")))
         canViewAll = true;
 
     // Oldest filter.

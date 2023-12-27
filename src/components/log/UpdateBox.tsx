@@ -16,7 +16,7 @@ import { api } from "@utils/Api";
 
 import { dateFormat, dateFormatThree } from "@utils/Date";
 import { ScrollToTop } from "@utils/Scroll";
-import { has_role } from "@utils/user/Auth";
+import { HasRole } from "@utils/user/Auth";
 
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -33,10 +33,7 @@ export default function UpdateBox ({
     const successCtx = useContext(SuccessCtx);
 
     // Check if we're an admin.
-    let isAdmin = false;
-
-    if (session && has_role(session, "admin"))
-        isAdmin = true;
+    const isAdmin = HasRole(session, "ADMIN");
 
     const [requireItems, setRequireItems] = useState(true);
 
@@ -176,10 +173,7 @@ function Row ({
     const successCtx = useContext(SuccessCtx);
 
     // Check if we're admin.
-    let isAdmin = false;
-
-    if (session && has_role(session, "admin"))
-        isAdmin = true;
+    const isAdmin = HasRole(session, "ADMIN");
 
     const [dateStr, setDateStr] = useState<string | undefined>(undefined);
 
@@ -295,7 +289,7 @@ function Row ({
                     )}
                 </td>
             )}
-            {session && has_role(session, "admin") && (
+            {HasRole(session, "ADMIN") && (
                 <td className="ul-actions">
                     <button
                         onClick={(e) => {
