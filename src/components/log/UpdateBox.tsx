@@ -103,7 +103,7 @@ export default function UpdateBox ({
 
     return (
         <>
-            <div className="updatelog">
+            <div className="w-full overflow-y-auto h-96">
                 {!data || updateLogs.length > 0 ? (
                     <InfiniteScroll
                         pageStart={0}
@@ -112,7 +112,7 @@ export default function UpdateBox ({
                         hasMore={requireItems}
                         useWindow={false}
                     >
-                        <table className="updatelog-table">
+                        <table className="w-full table-auto">
                             <tbody>
                                 {updateLogs.map((update) => {
                                     return (
@@ -237,18 +237,13 @@ function Row ({
     });
 
     return (
-        <tr>
-            <td className="ul-pulse">
-                <div>
-                    <span className="animate-pulse inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                </div>
-            </td>
+        <tr className="p-2">
             {dateStr && (
-                <td className="ul-date">
+                <td className="text-sm">
                     {dateStr}
                 </td>
             )}
-            <td className="ul-msg">
+            <td>
                 {editMode && isAdmin ? (
                     <input
                         defaultValue={update.msg}
@@ -274,7 +269,7 @@ function Row ({
                 )}
             </td>
             {showUser && (
-                <td className="ul-author">
+                <td>
                     {update.user ? (
                         <span>
                             <UserRowGrid
@@ -290,22 +285,20 @@ function Row ({
                 </td>
             )}
             {HasRole(session, "ADMIN") && (
-                <td className="ul-actions">
+                <td className="flex gap-2">
                     <button
-                        onClick={(e) => {
-                            e.preventDefault();
-
-                            setEditMode(!editMode);
-                        }}
+                        type="button"
+                        className="button button-primary p-1"
+                        onClick={() => setEditMode(!editMode)}
                     >
                         <EditIcon
-                            className="w-4 h-4 fill-green-600"
+                            className="w-4 h-4 fill-white"
                         />
                     </button>
                     <button
-                        onClick={(e) => {
-                            e.preventDefault();
-
+                        type="button"
+                        className="button button-danger p-1"
+                        onClick={() => {
                             const yes = confirm("Are you sure you want to delete this update log entry?");
 
                             if (yes) {
@@ -316,7 +309,7 @@ function Row ({
                         }}
                     >
                         <DeleteIcon
-                            className="w-4 h-4 fill-red-600"
+                            className="w-4 h-4 fill-white"
                         />
                     </button>
                 </td>

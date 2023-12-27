@@ -45,7 +45,7 @@ export default function GitLogBox () {
     }
 
     return (
-        <div className="gitlog">
+        <div className="w-full overflow-y-auto h-96">
             {!data || gitLogs.length > 0 ? (
                 <InfiniteScroll
                     pageStart={0}
@@ -54,7 +54,7 @@ export default function GitLogBox () {
                     hasMore={requireItems}
                     useWindow={false}
                 >
-                    <table className="gitlog-table">
+                    <table className="w-full table-auto">
                         <tbody>
                             {gitLogs.map((log) => {
                                 return (
@@ -132,18 +132,18 @@ function Row ({
     });
 
     return (
-        <tr>
-            <td className="gl-pulse">
-                <div>
+        <tr className="p-2 text-sm font-mono">
+            <td className="w-4 hidden sm:table-cell">
+                <div className="w-2 h-2 flex flex-col items-center">
                     <span className="animate-pulse inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                 </div>
             </td>
             {dateStr && (
-                <td className="gl-date">
+                <td>
                     {dateStr}
                 </td>
             )}
-            <td className="gl-name">
+            <td>
                 <Link
                     href={repoUrl}
                     target="_blank"
@@ -160,7 +160,7 @@ function Row ({
                     {log.repoBranch}
                 </Link>
             </td>
-            <td className="gl-commit">
+            <td>
                 <Link
                     href={viewUrl}
                     target="_blank"
@@ -168,10 +168,10 @@ function Row ({
                     <span className="text-blue-300">{shortCommitId}</span>
                 </Link>
             </td>
-            <td className="gl-msg">
+            <td>
                 <span>{log.commitMsg}</span>
             </td>
-            <td className="gl-author">
+            <td>
                     {log.user ? (
                         <span>
                             <UserRowGrid
@@ -191,11 +191,11 @@ function Row ({
                     )}
             </td>
             {HasRole(session, "ADMIN") && (
-                <td className="gl-actions">
+                <td>
                     <button
-                        onClick={(e) => {
-                            e.preventDefault();
-
+                        type="button"
+                        className="button button-danger p-1"
+                        onClick={() => {
                             const yes = confirm("Are you sure you want to delete this Git log entry?");
 
                             if (yes) {
@@ -206,7 +206,7 @@ function Row ({
                         }}
                     >
                         <DeleteIcon
-                            className="w-4 h-4 fill-red-600"
+                            className="w-4 h-4 fill-white"
                         />
                     </button>
                 </td>
