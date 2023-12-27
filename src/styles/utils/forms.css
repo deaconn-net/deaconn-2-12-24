@@ -1,0 +1,11 @@
+.form-input {
+    @apply p-4;
+    @apply bg-deaconn-input;
+    @apply ring-2;
+    @apply ring-deaconn-ring;
+    @apply focus:ring-deaconn-focus;
+    @apply focus-visible:ring-deaconn-focus2;
+    @apply focus-within:ring-deaconn-focus3;
+    @apply rounded;
+    @apply w-full;
+}

@@ -15,7 +15,11 @@ const config = {
             "deaconn-data": "#19253B",
             "deaconn-data2": "#141F32",
             "deaconn-ring": "#162135",
-            "deaconn-ring2": "#155e75"
+            "deaconn-ring2": "#155e75",
+            "deaconn-focus": "#155e75",
+            "deaconn-focus2": "#0e7490",
+            "deaconn-focus3": "#06b6d4",
+            "deaconn-input": "#164e63"
         }
     },
   },

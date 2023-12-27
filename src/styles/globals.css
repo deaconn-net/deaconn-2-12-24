@@ -76,12 +76,12 @@
 
         & input:not([type="checkbox"]), select, textarea {
             @apply p-4;
-            @apply bg-cyan-900;
+            @apply bg-deaconn-input;
             @apply ring-2;
             @apply ring-deaconn-ring;
-            @apply focus:ring-deaconn-ring2;
-            @apply focus-visible:ring-deaconn-ring2;
-            @apply focus-within:ring-deaconn-ring2;
+            @apply focus:ring-deaconn-focus;
+            @apply focus-visible:ring-deaconn-focus2;
+            @apply focus-within:ring-deaconn-focus3;
             @apply rounded;
             @apply w-full;
         }
@@ -125,4 +125,5 @@
     @import "utils/icons.css";
     @import "utils/tabs.css";
     @import "utils/grid.css";
+    @import "utils/forms.css";
 }
