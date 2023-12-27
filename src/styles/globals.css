@@ -103,10 +103,10 @@
     @import "components/content.css";
     @import "components/grid.css";
     @import "components/markdown.css";
-    @import "components/tabs.css";
 }
 
 @layer utilities {
     @import "utils/buttons.css";
     @import "utils/icons.css";
+    @import "utils/tabs.css";
 }

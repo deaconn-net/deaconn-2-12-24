@@ -8,11 +8,11 @@ export default function TabsMenuWithData ({
     data_background?: boolean
 }) {
     return (
-        <div className="tab-menu-with-data">
-            <div>
+        <div className="flex flex-wrap gap-4 justify-center">
+            <div className="w-96 sm:w-auto flex justify-center">
                 {menu}
             </div>
-            <div className={data_background ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : ""}>
+            <div className={`w-full sm:w-auto grow flex flex-col gap-4 ${data_background ? "bg-gradient-to-b from-deaconn-data to-deaconn-data2" : ""}`}>
                 {data}
             </div>
         </div>

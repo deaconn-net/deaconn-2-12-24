@@ -1,0 +1,35 @@
+@keyframes child-slide-down {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes child-slide-up {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.tab-item {
+    @apply p-6;
+    @apply w-full;
+    @apply text-center;
+
+    @apply hover:font-bold;
+    @apply hover:text-white;
+
+    @apply !bg-cyan-950;
+    @apply z-20;
+}
+
+.tab-active {
+    @apply text-white;
+    @apply font-bold;
+    @apply bg-cyan-900;
+}
