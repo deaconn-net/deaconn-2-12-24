@@ -13,7 +13,6 @@ import AboutUsIcon from "@components/icons/header/AboutUs";
 import AccountIcon from "@components/icons/header/Account";
 import SignInIcon from "@components/icons/header/SignIn";
 import MobileMenuIcon from "@components/icons/header/MobileMenu";
-import MobileMenuCollapseIcon from "@components/icons/header/MobileMenuCollapse";
 import { ViewPortCtx } from "./Wrapper";
 import LeftArrowIcon from "./icons/LeftArrow";
 import HomeIcon from "./icons/header/Home";
