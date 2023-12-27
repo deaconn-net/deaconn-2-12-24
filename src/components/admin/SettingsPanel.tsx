@@ -20,11 +20,6 @@ export default function AdminSettingsPanel({
             active: view == "general"
         },
         {
-            url: "/admin/roles",
-            text: <>Roles</>,
-            active: view == "roles"
-        },
-        {
             url: "/admin/categories",
             text: <>Categories</>,
             active: view == "categories"
