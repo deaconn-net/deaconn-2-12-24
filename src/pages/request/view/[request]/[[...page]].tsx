@@ -204,7 +204,7 @@ export default function Page ({
                                                     {request.accepted ? (
                                                         <span className="text-green-300">Accepted</span>
                                                     ) : (
-                                                        <span className="text-red-400">Not Accepted</span>
+                                                        <span className="text-red-400">Rejected</span>
                                                     )}
                                                 </p>
                                             </div>
