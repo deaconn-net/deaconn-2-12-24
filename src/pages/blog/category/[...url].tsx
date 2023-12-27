@@ -84,7 +84,7 @@ export default function Page ({
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    const { params } = ctx;
+    const { params, res } = ctx;
 
     const primaryUrl = params?.url?.[0];
     const secondaryUrl = params?.url?.[1];
@@ -152,6 +152,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             }
         }); 
     }
+
+    // Return status code 404 if category is not found.
+    if (!category)
+        res.statusCode = 404;
 
     const globalProps = await GlobalProps();
 

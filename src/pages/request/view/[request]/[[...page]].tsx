@@ -379,7 +379,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     let authed = HasRole(session, "ADMIN") || HasRole(session, "MODERATOR");
 
     // Retrieve request ID and page number if any.
-    const { params } = ctx;
+    const { params, res } = ctx;
     const lookupId = params?.request?.toString();
     const lookupPageNum = params?.page?.[0]?.toString();
 
@@ -447,6 +447,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             nextPages.push(i);
         }
     }
+
+    // Return 404 if reqeust is not found.
+    if (!request)
+        res.statusCode = 404;
 
     // Calculate next page numbers
     const globalProps = await GlobalProps();

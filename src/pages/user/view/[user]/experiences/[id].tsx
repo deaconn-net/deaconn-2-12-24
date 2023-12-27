@@ -106,7 +106,7 @@ export default function Page ({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve user ID and experience ID.
-    const { params } = ctx;
+    const { params, res } = ctx;
 
     const userId = params?.user?.toString();
     const experienceId = params?.id?.toString();
@@ -151,6 +151,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             })
         }
     }
+
+    // Return 404 if experience is not found.
+    if (!experience)
+        res.statusCode = 404;
 
     // Retrieve global props.
     const globalProps = await GlobalProps();

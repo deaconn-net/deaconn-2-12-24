@@ -69,7 +69,7 @@ export default function Page ({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve lookup URL.
-    const { params } = ctx;
+    const { params, res } = ctx;
 
     const lookupUrl = params?.url?.toString();
 
@@ -101,7 +101,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 }
             }
         });
-    }
+    } else
+        res.statusCode = 404;
 
     // Retrieve global props.
     const globalProps = await GlobalProps();

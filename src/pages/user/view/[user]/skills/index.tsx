@@ -67,7 +67,7 @@ export default function Page ({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve user ID.
-    const { params } = ctx;
+    const { params, res } = ctx;
 
     const userId = params?.user?.toString();
 
@@ -93,6 +93,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             }
         });
     }
+
+    // Return 404 if user is not found.
+    if (!user)
+        res.statusCode = 404;
 
     // Retrieve global props.
     const globalProps = await GlobalProps();

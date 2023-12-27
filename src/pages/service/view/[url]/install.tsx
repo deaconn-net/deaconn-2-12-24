@@ -74,7 +74,7 @@ export default function Page ({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve lookup URL.
-    const { params } = ctx;
+    const { params, res } = ctx;
 
     const lookupUrl = params?.url?.toString();
 
@@ -93,6 +93,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             }
         });
     }
+
+    // Return 404 if service is not found.
+    if (!service)
+        res.statusCode = 404;
 
     // Retrieve global props.
     const globalProps = await GlobalProps();

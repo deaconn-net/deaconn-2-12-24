@@ -148,7 +148,7 @@ function Source ({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve user and project IDs.
-    const { params } = ctx;
+    const { params, res } = ctx;
 
     const userId = params?.user?.toString();
     const projectId = params?.id?.toString();
@@ -196,6 +196,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
             })
         }
     }
+
+    // Return 404 if project is not found.
+    if (!project)
+        res.statusCode = 404;
 
     // Retrieve global props.
     const globalProps = await GlobalProps();

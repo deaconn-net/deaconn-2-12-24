@@ -70,7 +70,7 @@ export default function Page ({
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     // Retrieve lookup URL.
-    const { params } = ctx;
+    const { params, res } = ctx;
 
     const url = params?.url?.toString();
 
@@ -91,7 +91,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
-    // Increment view count.
+    // Increment view count. Otherwise, return 404 status code.
     if (article) {
         await prisma.article.update({
             where: {
@@ -103,7 +103,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
                 }
             }
         });
-    }
+    } else
+        res.statusCode = 404;
 
     // Retrieve global props.
     const globalProps = await GlobalProps();
