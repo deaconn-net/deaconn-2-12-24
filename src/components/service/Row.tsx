@@ -127,7 +127,7 @@ export default function ServiceRow ({
                 />
             </div>
             {!simple && (
-                <div className="px-6 flex flex-wrap gap-2 justify-center">
+                <div className="px-6 py-2 flex flex-wrap gap-2 justify-center">
                     <Link
                         className="button w-full"
                         href={viewUrl}
@@ -144,7 +144,7 @@ export default function ServiceRow ({
                 </div>
             )}
             {(session && !simple) && (
-                <div className="px-6 flex flex-wrap gap-2 justify-center">
+                <div className="px-6 py-2 flex flex-wrap gap-2 justify-center">
                     {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                         <Link
                             className="button button-primary w-full"

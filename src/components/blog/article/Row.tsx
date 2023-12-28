@@ -115,7 +115,7 @@ export default function ArticleRow ({
                 />
             </div>
             {!simple && (
-                <div className="px-2 py-2 flex justify-center">
+                <div className="px-6 py-2 flex justify-center">
                     <Link
                         className="button w-full"
                         href={viewUrl}
@@ -124,7 +124,7 @@ export default function ArticleRow ({
             )}
             
             {(!simple && session) && (
-                <div className="px-2 py-2 flex flex-wrap gap-2 justify-center">
+                <div className="px-6 py-2 flex flex-wrap gap-2 justify-center">
                     {(HasRole(session, "CONTRIBUTOR") || HasRole(session, "ADMIN")) && (
                         <Link
                             className="button button-primary w-full"
