@@ -177,6 +177,7 @@ function Row ({
                             <UserRowGrid
                                 user={log.user}
                                 showInline={true}
+                                showTitle={false}
                                 avatarWidth={32}
                                 avatarHeight={32}
                             />
