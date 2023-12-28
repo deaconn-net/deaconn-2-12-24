@@ -39,12 +39,14 @@ export default function Wrapper ({
     const successCtx = useContext(SuccessCtx);
 
     const firstRender = useRef(true);
+
+    const isFirstRender = firstRender.current;
     
     // Reset error and success titles and messages on first render.
     // This ensures titles and messages don't persist between page loads.
     useEffect(() => {
         // If this isn't the first render, return.
-        if (!firstRender.current)
+        if (!isFirstRender)
             return;
 
         // If this is the first render, set to false and reset titles/messages.
@@ -60,7 +62,7 @@ export default function Wrapper ({
             successCtx.setTitle(undefined);
             successCtx.setMsg(undefined);
         }
-    }, [errorCtx, successCtx]);
+    }, [errorCtx, successCtx, isFirstRender]);
 
     const [viewPort, setViewPort] = useState({
         mobile: false,
@@ -72,7 +74,7 @@ export default function Wrapper ({
 
     useEffect(() => {
         const checkViewPort = () => {
-            if (typeof window !== undefined) {
+            if (typeof window !== "undefined") {
                 const innerHeight = window.innerHeight;
                 const innerWidth = window.innerWidth;
 
@@ -89,7 +91,7 @@ export default function Wrapper ({
             }
         }
 
-        if (typeof window !== undefined) {
+        if (typeof window !== "undefined") {
             window.addEventListener("scroll", checkViewPort);
             window.addEventListener("resize", checkViewPort);
         }
@@ -98,7 +100,7 @@ export default function Wrapper ({
         checkViewPort();
 
         return () => {
-            if (typeof window !== undefined) {
+            if (typeof window !== "undefined") {
                 window.removeEventListener("scroll", checkViewPort);
                 window.removeEventListener("resize", checkViewPort);
             }
@@ -110,7 +112,7 @@ export default function Wrapper ({
             <ViewPortCtx.Provider value={viewPort}>
                 <GoogleAnalytics />
                 <Header />
-                <div className={`content ${(viewPort.scrollY == 0 && firstRender.current) ? "sm:animate-content-slide-up" : ""}`}>
+                <div className="content">
                     {breadcrumbs && (
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
                     )}
