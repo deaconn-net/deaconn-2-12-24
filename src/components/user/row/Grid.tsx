@@ -64,7 +64,7 @@ export default function UserRowGrid ({
                     <div className={`flex flex-col gap-1 ${nameAndTitleCenter ? "text-center" : ""}`}>
                         <span>{user.name}</span>
                         {showTitle && user.title && (
-                            <span className="font-bold text-green-200 text-sm">{user.title}</span>
+                            <span className="font-bold text-deaconn-link text-sm">{user.title}</span>
                         )}
                     </div>
                 )}
