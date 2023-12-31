@@ -106,7 +106,7 @@ export default function Header () {
                     className="icon-nav-item fill-white"
                 />
             </button>
-            <nav ref={mobileMenu} className={`hidden flex-col gap-2 bg-deaconn-data2 overflow-auto fixed top-0 left-0 p-2 h-full w-2/3 sm:w-1/2 sm:hidden`}>
+            <nav ref={mobileMenu} className={`hidden flex-col gap-2 bg-deaconn-data2 overflow-auto fixed top-0 left-0 py-2 px-4 h-full w-2/3 sm:w-1/2 sm:hidden`}>
                 <div className="flex justify-end">
                     <button
                         type="button"
