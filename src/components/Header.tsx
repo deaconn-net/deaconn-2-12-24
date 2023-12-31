@@ -99,7 +99,7 @@ export default function Header () {
     return (
         <header className="bg-slate-800 sticky top-0 z-50">
             <button
-                className={`${mobileOpen ? "hidden" : ""} sm:hidden p-4 top-0 left-0`}
+                className={`sm:hidden p-4 top-0 left-0`}
                 onClick={() => setMobileOpen(!mobileOpen)}
             >
                 <MobileMenuIcon
