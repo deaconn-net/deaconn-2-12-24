@@ -19,7 +19,11 @@ const config = {
             "deaconn-focus": "#155e75",
             "deaconn-focus2": "#0e7490",
             "deaconn-focus3": "#06b6d4",
-            "deaconn-input": "#164e63"
+            "deaconn-input": "#164e63",
+            "deaconn-base": "#f9fafb",
+            "deaconn-link": "#22d3ee",
+            "deaconn-link2": "#67e8f9",
+            "deaconn-link3": "#a5f3fc"
         }
     },
   },

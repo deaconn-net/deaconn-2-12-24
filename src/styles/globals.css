@@ -22,16 +22,12 @@
 
 /* Base Layer (Imports Do Not Work In Base Layer) */
 @layer base {
+    main {
+        @apply text-deaconn-base;
+    }
+    
     p {
         @apply leading-5;
-    }
-
-    a {
-        @apply text-gray-50;
-    }
-
-    a:hover {
-        @apply text-blue-300;
     }
 
     h1, h2, h3, h4, h5 {

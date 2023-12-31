@@ -14,10 +14,10 @@
     @apply grow;
 
     & p a { 
-        @apply text-cyan-400;
+        @apply text-deaconn-link;
 
         &:hover {
-            @apply text-cyan-300;
+            @apply text-deaconn-link2;
         }
     }
 }
