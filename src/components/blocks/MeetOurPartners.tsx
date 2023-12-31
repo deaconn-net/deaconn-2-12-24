@@ -1,16 +1,12 @@
 import Markdown from "@components/markdown/Markdown";
 import PartnerRow from "@components/partner/Row";
 import { type Partner } from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
 
 export default function MeetOurPartnersBlock ({
     partners = []
 } : {
     partners?: Partner[]
 }) {
-    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
-
     return (
         <>
             {partners.length > 0 && (
