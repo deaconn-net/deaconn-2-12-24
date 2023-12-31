@@ -6,16 +6,22 @@ import { type Partner } from "@prisma/client";
 export default function PartnerRow ({
     partner,
     showInline,
+    showBanner = true,
+    showIcon = true,
+    textClassName,
     iconWidth=32,
     iconHeight=32,
     bannerWidth=500,
     bannerHeight=300,
 } : {
-    partner: Partner,
-    showInline?: boolean,
-    iconWidth?: number,
-    iconHeight?: number,
-    bannerWidth?: number,
+    partner: Partner
+    showInline?: boolean
+    showBanner?: boolean
+    textClassName?: string
+    showIcon?: boolean
+    iconWidth?: number
+    iconHeight?: number
+    bannerWidth?: number
     bannerHeight?: number
 }) {
     const uploadUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
@@ -24,7 +30,7 @@ export default function PartnerRow ({
 
     return (
         <>
-            {partner.banner ? (
+            {(partner.banner && showBanner) ? (
                 <div className="flex justify-center">
                     <Link
                         href={`https://${partner.url}`}
@@ -48,7 +54,7 @@ export default function PartnerRow ({
                         target="_blank"
                         className={`flex ${!showInline ? "flex-col" : "flex-wrap"} gap-2 items-center`}
                     >
-                        {partner.icon && (
+                        {(partner.icon && showIcon) && (
                             <Image
                                 src={icon}
                                 width={iconWidth}
@@ -60,7 +66,7 @@ export default function PartnerRow ({
                                 alt="Icon"
                             />
                         )}
-                        <span>{partner.name}</span>
+                        <span className={textClassName}>{partner.name}</span>
                     </Link>
                 </div>
             )}
