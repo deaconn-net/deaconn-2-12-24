@@ -129,7 +129,7 @@ export default function ServiceView ({
                     />
                 }
                 data={
-                    <div className="p-6">
+                    <div className="p-6 flex flex-col gap-2 h-full">
                         <div className="flex flex-wrap justify-between">
                             <div>
                                 <p className="text-green-300 font-bold italic">{service.price > 0 ? "$" + service.price + "/m" : "Free"}</p>
@@ -163,7 +163,7 @@ export default function ServiceView ({
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 grow">
                             {view == "details" && (
                                 <>
                                     <h2>Details</h2>
