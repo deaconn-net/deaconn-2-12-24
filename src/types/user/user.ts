@@ -18,6 +18,11 @@ export const UserPublicSelect = {
     socialFacebook: true
 }
 
+export const UserPublicTeamSelect = {
+    ...UserPublicSelect,
+    roles: true
+}
+
 export const UserPublicSimpleSelect = {
     id: true,
     avatar: true,
@@ -37,6 +42,10 @@ export const UserPublicRefSelect = {
 
 export type UserPublic = Prisma.UserGetPayload<{
     select: typeof UserPublicSelect
+}>
+
+export type UserPublicTeam = Prisma.UserGetPayload<{
+    select: typeof UserPublicTeamSelect
 }>
 
 export type UserPublicWithEmail = Prisma.UserGetPayload<{
