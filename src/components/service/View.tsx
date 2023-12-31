@@ -100,7 +100,7 @@ export default function ServiceView ({
         ...(service.gitLink ? [{
             url: service.gitLink,
             text: <>Source Code</>,
-            className: "bg-green-800",
+            className: "!bg-green-800",
             target: "_blank"
         }] : [])
     ];
