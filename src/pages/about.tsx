@@ -1,4 +1,4 @@
-import { type UserPublic, UserPublicSelect } from "~/types/user/user";
+import { type UserPublicTeam, UserPublicTeamSelect } from "~/types/user/user";
 import StatsBlock, { type Stats } from "@components/blocks/Stats";
 
 import { prisma } from "@server/db";
@@ -14,6 +14,8 @@ import OpenSourceBlock from "@components/blocks/OpenSource";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
+import { SortByRole } from "@utils/user/Roles";
+
 export default function Page ({
     stats,
     team,
@@ -22,8 +24,12 @@ export default function Page ({
     footerPartners
 } : {
     stats?: Stats,
-    team: UserPublic[]
+    team: UserPublicTeam[]
 } & GlobalPropsType) {
+    console.log(team)
+    // Sort team.
+    const teamSorted = SortByRole(team)
+
     return (
         <>
             <Meta
@@ -36,7 +42,7 @@ export default function Page ({
                 <div className="flex flex-wrap sm:flex-nowrap gap-4">
                     <div className="content-col-large">
                         <WhoAreWeBlock />
-                        <MeetOurTeamBlock team={team} />
+                        <MeetOurTeamBlock team={teamSorted} />
                         <MeetOurPartnersBlock partners={footerPartners} />
                         <OpenSourceBlock />
                     </div>
@@ -79,7 +85,7 @@ export async function getServerSideProps() {
         stats.totalRepos = Number(repos.val);
 
     const team = await prisma.user.findMany({
-        select: UserPublicSelect,
+        select: UserPublicTeamSelect,
         where: {
             isTeam: true
         }

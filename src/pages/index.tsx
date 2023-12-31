@@ -2,7 +2,7 @@ import { prisma } from "@server/db";
 
 import { type Service } from "@prisma/client";
 import { ArticleFrontSelect, type ArticleWithUser } from "~/types/blog/article";
-import { type UserPublic, UserPublicSelect } from "~/types/user/user";
+import { UserPublicTeamSelect, type UserPublicTeam } from "~/types/user/user";
 
 import Wrapper from "@components/Wrapper";
 import Meta from "@components/Meta";
@@ -20,6 +20,7 @@ import WhoAreWeBlock from "@components/blocks/WhoAreWe";
 import BlogCarousel from "@components/blog/Carousel";
 import ServiceCarousel from "@components/service/Carousel";
 import { ServiceFrontSelect } from "~/types/service";
+import { SortByRole } from "@utils/user/Roles";
 
 export default function Page ({
     articlesLatest,
@@ -31,9 +32,11 @@ export default function Page ({
 } : {
     articlesLatest: ArticleWithUser[]
     articlesPopular: ArticleWithUser[]
-    team: UserPublic[]
+    team: UserPublicTeam[]
     services: Service[]
 } & GlobalPropsType) {
+    const teamSorted = SortByRole(team);
+
     return (
         <>
             <Meta
@@ -51,7 +54,7 @@ export default function Page ({
                         <GitLogBlock />
                     </div>
                     <div className="content-col-small">
-                        <OurTeamBlock team={team} />
+                        <OurTeamBlock team={teamSorted} />
                         <OurPartnersBlock partners={footerPartners} />
                         <DiscordServerBlock />
                         <OpenSourceBlock />
@@ -105,7 +108,7 @@ export async function getServerSideProps() {
     });
 
     const team = await prisma.user.findMany({
-        select: UserPublicSelect,
+        select: UserPublicTeamSelect,
         take: 10,
         where: {
             isTeam: true
