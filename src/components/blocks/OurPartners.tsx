@@ -2,7 +2,6 @@ import { type Partner } from "@prisma/client";
 
 import PartnerRow from "@components/partner/Row";
 
-
 export default function OurPartnersBlock({
     partners  
 } : {

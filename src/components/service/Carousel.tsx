@@ -24,8 +24,12 @@ export default function ServiceCarousel ({
     const viewPort = useContext(ViewPortCtx);
 
     const responsive = {
+        xl4: {
+            breakpoint: { max: 4000, min: 3000 },
+            items: 7
+        },
         xl3: {
-            breakpoint: { max: 4000, min: 2496 },
+            breakpoint: { max: 3000, min: 2496 },
             items: 6
         },
         xl2: {
@@ -41,11 +45,11 @@ export default function ServiceCarousel ({
             items: 4
         },
         md: {
-            breakpoint: { max: 1488, min: 1152 },
+            breakpoint: { max: 1488, min: 1210 },
             items: 3
         },
         sm: {
-            breakpoint: { max: 1152, min: 639 },
+            breakpoint: { max: 1210, min: 639 },
             items: 2
         },
         xs: {
