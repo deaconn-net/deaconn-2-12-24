@@ -1,7 +1,5 @@
 import Markdown from "@components/markdown/Markdown";
-import UserLink from "@components/user/Link";
 import UserRowGrid from "@components/user/row/Grid";
-import Image from "next/image";
 import { type UserPublic } from "~/types/user/user";
 
 export default function MeetOurTeamBlock ({
@@ -9,8 +7,6 @@ export default function MeetOurTeamBlock ({
 } : {
     team?: UserPublic[]
 }) {
-    const uploadsUrl = process.env.NEXT_PUBLIC_UPLOADS_URL ?? "";
-
     return (
         <>
             {team.length > 0 && (
@@ -20,11 +16,6 @@ export default function MeetOurTeamBlock ({
                     </div>
                     <div>
                         {team.map((user, index) => {
-                            let avatar = "/images/users/avatars/default.png";
-
-                            if (user.avatar)
-                                avatar = uploadsUrl + user.avatar;
-
                             return (
                                 <div
                                     key={`user-${index.toString()}`}
