@@ -1,21 +1,25 @@
-import { type UserPublic } from "~/types/user/user";
+import { type UserPublicTeam } from "~/types/user/user";
 
 import UserRowGrid from "@components/user/row/Grid";
+import { SortByRole } from "@utils/user/Roles";
 
 export default function OurTeamBlock({
     team
 } : {
-    team: UserPublic[]
+    team: UserPublicTeam[]
 }) {
+    // Sort team by role.
+    const teamSorted = SortByRole(team);
+
     return (
         <>
-            {team.length > 0 && (
+            {teamSorted.length > 0 && (
                 <div className="content-item2">
                     <div>
                         <h2>Our Team</h2>
                     </div>
                     <div className="flex flex-col gap-4">
-                        {team.map((user) => {
+                        {teamSorted.map((user) => {
                             return (
                                 <UserRowGrid
                                     key={"team-" + user.id}

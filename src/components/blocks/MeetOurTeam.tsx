@@ -1,21 +1,25 @@
 import Markdown from "@components/markdown/Markdown";
 import UserRowGrid from "@components/user/row/Grid";
-import { type UserPublic } from "~/types/user/user";
+import { SortByRole } from "@utils/user/Roles";
+import { type UserPublicTeam } from "~/types/user/user";
 
 export default function MeetOurTeamBlock ({
     team = []
 } : {
-    team?: UserPublic[]
+    team?: UserPublicTeam[]
 }) {
+    // Sort team by role.
+    const teamSorted = SortByRole(team);
+
     return (
         <>
-            {team.length > 0 && (
+            {teamSorted.length > 0 && (
                 <div className="content-item2">
                     <div>
                         <h2>Meet Our Team!</h2>
                     </div>
                     <div>
-                        {team.map((user, index) => {
+                        {teamSorted.map((user, index) => {
                             return (
                                 <div
                                     key={`user-${index.toString()}`}

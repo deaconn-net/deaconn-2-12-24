@@ -20,7 +20,6 @@ import WhoAreWeBlock from "@components/blocks/WhoAreWe";
 import BlogCarousel from "@components/blog/Carousel";
 import ServiceCarousel from "@components/service/Carousel";
 import { ServiceFrontSelect } from "~/types/service";
-import { SortByRole } from "@utils/user/Roles";
 
 export default function Page ({
     articlesLatest,
@@ -35,8 +34,6 @@ export default function Page ({
     team: UserPublicTeam[]
     services: Service[]
 } & GlobalPropsType) {
-    const teamSorted = SortByRole(team);
-
     return (
         <>
             <Meta
@@ -54,7 +51,7 @@ export default function Page ({
                         <GitLogBlock />
                     </div>
                     <div className="content-col-small">
-                        <OurTeamBlock team={teamSorted} />
+                        <OurTeamBlock team={team} />
                         <OurPartnersBlock partners={footerPartners} />
                         <DiscordServerBlock />
                         <OpenSourceBlock />

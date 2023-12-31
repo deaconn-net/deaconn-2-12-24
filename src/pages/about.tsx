@@ -14,8 +14,6 @@ import OpenSourceBlock from "@components/blocks/OpenSource";
 
 import GlobalProps, { type GlobalPropsType } from "@utils/GlobalProps";
 
-import { SortByRole } from "@utils/user/Roles";
-
 export default function Page ({
     stats,
     team,
@@ -26,10 +24,6 @@ export default function Page ({
     stats?: Stats,
     team: UserPublicTeam[]
 } & GlobalPropsType) {
-    console.log(team)
-    // Sort team.
-    const teamSorted = SortByRole(team)
-
     return (
         <>
             <Meta
@@ -42,7 +36,7 @@ export default function Page ({
                 <div className="flex flex-wrap sm:flex-nowrap gap-4">
                     <div className="content-col-large">
                         <WhoAreWeBlock />
-                        <MeetOurTeamBlock team={teamSorted} />
+                        <MeetOurTeamBlock team={team} />
                         <MeetOurPartnersBlock partners={footerPartners} />
                         <OpenSourceBlock />
                     </div>
