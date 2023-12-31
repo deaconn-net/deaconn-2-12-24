@@ -203,6 +203,7 @@ export default function ServiceView ({
                                     </div>
                                 </>
                             )}
+                            <div className="grow"></div>
                             {(HasRole(session, "ADMIN") || HasRole(session, "MODERATOR")) && (
                                 <div className="flex flex-wrap gap-4 justify-center">
                                     <Link
