@@ -1,5 +1,6 @@
 import Markdown from "@components/markdown/Markdown";
 import UserLink from "@components/user/Link";
+import UserRowGrid from "@components/user/row/Grid";
 import Image from "next/image";
 import { type UserPublic } from "~/types/user/user";
 
@@ -29,22 +30,13 @@ export default function MeetOurTeamBlock ({
                                     key={`user-${index.toString()}`}
                                     className="p-2"
                                 >
-                                    <div className="flex flex-wrap gap-2 items-center p-2">
-                                        <Image
-                                            src={avatar}
-                                            width={64}
-                                            height={64}
-                                            className="rounded-full"
-                                            alt="User Avatar"
-                                        />
-                                        <div className="flex flex-col gap-2">
-                                            <UserLink user={user} />
-                                            {user.title && (
-                                                <span className="text-sm font-bold text-green-300">{user.title}</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div>
+                                    <UserRowGrid
+                                        user={user}
+                                        showInline={true}
+                                        avatarHeight={64}
+                                        avatarWidth={64}
+                                    />
+                                    <div className="p-2">
                                         {user.aboutMe ? (
                                             <Markdown>
                                                 {user.aboutMe}

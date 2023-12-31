@@ -1,4 +1,5 @@
 import Markdown from "@components/markdown/Markdown";
+import PartnerRow from "@components/partner/Row";
 import { type Partner } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,23 +25,13 @@ export default function MeetOurPartnersBlock ({
                                     key={`partner-${index.toString()}`}
                                     className="p-2"
                                 >
-                                    <div className="flex flex-wrap gap-2 items-center">
-                                        {partner.icon && (
-                                            <Image
-                                                src={uploadsUrl + partner.icon}
-                                                width={32}
-                                                height={32}
-                                                alt="Partner Icon"
-                                            />
-                                        )}
-                                        <h4 className="not-italic">
-                                            <Link
-                                                href={`https://${partner.url}`}
-                                                target="_blank"
-                                            >{partner.name}</Link>
-                                        </h4>
-                                    </div>
-                                    <div>
+                                    <PartnerRow
+                                        partner={partner}
+                                        showBanner={false}
+                                        showInline={true}
+                                        textClassName="font-bold text-white text-xl"
+                                    />
+                                    <div className="p-2">
                                         {partner.about ? (
                                             <Markdown>
                                                 {partner.about}
