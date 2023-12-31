@@ -163,6 +163,7 @@ function ListItem ({
         <Link
             href={url}
             target={newTab ? "_blank" : undefined}
+            className="hover:text-deaconn-link2"
         >
             {children}
         </Link>
