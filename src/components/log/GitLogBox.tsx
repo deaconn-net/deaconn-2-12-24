@@ -12,7 +12,7 @@ import UserRowGrid from "@components/user/row/Grid";
 
 import { api } from "@utils/Api";
 
-import { dateFormat, dateFormatThree } from "@utils/Date";
+import { dateFormat, dateFormatFive } from "@utils/Date";
 import { ScrollToTop } from "@utils/Scroll";
 import { HasRole } from "@utils/user/Auth";
 
@@ -101,7 +101,7 @@ function Row ({
     const [dateStr, setDateStr] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        const dateFormatted = dateFormat(log.createdAt, dateFormatThree);
+        const dateFormatted = dateFormat(log.createdAt, dateFormatFive);
 
         if (!dateStr)
             setDateStr(dateFormatted);
@@ -169,7 +169,7 @@ function Row ({
                 </Link>
             </td>
             <td>
-                <span>{log.commitMsg}</span>
+                <span className="text-xs">{log.commitMsg}</span>
             </td>
             <td>
                     {log.user ? (
