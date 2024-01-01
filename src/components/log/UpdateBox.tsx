@@ -14,7 +14,7 @@ import Markdown from "@components/markdown/Markdown";
 
 import { api } from "@utils/Api";
 
-import { dateFormat, dateFormatThree } from "@utils/Date";
+import { dateFormat, dateFormatFive } from "@utils/Date";
 import { ScrollToTop } from "@utils/Scroll";
 import { HasRole } from "@utils/user/Auth";
 
@@ -178,7 +178,7 @@ function Row ({
     const [dateStr, setDateStr] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        const dateFormatted = dateFormat(update.createdAt, dateFormatThree);
+        const dateFormatted = dateFormat(update.createdAt, dateFormatFive);
 
         if (!dateStr)
             setDateStr(dateFormatted);
