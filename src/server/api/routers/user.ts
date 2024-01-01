@@ -19,7 +19,7 @@ export const userRouter = createTRPCRouter({
 
             name: z.string().max(64).regex(/^[a-zA-Z0-9 -]+$/).optional(),
             url: z.string().max(32).regex(/^[a-zA-Z0-9-]+$/).optional(),
-            title: z.string().min(3).max(64).optional(),
+            title: z.string().max(64).optional().nullable(),
             aboutMe: z.string().max(16384).optional(),
             birthday: z.date().optional(),
             showEmail: z.boolean().optional(),
