@@ -45,6 +45,12 @@ export default function GeneralForm ({
                     } else if ("name" in zodErr.fieldErrors) {
                         errorCtx.setTitle("Invalid Name");
                         errorCtx.setMsg("Invalid name. Please make sure to use letters, numbers, hyphens, and spaces only.");
+                    } else if ("title" in zodErr.fieldErrors) {
+                        errorCtx.setTitle("Title Too Long");
+                        errorCtx.setMsg("The user's title is too long (> 64 characters).");
+                    } else {
+                        errorCtx.setTitle("Error Saving Profile");
+                        errorCtx.setMsg("Error saving profile. Read developer console for more information.");
                     }
                 } else {
                     errorCtx.setTitle("Error Saving Profile");
