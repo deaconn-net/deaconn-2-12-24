@@ -64,7 +64,7 @@ export default function GeneralForm ({
         onSuccess: () => {
             if (successCtx) {
                 successCtx.setTitle("Profile Saved!");
-                successCtx.setMsg("Your profile information was save successfully!");
+                successCtx.setMsg("Your profile information was saved successfully!");
         
                 // Scroll to top.
                 ScrollToTop();
