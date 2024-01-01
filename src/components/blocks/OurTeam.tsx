@@ -19,10 +19,10 @@ export default function OurTeamBlock({
                         <h2>Our Team</h2>
                     </div>
                     <div className="flex flex-col gap-4">
-                        {teamSorted.map((user) => {
+                        {teamSorted.map((user, index) => {
                             return (
                                 <UserRowGrid
-                                    key={"team-" + user.id}
+                                    key={`team-${index.toString()}`}
                                     user={user}
                                     showInline={true}
                                     avatarWidth={50}

@@ -82,6 +82,9 @@ export async function getServerSideProps() {
         select: UserPublicTeamSelect,
         where: {
             isTeam: true
+        },
+        orderBy: {
+            id: "asc"
         }
     });
 

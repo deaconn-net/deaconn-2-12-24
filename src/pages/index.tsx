@@ -109,6 +109,9 @@ export async function getServerSideProps() {
         take: 10,
         where: {
             isTeam: true
+        },
+        orderBy: {
+            id: "asc"
         }
     });
 
