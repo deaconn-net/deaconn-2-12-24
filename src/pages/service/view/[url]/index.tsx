@@ -89,19 +89,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         });
     }
 
-    // Increment view.
-    if (service) {
-        await prisma.service.update({
-            where: {
-                id: service.id
-            },
-            data: {
-                totalViews: {
-                    increment: 1
-                }
-            }
-        });
-    } else {
+    // Return 404 if service is not found.
+    if (!service) {
         return {
             notFound: true
         }

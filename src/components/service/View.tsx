@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 
 import { type ServiceWithCategoryAndLinks } from "~/types/service";
 
-
 import Tabs, { type TabItemType } from "@components/tabs/Tabs";
 import TabMenuWithData from "@components/tabs/MenuWithData";
 import IconAndText from "@components/containers/IconAndText";
