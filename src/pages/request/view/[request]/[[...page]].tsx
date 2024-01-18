@@ -446,6 +446,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
             nextPages.push(i);
         }
+    } else {
+        return {
+            notFound: true
+        }
     }
 
     // Return 404 if reqeust is not found.

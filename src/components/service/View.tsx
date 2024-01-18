@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -104,6 +104,21 @@ export default function ServiceView ({
             target: "_blank"
         }] : [])
     ];
+
+    // Increment view count.
+    const viewIncMut = api.service.incViewCount.useMutation();
+    const viewIncRender = useRef(true);
+
+    useEffect(() => {
+        if (!viewIncRender.current)
+            return;
+
+        viewIncMut.mutate({
+            id: service.id
+        })
+
+        viewIncRender.current = false;
+    }, [viewIncMut, viewIncRender, service.id])
     
     return (
         <div className="flex flex-col gap-4">

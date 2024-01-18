@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -101,6 +101,21 @@ export default function ArticleView ({
         if (!articleEditedAt)
             setArticleEditedAt(dateFormat(article.lastEdited, dateFormatFour));
     }, [article, articleCreatedAt, articleEditedAt]);
+
+    // Increment view count.
+    const viewIncMut = api.blog.incViewCount.useMutation();
+    const viewIncRender = useRef(true);
+
+    useEffect(() => {
+        if (!viewIncRender.current)
+            return;
+
+        viewIncMut.mutate({
+            id: article.id
+        })
+
+        viewIncRender.current = false;
+    }, [viewIncMut, viewIncRender, article.id])
     
     return (
         <div className="flex flex-col gap-4">

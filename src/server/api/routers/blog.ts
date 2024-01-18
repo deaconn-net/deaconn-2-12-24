@@ -167,5 +167,28 @@ export const blogRouter = createTRPCRouter({
                     message: "Unable to delete article. Article ID #" + input.id.toString() + " likely not found."
                 });
             }
+        }),
+    incViewCount: publicProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.article.update({
+                    data: {
+                        views: {
+                            increment: 1
+                        }
+                    },
+                    where: {
+                        id: input.id
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: `Failed to increment article view count. Error => ${err}`
+                })
+            }
         })
 });

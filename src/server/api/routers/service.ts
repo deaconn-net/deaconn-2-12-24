@@ -217,6 +217,29 @@ export const serviceRouter = createTRPCRouter({
                 });
             }
         }),
+    incViewCount: publicProcedure
+        .input(z.object({
+            id: z.number()
+        }))
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.service.update({
+                    data: {
+                        totalViews: {
+                            increment: 1
+                        }
+                    },
+                    where: {
+                        id: input.id
+                    }
+                })
+            } catch (err: unknown) {
+                throw new TRPCError({
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: `Failed to increment service view count. Error => ${err}`
+                })
+            }
+        }),
     incDownloads: protectedProcedure
         .input(z.object({
             id: z.number()
