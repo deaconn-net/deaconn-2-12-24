@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Field, Form, Formik } from "formik";
+import { Field, FieldArray, Form, Formik } from "formik";
 
 import { ErrorCtx, SuccessCtx } from "@pages/_app";
 
@@ -217,58 +217,50 @@ export default function UserProjectForm({
                     </div>
                     <h2>Sources</h2>
                     <div>
-                        {form.values.sources.map((source, index) => {
-                            return (
-                                <div
-                                    key={`source-${index.toString()}`}
-                                    className="flex flex-col gap-4"
-                                >
-                                    <div>
-                                        <label>Title</label>
-                                        <Field
-                                            name={`sources[${index.toString()}].title`}
-                                            value={source.title ?? ""}
-                                            
-                                        />
-                                    </div>
-                                    <div>
-                                        <label>URL</label>
-                                        <Field
-                                            name={`sources[${index.toString()}].url`}
-                                            value={source.url ?? ""}
-                                            
-                                        />
-                                    </div>
+                        <FieldArray name="sources">
+                            {({ push, remove }) => (
+                                <>
+                                    {form.values.sources.map((source, index) => {
+                                        const fieldStr = `sources[${index.toString()}]`;
+
+                                        return (
+                                            <div
+                                                key={`source-${index.toString()}`}
+                                                className="flex flex-col gap-4"
+                                            >
+                                                <div>
+                                                    <label>Title</label>
+                                                    {preview ? (
+                                                        <p>{source.title}</p>
+                                                    ) : (
+                                                        <Field name={`${fieldStr}.title`} />
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    <label>URL</label>
+                                                    {preview ? (
+                                                        <p>{source.url}</p>
+                                                    ) : (
+                                                        <Field name={`${fieldStr}.url`} />
+                                                    )}
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    className="button button-danger sm:w-32"
+                                                    onClick={() => remove(index)}
+                                                >Remove</button>
+                                            </div>
+                                        );
+                                    })}
+
                                     <button
-                                        className="button button-danger sm:w-32"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-
-                                            // Remove from form values.
-                                            const sources = form.values.sources;
-                                            sources.splice(index, 1);
-
-                                            form.setValues({
-                                                ...form.values,
-                                                sources
-                                            });
-                                        }}
-                                    >Remove</button>
-                                </div>
-                            );
-                        })}
-
-                        <button
-                            className="button button-priamry sm:w-32"
-                            onClick={(e) => {
-                                e.preventDefault();
-
-                                form.setValues({
-                                    ...form.values,
-                                    sources: [...form.values.sources, DEFAULT_SOURCE]
-                                });
-                            }}
-                        >Add Source!</button>
+                                        type="button"
+                                        className="button button-priamry sm:w-32"
+                                        onClick={() => push(DEFAULT_SOURCE)}
+                                    >Add Source!</button>
+                                </>
+                            )}
+                        </FieldArray>
                     </div>
                     <div className="flex gap-2 justify-center">
                         <button
