@@ -4,8 +4,8 @@
 
 This is [Deaconn's](https://deaconn.net/) rebuilt website which uses the T3 stack, [Create T3 App](https://create.t3.gg/), and is completely **open source**! This stack comes with TypeScript, Next.js, React, tRPC, Prisma, and Tailwind CSS.
 
-## Under Development!
-This website is still under heavy development and recently went public on *September 2nd, 2023*.
+## Source Code As Of 2-12-24
+This is [Deaconn's website](https://deaconn.net) as of *Feburary 12th, 2024*. We've decided to keep the current website closed-source due to the future implementations of services, payment gateways, and more.
 
 ## Features
 * Login through GitHub, Google, or Discord.
